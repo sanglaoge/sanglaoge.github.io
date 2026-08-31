@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 Tokenmaxxing · 烧油不跑路</title>
+<script>document.documentElement.classList.add('js');</script>
+<meta name="description" content="Tokenmaxxing 是反面教材——为烧 token 而烧 token，把高消耗当生产力。AI底层逻辑可视化笔记第 05 篇。">
+<meta property="og:title" content="Tokenmaxxing · 烧油不跑路">
+<meta property="og:description" content="只量烧了多少油，不量跑了多少里——桑老哥 AGI 共学可视化笔记">
+<meta property="og:image" content="../images/05-Tokenmaxxing-1-封面.webp">
+<style>
+:root {
+  /* 暖纸灰阶 9 档（账本纸感） */
+  --g0: #FFFFFF;
+  --g1: #FAF8F3;
+  --g2: #F1EEE6;
+  --g3: #E5E1D5;
+  --g4: #D2CDBF;
+  --g5: #A39D8D;
+  --g6: #6B6558;
+  --g7: #443F35;
+  --g8: #201D17;
+  /* 锚色：炭黑（本篇主色，警示账本风） */
+  --ink: #1A1815;
+  /* 浪费 / 警示：砖红 */
+  --red: #A63A22;
+  --red-deep: #7E2A16;
+  --red-wash: #F9EFE9;
+  --red-line: #E0B4A4;
+  /* 值当 / 该花：墨绿 */
+  --green: #2F5D46;
+  --green-wash: #EDF3EC;
+  --green-line: #B9CFC0;
+  --hairline: #D2CDBF;
+  --radius-lg: 16px;
+  --radius-sm: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--g1);
+  color: var(--g8);
+  line-height: 1.85;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+.serif { font-family: Georgia, "Songti SC", "STSong", serif; }
+.mono { font-variant-numeric: tabular-nums; font-family: "SF Mono", "JetBrains Mono", Menlo, monospace; }
+::selection { background: var(--red); color: #fff; }
+
+/* ========== HERO（账本横线纸） ========== */
+.hero {
+  background-color: var(--g0);
+  background-image: repeating-linear-gradient(
+    transparent 0, transparent 27px,
+    rgba(166,58,34,0.055) 27px, rgba(166,58,34,0.055) 28px);
+  border-top: 4px solid var(--red);
+  border-bottom: 1px solid var(--hairline);
+  padding: 56px 24px 48px;
+}
+.hero-inner { max-width: 980px; margin: 0 auto; }
+.hero-meta {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 26px;
+  font-size: 13px; letter-spacing: 1px; color: var(--g6);
+}
+.badge-num {
+  background: var(--ink); color: #fff;
+  font-family: "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums;
+  padding: 4px 12px; border-radius: 8px; font-weight: 700; letter-spacing: 2px;
+}
+.badge-track { border: 1px solid var(--hairline); padding: 4px 12px; border-radius: 8px; background: var(--g1); }
+.hero h1 {
+  font-family: Georgia, "Songti SC", "STSong", serif;
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1.15; letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+.hero-hook {
+  font-size: 18px; color: var(--g7); max-width: 660px;
+  border-left: 3px solid var(--red); padding-left: 16px; margin-bottom: 36px;
+}
+.hero-hook strong { color: var(--red); }
+.hero-hook .en { font-size: 15px; color: var(--g5); font-style: italic; }
+.hero-figure {
+  margin: 0 auto; max-width: 720px;
+  background: var(--g2); border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg); padding: 14px;
+}
+.hero-figure img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--radius-sm);
+}
+.hero-figure figcaption {
+  text-align: center; font-size: 13.5px; color: var(--g6); margin-top: 12px; letter-spacing: 1px;
+}
+
+/* ========== 章节骨架（系列统一） ========== */
+main { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+section { padding: 56px 0 8px; }
+.sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 10px; }
+.sec-no {
+  font-family: "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums;
+  font-size: 13px; color: var(--red); font-weight: 700; letter-spacing: 2px;
+}
+.sec-head h2 {
+  font-family: Georgia, "Songti SC", "STSong", serif;
+  font-size: clamp(22px, 3.4vw, 30px); letter-spacing: 1.5px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--hairline); flex: 1;
+}
+.sec-lead { color: var(--g6); font-size: 15px; margin-bottom: 26px; max-width: 720px; }
+p + p { margin-top: 12px; }
+
+/* ========== §02 定义反转（本篇灵魂） ========== */
+.flip-warn {
+  background: var(--red-wash); border: 1px solid var(--red-line);
+  border-left: 5px solid var(--red);
+  border-radius: var(--radius-sm); padding: 24px 26px; margin-bottom: 18px;
+}
+.flip-warn-tag {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; letter-spacing: 3px;
+  color: var(--red); margin-bottom: 10px;
+}
+.flip-warn p { font-size: 15.5px; color: var(--g7); line-height: 1.8; }
+.flip-warn p + p { margin-top: 8px; }
+.flip-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+.flip-card {
+  border-radius: var(--radius-sm); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.flip-card.wrong { background: var(--g2); border: 1px solid var(--hairline); }
+.flip-card.right { background: var(--green-wash); border: 1px solid var(--green-line); }
+.flip-term { font-family: "SF Mono", Menlo, monospace; font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+.flip-card.wrong .flip-term { color: var(--g7); text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+.flip-card.right .flip-term { color: var(--green); }
+.flip-def { font-size: 14.5px; color: var(--g7); line-height: 1.7; }
+.flip-verdict { font-size: 12.5px; font-weight: 700; letter-spacing: 2px; }
+.flip-card.wrong .flip-verdict { color: var(--red); }
+.flip-card.right .flip-verdict { color: var(--green); }
+
+/* ========== §03 两笔账（账本） ========== */
+.ledger { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ledger-card {
+  background: var(--g0); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ledger-tab {
+  font-size: 12.5px; font-weight: 700; letter-spacing: 3px; color: var(--g6);
+  padding-bottom: 10px; border-bottom: 1px dashed var(--g4);
+}
+.ledger-big { font-family: Georgia, "Songti SC", serif; font-size: 34px; color: var(--ink); line-height: 1.2; }
+.ledger-big small { font-size: 15px; color: var(--g6); font-family: "Noto Sans SC", "PingFang SC", sans-serif; }
+.ledger-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  font-size: 14px; color: var(--g7); padding: 7px 0;
+  border-bottom: 1px dotted var(--g3);
+  font-variant-numeric: tabular-nums;
+}
+.ledger-row:last-of-type { border-bottom: none; }
+.ledger-row b { color: var(--ink); font-family: "SF Mono", Menlo, monospace; font-weight: 700; font-size: 13.5px; white-space: nowrap; }
+.ledger-note { font-size: 13.5px; color: var(--g6); line-height: 1.7; }
+
+/* ========== §04 该省 vs 该花 ========== */
+.spend { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.spend-side { border-radius: var(--radius-sm); padding: 22px 24px; }
+.spend-save { background: var(--red-wash); border: 1px solid var(--red-line); }
+.spend-spend { background: var(--green-wash); border: 1px solid var(--green-line); }
+.spend-tag { font-size: 12.5px; font-weight: 700; letter-spacing: 3px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.spend-save .spend-tag { color: var(--red); }
+.spend-spend .spend-tag { color: var(--green); }
+.spend-item { display: flex; gap: 10px; align-items: baseline; padding: 9px 0; border-bottom: 1px dotted var(--g3); }
+.spend-item:last-child { border-bottom: none; }
+.spend-item .s-mark { font-family: "SF Mono", Menlo, monospace; font-weight: 700; font-size: 14px; flex: none; }
+.spend-save .s-mark { color: var(--red); }
+.spend-spend .s-mark { color: var(--green); }
+.spend-item .s-body { font-size: 15px; color: var(--g8); line-height: 1.65; }
+.spend-item .s-why { display: block; font-size: 13.5px; color: var(--g6); }
+.spend-quip {
+  margin-top: 18px; text-align: center; font-size: 15px; letter-spacing: 1px;
+  color: var(--g7); padding: 14px 16px;
+  border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+}
+.spend-quip b { color: var(--ink); }
+
+/* ========== §05 两个前提 + 把海烧开 ========== */
+.pre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 30px; }
+.pre-card {
+  background: var(--g0); border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  padding: 20px 22px; display: flex; flex-direction: column; gap: 6px;
+}
+.pre-no {
+  font-family: Georgia, "Songti SC", serif; font-size: 30px; color: var(--red);
+  line-height: 1; font-variant-numeric: tabular-nums;
+}
+.pre-title { font-size: 16.5px; font-weight: 700; }
+.pre-why { font-size: 14.5px; color: var(--g6); line-height: 1.7; }
+.pre-why b { color: var(--red); }
+.sea-fig { margin: 0 auto; max-width: 840px; background: var(--g0); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: 16px 16px 14px; }
+.sea-art { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); }
+.sea-flow { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+.sea-chip { background: var(--g1); border: 1px solid var(--hairline); border-radius: 24px; padding: 10px 18px; text-align: center; line-height: 1.5; }
+.sea-chip b { display: block; font-size: 15px; color: var(--g7); letter-spacing: 1px; }
+.sea-chip small { font-size: 12.5px; color: var(--g6); }
+.sea-chip-hot { background: var(--red-wash); border-color: var(--red-line); }
+.sea-chip-hot b { color: var(--red); }
+.sea-chip-ok { background: var(--green-wash); border-color: var(--green-line); }
+.sea-chip-ok b { color: var(--green); }
+.sea-caption { text-align: center; font-size: 13.5px; color: var(--g6); margin-top: 12px; letter-spacing: 1px; }
+
+/* ========== §06 你已经在用 ========== */
+.mirror {
+  background: var(--g0); border: 1px solid var(--hairline); border-radius: var(--radius-lg);
+  padding: 26px 28px;
+}
+.mirror-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 26px; margin-top: 16px; }
+.mirror-item { font-size: 14.5px; color: var(--g7); display: flex; gap: 10px; align-items: baseline; line-height: 1.7; }
+.mirror-item .m-mark { font-family: "SF Mono", Menlo, monospace; font-weight: 700; font-size: 13.5px; flex: none; }
+.mirror-item.worth .m-mark { color: var(--green); }
+.mirror-item.waste .m-mark { color: var(--red); }
+
+/* ========== §07 边界 ========== */
+.limit-list { list-style: none; }
+.limit-list li {
+  position: relative; padding-left: 26px; margin-bottom: 12px;
+  font-size: 15px; color: var(--g7);
+}
+.limit-list li::before {
+  content: ""; position: absolute; left: 2px; top: 11px;
+  width: 12px; height: 2px; background: var(--red);
+}
+.related { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.related span {
+  font-size: 13.5px; color: var(--g6); border: 1px solid var(--hairline);
+  background: var(--g0); border-radius: 20px; padding: 4px 16px; letter-spacing: 1px;
+}
+
+/* ========== 系列导航 ========== */
+.series-nav {
+  margin-top: 64px; border-top: 1px solid var(--hairline);
+  padding: 28px 0 8px;
+  display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+}
+.series-nav a {
+  text-decoration: none; color: var(--g7); background: var(--g0);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  padding: 12px 18px; font-size: 14px; letter-spacing: 0.5px;
+  display: flex; flex-direction: column; gap: 2px; min-width: 220px;
+  transition: border-color 150ms ease;
+}
+.series-nav a:hover { border-color: var(--red); }
+.series-nav a.next { text-align: right; margin-left: auto; }
+.series-nav .nav-dir { font-size: 12px; color: var(--g6); letter-spacing: 2px; }
+.series-nav .nav-title { font-weight: 700; color: var(--red); }
+.series-nav .nav-hint { font-size: 12px; color: var(--g6); }
+footer {
+  text-align: center; padding: 30px 24px 40px; font-size: 12.5px; color: var(--g6); letter-spacing: 1px;
+}
+
+/* ========== 渐入动效（M3 档；无 JS / 禁 JS 环境直接可见） ========== */
+.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 500ms ease, transform 500ms ease; }
+.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ========== 响应式（手机端：字号整体抬升，看得不费劲） ========== */
+@media (max-width: 720px) {
+  body { font-size: 17px; line-height: 1.9; }
+  .hero { padding: 40px 20px; }
+  .hero-inner { max-width: none; }
+  .hero-meta { gap: 10px; font-size: 13.5px; }
+  .hero h1 { letter-spacing: 0.5px; }
+  .hero-hook { font-size: 17.5px; padding-left: 14px; margin-bottom: 30px; }
+  .hero-hook .en { font-size: 14px; }
+  main { padding: 0 20px; }
+  section { padding: 46px 0 8px; }
+  .sec-head h2 { font-size: 24px; letter-spacing: 1px; }
+  .sec-lead { font-size: 16px; margin-bottom: 22px; }
+  .flip-warn { padding: 20px; }
+  .flip-warn p { font-size: 16px; }
+  .flip-pair { grid-template-columns: 1fr; }
+  .flip-def { font-size: 15px; }
+  .ledger { grid-template-columns: 1fr; }
+  .ledger-big { font-size: 30px; }
+  .ledger-row { font-size: 15px; }
+  .ledger-note { font-size: 14px; }
+  .spend { grid-template-columns: 1fr; }
+  .spend-item .s-body { font-size: 16px; }
+  .spend-item .s-why { font-size: 14px; }
+  .spend-quip { font-size: 15.5px; }
+  .pre-grid { grid-template-columns: 1fr; }
+  .pre-why { font-size: 15px; }
+  .sea-fig { padding: 12px 12px 10px; }
+  .sea-flow { gap: 10px; margin-top: 12px; }
+  .sea-chip { padding: 9px 16px; }
+  .sea-chip b { font-size: 15px; }
+  .sea-chip small { font-size: 13px; }
+  .mirror { padding: 22px 20px; }
+  .mirror-grid { grid-template-columns: 1fr; }
+  .mirror-item { font-size: 15.5px; }
+  .limit-list li { font-size: 16px; }
+  .related span { font-size: 14.5px; }
+  .series-nav { margin-top: 48px; }
+  .series-nav a { min-width: 100%; font-size: 15px; }
+  .series-nav a.next { text-align: left; margin-left: 0; }
+  footer { font-size: 13.5px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <span class="badge-num">05 / 22</span>
+      <span class="badge-track">AI底层逻辑 · 第一段 · 怎么跟AI说话</span>
+    </div>
+    <h1>Tokenmaxxing</h1>
+    <p class="hero-hook"><strong>反面教材：为烧 token 而烧 token，把高消耗当生产力。</strong>社区批评它"只量烧了多少油，不量跑了多少里"。<span class="en">measuring fuel burned, not distance covered</span></p>
+    <figure class="hero-figure">
+      <img src="../images/05-Tokenmaxxing-1-封面.webp" alt="3D 示意图：一块油表指针扎进红区，旁边里程表归零，一小堆硬币模样的 token 正在火里熔化" width="1152" height="864">
+      <figcaption>油表爆表、里程归零——这就是 tokenmaxxing 的画像</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+
+<!-- 01 来龙去脉 -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 01</span><h2>来龙去脉</h2></div>
+  <p class="sec-lead">2026 年 AI 行业热词，一个被批评的行为，不是被推荐的方法。</p>
+  <p>"-maxxing" 是网络俚语后缀，意为<b>把某事推向极端</b>。tokenmaxxing = 把烧 token 推向极端——注意，推向极端的是"烧"，不是"效率"。</p>
+  <p>它源自硅谷炫耀性消费文化：用 token 烧量炫技，烧得越多越觉得"干了活"。微软已经叫停这类做法，社区给它的评语是 <b>measuring fuel burned not distance covered</b>（只量烧油，不量跑了多少里程）。</p>
+</section>
+
+<!-- 02 定义反转（本篇灵魂） -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 02</span><h2>易错点 · 这个词曾经被用反</h2></div>
+  <p class="sec-lead">本文原稿曾把 Tokenmaxxing 当成"省 token、花在刀刃上"的正面策略——定义方向正好用反。</p>
+  <div class="flip-warn">
+    <div class="flip-warn-tag">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5L15 14H1L8 1.5z" stroke="#A63A22" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 6v4" stroke="#A63A22" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="12" r="0.9" fill="#A63A22"/></svg>
+      词义警告
+    </div>
+    <p>那套"该省省该花花"的正面做法<b>有别的名字</b>——不叫 tokenmaxxing。用错词，聊的就是反话。</p>
+    <div class="flip-pair">
+      <div class="flip-card wrong">
+        <span class="flip-verdict">✕ 反面 · 被批评</span>
+        <span class="flip-term">tokenmaxxing</span>
+        <span class="flip-def">把<b>烧 token</b> 推向极端。拿消耗量当产出，微软已叫停。</span>
+      </div>
+      <div class="flip-card right">
+        <span class="flip-verdict">✓ 正面 · 该用这个词</span>
+        <span class="flip-term">contextmaxxing</span>
+        <span class="flip-def">把<b>上下文工程</b>做到极致。又叫"高效 token 分配"。</span>
+      </div>
+    </div>
+  </div>
+  <p>补充背景（高效 token 分配视角）：计费要分清两笔账，见下一节。</p>
+</section>
+
+<!-- 03 两笔账 -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 03</span><h2>核心图解 · 两笔账</h2></div>
+  <p class="sec-lead">省 token 之前，先知道钱花在哪——单价一笔、总量一笔。</p>
+  <div class="ledger">
+    <div class="ledger-card">
+      <div class="ledger-tab">第一笔 · 单价账</div>
+      <div class="ledger-big">输出 ≈ 输入 <small>×</small> 3–5</div>
+      <div class="ledger-row"><span>输出 1M token</span><b>$ 10</b></div>
+      <div class="ledger-row"><span>输入 1M token</span><b>$ 2.5</b></div>
+      <div class="ledger-row"><span>举例</span><b>GPT-4o</b></div>
+      <p class="ledger-note">生成比阅读贵：模型"写"一个字，成本是"读"一个字的 3–5 倍。</p>
+    </div>
+    <div class="ledger-card">
+      <div class="ledger-tab">第二笔 · 总量账</div>
+      <div class="ledger-big">输入 <small>常占大头</small></div>
+      <div class="ledger-row"><span>长对话每轮</span><b>重读全部上下文</b></div>
+      <div class="ledger-row"><span>输入 : 输出</span><b>几十～上百倍</b></div>
+      <div class="ledger-row"><span>总花费</span><b>输入为大头</b></div>
+      <p class="ledger-note">贵在"反复喂"：聊得越久，每句回答背后重读的上下文越多。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 该省 vs 该花 -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 04</span><h2>该省的 vs 该花的</h2></div>
+  <p class="sec-lead">这叫"高效 token 分配"（contextmaxxing），不叫 tokenmaxxing。</p>
+  <div class="spend">
+    <div class="spend-side spend-save">
+      <div class="spend-tag">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="#A63A22" stroke-width="2" stroke-linecap="round"/></svg>
+        该省 · 白烧的
+      </div>
+      <div class="spend-item"><span class="s-mark">✕</span><span class="s-body">机械重复<span class="s-why">每次说同一件事，烧两遍油</span></span></div>
+      <div class="spend-item"><span class="s-mark">✕</span><span class="s-body">闲聊噪音<span class="s-why">不指向任何结论的来回</span></span></div>
+      <div class="spend-item"><span class="s-mark">✕</span><span class="s-body">冗余信息<span class="s-why">贴一堆用不上的材料充篇幅</span></span></div>
+    </div>
+    <div class="spend-side spend-spend">
+      <div class="spend-tag">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7.5l3.2 3.2L12 3.5" stroke="#2F5D46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        该花 · 值当的
+      </div>
+      <div class="spend-item"><span class="s-mark">✓</span><span class="s-body">多源交叉验证<span class="s-why">几个来源互相对质，结论才硬</span></span></div>
+      <div class="spend-item"><span class="s-mark">✓</span><span class="s-body">深度研究<span class="s-why">让机器替你把海烧开</span></span></div>
+      <div class="spend-item"><span class="s-mark">✓</span><span class="s-body">关键判断<span class="s-why">重大决策多花 token 不心疼</span></span></div>
+    </div>
+  </div>
+  <p class="spend-quip">省的是<b>噪音</b>，花的是<b>判断</b>——不是一味省，也不是一味烧。</p>
+</section>
+
+<!-- 05 两个前提 + 把海烧开 -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 05</span><h2>两个前提 · 把海烧开</h2></div>
+  <p class="sec-lead">花 token 换效率之前，两个前提先立住。</p>
+  <div class="pre-grid">
+    <div class="pre-card">
+      <span class="pre-no">1</span>
+      <span class="pre-title">得知道要什么</span>
+      <span class="pre-why">"随便聊聊" = <b>没地图烧油</b>——方向没有，花多少都白花。</span>
+    </div>
+    <div class="pre-card">
+      <span class="pre-no">2</span>
+      <span class="pre-title">时间价值高于 token 成本</span>
+      <span class="pre-why">花 token <b>省下你的时间</b>，这笔账就是值的。</span>
+    </div>
+  </div>
+  <figure class="sea-fig">
+    <img class="sea-art" src="../images/05-Tokenmaxxing-2-把海烧开.webp" alt="3D 插画：一摞白色卡片汇成的溪流注入中央的黑铁锅，锅烧开冒着蒸汽，锅下橘红火苗，锅沿浮起一颗发光的绿色晶体" width="1248" height="832">
+    <div class="sea-flow">
+      <div class="sea-chip"><b>20 个来源</b><small>标出一致与反对</small></div>
+      <svg width="26" height="12" viewBox="0 0 26 12" aria-hidden="true"><path d="M1 6h18m0 0l-5-4m5 4l-5 4" stroke="#A63A22" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="sea-chip sea-chip-hot"><b>把海烧开</b><small>喂核心问题</small></div>
+      <svg width="26" height="12" viewBox="0 0 26 12" aria-hidden="true"><path d="M1 6h18m0 0l-5-4m5 4l-5 4" stroke="#2F5D46" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="sea-chip sea-chip-ok"><b>核心结论</b><small>省下你的时间</small></div>
+    </div>
+    <figcaption class="sea-caption">把海烧开：20 个来源 → 标出一致与反对 → 喂核心问题，用 token 换你的时间</figcaption>
+  </figure>
+</section>
+
+<!-- 06 你已经在用 -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 06</span><h2>你已经在用</h2></div>
+  <div class="mirror">
+    <p>这套账你天天在算，只是没用这个词：</p>
+    <div class="mirror-grid">
+      <div class="mirror-item worth"><span class="m-mark">✓</span><span>让铁柱读 20 篇文章再总结结论——标准的"把海烧开"，省的是你的时间</span></div>
+      <div class="mirror-item waste"><span class="m-mark">✕</span><span>闲聊、反复问同一个问题——机械重复，白烧</span></div>
+      <div class="mirror-item waste"><span class="m-mark">✕</span><span>换话题不 /clear——旧上下文每轮重读一遍，总量账爆炸</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 边界 + 关联 -->
+<section class="reveal">
+  <div class="sec-head"><span class="sec-no">§ 07</span><h2>边界与关联</h2></div>
+  <ul class="limit-list">
+    <li>省钱的前提是方向对——目标没想清楚，花多少都是浪费</li>
+    <li>"把海烧开"适合研究类任务，简单问题不需要</li>
+    <li>2026 行业热词：Tokenmaxxing 是<b>被批评的反面行为</b>（微软已叫停），别再当"省 token"的正面策略用——那叫高效 token 分配 / contextmaxxing</li>
+  </ul>
+  <div class="related"><span>上下文工程</span><span>上下文组织原则</span><span>循环工程</span></div>
+</section>
+
+<!-- 系列导航 -->
+<nav class="series-nav reveal">
+  <a href="04-上下文注入方法.html">
+    <span class="nav-dir">← 上一篇 · 04</span>
+    <span class="nav-title">上下文注入方法</span>
+    <span class="nav-hint">7 层控制法，从最重到最轻</span>
+  </a>
+  <a class="next" href="Agent到底是什么.html">
+    <span class="nav-dir">下一篇 · 06 →</span>
+    <span class="nav-title">Agent 到底是什么</span>
+    <span class="nav-hint">第二段 · AI 自己干活，从这篇开始</span>
+  </a>
+</nav>
+
+</main>
+
+<footer>桑老哥 AGI 共学 · 可视化笔记 · AI底层逻辑 05 / 22 · 第一段 完</footer>
+
+<!--
+图片溯源记录
+- 05-Tokenmaxxing-1-封面.png｜AI 生成｜agnes-image-2.1-flash｜1152×864 (4:3)｜2026-08-27
+  prompt：汽车油表指针扎进红区 + 里程表归零 + 硬币状 token 在火中熔化，白底 3D 材质工作室光，炭黑+砖红点缀，图内标签「烧油不跑路」
+  alt：3D 示意图：一块油表指针扎进红区，旁边里程表归零，一小堆硬币模样的 token 正在火里熔化
+- 05-Tokenmaxxing-2-把海烧开.png｜AI 生成｜agnes-image-2.1-flash｜1248×832 (3:2)｜2026-08-27
+  prompt：米白底 3D 横幅插画，黑铁锅烧开冒蒸汽，左侧白色卡片溪流汇入，锅下橘红火苗，绿色晶体浮起；炭黑/砖红/墨绿呼应页面配色，无文字
+  alt：3D 插画：一摞白色卡片汇成的溪流注入中央的黑铁锅，锅烧开冒着蒸汽，锅下橘红火苗，锅沿浮起一颗发光的绿色晶体
+-->
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

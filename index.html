@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>桑老哥 · 给家纺做视觉的设计师，业余啃 AI</title>
+<meta name="description" content="桑老哥的个人站：AI 共学可视化笔记 + 跨境家纺视觉设计。一个不懂代码的设计师和一个 AI，每天啃一篇硬核文章。">
+<style>
+  :root {
+    --bg: #FAF3EA;
+    --bg-alt: #F3E7D5;
+    --card: #FFFFFF;
+    --text: #2C1810;
+    --muted: #7A6A5C;
+    --faint: #B5A898;
+    --accent: #C4573B;
+    --gold: #D4A853;
+    --line: #E5D8C6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; }
+  .serif { font-family: Georgia, "Songti SC", "STSong", serif; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: 2px; }
+  .topbar nav { display: flex; gap: 20px; }
+  .topbar nav a { color: var(--muted); text-decoration: none; letter-spacing: 1px; transition: color .2s; }
+  .topbar nav a:hover { color: var(--accent); }
+
+  /* ---------- 刊头 ---------- */
+  header { padding: 64px 0 44px; }
+  .masthead {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 26px;
+  }
+  .vol {
+    font-size: 11px; letter-spacing: 3px; color: var(--faint);
+    font-variant-numeric: tabular-nums; line-height: 1.9;
+  }
+  .seal {
+    width: 52px; height: 52px; flex: none;
+    background: var(--accent); color: #FFF7EF;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(196,87,59,.28);
+    font-family: Georgia, "Songti SC", serif;
+  }
+  .kicker {
+    font-size: 12px; letter-spacing: 4px;
+    color: var(--accent); font-weight: 600; margin-bottom: 16px;
+  }
+  h1 {
+    font-size: clamp(42px, 10vw, 62px);
+    line-height: 1.12; letter-spacing: 3px; margin-bottom: 18px;
+  }
+  .tagline {
+    font-size: 16px; color: var(--text); font-weight: 500;
+    letter-spacing: .5px; margin-bottom: 12px;
+  }
+  .sub { font-size: 14.5px; color: var(--muted); max-width: 30em; margin-bottom: 24px; }
+  .meta {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    font-size: 12.5px; color: var(--muted);
+    padding-top: 16px; border-top: 1px solid var(--line);
+    font-variant-numeric: tabular-nums;
+  }
+  .meta b { color: var(--text); font-weight: 600; }
+
+  /* ---------- 章节标题（杂志双线） ---------- */
+  .sec-title {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 56px 0 6px;
+    padding-top: 18px;
+    border-top: 3px double var(--line);
+  }
+  .sec-title h2 { font-size: 20px; letter-spacing: 1.5px; }
+  .sec-title span { font-size: 11px; color: var(--faint); letter-spacing: 2px; }
+
+  /* ---------- 目录列表（入门系列 5 篇） ---------- */
+  .toc { border-top: 1px solid var(--line); }
+  .toc a {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 74px;
+    gap: 16px; align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none; color: var(--text);
+    transition: background .2s ease;
+  }
+  .toc .num {
+    font-size: 30px; color: var(--faint); line-height: 1;
+    font-variant-numeric: tabular-nums; transition: color .2s ease;
+  }
+  .toc .t { font-size: 17px; font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
+  .toc .d { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .toc .thumb {
+    width: 74px; aspect-ratio: 3 / 4; object-fit: cover;
+    border-radius: 6px; border: 1px solid var(--line); display: block;
+  }
+  .toc a:hover { background: var(--bg-alt); }
+  .toc a:hover .num { color: var(--accent); }
+
+  /* ---------- 专题卡 ---------- */
+  .topics { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 620px) { .topics { grid-template-columns: 1fr 1fr; } }
+  .topics a {
+    display: block; padding: 20px 22px;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; text-decoration: none; color: var(--text);
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .topics a:hover { border-color: var(--accent); box-shadow: 0 6px 20px rgba(196,87,59,.10); }
+  .topics .tag { font-size: 10.5px; letter-spacing: 3px; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+  .topics .t { font-size: 16.5px; font-weight: 600; line-height: 1.4; margin-bottom: 5px; }
+  .topics .d { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+  /* ---------- 设计作品预告 ---------- */
+  .works-preview {
+    display: block; padding: 26px 24px;
+    background: var(--card); border: 1px dashed var(--faint);
+    border-radius: 12px; text-decoration: none; color: var(--text);
+    transition: border-color .2s ease;
+  }
+  .works-preview:hover { border-color: var(--accent); }
+  .works-preview .tag { font-size: 10.5px; letter-spacing: 3px; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+  .works-preview .t { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .works-preview .d { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .works-preview .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .works-preview .cat {
+    font-size: 11.5px; color: var(--accent);
+    border: 1px solid rgba(196,87,59,.35);
+    padding: 3px 12px; border-radius: 999px; letter-spacing: 1px;
+  }
+
+  /* ---------- 关于 ---------- */
+  .about { font-size: 14px; color: var(--muted); }
+  .about li {
+    list-style: none; padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex; gap: 14px; align-items: baseline;
+  }
+  .about li:last-child { border-bottom: none; }
+  .about .who { flex: none; font-size: 12px; letter-spacing: 2px; color: var(--gold); font-weight: 600; width: 72px; }
+  .about .what { color: var(--text); }
+  .about .what em { font-style: normal; color: var(--accent); font-weight: 500; }
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    margin-top: 64px; padding: 26px 0 44px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--faint);
+    text-align: center; letter-spacing: 1px;
+  }
+
+  /* ---------- 入场 ---------- */
+  .reveal { opacity: 0; animation: rise .6s ease forwards; }
+  .reveal:nth-child(2) { animation-delay: .07s; }
+  .reveal:nth-child(3) { animation-delay: .14s; }
+  @keyframes rise { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand serif">桑老哥</div>
+    <nav>
+      <a href="#notes">笔记</a>
+      <a href="#works">作品</a>
+      <a href="#about">关于</a>
+    </nav>
+  </div>
+
+  <header>
+    <div class="masthead">
+      <div class="vol">VOL.001<br>EST. 2026</div>
+      <div class="seal">桑</div>
+    </div>
+    <div class="kicker reveal">DESIGNER × DAD × AI CO-STUDY</div>
+    <h1 class="serif reveal">桑老哥</h1>
+    <p class="tagline reveal">给家纺做视觉的设计师，业余啃 AI 的奶爸。</p>
+    <p class="sub reveal">一个不懂代码的跨境电商设计师，和一个 AI，每天啃一篇硬核文章——这里是啃完后的可视化笔记。</p>
+    <div class="meta reveal">
+      <span><b>8</b> 篇笔记</span>
+      <span>主线进度 <b>22 / 22</b></span>
+      <span>持续更新中</span>
+    </div>
+  </header>
+
+  <section id="notes">
+    <div class="sec-title">
+      <h2 class="serif">AI 共学笔记</h2>
+      <span>FOUNDATIONS · 01–05</span>
+    </div>
+    <nav class="toc">
+      <a href="html/01-提示词工程-手机版.html">
+        <div class="num serif">01</div>
+        <div>
+          <div class="t">提示词工程</div>
+          <div class="d">怎么跟 AI 说人话，让它一次听懂</div>
+        </div>
+        <img class="thumb" src="images/01-提示词工程-1-封面.webp" alt="提示词工程封面" loading="lazy" width="74" height="99">
+      </a>
+      <a href="html/02-上下文工程.html">
+        <div class="num serif">02</div>
+        <div>
+          <div class="t">上下文工程</div>
+          <div class="d">AI 的记忆从哪来，为什么它会忘</div>
+        </div>
+        <img class="thumb" src="images/02-上下文工程-1-封面.webp" alt="上下文工程封面" loading="lazy" width="74" height="99">
+      </a>
+      <a href="html/03-上下文组织原则.html">
+        <div class="num serif">03</div>
+        <div>
+          <div class="t">上下文组织原则</div>
+          <div class="d">给 AI 喂料怎么排顺序，效果差很多</div>
+        </div>
+        <img class="thumb" src="images/03-上下文组织原则-1-封面.webp" alt="上下文组织原则封面" loading="lazy" width="74" height="99">
+      </a>
+      <a href="html/04-上下文注入方法.html">
+        <div class="num serif">04</div>
+        <div>
+          <div class="t">上下文注入方法</div>
+          <div class="d">料备好了，怎么塞进 AI 脑子里</div>
+        </div>
+        <img class="thumb" src="images/04-上下文注入方法-1-封面.webp" alt="上下文注入方法封面" loading="lazy" width="74" height="99">
+      </a>
+      <a href="html/05-Tokenmaxxing.html">
+        <div class="num serif">05</div>
+        <div>
+          <div class="t">Tokenmaxxing</div>
+          <div class="d">上下文塞得越满越好吗？把海烧开的教训</div>
+        </div>
+        <img class="thumb" src="images/05-Tokenmaxxing-1-封面.webp" alt="Tokenmaxxing 封面" loading="lazy" width="74" height="99">
+      </a>
+    </nav>
+
+    <div class="sec-title">
+      <h2 class="serif">专题</h2>
+      <span>SPECIAL TOPICS</span>
+    </div>
+    <nav class="topics">
+      <a href="html/Agent到底是什么.html">
+        <div class="tag">AGENT</div>
+        <div class="t serif">Agent 到底是什么</div>
+        <div class="d">从聊天机器人到干活的智能体</div>
+      </a>
+      <a href="html/AGI五级楼梯.html">
+        <div class="tag">ROADMAP</div>
+        <div class="t serif">AGI 五级楼梯</div>
+        <div class="d">五级标准，现在走到哪级了</div>
+      </a>
+      <a href="html/AI发展史时间线.html">
+        <div class="tag">HISTORY</div>
+        <div class="t serif">AI 发展史时间线</div>
+        <div class="d">从图灵测试到大模型，七十年</div>
+      </a>
+    </nav>
+  </section>
+
+  <section id="works">
+    <div class="sec-title">
+      <h2 class="serif">设计作品</h2>
+      <span>PORTFOLIO · COMING SOON</span>
+    </div>
+    <div class="works-preview">
+      <div class="tag">TEXTILE VISUAL DESIGN</div>
+      <div class="t serif">家纺视觉设计集 · 整理中</div>
+      <div class="d">跨境电商一线的家纺视觉作品：主图场景、详情页、视觉规划。精选整理后上架。</div>
+      <div class="cats">
+        <span class="cat">四件套</span>
+        <span class="cat">电热毯</span>
+        <span class="cat">床单被套</span>
+        <span class="cat">毛巾</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-title">
+      <h2 class="serif">关于桑老哥</h2>
+      <span>ABOUT</span>
+    </div>
+    <ul class="about">
+      <li><span class="who">白 天</span><span class="what">跨境电商设计师，给<em>四件套、电热毯</em>这些家纺做视觉</span></li>
+      <li><span class="who">晚 上</span><span class="what">和 AI 共学，啃硬核文章，做成<em>看得懂的可视化笔记</em></span></li>
+      <li><span class="who">生 活</span><span class="what">一位奶爸，还有一个每天一起干活的 AI 搭档</span></li>
+    </ul>
+  </section>
+
+  <footer>桑老哥 × 铁柱 · 手写 HTML · 手机电脑都能看</footer>
+</div>
+</body>
+</html>

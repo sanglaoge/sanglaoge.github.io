@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词工程 · 4个核心技巧</title>
+<style>
+:root {
+  --bg: #FAF3EA;
+  --bg-alt: #F5E8D8;
+  --card: #FFFFFF;
+  --text: #2C1810;
+  --text-muted: #7A6A5C;
+  --accent: #C4573B;
+  --accent-light: #E8C4B8;
+  --gold: #D4A853;
+  --gold-light: #F0DCA8;
+  --green: #6B8E5A;
+  --green-light: #D4E5C5;
+  --red: #C4573B;
+  --red-light: #F5DAD0;
+  --border: #E5D5C0;
+  --shadow: 0 4px 20px rgba(60, 40, 20, 0.08);
+  --shadow-hover: 0 8px 30px rgba(60, 40, 20, 0.12);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 17px;
+}
+.serif { font-family: Georgia, "Songti SC", "STSong", serif; }
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
+  opacity: 0.4;
+  border-radius: 50%;
+}
+.hero-content { position: relative; z-index: 1; max-width: 600px; }
+.hero-tag {
+  display: inline-block;
+  padding: 6px 18px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 56px);
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.hero-sub {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-illustration { max-width: 420px; width: 100%; }
+
+/* ========== SECTION ========== */
+.section {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+.section-num {
+  display: inline-block;
+  width: 40px; height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.section h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.section-desc {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  font-size: 16px;
+}
+.illustration-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.illustration-box svg { max-width: 280px; width: 100%; }
+
+/* ========== COMPARE ========== */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 600px) {
+  .compare { grid-template-columns: 1fr; }
+}
+.compare-card {
+  padding: 24px;
+  border-radius: 16px;
+  border: 2px solid;
+  transition: box-shadow 0.3s;
+}
+.compare-card.bad {
+  background: var(--red-light);
+  border-color: rgba(196, 87, 59, 0.2);
+}
+.compare-card.good {
+  background: var(--green-light);
+  border-color: rgba(107, 142, 90, 0.2);
+}
+.compare-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.compare-card.bad .compare-label { color: var(--red); }
+.compare-card.good .compare-label { color: var(--green); }
+.compare-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.compare-card .prompt {
+  background: rgba(255,255,255,0.6);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 8px;
+  border-left: 3px solid;
+}
+.compare-card.bad .prompt { border-color: var(--red); }
+.compare-card.good .prompt { border-color: var(--green); }
+
+/* ========== TIP ========== */
+.tip {
+  background: var(--gold-light);
+  border-left: 4px solid var(--gold);
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.tip strong { color: var(--accent); }
+
+/* ========== FORMULA ========== */
+.formula-section {
+  background: var(--text);
+  color: var(--bg);
+  padding: 80px 24px;
+  text-align: center;
+}
+.formula-section h2 { color: var(--gold); margin-bottom: 16px; }
+.formula-section .section-desc { color: rgba(250, 243, 234, 0.6); }
+.formula-chain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 700px;
+  margin: 32px auto;
+}
+.formula-item {
+  padding: 10px 20px;
+  background: rgba(212, 168, 83, 0.15);
+  border: 1px solid rgba(212, 168, 83, 0.3);
+  border-radius: 24px;
+  font-size: 15px;
+  color: var(--gold);
+}
+.formula-plus { color: var(--text-muted); font-size: 18px; align-self: center; }
+
+/* ========== BOUNDARY ========== */
+.boundary {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+}
+.boundary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.boundary-card {
+  padding: 20px;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.boundary-card h4 { color: var(--accent); font-size: 15px; margin-bottom: 8px; }
+.boundary-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+/* ========== FOOTER ========== */
+.footer {
+  text-align: center;
+  padding: 40px 24px;
+  background: var(--bg-alt);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ========== ANIMATION ========== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-content { animation: fadeUp 0.8s ease-out; }
+.section, .boundary { animation: fadeUp 0.6s ease-out both; }
+.section:nth-child(odd) { animation-delay: 0.1s; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-tag">AI 底层逻辑 · 01</span>
+    <h1 class="serif">提示词工程</h1>
+    <p class="hero-sub">不是"命令 AI"，是给一个顶级外卖员指路——<br>说清去哪、走哪条路、别按门铃、拍张照回来。</p>
+    <div class="hero-illustration">
+      <img src="../images/01-提示词工程-1-封面.webp" alt="给出租车司机指路——提示词工程的核心比喻" style="width:100%; border-radius:16px; box-shadow: 0 4px 24px rgba(60,40,20,0.12);">
+    </div>
+  </div>
+</section>
+
+<!-- ========== 技巧1：角色具体化 ========== -->
+<section class="section">
+  <span class="section-num">1</span>
+  <h2 class="serif">角色具体化</h2>
+  <p class="section-desc">给 AI 一个具体身份，它才知道用哪个角度回答你。</p>
+  <div class="illustration-box">
+    <img src="../images/01-提示词工程-2-角色具体化.webp" alt="一人戴不同帽子——角色具体化" style="max-width:320px; width:100%; border-radius:12px; box-shadow: var(--shadow);">
+  </div>
+  <div class="compare">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ 错法 · 没有角色</div>
+      <p>AI 不知道你是谁、要什么水平的回答。</p>
+      <div class="prompt">"分析这个产品"</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ 对法 · 角色具体</div>
+      <p>身份 + 经验 + 专长，AI 知道用什么视角。</p>
+      <div class="prompt">"你是亚马逊美国站3年运营，主做家居，月销50万美金。分析这个 listing。"</div>
+    </div>
+  </div>
+  <div class="tip"><strong>关键</strong>：角色不只是头衔，要带"经验年限 + 专注领域"，越具体越准。</div>
+</section>
+
+<!-- ========== 技巧2：材料先行 ========== -->
+<section class="section">
+  <span class="section-num">2</span>
+  <h2 class="serif">材料先行</h2>
+  <p class="section-desc">先喂材料再提问，别让 AI 凭记忆编。</p>
+  <div class="illustration-box">
+    <img src="../images/01-提示词工程-3-材料先行.webp" alt="两人传递书本——材料先行" style="max-width:320px; width:100%; border-radius:12px; box-shadow: var(--shadow);">
+  </div>
+  <div class="compare">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ 错法 · 凭记忆答</div>
+      <p>AI 可能编出过时或错误信息（幻觉）。</p>
+      <div class="prompt">"TikTok Shop 2026年有什么新政策？"</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ 对法 · 先喂材料</div>
+      <p>基于真实材料回答，大幅减少编造。</p>
+      <div class="prompt">"这是TikTok政策原文。基于这份材料回答：新政策对卖家有什么影响？"</div>
+    </div>
+  </div>
+  <div class="tip"><strong>注意</strong>：材料先行是你手动写进提示词的 → 属于提示词工程；如果 AI 自己从文件里读取 → 那是上下文工程的事。</div>
+</section>
+
+<!-- ========== 技巧3：禁止项黑名单 ========== -->
+<section class="section">
+  <span class="section-num">3</span>
+  <h2 class="serif">禁止项黑名单</h2>
+  <p class="section-desc">告诉 AI 不能做什么，比告诉它能做什么更管用。</p>
+  <div class="illustration-box">
+    <img src="../images/01-提示词工程-4-禁止项黑名单.webp" alt="停止牌与划掉的清单——禁止项黑名单" style="max-width:320px; width:100%; border-radius:12px; box-shadow: var(--shadow);">
+  </div>
+  <div class="compare">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ 错法 · 不设限</div>
+      <p>AI 可能写太长、太浮夸、用违禁词。</p>
+      <div class="prompt">"帮我写个文案"</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ 对法 · 设禁区</div>
+      <p>明确不能做什么，AI 自动规避。</p>
+      <div class="prompt">"写个文案。<strong style='color:#C4573B'>不要</strong>超50字，<strong style='color:#C4573B'>不要</strong>用'顶级''第一'，<strong style='color:#C4573B'>不要</strong>问我要不要买"</div>
+    </div>
+  </div>
+  <div class="tip"><strong>最实用一招</strong>：禁止项比要求更管用——你说 10 个"要"，不如说 1 个"不要"。</div>
+</section>
+
+<!-- ========== 技巧4：给选项 ========== -->
+<section class="section">
+  <span class="section-num">4</span>
+  <h2 class="serif">给选项</h2>
+  <p class="section-desc">开放式问题答案太散，给 AI 选择框，答案更聚焦。</p>
+  <div class="illustration-box">
+    <img src="../images/01-提示词工程-5-给选项.webp" alt="分岔路口指示牌——给选项" style="max-width:320px; width:100%; border-radius:12px; box-shadow: var(--shadow);">
+  </div>
+  <div class="compare">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ 错法 · 太开放</div>
+      <p>AI 不知道从哪下手，给一大堆散乱建议。</p>
+      <div class="prompt">"怎么优化这个产品页？"</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ 对法 · 给选择</div>
+      <p>限定方向，AI 聚焦一个深挖。</p>
+      <div class="prompt">"从3个方向选一个：A)标题关键词 B)主图 C)A+描述。先说选哪个再动手"</div>
+    </div>
+  </div>
+  <div class="tip"><strong>原理</strong>：AI 擅长在限定范围内深挖，不擅长在无限可能中找方向。</div>
+</section>
+
+<!-- ========== 结构公式 ========== -->
+<section class="formula-section">
+  <h2 class="serif">万能结构公式</h2>
+  <p class="section-desc">记住这 6 块，什么提示词都能套</p>
+  <div class="formula-chain">
+    <span class="formula-item">背景</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">目标</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">具体要求</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">限制条件</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">输出格式</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">判断标准</span>
+  </div>
+  <p style="color: rgba(212,168,83,0.7); font-size: 15px; margin-top: 24px;">提示词工程能提高沟通质量，但突破不了模型的知识、工具、事实和安全边界。</p>
+</section>
+
+<!-- ========== 边界提醒 ========== -->
+<section class="boundary">
+  <h2 class="serif" style="margin-bottom: 8px;">⚠️ 边界提醒</h2>
+  <p class="section-desc">提示词工程不是万能的</p>
+  <div class="boundary-grid">
+    <div class="boundary-card">
+      <h4>模型不知道的事</h4>
+      <p>再好的提示词，不知道最新事件还是会编 → 需要 RAG</p>
+    </div>
+    <div class="boundary-card">
+      <h4>超上下文窗口</h4>
+      <p>材料太多 AI 会忘前面的 → 需要上下文工程</p>
+    </div>
+    <div class="boundary-card">
+      <h4>输入错误前提</h4>
+      <p>你给错信息，AI 会顺着错下去</p>
+    </div>
+    <div class="boundary-card">
+      <h4>高风险场景</h4>
+      <p>医疗/法律/财务只做参考，不能替代专业审核</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <p>AGI 共学笔记 · AI 底层逻辑 01 · 提示词工程</p>
+  <p style="margin-top: 8px; opacity: 0.6;">4 个核心技巧：角色具体化 · 材料先行 · 禁止项黑名单 · 给选项</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 发展史时间线 · 从游戏显卡到智能平权</title>
+<style>
+:root {
+  --paper: #F5EFE1;
+  --paper-dark: #EBE2CD;
+  --ink: #2B2620;
+  --ink-soft: #5C5346;
+  --cinnabar: #B3402A;
+  --gold: #8A6B2F;
+  --line: #D8CCB0;
+  --font-head: "Songti SC", "Noto Serif SC", Georgia, serif;
+  --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.8;
+  font-size: 16px;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(179,64,42,0.04), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(138,107,47,0.05), transparent 50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 8vw 60px;
+  border-bottom: 3px solid var(--ink);
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px, rgba(139,119,86,0.05) 4px, rgba(139,119,86,0.05) 5px
+  );
+  pointer-events: none;
+}
+.hero-stamp {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: var(--cinnabar);
+  border: 2px solid var(--cinnabar);
+  padding: 6px 18px 6px 22px;
+  width: fit-content;
+  border-radius: 4px;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2.6rem, 8vw, 5.6rem);
+  line-height: 1.18;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+  max-width: 1000px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--cinnabar);
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 10px;
+  text-decoration-color: var(--cinnabar);
+}
+.hero-sub {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--ink-soft);
+  max-width: 680px;
+  font-weight: 400;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+}
+.hero-scroll svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--ink-soft);
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 90px 8vw 40px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  margin-left: -2px;
+  background: linear-gradient(to bottom, transparent, var(--line) 6%, var(--line) 94%, transparent);
+}
+.timeline-intro {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 80px;
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  color: var(--ink-soft);
+}
+
+.entry {
+  position: relative;
+  width: 50%;
+  padding: 0 56px 84px;
+}
+.entry:nth-child(odd) { left: 0; text-align: right; }
+.entry:nth-child(even) { left: 50%; }
+
+.entry .year {
+  position: absolute;
+  top: 0;
+  width: 132px;
+  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: var(--cinnabar);
+  border: 3px solid var(--cinnabar);
+  border-radius: 8px;
+  background: var(--paper);
+  transform: rotate(-3deg);
+  box-shadow: 0 0 0 6px var(--paper), 0 0 0 9px var(--cinnabar), 4px 4px 0 rgba(43,38,32,0.25);
+  z-index: 2;
+}
+.entry .year span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  margin-bottom: 2px;
+  color: var(--ink-soft);
+}
+.entry:nth-child(odd) .year { right: -66px; }
+.entry:nth-child(even) .year { left: -66px; }
+
+.entry .card {
+  background: #FBF7EC;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 26px 28px;
+  box-shadow: 6px 6px 0 rgba(43,38,32,0.12);
+  text-align: left;
+}
+.entry:nth-child(odd) .card { transform: rotate(-0.4deg); }
+.entry:nth-child(even) .card { transform: rotate(0.4deg); }
+
+.card h3 {
+  font-family: var(--font-head);
+  font-size: 1.35rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+.card .problem {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.card .problem::before {
+  content: "当时的问题：";
+  color: var(--gold);
+  font-weight: 700;
+}
+.card p { font-size: 0.97rem; }
+.card .impact {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.card .impact::before {
+  content: "影响 → ";
+  color: var(--cinnabar);
+  font-weight: 700;
+}
+.card .people {
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--gold);
+}
+.card .people::before {
+  content: "人物：";
+  font-weight: 700;
+}
+
+/* ===== 结尾：三句道 ===== */
+.tao {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 30px 8vw 100px;
+}
+.tao-title {
+  text-align: center;
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+.tao-sub {
+  text-align: center;
+  color: var(--ink-soft);
+  margin-bottom: 48px;
+  font-size: 0.95rem;
+}
+.tao-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.tao-card {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 12px;
+  padding: 30px 28px;
+  position: relative;
+  box-shadow: 6px 6px 0 rgba(43,38,32,0.2);
+}
+.tao-card .num {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-family: var(--font-head);
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: rgba(245,239,225,0.14);
+  line-height: 1;
+}
+.tao-card .src {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--cinnabar);
+  border: 1px solid var(--cinnabar);
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+}
+.tao-card blockquote {
+  font-family: var(--font-head);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.tao-card p { font-size: 0.88rem; color: rgba(245,239,225,0.75); }
+
+/* ===== 方法彩蛋 ===== */
+.method {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px;
+  background: var(--paper-dark);
+  border: 2px dashed var(--gold);
+  border-radius: 12px;
+  text-align: center;
+}
+.method h3 {
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+.method p { font-size: 0.95rem; color: var(--ink-soft); }
+.method .tip {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cinnabar);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 3px solid var(--ink);
+  padding: 36px 8vw;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+footer a { color: var(--cinnabar); text-decoration: none; border-bottom: 1px solid var(--cinnabar); }
+
+/* ===== 响应式 ===== */
+@media (max-width: 860px) {
+  .timeline { padding: 60px 24px 30px; }
+  .timeline::before { left: 14px; margin-left: 0; width: 3px; }
+  .entry {
+    width: 100%;
+    left: 0 !important;
+    padding: 0 0 72px 44px;
+    text-align: left !important;
+  }
+  .entry .year {
+    left: -10px !important;
+    right: auto !important;
+    top: 0;
+    width: 92px;
+    height: 92px;
+    font-size: 1.1rem;
+    transform: rotate(-3deg);
+    z-index: 2;
+    box-shadow: 0 0 0 4px var(--paper), 0 0 0 7px var(--cinnabar), 3px 3px 0 rgba(43,38,32,0.25);
+  }
+  .entry .card { transform: none; }
+  .hero { padding: 60px 7vw 80px; min-height: auto; }
+  .hero-stamp { margin-bottom: 28px; }
+}
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .entry { padding-left: 40px; }
+  .entry .year { width: 80px; height: 80px; font-size: 0.95rem; }
+  .card { padding: 20px; }
+  .card h3 { font-size: 1.15rem; }
+  .tao-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-stamp">AGI 学习笔记 · 概念可视化</div>
+  <h1>AI 发展史：<br>从<em>游戏显卡</em>到<em>智能平权</em></h1>
+  <p class="hero-sub">一位产品经理读了 200 篇 AI 论文，把深度学习 30 年串成一条线。每个拐点都在回答同一个问题：当时的人遇到了什么难题，又怎么解开的。</p>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+    <span>往下展开画卷</span>
+  </div>
+</header>
+
+<main>
+  <section class="timeline" aria-label="AI 发展史时间线">
+    <p class="timeline-intro">三十年，十三张卡片。<br>看懂每个"为什么"，比记住名词重要一百倍。</p>
+
+    <div class="entry">
+      <div class="year"><span>起点</span>1999–<br>2004</div>
+      <div class="card">
+        <h3>GPU：从游戏显卡到 AI 地基</h3>
+        <p class="problem">电脑越算越慢，芯片受够了专业设计的老路。</p>
+        <p>1999 年英伟达发布第一颗 GPU；2001 年 GPU 第一次可以被编程。2004 年 Ian Buck 与导师 Pat Hanrahan 写了《Brook for GPUs》——把超级计算机语言移植到显卡上，这就是 CUDA 的前身。</p>
+        <p class="impact">老黄为了推 CUDA，性能没涨、成本翻倍，股价跌到地上、差点被恶意收购，硬扛了十年。直到 2012 年，世界才知道这张显卡能干嘛。</p>
+        <p class="people">Ian Buck（如今仍是 CUDA 负责人）· Pat Hanrahan（2019 图灵奖）</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>转折</span>2012</div>
+      <div class="card">
+        <h3>AlexNet：深度学习的起点</h3>
+        <p class="problem">图像识别竞赛快办不下去了——三届参赛队伍一年比一年少。</p>
+        <p>Alex Krizhevsky、Ilya Sutskever、Hinton 三人同时放大三样东西：数据（ImageNet 1400 多万张图）、计算（GPU 终于有了用武之地）、模型（6250 万参数，当年是巨无霸）。</p>
+        <p class="impact">比第二名高出十几个百分点，整个行业被惊醒，深度学习时代开启。</p>
+        <p class="people">Alex Krizhevsky · Ilya Sutskever · Hinton</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>地基</span>2014</div>
+      <div class="card">
+        <h3>Seq2Seq 与注意力机制：语言建模的基石</h3>
+        <p class="problem">机器翻译靠死记硬背的统计方法，且句子一长模型就"失忆"。</p>
+        <p>两篇论文几乎同时出现：Seq2Seq 让机器翻译纯粹靠学习、不再需要专家知识；注意力机制让模型能直接抓住句子任意两处的关系，治好了"忘记前文"的病。</p>
+        <p class="impact">为 Transformer 埋下伏笔——它正是把"注意力"做到了极致。</p>
+        <p class="people">Ilya Sutskever · Yoshua Bengio（2018 图灵奖）</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>拐点</span>2015</div>
+      <div class="card">
+        <h3>ResNet：让模型可以无限变深</h3>
+        <p class="problem">层数超过 100 层后，模型性能不升反降——"模型退化"。</p>
+        <p>何恺明、张翔宇、任少卿、孙剑的解法：不要求模型学会"把 X 变成 Y"，只要求学会"在 X 基础上加多少"。残差连接让深网络终于能训得动。</p>
+        <p class="impact">引用量近 30 万，比 Transformer 还高。今天几乎所有网络——包括 Diffusion 和 Transformer——都还在用残差。</p>
+        <p class="people">何恺明 · 孙剑 · 微软亚研院</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>革命</span>2017</div>
+      <div class="card">
+        <h3>Transformer：抽中了硬件彩票</h3>
+        <p class="problem">旧模型要么串行太慢（RNN），要么堆层太多容易丢信息（CNN）。</p>
+        <p>谷歌 8 位作者写《Attention is All You Need》：砍掉所有旧结构，只留注意力。任意两个词直接算关系，计算互相独立、天然可以并行——跟 GPU 是绝配。</p>
+        <p class="impact">"算法和硬件完美匹配"，从此可以在数据和算力上无限放大。8 位作者后来全部离开谷歌。</p>
+        <p class="people">Noam Shazeer（后创办 Character AI）等 8 人</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>觉醒</span>2017</div>
+      <div class="card">
+        <h3>AlphaGo Zero：AI 的上限不再是人</h3>
+        <p class="problem">上一代 AlphaGo 靠学人类棋谱——"模仿人类，上限就是人的上限"。</p>
+        <p>只告诉它围棋规则，不喂任何人类棋谱，纯靠强化学习从零开始。36 小时就超过打败李世石的前辈。每走一步，它内部要做 1600 次推演搜索。</p>
+        <p class="impact">"推理时多算几步，能力就大涨"——这直接启发了后来的 o1 思维模型。</p>
+        <p class="people">DeepMind</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>省钱</span>2017</div>
+      <div class="card">
+        <h3>MoE：大模型的成本解法</h3>
+        <p class="problem">模型越大越强，但每次使用都要付全款，贵得离谱。</p>
+        <p>人脑思考从不激活全部区域。MoE（专家混合）的模仿：训练一个超级大的模型，但每次只唤醒一小部分"专家"。</p>
+        <p class="impact">容量提升超 1000 倍，成本几乎不加。这就是 DeepSeek 从一开始就选的路——也是它便宜的原因。MoE 极难训：Meta 的 LLaMA 转型失败，MiniMax 训了三次才成。</p>
+        <p class="people">Noam Shazeer 也是作者之一</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>轻装</span>2015 /<br>2021</div>
+      <div class="card">
+        <h3>蒸馏与 LoRA：让大模型更好用</h3>
+        <p class="problem">大模型太贵太重，小模型又不够聪明；微调一次一个副本，占地方。</p>
+        <p>蒸馏（2015，Hinton）：老师模型把全部"答题思路"教给小模型，小模型损失不多。LoRA（2021）：不重训整个模型，只在旁边挂一个很小的矩阵、只训它——逻辑和 ResNet 一模一样：学增量，不学全套。</p>
+        <p class="impact">LoRA 如今在图像生成领域大规模落地——你选"风格"用的就是它。</p>
+        <p class="people">Hinton · Edward Hu</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>押注</span>2018–<br>2020</div>
+      <div class="card">
+        <h3>GPT 系列：一次坚定的押注</h3>
+        <p class="problem">GPT-1 刚出就被 BERT 打脸，学术界工业界全跑去用 BERT。</p>
+        <p>只有 OpenAI 坚持：先让模型用海量数据自学语言规律（预训练），再微调。GPT-2 证明了不用教就能干活，GPT-3 更是砍掉所有项目、砸入微软 10 亿美金，把全部资源押在一个方向上。</p>
+        <p class="impact">GPT-3 验证了 Scaling Law，也证明了它"是一个确定的工程项目，不是一个偶然的发现"。</p>
+        <p class="people">OpenAI · 微软</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>教训</span>2019</div>
+      <div class="card">
+        <h3>Bitter Lesson：苦涩的教训</h3>
+        <p class="problem">研究者总想把自己的聪明塞进机器，短期有效、长期封顶。</p>
+        <p>Rich Sutton 总结 70 年 AI 史：靠手工设计规则的路，最后都会撞上平台期；真正的大突破都来自让机器自己去搜索、去学习。</p>
+        <p class="impact">别把答案写死给 AI，让它自己发现——现在依然适用。作者说这篇文章他每个月读一遍。</p>
+        <p class="people">Rich Sutton</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>听话</span>2022</div>
+      <div class="card">
+        <h3>InstructGPT：让强大的模型变得好用</h3>
+        <p class="problem">GPT-3 很强大，但不听指挥：答非所问、乱说胡话。</p>
+        <p>欧阳龙等人提出 RLHF：先让人工标注教会模型答话，再让人给模型答案排序，用排序数据训出"裁判模型"，最后用裁判逼模型越答越好。</p>
+        <p class="impact">1.3B 参数的小模型，听话程度超过 1750 亿的大模型——参数量小 100 倍，效果反而更好。AI 从此真正像个助手。</p>
+        <p class="people">欧阳龙 · OpenAI</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="year"><span>开窍</span>2022</div>
+      <div class="card">
+        <h3>Chain-of-Thought：把后训练推上舞台</h3>
+        <p class="problem">模型明明会，就是不会用——能力早就蕴含在里面，只是没被激发。</p>
+        <p>Jason Wei 发现：只要提示模型"一步一步想"，推理能力就大幅提升。这篇论文本身不难，却定义了一个时代的问题：从"造模型"转向"激发模型"。</p>
+        <p class="impact">行业重心从预训练转向后训练，直接催生了 o1 思维模型。这也是 DeepSeek V4 Flash 只改后训练就大幅变强的同一条路。</p>
+        <p class="people">Jason Wei（OpenAI 少数只有本科学历的研究员）</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tao" aria-label="三个核心道理">
+    <h2 class="tao-title">读完之后，只剩三句话</h2>
+    <p class="tao-sub">技术会过时，这三条"道"短期不会。</p>
+    <div class="tao-grid">
+      <div class="tao-card">
+        <span class="num">壹</span>
+        <span class="src">AlphaGo Zero</span>
+        <blockquote>如果你模仿人类，AI 的上限就是人的上限。</blockquote>
+        <p>AI 想超越人，就不能只学人会的。</p>
+      </div>
+      <div class="tao-card">
+        <span class="num">贰</span>
+        <span class="src">MoE · DeepSeek</span>
+        <blockquote>智能便宜到像水电一样，才会流进普通人的生活。</blockquote>
+        <p>人脑不用全脑思考，模型也不必每次全开——成本降下来，才是平权。</p>
+      </div>
+      <div class="tao-card">
+        <span class="num">叁</span>
+        <span class="src">Bitter Lesson</span>
+        <blockquote>别把答案塞给 AI，让它自己发现。</blockquote>
+        <p>手工规则短期有用，长期必撞天花板。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="method" aria-label="学习方法">
+    <h3>普通人怎么补这段历史？</h3>
+    <p>原文作者的建议：英文论文看不懂？用沉浸式翻译——"语言障碍基本可以用 AI 消掉"。视频入门推荐：吴恩达、李宏毅（B 站有授权版）、Andrej Karpathy 的 YouTube、李沐的论文精读、3Blue1Brown 的数学系列。</p>
+    <span class="tip">技术小白学 AI：先过语言关，再谈技术关——语言关 AI 已经帮你过了。</span>
+  </section>
+</main>
+
+<footer>
+  <p>内容来源：<a href="https://waytoagi.feishu.cn/wiki/FJggw21NviwOcVkvJZUcdYBpn6c" target="_blank" rel="noopener noreferrer">《一个产品经理读完 200 篇 AI 论文后》</a> · 原作者 向阳乔木 / 谢青池 · 整理：铁柱</p>
+  <p>知识库：AGI 共学笔记 · AI发展史时间线 · 2026-08-01</p>
+</footer>
+
+</body>
+</html>

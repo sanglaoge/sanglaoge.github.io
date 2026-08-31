@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGI 五级楼梯 · 从思维链到具身智能</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #FFEB3B;
+  --red: #FF3D00;
+  --black: #000000;
+  --white: #FAFAF7;
+  --gray: #E0E0E0;
+  --shadow-brutal: 6px 6px 0 var(--black);
+  --shadow-brutal-sm: 4px 4px 0 var(--black);
+  --border: 4px solid var(--black);
+  --font-heading: 'Archivo Black', 'Noto Sans SC', sans-serif;
+  --font-body: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 8vw;
+  background: var(--yellow);
+  border-bottom: var(--border);
+}
+.hero-tag {
+  display: inline-block;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 6px 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  border: 3px solid var(--black);
+  margin-bottom: 24px;
+  width: fit-content;
+}
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+}
+.hero h1 span {
+  background: var(--black);
+  color: var(--yellow);
+  padding: 0 12px;
+  display: inline-block;
+}
+.hero-sub {
+  font-size: 1.25rem;
+  max-width: 680px;
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+.hero-quote {
+  max-width: 680px;
+  background: var(--white);
+  border: var(--border);
+  box-shadow: var(--shadow-brutal);
+  padding: 20px 24px;
+  font-weight: 500;
+}
+.hero-quote::before {
+  content: "核心洞见";
+  display: inline-block;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+}
+
+/* ===== LAYOUT ===== */
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 6vw;
+}
+
+/* ===== 楼梯主视觉 ===== */
+.stairs-section { margin-bottom: 80px; }
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 5px solid var(--black);
+}
+.section-desc {
+  font-size: 1.05rem;
+  margin-bottom: 32px;
+  color: #333;
+}
+.stairs {
+  display: flex;
+  align-items: flex-end;
+  border: var(--border);
+  box-shadow: var(--shadow-brutal);
+  background: var(--white);
+  overflow: hidden;
+}
+.stair {
+  flex: 1;
+  border-right: 4px solid var(--black);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  transition: box-shadow 150ms ease;
+  cursor: default;
+}
+.stair:last-child { border-right: none; }
+.stair:hover { box-shadow: inset 0 -8px 0 var(--red); }
+.stair-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 3px 8px;
+  width: fit-content;
+  margin-bottom: 8px;
+}
+.stair-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.stair-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+.stair:nth-child(1) { height: 130px; background: var(--yellow); }
+.stair:nth-child(2) { height: 175px; background: var(--yellow); position: relative; }
+.stair:nth-child(3) { height: 220px; background: var(--white); }
+.stair:nth-child(4) { height: 265px; background: var(--white); }
+.stair:nth-child(5) { height: 310px; background: var(--red); color: var(--white); }
+.stair:nth-child(5) .stair-num { background: var(--white); color: var(--red); }
+.you-here {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border: 3px solid var(--black);
+  white-space: nowrap;
+}
+
+/* ===== 各级详解 ===== */
+.level {
+  background: var(--white);
+  border: var(--border);
+  box-shadow: var(--shadow-brutal-sm);
+  padding: 28px 28px 24px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 24px;
+}
+.level-now { display: contents; }
+.level-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--yellow);
+  border: 3px solid var(--black);
+  padding: 14px 8px;
+  text-align: center;
+  height: fit-content;
+}
+.level-badge.end { background: var(--red); color: var(--white); }
+.level-badge .lv {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+}
+.level-badge .num {
+  font-family: var(--font-heading);
+  font-size: 2.6rem;
+  line-height: 1;
+  margin: 4px 0;
+}
+.level-body h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+.level-body .en {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.level-body p { margin-bottom: 10px; }
+.metaphor {
+  background: var(--yellow);
+  border: 3px solid var(--black);
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-weight: 500;
+}
+.metaphor::before {
+  content: "比喻　";
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.status {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border: 3px solid var(--black);
+  width: fit-content;
+  margin-top: 6px;
+}
+.status.done { background: var(--black); color: var(--yellow); }
+.status.now { background: var(--red); color: var(--white); }
+.status.next { background: var(--white); color: var(--black); }
+.you-tag {
+  display: inline-block;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border: 3px solid var(--black);
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+/* ===== 反向提示 ===== */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 24px 0 60px;
+}
+.compare-box {
+  border: var(--border);
+  box-shadow: var(--shadow-brutal-sm);
+  padding: 22px;
+}
+.compare-box.wrong { background: var(--white); }
+.compare-box.right { background: var(--yellow); }
+.compare-box h4 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+.compare-box.wrong h4::before { content: "误　"; }
+.compare-box.right h4::before { content: "正　"; }
+
+/* ===== 怎么用 ===== */
+.use-list { list-style: none; margin: 20px 0 60px; }
+.use-list li {
+  background: var(--white);
+  border: var(--border);
+  box-shadow: var(--shadow-brutal-sm);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  position: relative;
+  padding-left: 64px;
+}
+.use-list li::before {
+  content: counter(u);
+  counter-increment: u;
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--red);
+}
+.use-list { counter-reset: u; }
+.use-list strong { font-family: var(--font-heading); }
+
+/* ===== 局限 ===== */
+.limits {
+  background: var(--black);
+  color: var(--white);
+  border: var(--border);
+  padding: 28px;
+  margin-bottom: 60px;
+}
+.limits h3 {
+  font-family: var(--font-heading);
+  color: var(--yellow);
+  margin-bottom: 16px;
+}
+.limits ul { padding-left: 20px; }
+.limits li { margin-bottom: 10px; line-height: 1.6; }
+
+/* ===== 关联 ===== */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.links a {
+  background: var(--white);
+  border: 3px solid var(--black);
+  padding: 8px 14px;
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 150ms ease;
+}
+.links a:hover {
+  background: var(--yellow);
+  box-shadow: 4px 4px 0 var(--black);
+}
+
+footer {
+  border-top: var(--border);
+  padding: 30px 6vw;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--yellow);
+}
+
+@media (max-width: 700px) {
+  .stairs { flex-direction: column; align-items: stretch; }
+  .stair { border-right: none; border-bottom: 4px solid var(--black); height: auto !important; padding: 14px; }
+  .level { grid-template-columns: 1fr; }
+  .compare { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  .stair:hover, .links a:hover { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <span class="hero-tag">AI 底层逻辑 · AGI 路线图</span>
+  <h1>AGI <span>五级楼梯</span></h1>
+  <p class="hero-sub">梁文锋（DeepSeek）画的 AGI 实现路线——不是某天突然开窍，是一级一级爬台阶。每爬一级，解决一个上一级干不了的难题。</p>
+  <div class="hero-quote">
+    AGI 不是"奇点爆炸一夜降临"，是爬楼梯：思维链 → 智能体 → 持续学习 → AI 自迭代 → 具身智能。记住这张图，AI 圈的新闻都能往上面贴。
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- 楼梯主视觉 -->
+  <div class="stairs-section">
+    <h2 class="section-title">五级台阶，一眼看完</h2>
+    <p class="section-desc">从左到右、从低到高。黄色=已拿下，白色=进行中/未来，红色=终点。你现在的位置标在第 2 级。</p>
+    <div class="stairs">
+      <div class="stair">
+        <span class="stair-num">L1</span>
+        <div class="stair-name">思维链</div>
+        <div class="stair-time">去年 · 已拿下</div>
+      </div>
+      <div class="stair">
+        <span class="you-here">你在这</span>
+        <span class="stair-num">L2</span>
+        <div class="stair-name">智能体 Agent</div>
+        <div class="stair-time">今年 · 当下主战场</div>
+      </div>
+      <div class="stair">
+        <span class="stair-num">L3</span>
+        <div class="stair-name">持续学习</div>
+        <div class="stair-time">下一战 · 没人拿下</div>
+      </div>
+      <div class="stair">
+        <span class="stair-num">L4</span>
+        <div class="stair-name">AI 改进自己</div>
+        <div class="stair-time">渐进奇点</div>
+      </div>
+      <div class="stair">
+        <span class="stair-num">L5</span>
+        <div class="stair-name">具身智能</div>
+        <div class="stair-time">终点</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 各级详解 -->
+  <h2 class="section-title">逐级拆解</h2>
+
+  <div class="level">
+    <div class="level-badge"><span class="lv">LEVEL</span><span class="num">1</span></div>
+    <div class="level-body">
+      <h3>思维链</h3>
+      <div class="en">Chain-of-Thought · CoT</div>
+      <p>让 AI 别脱口而出，先"想一想"：把大问题拆成小步骤，一步步推理再给答案。</p>
+      <div class="metaphor">做数学题不直接写答案，先列步骤 1、2、3，最后得结果。</div>
+      <p>以前的 AI"直觉蹦答案"老出错；会思维链后准确度大涨。DeepSeek 去年就是靠这个出圈的。</p>
+      <span class="status done">去年 · 已拿下</span>
+    </div>
+  </div>
+
+  <div class="level">
+    <div class="level-badge"><span class="lv">LEVEL</span><span class="num">2</span></div>
+    <div class="level-body">
+      <h3>智能体 Agent <span class="you-tag">你在这</span></h3>
+      <div class="en">Agent</div>
+      <p>AI 不光回答，还会"动手干活"：自己上网查、写代码、调工具，独立干完一整件事。</p>
+      <div class="metaphor">思维链是"动嘴"（会说思路），Agent 是"动手"（会做事）。让铁柱帮你读链接、存笔记，我就是个 Agent。</div>
+      <p>光想不做落不了地；Agent 让 AI 真正替你干活。这是当下的主战场。</p>
+      <span class="status now">今年 · 当下主战场</span>
+    </div>
+  </div>
+
+  <div class="level">
+    <div class="level-badge"><span class="lv">LEVEL</span><span class="num">3</span></div>
+    <div class="level-body">
+      <h3>持续学习</h3>
+      <div class="en">Continual Learning</div>
+      <p>现在 AI 每次聊天都得从头喂背景（它不长记性）。持续学习是让它像人——用一次会一点，越用越懂你。</p>
+      <div class="metaphor">带新员工每次都得从头介绍公司（现在的 AI）；老员工一个眼神他就懂（持续学习后）。</div>
+      <p>梁文锋原话："AI 现在不缺品味和直觉，缺的是持续学习的能力。" 这是下一代模型的标志，目前全世界还没人做好。</p>
+      <span class="status next">下一战 · 真正颠覆在这级之后</span>
+    </div>
+  </div>
+
+  <div class="level">
+    <div class="level-badge"><span class="lv">LEVEL</span><span class="num">4</span></div>
+    <div class="level-body">
+      <h3>AI 改进自己</h3>
+      <div class="en">AI Self-Improvement · 渐进奇点</div>
+      <p>AI 学会持续学习后，能帮自己变强——AI 帮 AI 写更好的模型、做更前沿的研究。智能开始加速智能。</p>
+      <div class="metaphor">滚雪球：一开始人推，雪球够大后自己滚，越滚越快。</div>
+      <p>这一步走完，AI 能干人脑能干的所有事。梁文锋叫它"渐进的奇点"——不是某天炸，是慢慢加速到停不下来。</p>
+      <span class="status next">未来 · 渐进奇点</span>
+    </div>
+  </div>
+
+  <div class="level">
+    <div class="level-badge end"><span class="lv">LEVEL</span><span class="num">5</span></div>
+    <div class="level-body">
+      <h3>具身智能</h3>
+      <div class="en">Embodied AI · 终点</div>
+      <p>把聪明的"大脑"装进机器人"身体"，让它在物理世界干活：端茶、搬砖、造房子。</p>
+      <div class="metaphor">前 4 级养出个绝顶聪明的脑，这级是给它安个身体，让它真正进你的生活。</div>
+      <p>梁文锋那句最扎心："对人来讲，需求不是电脑，是人力。" 你真正缺的不是会聊天的屏幕，是能出力的手脚。</p>
+      <span class="status next">终点</span>
+    </div>
+  </div>
+
+  <!-- 反向提示 -->
+  <h2 class="section-title">别踩这个坑</h2>
+  <div class="compare">
+    <div class="compare-box wrong">
+      <h4>错的认知</h4>
+      <p>AGI 是某天突然"奇点爆炸"，一夜之间降临，世界瞬间巨变。</p>
+    </div>
+    <div class="compare-box right">
+      <h4>对的认知</h4>
+      <p>是一级级爬楼梯，每级要解决硬问题，可能卡很久——比如第 3 级持续学习，现在就卡着没人拿下。</p>
+    </div>
+  </div>
+
+  <!-- 怎么用 -->
+  <h2 class="section-title">这张图怎么用</h2>
+  <ol class="use-list">
+    <li><strong>给新闻归级。</strong>看到任何 AI 消息，先问"这属于第几级"。多数产品新闻停在第 2 级（Agent）；真正改格局的是第 3 级以上的突破。</li>
+    <li><strong>定位自己。</strong>你用铁柱卡在第 2 级——会动手，但没持续学习，所以每次得重新交代背景。</li>
+    <li><strong>判断真假进步。</strong>在第 1-2 级打转的"新功能"多是包装；推动上一级台阶的（如真·持续学习）才是质变。</li>
+  </ol>
+
+  <!-- 局限 -->
+  <div class="limits">
+    <h3>前提与局限（复习时留意）</h3>
+    <ul>
+      <li>这是梁文锋/DeepSeek 的路线判断，不是行业共识。OpenAI、Google 路线未必相同（如 Meta 重注具身智能，未必按这个顺序）。</li>
+      <li>"五级"是铁柱从 52 条语录提炼的结构，梁文锋本人未必明确叫"5 级楼梯"，分级与命名是整理表述。</li>
+      <li>"去年/今年/下一步"是 2026 年中的时点判断，会变。</li>
+      <li>每级之间不是干净切换，现实中多级同时推进，楼梯是简化的心智模型。</li>
+    </ul>
+  </div>
+
+  <!-- 关联 -->
+  <h2 class="section-title">关联词条</h2>
+  <div class="links">
+    <a href="../concepts(概念库)/AI底层逻辑/Agent（智能体）.md">Agent（智能体）· 第2级本体</a>
+    <a href="../concepts(概念库)/AI底层逻辑/Harness（AI脚手架）.md">Harness · Agent的身体</a>
+    <a href="../concepts(概念库)/AI底层逻辑/循环工程.md">循环工程 · 自纠错循环</a>
+    <a href="../concepts(概念库)/AI底层逻辑/AI记忆系统三层架构.md">记忆三层架构 · 持续学习底层</a>
+    <a href="../concepts(概念库)/AI底层逻辑/锯齿智能.md">锯齿智能 · 别因爬楼梯就全信</a>
+  </div>
+
+</div>
+
+<footer>
+  来源：梁文锋 4 小时投资人会议实录（elsewhere 整理 52 条语录，2026-07）｜ 概念词条：concepts(概念库)/AI底层逻辑/AGI五级楼梯.md
+</footer>
+
+</body>
+</html>

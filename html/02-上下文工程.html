@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上下文工程 · 好答案的隐藏前提</title>
+<style>
+:root {
+  --bg: #FAF3EA;
+  --bg-alt: #F5E8D8;
+  --card: #FFFFFF;
+  --text: #2C1810;
+  --text-muted: #7A6A5C;
+  --accent: #C4573B;
+  --accent-light: #E8C4B8;
+  --gold: #D4A853;
+  --gold-light: #F0DCA8;
+  --green: #6B8E5A;
+  --green-light: #D4E5C5;
+  --red: #C4573B;
+  --red-light: #F5DAD0;
+  --border: #E5D5C0;
+  --shadow: 0 4px 20px rgba(60, 40, 20, 0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 17px;
+}
+.serif { font-family: Georgia, "Songti SC", "STSong", serif; }
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  position: relative;
+}
+.hero-tag {
+  display: inline-block;
+  padding: 6px 18px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 56px);
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+.hero-sub {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 520px;
+}
+.hero-img { max-width: 480px; width: 100%; border-radius: 16px; box-shadow: var(--shadow); }
+
+/* ========== CARD LAYOUTS ========== */
+.card { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+.card-full { max-width: 100%; padding: 60px 24px; }
+.card-full .card-inner { max-width: 900px; margin: 0 auto; }
+
+/* 全宽图 */
+.layout-full { text-align: center; }
+.layout-full img { max-width: 100%; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 32px; }
+
+/* 左图右文 */
+.layout-side { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.layout-side img { flex: 1; min-width: 280px; border-radius: 12px; box-shadow: var(--shadow); }
+.layout-side .text { flex: 1; min-width: 280px; }
+
+/* 左文右图 */
+.layout-side-reverse { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.layout-side-reverse .text { flex: 1; min-width: 280px; }
+.layout-side-reverse img { flex: 1; min-width: 280px; border-radius: 12px; box-shadow: var(--shadow); }
+
+/* 上图下文 */
+.layout-top img { width: 100%; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 24px; }
+
+/* 分隔线 */
+.divider {
+  width: 60px;
+  height: 3px;
+  background: var(--gold);
+  margin: 0 auto 32px;
+}
+
+/* 标题样式 */
+.card-num {
+  display: inline-block;
+  width: 40px; height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.card h2 { font-size: 28px; margin-bottom: 12px; }
+.card-desc { color: var(--text-muted); font-size: 16px; margin-bottom: 24px; }
+
+/* 引用块 */
+.quote {
+  background: var(--gold-light);
+  border-left: 4px solid var(--gold);
+  padding: 20px 24px;
+  border-radius: 0 12px 12px 0;
+  font-size: 17px;
+  margin: 24px 0;
+  line-height: 1.8;
+}
+
+/* 对比块 */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+@media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+.compare-card {
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid;
+}
+.compare-card.bad { background: var(--red-light); border-color: rgba(196,87,59,0.2); }
+.compare-card.good { background: var(--green-light); border-color: rgba(107,142,90,0.2); }
+.compare-label { font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+.compare-card.bad .compare-label { color: var(--red); }
+.compare-card.good .compare-label { color: var(--green); }
+.compare-card p { font-size: 15px; line-height: 1.7; }
+
+/* 列表 */
+.item-list { list-style: none; margin: 16px 0; }
+.item-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 16px;
+}
+.item-list li:last-child { border-bottom: none; }
+.item-list li::before {
+  content: "";
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+/* 六宫格 */
+.grid-6 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+@media (max-width: 600px) { .grid-6 { grid-template-columns: repeat(2, 1fr); } }
+.grid-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.grid-item h4 { color: var(--accent); font-size: 15px; margin-bottom: 8px; }
+.grid-item p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* 边界卡片 */
+.boundary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.boundary-card {
+  padding: 20px;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.boundary-card h4 { color: var(--accent); font-size: 15px; margin-bottom: 8px; }
+.boundary-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+/* 提示框 */
+.tip {
+  background: var(--gold-light);
+  border-left: 4px solid var(--gold);
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  font-size: 15px;
+  margin: 16px 0;
+}
+.tip strong { color: var(--accent); }
+
+/* 尾部 */
+.footer {
+  text-align: center;
+  padding: 60px 24px;
+  background: var(--bg-alt);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.footer-quote {
+  font-size: 22px;
+  color: var(--text);
+  max-width: 600px;
+  margin: 0 auto 16px;
+  line-height: 1.6;
+}
+
+/* 动画 */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-content { animation: fadeUp 0.8s ease-out; }
+.card, .card-full { animation: fadeUp 0.6s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-content" style="max-width:600px;">
+    <span class="hero-tag">AI 底层逻辑 · 02</span>
+    <h1 class="serif">上下文工程</h1>
+    <p class="hero-sub">好答案不只取决于你问了什么，<br>更取决于回答者在开口之前，究竟看见了什么。</p>
+    <img class="hero-img" src="../images/02-上下文工程-1-封面.webp" alt="医生看病历——上下文工程的核心比喻">
+  </div>
+</section>
+
+<!-- ========== 卡片1：来龙去脉 ========== -->
+<section class="card-full">
+  <div class="card-inner layout-full">
+    <span class="card-num">1</span>
+    <h2 class="serif">来龙去脉</h2>
+    <p class="card-desc">从"写好一句提示词"到"为AI组织完整的信息环境"</p>
+    <img src="../images/02-上下文工程-2-来龙去脉.webp" alt="上下文工程的演进时间线">
+    <div style="text-align:left; max-width:600px; margin:0 auto;">
+      <p style="margin-bottom:16px;">大语言模型刚普及时，人们主要研究怎样写出更有效的提示词。但随着AI开始处理编程、资料分析、智能客服和复杂工作流，大家发现：</p>
+      <p style="font-weight:600; font-size:18px; margin-bottom:16px;">只优化一条指令，已经不够了。</p>
+      <p style="margin-bottom:16px;">真正影响结果的，还有AI能看到哪些资料、能调用哪些工具、是否保留之前的对话、有没有相关示例、哪些内容应该优先参考……</p>
+      <div class="tip"><strong>一句话</strong>：关注点从"写好一句提示词"，扩展到了"为AI组织完整的信息环境"。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 卡片2：核心一句话 ========== -->
+<section class="card">
+  <div class="layout-side">
+    <img src="../images/02-上下文工程-1-封面.webp" alt="医生看病历">
+    <div class="text">
+      <span class="card-num">2</span>
+      <h2 class="serif">核心一句话</h2>
+      <div class="quote">
+        上下文工程就像给医生准备病历。<br><br>
+        你不能只对医生说"请准确判断我怎么了"——这句话目标明确，却缺少诊断所需的信息。<br><br>
+        重点不是把要求说得更有气势，而是让对方在判断之前，拿到<strong>相关、准确、足够的信息</strong>。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 卡片3：和提示词工程区别 ========== -->
+<section class="card-full">
+  <div class="card-inner">
+    <span class="card-num">3</span>
+    <h2 class="serif">它和提示词工程有什么区别？</h2>
+    <p class="card-desc">一个关注"怎么说"，一个关注"看到什么"</p>
+    <div class="layout-side" style="margin-bottom:32px;">
+      <img src="../images/02-上下文工程-3-两张桌子对比.webp" alt="两张桌子对比">
+      <div class="text">
+        <div class="compare">
+          <div class="compare-card" style="background:var(--bg-alt);">
+            <div class="compare-label" style="color:var(--text);">📋 提示词工程</div>
+            <p><strong>关注</strong>：任务怎么描述、要求怎么表达、输出格式怎么规定</p>
+            <p style="margin-top:8px;"><strong>解决</strong>：我应该怎样把任务讲清楚？</p>
+          </div>
+          <div class="compare-card" style="background:var(--gold-light);">
+            <div class="compare-label" style="color:var(--gold);">🗂️ 上下文工程</div>
+            <p><strong>关注</strong>：AI应该看到哪些资料、从哪里获取、哪些需要保留、哪些应该删除</p>
+            <p style="margin-top:8px;"><strong>解决</strong>：AI在执行任务前，应该掌握什么？</p>
+          </div>
+        </div>
+        <div class="tip"><strong>简单区分</strong>：提示词工程是写好任务单，上下文工程是准备好整个工作台。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 卡片4：不遵循 ========== -->
+<section class="card-full">
+  <div class="card-inner layout-top">
+    <span class="card-num">4</span>
+    <h2 class="serif">不遵循：只把要求写得很用力</h2>
+    <p class="card-desc">强调态度，不补充信息</p>
+    <img src="../images/02-上下文工程-4-不遵循.webp" alt="对着空白纸喊认真点">
+    <div class="compare">
+      <div class="compare-card bad">
+        <div class="compare-label">❌ 错误示范</div>
+        <p>"你是一名资深程序员，请认真分析，全面思考，确保代码绝对正确。帮我修复这个程序。"</p>
+      </div>
+      <div class="compare-card" style="background:var(--bg-alt); border-color:var(--border);">
+        <div class="compare-label" style="color:var(--text-muted);">AI 仍然不知道</div>
+        <p>程序代码是什么、出现什么错误、使用哪种语言、正确结果应该是什么、项目有哪些限制</p>
+      </div>
+    </div>
+    <div class="tip"><strong>结果</strong>："认真""全面""务必正确"只是强调态度，并没有补充解决问题所需的信息。</div>
+  </div>
+</section>
+
+<!-- ========== 卡片5：遵循 ========== -->
+<section class="card">
+  <div class="layout-side-reverse">
+    <div class="text">
+      <span class="card-num">5</span>
+      <h2 class="serif">遵循：把必要信息组织好</h2>
+      <p class="card-desc">不只是写得更详细，而是让AI得到完成任务需要的上下文</p>
+      <ul class="item-list">
+        <li>环境信息</li>
+        <li>原始材料</li>
+        <li>当前问题</li>
+        <li>预期结果</li>
+        <li>修改限制</li>
+        <li>验收标准</li>
+      </ul>
+      <div class="tip"><strong>核心</strong>：AI不再需要凭空猜测。</div>
+    </div>
+    <img src="../images/02-上下文工程-5-遵循.webp" alt="整齐的工作台">
+  </div>
+</section>
+
+<!-- ========== 卡片6：信息越多≠越好 ========== -->
+<section class="card-full">
+  <div class="card-inner layout-full">
+    <span class="card-num">6</span>
+    <h2 class="serif">上下文 ≠ 信息越多越好</h2>
+    <p class="card-desc">这是最容易误解的地方</p>
+    <img src="../images/02-上下文工程-6-信息越多不越好.webp" alt="图书馆压在桌上">
+    <div style="max-width:600px; margin:0 auto; text-align:left;">
+      <p style="margin-bottom:16px;">我以前会把整份文档、全部聊天记录和所有参考资料一起丢给AI，以为材料越多，答案越准确。结果反而更差。</p>
+      <p style="margin-bottom:16px;">因为上下文中可能混入：与当前任务无关的内容、相互矛盾的规定、已经过时的文档、重复出现的信息……</p>
+      <p style="font-weight:600; font-size:18px; text-align:center; margin:24px 0;">就像考试前把整座图书馆搬到桌上。</p>
+      <div class="quote" style="text-align:center; border-left:none; background:transparent; padding:20px 0;">
+        上下文工程追求的不是"塞得最多"，而是四个词：<br>
+        <strong style="font-size:20px; color:var(--accent);">相关、准确、精简、及时。</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 卡片7：实用清单 ========== -->
+<section class="card">
+  <span class="card-num">7</span>
+  <h2 class="serif">一个实用的上下文清单</h2>
+  <p class="card-desc">面对稍微复杂的任务，先检查六类内容</p>
+  <div class="grid-6">
+    <div class="grid-item">
+      <h4>🎯 目标</h4>
+      <p>这次到底要完成什么？</p>
+    </div>
+    <div class="grid-item">
+      <h4>📌 背景</h4>
+      <p>AI需要了解哪些前置信息？</p>
+    </div>
+    <div class="grid-item">
+      <h4>📄 材料</h4>
+      <p>完成任务必须参考什么？</p>
+    </div>
+    <div class="grid-item">
+      <h4>📏 规则</h4>
+      <p>哪些要求必须遵守？</p>
+    </div>
+    <div class="grid-item">
+      <h4>🕐 历史</h4>
+      <p>之前已经做过什么决定？</p>
+    </div>
+    <div class="grid-item">
+      <h4>✅ 验收标准</h4>
+      <p>怎样判断结果可以使用？</p>
+    </div>
+  </div>
+  <div class="quote" style="text-align:center;">
+    <strong>目标、背景、材料、规则、历史、验收。</strong>
+  </div>
+</section>
+
+<!-- ========== 卡片8：复杂上下文来源 ========== -->
+<section class="card">
+  <div class="layout-side">
+    <img src="../images/02-上下文工程-8-复杂上下文来源.webp" alt="多条河流汇入中心">
+    <div class="text">
+      <span class="card-num">8</span>
+      <h2 class="serif">更复杂的上下文从哪里来？</h2>
+      <p class="card-desc">在真实AI应用中，上下文还可能由系统自动准备</p>
+      <ul class="item-list">
+        <li><strong>对话记录</strong> — 保留与当前任务相关的历史信息</li>
+        <li><strong>知识库检索</strong> — 先从文档库中找到相关资料（RAG）</li>
+        <li><strong>工具返回结果</strong> — AI可以先查询数据库或运行程序</li>
+        <li><strong>用户偏好</strong> — 记住偏好的语言、格式和难度</li>
+        <li><strong>阶段性摘要</strong> — 对话太长时，压缩已确认的目标和规则</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 卡片9：边界提醒 ========== -->
+<section class="card-full">
+  <div class="card-inner layout-full">
+    <span class="card-num">9</span>
+    <h2 class="serif">边界提醒</h2>
+    <p class="card-desc">上下文工程很重要，但不能解决所有问题</p>
+    <img src="../images/02-上下文工程-9-边界提醒.webp" alt="警示标志">
+    <div class="boundary-grid">
+      <div class="boundary-card">
+        <h4>信息错误时不能依赖它</h4>
+        <p>如果知识库中的资料本身错误，组织得再好，也可能得到错误结论。</p>
+      </div>
+      <div class="boundary-card">
+        <h4>来源冲突时不能直接混用</h4>
+        <p>当两份资料说法不同，需要先规定优先级，而不是全部交给AI自行选择。</p>
+      </div>
+      <div class="boundary-card">
+        <h4>信息过多时不能全部塞入</h4>
+        <p>即使没有超过容量，过多的无关内容也可能降低重点信息的影响力。</p>
+      </div>
+      <div class="boundary-card">
+        <h4>高风险结论不能省略人工核验</h4>
+        <p>医疗、法律、财务和安全等场景，资料齐全也不代表结果一定正确。</p>
+      </div>
+      <div class="boundary-card">
+        <h4>敏感信息不能随意提供</h4>
+        <p>密码、证件号码、个人健康资料、未公开代码，都需要谨慎处理。</p>
+      </div>
+      <div class="boundary-card">
+        <h4>模型能力不足时不能靠资料硬补</h4>
+        <p>上下文可以提供知识，但不能无限提升模型的推理能力。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 尾部 ========== -->
+<footer class="footer">
+  <p class="footer-quote serif">好答案不只取决于你问了什么，<br>更取决于回答者在开口之前，究竟看见了什么。</p>
+  <p>AGI 共学笔记 · AI 底层逻辑 02 · 上下文工程</p>
+</footer>
+
+</body>
+</html>
