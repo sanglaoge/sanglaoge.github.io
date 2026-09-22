@@ -3,332 +3,414 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>桑老哥 · 给家纺做视觉的设计师，业余啃 AI</title>
-<meta name="description" content="桑老哥的个人站：AI 共学可视化笔记 + 跨境家纺视觉设计。一个不懂代码的设计师和一个 AI，每天啃一篇硬核文章。">
+<title>桑老哥 · 看见的，都是学过的</title>
+<meta name="description" content="桑老哥的个人展厅：82 条概念可视化 + 3 个视频系列 + 共学笔记。一个不懂代码的设计师和一个 AI，每天啃一篇硬核文章。">
 <style>
   :root {
-    --bg: #FAF3EA;
-    --bg-alt: #F3E7D5;
-    --card: #FFFFFF;
-    --text: #2C1810;
-    --muted: #7A6A5C;
-    --faint: #B5A898;
-    --accent: #C4573B;
-    --gold: #D4A853;
-    --line: #E5D8C6;
+    --bg: #FFFFFF;
+    --ink: #171717;
+    --soft: #5f5f5a;
+    --faint: #9a9a94;
+    --line: #ececea;
+    --line2: #e3e1dc;
+    --red: #B8452F;
+    --red-dim: rgba(184,69,47,.12);
+    --paper: #faf9f6;
+    --serif: Georgia, "Songti SC", "STSong", serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.75;
-    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    line-height: 1.75; -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
   img { max-width: 100%; }
-  .serif { font-family: Georgia, "Songti SC", "STSong", serif; }
-  .wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  .serif { font-family: var(--serif); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- 滚动进度条 ---------- */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: var(--red); z-index: 99;
+  }
 
   /* ---------- 顶栏 ---------- */
   .topbar {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 13px;
+    padding: 20px 0; border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; background: rgba(255,255,255,.92);
+    backdrop-filter: blur(8px); z-index: 10;
   }
-  .topbar .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: 2px; }
-  .topbar nav { display: flex; gap: 20px; }
-  .topbar nav a { color: var(--muted); text-decoration: none; letter-spacing: 1px; transition: color .2s; }
-  .topbar nav a:hover { color: var(--accent); }
+  .topbar .brand { font-size: 17px; font-weight: 600; letter-spacing: 3px; }
+  .topbar .brand i { font-style: normal; color: var(--red); }
+  .topbar nav { display: flex; gap: 22px; }
+  .topbar nav a {
+    color: var(--soft); text-decoration: none; font-size: 14px;
+    letter-spacing: 2px; transition: color .2s;
+  }
+  .topbar nav a:hover { color: var(--red); }
 
   /* ---------- 刊头 ---------- */
-  header { padding: 64px 0 44px; }
-  .masthead {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 26px;
+  header { padding: 88px 0 60px; }
+  .kick {
+    font-size: 11px; letter-spacing: 6px; color: var(--faint);
+    font-weight: 600; margin-bottom: 26px;
   }
-  .vol {
-    font-size: 11px; letter-spacing: 3px; color: var(--faint);
-    font-variant-numeric: tabular-nums; line-height: 1.9;
-  }
-  .seal {
-    width: 52px; height: 52px; flex: none;
-    background: var(--accent); color: #FFF7EF;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; font-weight: 600;
-    border-radius: 8px;
-    box-shadow: 0 4px 14px rgba(196,87,59,.28);
-    font-family: Georgia, "Songti SC", serif;
-  }
-  .kicker {
-    font-size: 12px; letter-spacing: 4px;
-    color: var(--accent); font-weight: 600; margin-bottom: 16px;
-  }
+  .kick b { color: var(--red); font-weight: 600; }
   h1 {
-    font-size: clamp(42px, 10vw, 62px);
-    line-height: 1.12; letter-spacing: 3px; margin-bottom: 18px;
+    font-size: clamp(40px, 8.5vw, 72px); line-height: 1.18;
+    letter-spacing: 2px; font-weight: 600; margin-bottom: 26px;
+    will-change: transform;
   }
-  .tagline {
-    font-size: 16px; color: var(--text); font-weight: 500;
-    letter-spacing: .5px; margin-bottom: 12px;
+  .lede {
+    font-size: 16.5px; color: var(--soft); max-width: 34em;
+    margin-bottom: 30px;
   }
-  .sub { font-size: 14.5px; color: var(--muted); max-width: 30em; margin-bottom: 24px; }
+  .lede em { font-style: normal; color: var(--ink); border-bottom: 2px solid var(--red-dim); }
   .meta {
-    display: flex; gap: 20px; flex-wrap: wrap;
-    font-size: 12.5px; color: var(--muted);
-    padding-top: 16px; border-top: 1px solid var(--line);
-    font-variant-numeric: tabular-nums;
+    display: flex; gap: 26px; flex-wrap: wrap; font-size: 13px;
+    color: var(--faint); padding-top: 18px; border-top: 1px solid var(--line);
   }
-  .meta b { color: var(--text); font-weight: 600; }
+  .meta b { color: var(--ink); font-weight: 600; font-size: 15px; }
 
-  /* ---------- 章节标题（杂志双线） ---------- */
-  .sec-title {
-    display: flex; align-items: baseline; gap: 12px;
-    margin: 56px 0 6px;
-    padding-top: 18px;
-    border-top: 3px double var(--line);
+  /* ---------- 展厅节 ---------- */
+  .hall { padding: 64px 0 26px; border-top: 1px solid var(--line); }
+  .hall-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .hall-no {
+    font-size: 12px; letter-spacing: 4px; color: var(--red);
+    font-weight: 700;
   }
-  .sec-title h2 { font-size: 20px; letter-spacing: 1.5px; }
-  .sec-title span { font-size: 11px; color: var(--faint); letter-spacing: 2px; }
+  .hall-head h2 { font-size: 26px; letter-spacing: 3px; font-weight: 600; }
+  .hall-head .en { font-size: 11px; letter-spacing: 4px; color: var(--faint); }
+  .hall-sub { font-size: 14.5px; color: var(--soft); margin-bottom: 34px; }
 
-  /* ---------- 目录列表（入门系列 5 篇） ---------- */
+  /* ---------- 展厅一：家族展签墙 ---------- */
+  .fam-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 640px) { .fam-grid { grid-template-columns: 1fr 1fr; } }
+  .fam-card {
+    display: block; background: var(--bg); border: 1px solid var(--line2);
+    border-top: 3px solid var(--fc); padding: 18px 20px 16px;
+    text-decoration: none; color: var(--ink);
+    transition: opacity .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .fam-grid:hover .fam-card { opacity: .38; }
+  .fam-grid .fam-card:hover { opacity: 1; border-color: var(--fc); box-shadow: 0 10px 30px rgba(23,23,23,.07); }
+  .fam-card .fno { font-size: 11px; letter-spacing: 3px; color: var(--fc); font-weight: 700; }
+  .fam-card .fname { font-size: 19px; font-weight: 700; margin: 4px 0 6px; letter-spacing: 1px; }
+  .fam-card .fdesc { font-size: 13.5px; color: var(--soft); line-height: 1.65; min-height: 44px; }
+  .fam-card .fam {
+    display: inline-block; margin-top: 10px; font-size: 12px;
+    color: var(--fc); letter-spacing: 1px; font-variant-numeric: tabular-nums;
+    border: 1px solid var(--line2); padding: 2px 12px; border-radius: 999px;
+  }
+  .hall-go {
+    display: inline-block; margin-top: 26px; font-size: 15px; font-weight: 600;
+    color: var(--red); text-decoration: none; letter-spacing: 2px;
+    border-bottom: 1px solid var(--red); padding-bottom: 2px;
+    transition: letter-spacing .25s;
+  }
+  .hall-go:hover { letter-spacing: 4px; }
+
+  /* ---------- 展厅二：海报墙 ---------- */
+  .posters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 639px) { .posters { grid-template-columns: 1fr; } }
+  .poster {
+    display: block; text-decoration: none; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line2);
+    padding: 22px 18px 18px; min-height: 300px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: opacity .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .posters:hover .poster { opacity: .38; }
+  .posters .poster:hover { opacity: 1; border-color: var(--red); box-shadow: 0 12px 34px rgba(184,69,47,.10); }
+  .poster .pno {
+    font-size: 30px; color: var(--red); line-height: 1;
+    font-family: var(--serif);
+  }
+  .poster .pname {
+    writing-mode: vertical-rl; font-size: 21px; font-weight: 700;
+    letter-spacing: 6px; margin: 18px 0; align-self: flex-start;
+    min-height: 150px; font-family: var(--serif);
+  }
+  @media (max-width: 639px) { .poster .pname { writing-mode: horizontal-tb; min-height: 0; letter-spacing: 3px; margin: 12px 0; } }
+  .poster .pstat { font-size: 12.5px; color: var(--soft); line-height: 1.7; }
+  .poster .pstat b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .poster .dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--red); margin-right: 7px; vertical-align: 1px;
+  }
+  .poster .dot.idle { background: var(--faint); }
+
+  /* ---------- 展厅三：文稿目录 ---------- */
   .toc { border-top: 1px solid var(--line); }
+  .toc-group { font-size: 11px; letter-spacing: 4px; color: var(--faint); font-weight: 700; padding: 26px 0 6px; }
   .toc a {
-    display: grid;
-    grid-template-columns: 56px minmax(0, 1fr) 74px;
-    gap: 16px; align-items: center;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--line);
-    text-decoration: none; color: var(--text);
-    transition: background .2s ease;
+    display: grid; grid-template-columns: 52px minmax(0,1fr) 72px;
+    gap: 16px; align-items: center; padding: 16px 0;
+    border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink);
+    transition: background .2s;
   }
-  .toc .num {
-    font-size: 30px; color: var(--faint); line-height: 1;
-    font-variant-numeric: tabular-nums; transition: color .2s ease;
-  }
-  .toc .t { font-size: 17px; font-weight: 600; line-height: 1.4; margin-bottom: 2px; }
-  .toc .d { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .toc a:hover { background: var(--paper); }
+  .toc .no { font-size: 26px; color: var(--line2); line-height: 1; font-family: var(--serif); }
+  .toc a:hover .no { color: var(--red); }
+  .toc .t { font-size: 16.5px; font-weight: 600; line-height: 1.45; }
+  .toc .d { font-size: 13px; color: var(--soft); line-height: 1.55; margin-top: 2px; }
   .toc .thumb {
-    width: 74px; aspect-ratio: 3 / 4; object-fit: cover;
-    border-radius: 6px; border: 1px solid var(--line); display: block;
+    width: 72px; aspect-ratio: 3/4; object-fit: cover;
+    border: 1px solid var(--line); display: block;
   }
-  .toc a:hover { background: var(--bg-alt); }
-  .toc a:hover .num { color: var(--accent); }
 
-  /* ---------- 专题卡 ---------- */
-  .topics { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  @media (min-width: 620px) { .topics { grid-template-columns: 1fr 1fr; } }
-  .topics a {
-    display: block; padding: 20px 22px;
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 12px; text-decoration: none; color: var(--text);
-    transition: border-color .2s ease, box-shadow .2s ease;
+  /* ---------- 作品预告 ---------- */
+  .soon {
+    margin-top: 40px; padding: 26px 26px; border: 1px dashed var(--line2);
+    transition: border-color .25s;
   }
-  .topics a:hover { border-color: var(--accent); box-shadow: 0 6px 20px rgba(196,87,59,.10); }
-  .topics .tag { font-size: 10.5px; letter-spacing: 3px; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
-  .topics .t { font-size: 16.5px; font-weight: 600; line-height: 1.4; margin-bottom: 5px; }
-  .topics .d { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
-
-  /* ---------- 设计作品预告 ---------- */
-  .works-preview {
-    display: block; padding: 26px 24px;
-    background: var(--card); border: 1px dashed var(--faint);
-    border-radius: 12px; text-decoration: none; color: var(--text);
-    transition: border-color .2s ease;
-  }
-  .works-preview:hover { border-color: var(--accent); }
-  .works-preview .tag { font-size: 10.5px; letter-spacing: 3px; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
-  .works-preview .t { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
-  .works-preview .d { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .works-preview .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .works-preview .cat {
-    font-size: 11.5px; color: var(--accent);
-    border: 1px solid rgba(196,87,59,.35);
+  .soon:hover { border-color: var(--red); }
+  .soon .tag { font-size: 11px; letter-spacing: 4px; color: var(--faint); font-weight: 700; margin-bottom: 10px; }
+  .soon .t { font-size: 19px; font-weight: 700; font-family: var(--serif); letter-spacing: 2px; margin-bottom: 6px; }
+  .soon .d { font-size: 13.5px; color: var(--soft); }
+  .soon .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .soon .cat {
+    font-size: 12px; color: var(--red); border: 1px solid var(--red-dim);
     padding: 3px 12px; border-radius: 999px; letter-spacing: 1px;
   }
-
-  /* ---------- 概念馆主卡 ---------- */
-  .hall-card {
-    display: block; margin-top: 26px; padding: 28px 26px;
-    background: linear-gradient(135deg, #FFF7EF, var(--card));
-    border: 1.5px solid var(--accent);
-    border-radius: 14px; text-decoration: none; color: var(--text);
-    transition: box-shadow .2s ease, transform .2s ease;
-  }
-  .hall-card:hover { box-shadow: 0 10px 30px rgba(196,87,59,.16); transform: translateY(-2px); }
-  .hall-card .tag { font-size: 10.5px; letter-spacing: 3px; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
-  .hall-card .t { font-size: 24px; font-weight: 600; letter-spacing: 2px; margin-bottom: 8px; }
-  .hall-card .d { font-size: 13.5px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
-  .hall-card .fams { display: flex; flex-wrap: wrap; gap: 8px; }
-  .hall-card .fam {
-    font-size: 11.5px; color: var(--accent);
-    border: 1px solid rgba(196,87,59,.35);
-    padding: 3px 12px; border-radius: 999px; letter-spacing: 1px;
-  }
-  .hall-card .go { margin-top: 16px; font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 1px; }
 
   /* ---------- 关于 ---------- */
-  .about { font-size: 14px; color: var(--muted); }
   .about li {
-    list-style: none; padding: 14px 0;
-    border-bottom: 1px solid var(--line);
-    display: flex; gap: 14px; align-items: baseline;
+    list-style: none; padding: 18px 0; border-bottom: 1px solid var(--line);
+    display: flex; gap: 18px; align-items: baseline;
   }
   .about li:last-child { border-bottom: none; }
-  .about .who { flex: none; font-size: 12px; letter-spacing: 2px; color: var(--gold); font-weight: 600; width: 72px; }
-  .about .what { color: var(--text); }
-  .about .what em { font-style: normal; color: var(--accent); font-weight: 500; }
+  .about .who { flex: none; width: 78px; font-size: 12px; letter-spacing: 4px; color: var(--red); font-weight: 700; }
+  .about .what { font-size: 15px; color: var(--ink); }
+  .about .what em { font-style: normal; border-bottom: 2px solid var(--red-dim); }
 
   /* ---------- 页脚 ---------- */
   footer {
-    margin-top: 64px; padding: 26px 0 44px;
-    border-top: 1px solid var(--line);
-    font-size: 12.5px; color: var(--faint);
-    text-align: center; letter-spacing: 1px;
+    margin-top: 72px; padding: 28px 0 48px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--faint); text-align: center; letter-spacing: 2px;
   }
 
-  /* ---------- 入场 ---------- */
-  .reveal { opacity: 0; animation: rise .6s ease forwards; }
-  .reveal:nth-child(2) { animation-delay: .07s; }
-  .reveal:nth-child(3) { animation-delay: .14s; }
-  @keyframes rise { from { opacity: 0; } to { opacity: 1; } }
+  /* ---------- 动效：stagger 入场 + 视差 ---------- */
+  .rise { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .in .rise { opacity: 1; transform: none; }
+  .in .rise:nth-child(1) { transition-delay: .0s; }
+  .in .rise:nth-child(2) { transition-delay: .07s; }
+  .in .rise:nth-child(3) { transition-delay: .14s; }
+  .in .rise:nth-child(4) { transition-delay: .21s; }
+  .in .rise:nth-child(5) { transition-delay: .28s; }
+  .in .rise:nth-child(6) { transition-delay: .35s; }
+  .in .rise:nth-child(7) { transition-delay: .42s; }
+  .in .rise:nth-child(8) { transition-delay: .49s; }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
-    .reveal { opacity: 1; }
+    .rise { opacity: 1; transform: none; }
     html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
+<div class="progress" id="progress"></div>
 <div class="wrap">
 
   <div class="topbar">
-    <div class="brand serif">桑老哥</div>
+    <div class="brand serif">桑老哥<i>.</i></div>
     <nav>
-      <a href="#hall">概念馆</a>
-      <a href="#notes">笔记</a>
-      <a href="#works">作品</a>
+      <a href="#hall1">概念馆</a>
+      <a href="#hall2">放映厅</a>
+      <a href="#hall3">文稿室</a>
       <a href="#about">关于</a>
     </nav>
   </div>
 
   <header>
-    <div class="masthead">
-      <div class="vol">VOL.001<br>EST. 2026</div>
-      <div class="seal">桑</div>
-    </div>
-    <div class="kicker reveal">DESIGNER × DAD × AI CO-STUDY</div>
-    <h1 class="serif reveal">桑老哥</h1>
-    <p class="tagline reveal">给家纺做视觉的设计师，业余啃 AI 的奶爸。</p>
-    <p class="sub reveal">一个不懂代码的跨境电商设计师，和一个 AI，每天啃一篇硬核文章——这里是啃完后的可视化笔记。</p>
-    <div class="meta reveal">
-      <span><b>90</b> 篇笔记</span>
-      <span>主线进度 <b>22 / 22</b></span>
+    <div class="kick">SANGLAOGE <b>·</b> PERSONAL GALLERY <b>·</b> EST. 2026</div>
+    <h1 class="serif">看见的，<br>都是学过的。</h1>
+    <p class="lede">一个不懂代码的跨境电商设计师，和一个 AI，每天啃一篇硬核文章——啃完的，都摆在这间屋子里。<em>常设展，长期更新。</em></p>
+    <div class="meta num">
+      <span><b>82</b> 条概念</span>
+      <span><b>3</b> 个视频系列</span>
+      <span><b>34</b> 集成片</span>
       <span>持续更新中</span>
     </div>
   </header>
 
-  <section id="hall">
-    <a class="hall-card reveal" href="concepts/index.html">
-      <div class="tag">CONCEPT HALL · 82 ENTRIES · NEW</div>
-      <div class="t serif">概念馆 · 82 条概念全图</div>
-      <div class="d">地基学完后攒下的概念库，全部做成了可视化页面：一条概念一页，八个家族各有画风，手机电脑都能看，持续更新。</div>
-      <div class="fams">
+  <section class="hall" id="hall1">
+    <div class="hall-head">
+      <span class="hall-no num">展厅一号</span>
+      <h2 class="serif">概念馆</h2>
+      <span class="en">CONCEPT HALL</span>
+    </div>
+    <p class="hall-sub">地基学完后攒下的概念库，一条概念一页可视化，八个家族各有各的画法。</p>
+    <nav class="fam-grid" aria-label="八大家族">
+      <a class="fam-card rise" style="--fc:#1d4ed8" href="concepts/index.html">
+        <span class="fno num">FAMILY 01</span>
+        <div class="fname">AI底层逻辑</div>
+        <div class="fdesc">循环、上下文、Harness、评测——AI 时代的思维操作系统</div>
         <span class="fam">AI底层逻辑 28</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#8c4a1f" href="concepts/index.html">
+        <span class="fno num">FAMILY 02</span>
+        <div class="fname">思维模型</div>
+        <div class="fdesc">判断尺子与过滤器——遇事怎么想、怎么不被带跑</div>
         <span class="fam">思维模型 13</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#0e7490" href="concepts/index.html">
+        <span class="fno num">FAMILY 03</span>
+        <div class="fname">Agent与自动化</div>
+        <div class="fdesc">让 AI 干活的工程规矩：规范、组队、Context Loop</div>
         <span class="fam">Agent 5</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#475569" href="concepts/index.html">
+        <span class="fno num">FAMILY 04</span>
+        <div class="fname">Skill工程</div>
+        <div class="fdesc">把手艺写成文件，让 AI 接手复用、代代进化</div>
         <span class="fam">Skill工程 9</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#27272a" href="concepts/index.html">
+        <span class="fno num">FAMILY 05</span>
+        <div class="fname">AI视频</div>
+        <div class="fdesc">抽卡、运镜、白模预演、剪辑——视频生产线全流程</div>
         <span class="fam">AI视频 9</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#4d7c0f" href="concepts/index.html">
+        <span class="fno num">FAMILY 06</span>
+        <div class="fname">学习方法</div>
+        <div class="fdesc">七步回路、IPO 内化、提问的智慧——怎么学才留得下</div>
         <span class="fam">学习方法 6</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#be123c" href="concepts/index.html">
+        <span class="fno num">FAMILY 07</span>
+        <div class="fname">个人IP</div>
+        <div class="fdesc">从冷启动攒硬货，到一人公司的内容获客循环</div>
         <span class="fam">个人IP 6</span>
+      </a>
+      <a class="fam-card rise" style="--fc:#c2410c" href="concepts/index.html">
+        <span class="fno num">FAMILY 08</span>
+        <div class="fname">电商设计</div>
+        <div class="fdesc">生图排查、构图 32 式、GEO——卖货视觉弹药库</div>
         <span class="fam">电商设计 6</span>
-      </div>
-      <div class="go">进馆 →</div>
-    </a>
+      </a>
+    </nav>
+    <a class="hall-go" href="concepts/index.html">进馆参观 →</a>
   </section>
 
-  <section id="notes">
-    <div class="sec-title">
-      <h2 class="serif">AI 共学笔记</h2>
-      <span>FOUNDATIONS · 01–05</span>
+  <section class="hall" id="hall2">
+    <div class="hall-head">
+      <span class="hall-no num">展厅二号</span>
+      <h2 class="serif">放映厅</h2>
+      <span class="en">SCREENING ROOM</span>
     </div>
+    <p class="hall-sub">三个自制视频系列，没一个完结，都在长。文案、口播、画面、剪辑，全流程自己来。</p>
+    <nav class="posters">
+      <a class="poster rise" href="videos/index.html#s100">
+        <div>
+          <div class="pno serif">壹</div>
+          <div class="pname serif">100问视频系列</div>
+        </div>
+        <div class="pstat num"><span class="dot"></span>已更 <b>17</b> 集<br>AI磊叔书单 · 一季一书<br>S4《Obsidian100问》连载中</div>
+      </a>
+      <a class="poster rise" href="videos/index.html#s22">
+        <div>
+          <div class="pno serif">贰</div>
+          <div class="pname serif">AI底层逻辑22讲</div>
+        </div>
+        <div class="pstat num"><span class="dot idle"></span>已更 <b>9 / 22</b> 讲 · <b>站内可播</b><br>概念库衍生 · 一讲一概念<br>不定期连载</div>
+      </a>
+      <a class="poster rise" href="videos/index.html#sgood">
+        <div>
+          <div class="pno serif">叁</div>
+          <div class="pname serif">好文视频系列</div>
+        </div>
+        <div class="pstat num"><span class="dot"></span>已更 <b>8</b> 集<br>网上好文 · 一文一集<br>S02《Agent与MCP入门》连载中</div>
+      </a>
+    </nav>
+    <a class="hall-go" href="videos/index.html">进放映厅 →</a>
+  </section>
+
+  <section class="hall" id="hall3">
+    <div class="hall-head">
+      <span class="hall-no num">展厅三号</span>
+      <h2 class="serif">文稿室</h2>
+      <span class="en">ARCHIVE</span>
+    </div>
+    <p class="hall-sub">最早的一批共学笔记，从「怎么跟 AI 说人话」学起。</p>
     <nav class="toc">
+      <div class="toc-group">入门系列 · FOUNDATIONS</div>
       <a href="html/01-提示词工程-手机版.html">
-        <div class="num serif">01</div>
+        <div class="no num">01</div>
         <div>
           <div class="t">提示词工程</div>
           <div class="d">怎么跟 AI 说人话，让它一次听懂</div>
         </div>
-        <img class="thumb" src="images/01-提示词工程-1-封面.webp" alt="提示词工程封面" loading="lazy" width="74" height="99">
+        <img class="thumb" src="images/01-提示词工程-1-封面.webp" alt="提示词工程封面" loading="lazy" width="72" height="96">
       </a>
       <a href="html/02-上下文工程.html">
-        <div class="num serif">02</div>
+        <div class="no num">02</div>
         <div>
           <div class="t">上下文工程</div>
           <div class="d">AI 的记忆从哪来，为什么它会忘</div>
         </div>
-        <img class="thumb" src="images/02-上下文工程-1-封面.webp" alt="上下文工程封面" loading="lazy" width="74" height="99">
+        <img class="thumb" src="images/02-上下文工程-1-封面.webp" alt="上下文工程封面" loading="lazy" width="72" height="96">
       </a>
       <a href="html/03-上下文组织原则.html">
-        <div class="num serif">03</div>
+        <div class="no num">03</div>
         <div>
           <div class="t">上下文组织原则</div>
           <div class="d">给 AI 喂料怎么排顺序，效果差很多</div>
         </div>
-        <img class="thumb" src="images/03-上下文组织原则-1-封面.webp" alt="上下文组织原则封面" loading="lazy" width="74" height="99">
+        <img class="thumb" src="images/03-上下文组织原则-1-封面.webp" alt="上下文组织原则封面" loading="lazy" width="72" height="96">
       </a>
       <a href="html/04-上下文注入方法.html">
-        <div class="num serif">04</div>
+        <div class="no num">04</div>
         <div>
           <div class="t">上下文注入方法</div>
           <div class="d">料备好了，怎么塞进 AI 脑子里</div>
         </div>
-        <img class="thumb" src="images/04-上下文注入方法-1-封面.webp" alt="上下文注入方法封面" loading="lazy" width="74" height="99">
+        <img class="thumb" src="images/04-上下文注入方法-1-封面.webp" alt="上下文注入方法封面" loading="lazy" width="72" height="96">
       </a>
       <a href="html/05-Tokenmaxxing.html">
-        <div class="num serif">05</div>
+        <div class="no num">05</div>
         <div>
           <div class="t">Tokenmaxxing</div>
           <div class="d">上下文塞得越满越好吗？把海烧开的教训</div>
         </div>
-        <img class="thumb" src="images/05-Tokenmaxxing-1-封面.webp" alt="Tokenmaxxing 封面" loading="lazy" width="74" height="99">
+        <img class="thumb" src="images/05-Tokenmaxxing-1-封面.webp" alt="Tokenmaxxing 封面" loading="lazy" width="72" height="96">
       </a>
-    </nav>
-
-    <div class="sec-title">
-      <h2 class="serif">专题</h2>
-      <span>SPECIAL TOPICS</span>
-    </div>
-    <nav class="topics">
+      <div class="toc-group">专题 · SPECIAL TOPICS</div>
       <a href="html/Agent到底是什么.html">
-        <div class="tag">AGENT</div>
-        <div class="t serif">Agent 到底是什么</div>
-        <div class="d">从聊天机器人到干活的智能体</div>
+        <div class="no serif">专</div>
+        <div>
+          <div class="t">Agent 到底是什么</div>
+          <div class="d">从聊天机器人到干活的智能体</div>
+        </div>
+        <img class="thumb" src="images/01-提示词工程-1-封面.webp" alt="" loading="lazy" width="72" height="96">
       </a>
       <a href="html/AGI五级楼梯.html">
-        <div class="tag">ROADMAP</div>
-        <div class="t serif">AGI 五级楼梯</div>
-        <div class="d">五级标准，现在走到哪级了</div>
+        <div class="no serif">专</div>
+        <div>
+          <div class="t">AGI 五级楼梯</div>
+          <div class="d">五级标准，现在走到哪级了</div>
+        </div>
+        <img class="thumb" src="images/02-上下文工程-1-封面.webp" alt="" loading="lazy" width="72" height="96">
       </a>
       <a href="html/AI发展史时间线.html">
-        <div class="tag">HISTORY</div>
-        <div class="t serif">AI 发展史时间线</div>
-        <div class="d">从图灵测试到大模型，七十年</div>
+        <div class="no serif">专</div>
+        <div>
+          <div class="t">AI 发展史时间线</div>
+          <div class="d">从图灵测试到大模型，七十年</div>
+        </div>
+        <img class="thumb" src="images/03-上下文组织原则-1-封面.webp" alt="" loading="lazy" width="72" height="96">
       </a>
     </nav>
-  </section>
 
-  <section id="works">
-    <div class="sec-title">
-      <h2 class="serif">设计作品</h2>
-      <span>PORTFOLIO · COMING SOON</span>
-    </div>
-    <div class="works-preview">
-      <div class="tag">TEXTILE VISUAL DESIGN</div>
-      <div class="t serif">家纺视觉设计集 · 整理中</div>
-      <div class="d">跨境电商一线的家纺视觉作品：主图场景、详情页、视觉规划。精选整理后上架。</div>
+    <div class="soon">
+      <div class="tag">TEXTILE VISUAL DESIGN · COMING SOON</div>
+      <div class="t serif">展厅四号 · 家纺视觉设计集，整理中</div>
+      <div class="d">跨境电商一线的家纺视觉作品：主图场景、详情页、视觉规划。精选整理后开展。</div>
       <div class="cats">
         <span class="cat">四件套</span>
         <span class="cat">电热毯</span>
@@ -338,10 +420,11 @@
     </div>
   </section>
 
-  <section id="about">
-    <div class="sec-title">
+  <section class="hall" id="about">
+    <div class="hall-head">
+      <span class="hall-no num">策展人</span>
       <h2 class="serif">关于桑老哥</h2>
-      <span>ABOUT</span>
+      <span class="en">ABOUT</span>
     </div>
     <ul class="about">
       <li><span class="who">白 天</span><span class="what">跨境电商设计师，给<em>四件套、电热毯</em>这些家纺做视觉</span></li>
@@ -350,7 +433,42 @@
     </ul>
   </section>
 
-  <footer>桑老哥 × 铁柱 · 手写 HTML · 手机电脑都能看</footer>
+  <footer>桑老哥 × 铁柱 · 手写 HTML · 常设展，长期更新</footer>
 </div>
+
+<script>
+(function () {
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var bar = document.getElementById("progress");
+  var h1 = document.querySelector("h1");
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+      if (!reduce && h1 && h.scrollTop < 700) {
+        h1.style.transform = "translateY(" + h.scrollTop * 0.16 + "px)";
+      }
+      ticking = false;
+    });
+  }
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  if ("IntersectionObserver" in window && !reduce) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".hall, header").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".hall, header").forEach(function (el) { el.classList.add("in"); });
+  }
+})();
+</script>
 </body>
 </html>
