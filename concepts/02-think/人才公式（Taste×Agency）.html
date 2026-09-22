@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人才公式（Taste×Agency） · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root { --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0; }
+/* ---- 页面专属：阶梯布局（不可替代性台阶 + K 型分化图） ---- */
+
+.main-col > section { margin-bottom:50px; }
+
+/* 核心公式牌 */
+.formula {
+  font-family:var(--font-head); font-weight:700;
+  font-size:clamp(22px,4vw,32px); line-height:1.6; color:var(--g9);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-box); padding:22px 24px; margin:18px 0 8px;
+  text-align:center; font-variant-numeric:tabular-nums;
+}
+.formula .fx { color:var(--fam); }
+.formula-src { font-size:14.5px; color:var(--ink-faint); text-align:center; }
+.warn {
+  text-align:center; font-size:15.5px; color:var(--fam-deep); margin:14px auto 0; max-width:34em;
+}
+
+/* 三因子定义卡 */
+.factors { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:768px) { .factors { grid-template-columns:1fr 1fr 1fr; } }
+.fac {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:14px 18px;
+}
+.fac .f-en { font-family:var(--font-head); font-weight:700; font-size:18px; color:var(--fam); }
+.fac .f-cn { font-weight:700; font-size:15px; color:var(--ink); margin-bottom:6px; }
+.fac p { font-size:14.5px; color:var(--g8); margin:0; line-height:1.75; }
+
+/* 不可替代性阶梯 */
+.stairs-note { font-size:14.5px; color:var(--ink-faint); margin:14px 0 10px; }
+.stairs { display:flex; align-items:flex-end; gap:12px; margin:6px 0 4px; }
+.stair {
+  flex:1; display:flex; flex-direction:column;
+  border-radius:var(--r-box) var(--r-box) 0 0;
+  padding:16px 18px;
+}
+.stair .s-lv {
+  font-size:14.5px; font-weight:700; letter-spacing:.08em; margin-bottom:4px;
+}
+.stair .s-name { font-family:var(--font-head); font-weight:700; font-size:19px; margin-bottom:6px; }
+.stair p { font-size:14.5px; line-height:1.7; margin:0; }
+.stair .s-state {
+  margin-top:10px; font-size:14.5px; font-weight:700;
+  border-radius:999px; padding:2px 10px; align-self:flex-start;
+}
+.st1 { min-height:210px; background:var(--g0); border:1px solid var(--line); border-bottom:6px solid var(--fam-line); }
+.st1 .s-lv, .st1 p { color:var(--ink-soft); }
+.st1 .s-name { color:var(--g7); }
+.st1 .s-state { background:var(--g2); color:var(--g6); border:1px solid var(--line); }
+.st2 { min-height:270px; background:var(--fam-soft); border:1px solid var(--fam-line); border-bottom:6px solid var(--fam); }
+.st2 .s-lv { color:var(--fam); } .st2 .s-name { color:var(--fam-deep); } .st2 p { color:var(--g8); }
+.st2 .s-state { background:var(--g0); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.st3 { min-height:330px; background:var(--fam-deep); border-bottom:6px solid var(--fam-deep); }
+.st3 .s-lv { color:var(--fam-line); } .st3 .s-name { color:#ffffff; } .st3 p { color:var(--fam-soft); }
+.st3 .s-state { background:rgba(255,255,255,.14); color:#ffffff; border:1px solid rgba(255,255,255,.4); }
+@media (max-width:767px) {
+  .stairs { flex-direction:column; align-items:stretch; }
+  .stair { min-height:0; border-radius:var(--r-box); }
+}
+.stairs-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:10px; }
+
+/* K 型分化图 */
+.kchart { margin:20px 0 6px; }
+.kchart svg { width:100%; height:auto; display:block; }
+.kchart .mk { fill:var(--fam); }
+.kchart .up { stroke:var(--fam); stroke-width:3; fill:none; }
+.kchart .down { stroke:var(--g5); stroke-width:2; fill:none; stroke-dasharray:7 5; }
+.kchart .bridge { stroke:var(--fam); stroke-width:2; fill:none; stroke-dasharray:4 4; }
+.kchart .node { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.kchart .tx { fill:var(--fam-deep); }
+.kchart .tx-g { fill:var(--ink-faint); }
+.kchart .tx-w { fill:#ffffff; }
+.kchart .tx-sw { fill:var(--fam-line); }
+.kchart .box-hot { fill:var(--fam-deep); }
+.kchart .box-g { fill:var(--g2); stroke:var(--g4); stroke-width:1.6; }
+.kchart-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 金句块 */
+.pquote {
+  font-family:var(--font-head); font-size:16.5px; color:var(--g9);
+  border-left:3px solid var(--fam); padding:2px 0 2px 14px; margin:14px 0;
+  line-height:1.8;
+}
+.pquote .q-src { display:block; font-family:var(--font-body); font-size:14.5px; color:var(--ink-faint); margin-top:6px; }
+
+/* 四种人卡 */
+.four { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .four { grid-template-columns:1fr 1fr; } }
+.four .f-row {
+  display:flex; align-items:center; gap:12px;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:10px 16px;
+}
+.four .f-no { flex:none; font-family:var(--font-head); font-weight:700; font-size:18px; color:var(--fam); font-variant-numeric:tabular-nums; }
+.four .f-tx { flex:1; font-size:15px; color:var(--g8); }
+.four .f-lean { flex:none; font-size:14.5px; font-weight:700; border-radius:999px; padding:1px 10px; }
+.lean-t { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.lean-a { background:var(--g2); color:var(--g7); border:1px solid var(--line); }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">人才公式（Taste×Agency）</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · AI 时代的人才观</p>
+    <h1>人才公式（Taste×Agency）</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-05-28</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意Taste就是那个举牌拍板的动作——判断权在人手里"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <div class="formula">Talent <span class="fx">=</span> Capability <span class="fx">×</span> Taste <span class="fx">×</span> Agency</div>
+    <p class="formula-src">来源：Notion CEO Ivan Zhao 在 Sequoia Capital 播客</p>
+    <p class="warn">是乘法不是加法——任何一项为零，整个公式归零。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三个因子各是什么</h2>
+    <div class="factors">
+      <div class="fac">
+        <p class="f-en">Capability</p>
+        <p class="f-cn">能力 · 执行技能</p>
+        <p>写代码、做设计、写文案、数据分析——把明确的事做出来。</p>
+      </div>
+      <div class="fac">
+        <p class="f-en">Taste</p>
+        <p class="f-cn">品味 · 价值判断</p>
+        <p>没有标准答案时做对选择的能力，根植于审美和价值观。</p>
+      </div>
+      <div class="fac">
+        <p class="f-en">Agency</p>
+        <p class="f-cn">主动性 · 意志力</p>
+        <p>不等指令就往前走，遇到阻力不退缩，把半成品真正做完。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>不可替代性台阶 ·核心</h2>
+    <p class="stairs-note">AI 时代三个因子的命运不同：越往上的台阶，AI 越够不着。台阶高度 = 不可替代程度。</p>
+    <div class="stairs">
+      <div class="stair st1">
+        <p class="s-lv">基础层 · 台阶一</p>
+        <p class="s-name">Capability</p>
+        <p>执行技能。配合 AI 工具的应届生能做到过去需要多年积累的水平——正在系统性贬值，变成基础能力。</p>
+        <p class="s-state">贬值中 · 别在这里焦虑</p>
+      </div>
+      <div class="stair st2">
+        <p class="s-lv">判断层 · 台阶二</p>
+        <p class="s-name">Taste</p>
+        <p>没有标准答案时拍板。AI 可以给建议，但判断哪个建议是对的仍然靠人——AI 给不了。</p>
+        <p class="s-state">不可替代 · 判断权在人</p>
+      </div>
+      <div class="stair st3">
+        <p class="s-lv">意志层 · 台阶三</p>
+        <p class="s-name">Agency</p>
+        <p>不等指令就发起一件事。AI 不会自己发起——它是放大器，不是发动机。目标清晰、主动性强的手，才配得上放大器。</p>
+        <p class="s-state">最稀缺 · 放大器握把</p>
+      </div>
+    </div>
+    <p class="stairs-cap">时间分配原则（徐新）：把时间从贬值的 Capability 挪到不可替代的 Taste + Agency</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>K 型分化：Agent 放大差距</h2>
+    <p>Agent 不是抹平能力差距，而是放大差距（归藏 2026-06，源文见 <span style="color:var(--ink-faint)">2026-06-12-归藏-万字长文Skills看法</span>，日期文章不建页面）：</p>
+    <div class="kchart">
+      <svg viewBox="0 0 680 300" role="img" aria-label="K型分化图：同一起点的两类人遇到Agent后走向分化，上支被放大、下支被放大混乱，Skill是从下支通向上支的弥合桥">
+        <defs>
+          <marker id="ka" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <!-- 同一起点 -->
+        <rect x="20" y="122" width="140" height="56" rx="14" class="node"/>
+        <text x="90" y="146" text-anchor="middle" font-size="15" font-weight="700" class="tx">同一起点</text>
+        <text x="90" y="167" text-anchor="middle" font-size="12.5" class="tx-g">Agent 到来</text>
+        <!-- 分叉点 -->
+        <circle cx="196" cy="150" r="6" class="box-hot"/>
+        <!-- 上支：被放大 -->
+        <path d="M202 148 C 320 130 420 84 500 62" class="up" marker-end="url(#ka)"/>
+        <rect x="500" y="26" width="160" height="66" rx="14" class="box-hot"/>
+        <text x="580" y="52" text-anchor="middle" font-size="15" font-weight="700" class="tx-w">被放大</text>
+        <text x="580" y="74" text-anchor="middle" font-size="12.5" class="tx-sw">目标清晰·上下文好·品味判断强</text>
+        <!-- 下支：被放大混乱 -->
+        <path d="M202 154 C 320 176 420 220 500 242" class="down" marker-end="url(#ka)"/>
+        <rect x="500" y="212" width="160" height="66" rx="14" class="box-g"/>
+        <text x="580" y="238" text-anchor="middle" font-size="15" font-weight="700" fill="#57534e">被放大混乱</text>
+        <text x="580" y="260" text-anchor="middle" font-size="12.5" fill="#78716c">目标混乱·没文档·没判断</text>
+        <!-- Skill 弥合桥 -->
+        <path d="M560 246 C 480 246 460 150 540 96" class="bridge" marker-end="url(#ka)"/>
+        <text x="452" y="168" font-size="14" font-weight="700" class="tx">Skill 弥合</text>
+        <text x="452" y="188" font-size="12.5" class="tx-g">头部已验证能力打包成</text>
+        <text x="452" y="204" font-size="12.5" class="tx-g">普通用户可调用的商品</text>
+      </svg>
+      <p class="kchart-cap">人才公式决定你在 K 的上半还是下半：Taste 和 Agency 越强，Agent 放大效果越好</p>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>品味扩散：Taste 可训练（Howie Liu，Airtable CEO 2026-06）</h2>
+    <div class="pquote">"很多团队的真实瓶颈，不在工具数量，而在少数人的品味和反馈无法扩散。"<span class="q-src">Howie Liu，2026-06-24 共学</span></div>
+    <p>团队所有内容都要过老板反馈，老板一忙团队就卡住。解法不是招更多人，而是<strong>让 Agent 学会你的品味</strong>——从聊天记录、历史反馈、决策痕迹中学习偏好、语气和边界。</p>
+    <p>Agent 学到的是品味的<strong>模式</strong>（什么好、什么不好、为什么），最终拍板仍然靠人。这和人才公式不矛盾：Taste 的"判断权"不可替代，但 Taste 的"传递方式"可以用 Agent 放大。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>为什么现在重要</h2>
+    <p>AI 让 Capability 正在系统性贬值，但 Taste 和 Agency 是 AI 给不了的：</p>
+    <ul>
+      <li><strong>Taste</strong> 需要"在没有标准答案时拍板"——AI 可以给建议，判断哪个建议对，靠人</li>
+      <li><strong>Agency</strong> 需要"不等指令就行动"——AI 不会自己发起一件事</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>结果责任：长期值钱的四种人（lencx 2026-07）</h2>
+    <p>AI 让工程价值从"写代码"迁移到"对结果负责"：</p>
+    <div class="four">
+      <div class="f-row"><span class="f-no">1</span><span class="f-tx">能把模糊问题变成清晰约束的</span><span class="f-lean lean-t">偏 Taste</span></div>
+      <div class="f-row"><span class="f-no">2</span><span class="f-tx">懂业务真实风险的</span><span class="f-lean lean-t">偏 Taste</span></div>
+      <div class="f-row"><span class="f-no">3</span><span class="f-tx">能设计可验证、可恢复系统的</span><span class="f-lean lean-a">偏 Agency</span></div>
+      <div class="f-row"><span class="f-no">4</span><span class="f-tx">愿意对结果兜底的</span><span class="f-lean lean-a">偏 Agency</span></div>
+    </div>
+    <p>跟人才公式一脉相承：前两条偏 Taste（判断什么对、什么险），后两条偏 Agency（把事做到能验证、敢兜底）。Capability（纯执行）正在贬值，约束、判断和兜底才是 AI 给不了的。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li><strong>Taste 是你的护城河</strong>——每天审美推送、学设计趋势、选品时的直觉判断，就是在积累品味</li>
+      <li><strong>Agency 是你最大的优势</strong>——每天用铁柱、学 AI、做共学笔记，这个主动性本身就是稀缺的</li>
+      <li><strong>别在 Capability 上焦虑</strong>——"会做图"正在变成基础能力，差异在品味和判断</li>
+      <li><strong>时间分配原则（徐新 2026-07）</strong>——时间花在只有你能做的事（判断力、审美、品味、选题、懂人性），能交给 AI 的执行（P 图、写初稿、整理资料）全交出去</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/聚焦原则.html"><span class="rel-t">聚焦原则</span><span class="rel-d">判断力是 Focus 的核心组件</span></a>
+      <a href="../08-ecomm/AI对跨境电商设计师的价值边界.html"><span class="rel-t">AI对跨境电商设计师的价值边界</span><span class="rel-d">AI 是效率倍增器，最终判断只有人能做</span></a>
+      <a href="../02-think/难的分类学.html"><span class="rel-t">难的分类学</span><span class="rel-d">AI 加速不了的才是护城河——同一底层逻辑</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">Agent 时代进化版：人从 IC 变成 Agent Manager</span></a>
+      <a href="../02-think/损失函数思维.html"><span class="rel-t">损失函数思维</span><span class="rel-d">给 Taste 加可度量框架：说清"差在哪、差多少"</span></a>
+      <a href="../02-think/最后一公里.html"><span class="rel-t">最后一公里</span><span class="rel-d">人做最后 10% 的拍板，对应 Taste 的角色</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Notion CEO Ivan Zhao（Sequoia 播客，2026-05-28 共学）</li>
+      <li>归藏 Skills 万字长文（2026-06-12，K 型分化；日期文章不建页面）</li>
+      <li>Airtable CEO Howie Liu 谈 AI 前 1% 用户（2026-06-24 共学，品味扩散）</li>
+      <li>lencx《Agent 开发指南》（2026-07-28，waytoAGI 飞书；结果责任四种人）</li>
+      <li>徐新时间分配（2026-07 共学）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · 人才公式（Taste×Agency）</p>
+    <p>词条源：concepts(概念库)/思维模型/人才公式（Taste×Agency）.md（2026-05-28 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心公式</a></li>
+    <li><a href="#s2">三个因子</a></li>
+    <li><a href="#s3">不可替代性台阶 ·核心</a></li>
+    <li><a href="#s4">K型分化</a></li>
+    <li><a href="#s5">品味扩散</a></li>
+    <li><a href="#s6">为什么现在重要</a></li>
+    <li><a href="#s7">四种长期值钱的人</a></li>
+    <li><a href="#s8">桑老哥适用</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

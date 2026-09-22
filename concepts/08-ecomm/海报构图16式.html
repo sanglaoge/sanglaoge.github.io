@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>海报构图16式 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：电商设计 · 明快橙（词典网格·高密度） ---- */
+:root {
+  --fam:#c2410c; --fam-deep:#7c2d12; --fam-soft:#fff7ed; --fam-line:#fed7aa;
+}
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 词典卡墙 */
+.dict { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:10px; margin:14px 0 20px; }
+.dcard {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 14px 10px; box-shadow:var(--sh-1);
+  transition:border-color .15s;
+}
+.dcard:hover { border-color:var(--fam); }
+.dcard .dn {
+  font-family:var(--font-head); font-size:27px; font-weight:700; color:var(--fam);
+  line-height:1; font-variant-numeric:tabular-nums;
+}
+.dcard .dt { font-weight:700; font-size:15px; color:var(--ink); margin:5px 0 2px; }
+.dcard .dd { font-size:14.5px; color:var(--g7); line-height:1.55; }
+.dcard.first .dn { color:var(--fam-deep); }
+.dcard.first { border-color:var(--fam-line); background:var(--fam-soft); }
+.dcard.first::after {
+  content:"下册首推"; display:inline-block; font-size:12px; font-weight:700;
+  color:var(--fam-deep); margin-top:6px;
+}
+
+/* 抽屉节标题 */
+.drawer { margin:26px 0 6px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.drawer .dw-t { font-size:17.5px; font-weight:700; color:var(--ink); margin:0; }
+.drawer .dw-c {
+  font-size:13px; font-weight:600; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 10px; white-space:nowrap;
+}
+.drawer .dw-h { font-size:14.5px; color:var(--ink-faint); }
+
+/* 现场演示条 */
+.demo {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:13px 18px; margin:16px 0;
+  font-size:15.5px; color:var(--g8);
+}
+.demo b { color:var(--fam-deep); }
+
+/* 数字锚点条 */
+.anchors { display:grid; grid-template-columns:repeat(auto-fill,minmax(118px,1fr)); gap:10px; margin:16px 0; }
+.an {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:10px 12px 8px; text-align:center;
+}
+.an .av { font-size:21px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.3; }
+.an .ak { font-size:14.5px; color:var(--ink-faint); }
+
+/* 模板代码块 */
+pre.tmpl {
+  background:var(--g2); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:14px 16px;
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8;
+  overflow-x:auto; white-space:pre-wrap; color:var(--g8); margin:14px 0;
+}
+
+/* 验收清单 */
+.check8 { display:grid; grid-template-columns:1fr; gap:8px; margin:14px 0; counter-reset:c8; }
+@media (min-width:640px) { .check8 { grid-template-columns:1fr 1fr; } }
+.ck {
+  display:flex; gap:10px; align-items:flex-start;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:10px 14px; font-size:15px; color:var(--g8); counter-increment:c8;
+}
+.ck::before {
+  content:counter(c8); flex:none; width:22px; height:22px; line-height:22px;
+  text-align:center; border-radius:50%; background:var(--fam); color:#fff;
+  font-weight:700; font-size:13px; margin-top:3px;
+}
+.ck b { color:var(--g9); }
+
+/* 六查 */
+.six { counter-reset:s6; padding-left:0; list-style:none; }
+.six li {
+  counter-increment:s6; position:relative; padding:8px 0 8px 44px;
+  border-bottom:1px solid var(--line); color:var(--g8); font-size:15.5px;
+}
+.six li:last-child { border-bottom:none; }
+.six li::before {
+  content:counter(s6); position:absolute; left:0; top:8px;
+  width:28px; height:28px; line-height:28px; text-align:center; border-radius:var(--r-el);
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  font-weight:700; font-size:15px;
+}
+.six li.hot::before { background:var(--fam); color:#fff; border-color:var(--fam); }
+.six li.hot b { color:var(--fam-deep); }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">电商设计</span><span class="sep">›</span>
+    <span class="here">海报构图16式</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">电商设计 · 生图提示词的骨架层</p>
+    <h1>海报构图16式</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-18</span>
+      <span>下次复核 2026-12-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意构图=给画面定焦点"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>风格词告诉 AI 穿什么衣服，构图词才告诉它骨架怎么搭——标题放哪、主视觉多大、视线从哪走到哪。</blockquote>
+    <div class="demo"><b>本页就是现场演示：</b>你正在看的这页正文，用的正是 <b>21式·模块网格</b>——内容按格子归位、同级间距一致、只有章节标题在破格。讲网格的页面自己先按网格站好。</div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>病根：为什么写「高级极简电影感」出来的是放大版 PPT</h2>
+    <p>提示词堆风格词，AI 只知道氛围不知道结构，于是给最偷懒的默认摆法：中间一张图、上面标题、下面小字。一张海报有六个可控变量，构图词就是把这六个交代清楚：</p>
+    <div class="dict">
+      <div class="dcard"><div class="dt">焦点</div><div class="dd">第一眼看哪里</div></div>
+      <div class="dcard"><div class="dt">层级</div><div class="dd">标题/主图/日期谁先谁后</div></div>
+      <div class="dcard"><div class="dt">分组</div><div class="dd">哪些内容算一堆</div></div>
+      <div class="dcard"><div class="dt">平衡</div><div class="dd">左右上下视觉重量稳不稳</div></div>
+      <div class="dcard"><div class="dt">动势</div><div class="dd">视线走直线、斜线还是曲线</div></div>
+      <div class="dcard"><div class="dt">空间</div><div class="dd">哪里留白哪里密集</div></div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>上册：四个抽屉装 16 式（不用背，按需取）</h2>
+
+    <div class="drawer"><p class="dw-t">抽屉一 · 平衡与焦点</p><span class="dw-c">6 式</span><span class="dw-h">主角站哪</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">1</div><div class="dt">中轴对称</div><div class="dd">证件照站正中间，庄重仪式。品牌发布、奢侈品、典礼</div></div>
+      <div class="dcard"><div class="dn">2</div><div class="dt">非对称平衡</div><div class="dd">大块配小块，秤还是平的。文化、时尚、科技</div></div>
+      <div class="dcard first"><div class="dn">3</div><div class="dt">三分法</div><div class="dd">别站正中间，站三分线交点。摄影、产品、首屏</div></div>
+      <div class="dcard"><div class="dn">4</div><div class="dt">黄金螺旋</div><div class="dd">弧线逐级收紧到内圈焦点。艺术、自然、叙事</div></div>
+      <div class="dcard"><div class="dn">5</div><div class="dt">大留白单点</div><div class="dd">整面墙只挂一幅小画，安静在说话。高端品牌、香氛</div></div>
+      <div class="dcard"><div class="dn">6</div><div class="dt">边缘锚定</div><div class="dd">主体推出去只露一半，越界有张力。特写、社交封面</div></div>
+    </div>
+
+    <div class="drawer"><p class="dw-t">抽屉二 · 几何骨架</p><span class="dw-c">4 式</span><span class="dw-h">隐形骨架挂元素</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">7</div><div class="dt">三角金字塔</div><div class="dd">顶尖强调底边承重，天然三层。群像、权威主题</div></div>
+      <div class="dcard"><div class="dn">8</div><div class="dt">倒三角</div><div class="dd">头重脚轻，压迫速度危险。先锋、悬疑、警示</div></div>
+      <div class="dcard"><div class="dn">9</div><div class="dt">同心环绕</div><div class="dd">水波纹一圈圈锁住中心。音乐、科技、周年</div></div>
+      <div class="dcard"><div class="dn">10</div><div class="dt">框中框</div><div class="dd">嵌套边框限出展陈感。艺术展、建筑、画册</div></div>
+    </div>
+
+    <div class="drawer"><p class="dw-t">抽屉三 · 动势路径</p><span class="dw-c">4 式</span><span class="dw-h">视线怎么走</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">11</div><div class="dt">对角线</div><div class="dd">滑梯，速度和冲突。体育、促销、行动号召</div></div>
+      <div class="dcard"><div class="dn">12</div><div class="dt">放射爆发</div><div class="dd">唯一中心向外炸开。节庆、宣言、强情绪</div></div>
+      <div class="dcard"><div class="dn">13</div><div class="dt">Z 型路径</div><div class="dd">逛超市动线：左上→右上→左下→右下。活动、首屏</div></div>
+      <div class="dcard"><div class="dn">14</div><div class="dt">S 型曲线</div><div class="dd">山路十八弯，优雅流动。美妆、饮品、自然</div></div>
+    </div>
+
+    <div class="drawer"><p class="dw-t">抽屉四 · 边缘与分割</p><span class="dw-c">2 式</span><span class="dw-h">画面切开讲两件事</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">15</div><div class="dt">L 型锚定</div><div class="dd">角落两条信息带像支架托住主视觉。建筑、目录</div></div>
+      <div class="dcard"><div class="dn">16</div><div class="dt">左右分屏</div><div class="dd">Before/After 切两半，60/40 别 50/50。对比、联名</div></div>
+    </div>
+
+    <h3>数字锚点</h3>
+    <div class="anchors">
+      <div class="an"><div class="av">61.8%</div><div class="ak">黄金螺旋每级缩</div></div>
+      <div class="an"><div class="av">65-80%</div><div class="ak">大留白留白占比</div></div>
+      <div class="an"><div class="av">55-70%</div><div class="ak">边缘锚定主体占</div></div>
+      <div class="an"><div class="av">4-7 层</div><div class="ak">同心环绕层数</div></div>
+      <div class="an"><div class="av">-24°</div><div class="ak">对角色带旋转</div></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>下册：栅格与信息密度（17-32式）</h2>
+    <p>上册管"观众先看哪"，下册管"内容一多怎么还不乱"——两层控制：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>层</th><th>管什么</th><th>类比</th></tr></thead>
+      <tbody>
+        <tr><td>构图（1-16式）</td><td>视线入口与路径</td><td>衣柜里"外套放显眼处"</td></tr>
+        <tr><td>栅格（17-32式）</td><td>对齐、比例、间距、复用</td><td>衣柜分几格、每格放什么</td></tr>
+      </tbody>
+    </table></div>
+    <p>内容少靠构图就够；内容一多（图+标题+日期+CTA 同屏）没有栅格必乱。<strong>题眼：名词不算参数</strong>——写"使用网格系统"AI 仍靠猜；要写"六栏网格、24px 沟槽、标题跨四栏"才有可执行结构。</p>
+
+    <div class="drawer"><p class="dw-t">抽屉五 · 分割与条带</p><span class="dw-c">2 式</span><span class="dw-h">先切成有关系的区域</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">17</div><div class="dt">上下分屏</div><div class="dd">图上文下或文上图下，62/38 别对半。图像+说明</div></div>
+      <div class="dcard"><div class="dn">18</div><div class="dt">水平带状</div><div class="dd">横条一层层码信息，像楼层。日程表、多章节</div></div>
+    </div>
+
+    <div class="drawer"><p class="dw-t">抽屉六 · 网格系统</p><span class="dw-c">6 式</span><span class="dw-h">内容越多越要骨架</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">19</div><div class="dt">单栏手稿</div><div class="dd">一栏到底，读字优先。长文、宣言、公告</div></div>
+      <div class="dcard"><div class="dn">20</div><div class="dt">多栏编辑</div><div class="dd">报纸版面，多栏共基线。杂志页、文章海报</div></div>
+      <div class="dcard first"><div class="dn">21</div><div class="dt">模块网格</div><div class="dd">4×6 格子万物归位。数据海报、参数、作品集</div></div>
+      <div class="dcard"><div class="dn">22</div><div class="dt">瑞士非对称</div><div class="dd">严格网格+大胆留白+斜排文字。展览、理性品牌</div></div>
+      <div class="dcard"><div class="dn">23</div><div class="dt">层级卡片 Bento</div><div class="dd">大小格子混拼，重要的格子大。功能、导航页</div></div>
+      <div class="dcard"><div class="dn">24</div><div class="dt">棋盘交替</div><div class="dd">黑白格轮流图/文，节奏感。团队、目录</div></div>
+    </div>
+
+    <div class="drawer"><p class="dw-t">抽屉七 · 图文关系</p><span class="dw-c">4 式</span><span class="dw-h">图和字谁当主角</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">25</div><div class="dt">满版主视觉</div><div class="dd">一张图铺满，字压上去。电影、活动、情绪大片</div></div>
+      <div class="dcard"><div class="dn">26</div><div class="dt">大字主导</div><div class="dd">字就是图，字号即情绪。宣言、促销、观点</div></div>
+      <div class="dcard"><div class="dn">27</div><div class="dt">图上叠字</div><div class="dd">字压图，须交代前后穿插关系。封面、社媒</div></div>
+      <div class="dcard"><div class="dn">28</div><div class="dt">双联/三联</div><div class="dd">两三张竖版并列成套。系列产品、多款色卡</div></div>
+    </div>
+
+    <div class="drawer"><p class="dw-t">抽屉八 · 破格与节奏</p><span class="dw-c">4 式</span><span class="dw-h">先立规则再选破哪</span></div>
+    <div class="dict">
+      <div class="dcard"><div class="dn">29</div><div class="dt">拼贴层叠</div><div class="dd">元素叠元素，制造层次。街头、潮流、音乐节</div></div>
+      <div class="dcard"><div class="dn">30</div><div class="dt">破格网格</div><div class="dd">80% 归位+1 个元素出格当焦点。杂志封面</div></div>
+      <div class="dcard"><div class="dn">31</div><div class="dt">重复节奏</div><div class="dd">同元素重复，重复里藏变化。系列品、日历</div></div>
+      <div class="dcard"><div class="dn">32</div><div class="dt">密集全铺</div><div class="dd">铺满不留白，密度即氛围。甩卖、市集、信息墙</div></div>
+    </div>
+
+    <h3>两套表达：先图像找方向，HTML 落精度</h3>
+    <p>图像模型栅格是软约束（结构像即可），HTML/CSS 是硬约束（像素级精确、文字零乱码）。</p>
+<pre class="tmpl">图像版骨架：主构图【17-32选一】；建立【N】栏×【M】行隐形模块网格，沟槽一致；
+主标题跨【几栏×几行】，主视觉跨【几栏×几行】；日期/说明/CTA 各占【模块位置】，
+共享【左边线/基线】；只允许【一个破格元素】。</pre>
+<pre class="tmpl">HTML版骨架：外层 CSS Grid，grid-template-columns: repeat(N,1fr)；gap: clamp()；
+各内容 grid-area 定位；图片 object-fit:cover + object-position 锁裁切焦点；
+只允许【指定元素】跨线；移动端保持构图关系不退化成单列堆叠。</pre>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>总模板：填空题直接抄</h2>
+<pre class="tmpl">制作一张【比例】海报，主题为【主题】。
+采用【构图名称】；主视觉【对象】位于【位置】，约占画面【比例】；
+视线从【入口】沿【路径】移动到【终点】；
+标题为一级信息，【副标题/日期/CTA】依次为二、三级；
+使用【留白策略】【字体语气】【色彩材质】；
+避免【多焦点/随机文字/过度装饰/错误裁切】。</pre>
+    <p>进阶：主构图 + 辅助构图组合，一次只写一个主构图。例：主用三分法（产品落右上交点、标题沿左侧三分线），辅一条 S 曲线串起三处信息。这比堆「瑞士包豪斯杂志感」稳定得多。原文每式自带两版提示词（图像模型版 + HTML/CSS 版），照抄替换方括号即可。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>生成后六查（比追加「高级一点」有用）</h2>
+    <ol class="six">
+      <li><b>第一眼焦点清楚吗</b>——标题和图一样抢眼就弱化一个</li>
+      <li><b>三层信息分得开吗</b>——要有明显尺寸差</li>
+      <li><b>对齐稳吗</b>——标题、图边缘、日期共享对齐线</li>
+      <li><b>留白在帮忙吗</b>——空间是隔离内容的，不只是没东西</li>
+      <li><b>裁切伤关键部位吗</b>——脸、手、产品标志、文字</li>
+      <li class="hot"><b>缩小还能看懂吗</b>——缩成手机信息流大小，入口还在不在。电商直接对口：亚马逊主图天生在手机小卡片里被扫一眼，经不经得起缩小决定点击</li>
+    </ol>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>下册 8 项验收（发现问题时先改结构参数，别堆风格词）</h2>
+    <div class="check8">
+      <div class="ck"><span><b>入口存在</b>：缩到手机信息流还能找到标题</span></div>
+      <div class="ck"><span><b>主次比例说得出</b>：60/40 或跨栏数</span></div>
+      <div class="ck"><span><b>共同边线稳</b>：至少共享 1-2 条对齐线</span></div>
+      <div class="ck"><span><b>沟槽一致</b>：同级间距必须重复</span></div>
+      <div class="ck"><span><b>破格受控</b>：只留一个主破格</span></div>
+      <div class="ck"><span><b>图文层级明确</b>：叠字能判断字前/字后/穿插</span></div>
+      <div class="ck"><span><b>裁切安全</b>：人脸/logo/CTA/标题笔画不能切</span></div>
+      <div class="ck"><span><b>HTML 能响应</b>：改宽度构图关系仍成立</span></div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>边界提醒</h2>
+    <ul>
+      <li>黄金螺旋是比例草图不是美学定律，别把辅助线贴上成品</li>
+      <li>非对称 ≠ 随便偏：对侧必须有对比或密度配重</li>
+      <li>Z 型是编排脚手架，不是观众固定眼动规律</li>
+      <li>左右分屏两侧必须有关系，50/50 没主次</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>桑老哥直用</h2>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">配套资源库</h3>
+      <p>开源《350套排版布局图鉴》<code>github.com/nevertoday/350-layout-compositions</code>（小小东作，8 分类 33 子题，含 CSV/JSON，报编号可向 AI 精确要构图）——本词条 32 式的扩容弹药库，做排版/海报先来这找参考。</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">生图路</h3>
+      <p>Lovart 上册选焦点动势（1-16 式）→ 下册补栅格密度（17-32 式）→ 填模板 → 过六查+八查。与生图提示词排查表一横一纵；电商场景叠加排查表 §4.4 子母模板用。</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">网页路</h3>
+      <p>笔记站首页、活动页、公众号头图等 HTML 产物，铁柱按 HTML 版骨架执行；Bento（23式）= 卡片布局，模块网格（21式）= 首页骨架，多栏编辑（20式）= 文章页。</p>
+    </div>
+    <div class="card hl">
+      <h3 style="margin-top:0;">上手</h3>
+      <p>先只用 <strong>21 模块网格练三张</strong>（4×6 格、80% 归位、一个标题破格），熟练再扩其他式。</p>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../08-ecomm/生图提示词排查表.html"><span class="rel-t">生图提示词排查表</span><span class="rel-d">与本条一横一纵：构图管骨架，排查表管出图质检</span></a>
+      <a href="../08-ecomm/DESIGN.md-给AI的视觉角色卡.html"><span class="rel-t">DESIGN.md-给AI的视觉角色卡</span><span class="rel-d">角色卡管整体风格，构图词管单张骨架</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Adrian Punk《AI 做海报、HTML构图手册：16 种控制焦点与动势的海报构图——上册》(@AdrianPunk115, X 2026-08-25, WaytoAGI 飞书转载)</li>
+      <li>Adrian Punk 同系列下册《16 种控制网格、图文关系与信息密度》(X 2026-08-27, 2026-09-18 审计并入本词条)</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 电商设计家族 · 海报构图16式</p>
+    <p>词条源：concepts(概念库)/电商设计/海报构图16式.md（2026-09-18 建条）· 本页生成 2026-09-21</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话 ·现场演示</a></li>
+    <li><a href="#s2">病根·六变量</a></li>
+    <li><a href="#s3">上册 16 式</a></li>
+    <li><a href="#s4">下册 17-32 式</a></li>
+    <li><a href="#s5">总模板</a></li>
+    <li><a href="#s6">生成后六查 ·核心</a></li>
+    <li><a href="#s7">下册 8 项验收</a></li>
+    <li><a href="#s8">边界提醒</a></li>
+    <li><a href="#s9">桑老哥直用</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

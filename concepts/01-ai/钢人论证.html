@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钢人论证 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：对比布局（稻草人 vs 钢人双栏对照 + 双向钢人图 + Prompt 块） ---- */
+
+/* 双栏对照 */
+.vs { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .vs { grid-template-columns:1fr 56px 1fr; align-items:stretch; } }
+.vs .side-card { border-radius:var(--r-box); padding:18px 20px; }
+.vs .straw { background:var(--g2); border:1px solid var(--g4); }
+.vs .steel { background:var(--fam-soft); border:1.5px solid var(--fam); }
+.vs .side-card .sc-tag { display:inline-block; font-size:14.5px; font-weight:700; border-radius:999px; padding:1px 12px; margin-bottom:10px; }
+.vs .straw .sc-tag { background:var(--g0); color:var(--g6); border:1px solid var(--g4); }
+.vs .steel .sc-tag { background:var(--g0); color:var(--fam-deep); border:1px solid var(--fam); }
+.vs .side-card h3 { margin:0 0 8px; font-size:18px; }
+.vs .straw h3 { color:var(--g7); }
+.vs .steel h3 { color:var(--fam-deep); }
+.vs .side-card p { font-size:15px; margin-bottom:8px; color:var(--g8); }
+.vs .vs-mid { display:flex; align-items:center; justify-content:center; }
+.vs .vs-mid span {
+  font-family:var(--font-head); font-weight:700; font-size:15px; color:var(--g5);
+  border:1px solid var(--g4); background:var(--g0); border-radius:50%; width:44px; height:44px; line-height:44px; text-align:center;
+}
+
+/* SVG 配色全走 class→var */
+.svg-g { width:100%; height:auto; display:block; }
+.sg-fill { fill:var(--fam); }
+.sg-stroke { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.6; }
+.sg-flow { stroke:var(--fam); stroke-width:1.8; fill:none; }
+.sg-txt { fill:var(--fam-deep); font-weight:700; }
+.sg-ink { fill:var(--g8); }
+.sg-faint { fill:var(--g6); }
+.sg-base { stroke:var(--g4); stroke-width:1.6; fill:none; }
+
+/* Prompt 块 */
+.prompt {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.85;
+  background:var(--g9); color:var(--g2); border-radius:var(--r-box);
+  padding:18px 22px; margin:16px 0; overflow-x:auto; white-space:pre-wrap; word-break:break-all;
+}
+.prompt .p-hi { color:var(--fam-line); font-weight:700; }
+
+/* 强在三处 */
+.strong3 { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .strong3 { grid-template-columns:1fr 1fr 1fr; } }
+.strong3 .s { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:11px 14px; font-size:14.5px; color:var(--ink-soft); }
+.strong3 .s b { display:block; color:var(--fam-deep); margin-bottom:2px; font-size:15px; }
+
+/* 三条使用规矩 */
+.rules3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; counter-reset:r3; }
+@media (min-width:768px) { .rules3 { grid-template-columns:1fr 1fr 1fr; } }
+.rules3 .rl { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:0 0 var(--r-el) var(--r-el); padding:14px 16px; position:relative; }
+.rules3 .rl h3 { margin:0 0 8px; font-size:16.5px; color:var(--fam-deep); }
+.rules3 .rl p { font-size:14.5px; color:var(--ink-soft); }
+.rules3 .rl .who { display:inline-block; margin-top:8px; font-size:14.5px; color:var(--ink-faint); border-top:1px dashed var(--line); padding-top:6px; width:100%; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">钢人论证</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 反谄媚的最强工具</p>
+    <h1>钢人论证（Steelman）</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-18</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌宣告，示意一份不留情面的独立报告"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p><strong>稻草人 = 把对方观点削弱了打；钢人 = 先把对方观点补到最强再判断。</strong></p>
+    <p>双向钢人 = 让 AI 同时强化"你的观点"和"反对你的观点"各到最强——<strong>谄媚互相抵消，剩下的才是真分歧</strong>。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>对比：稻草人 vs 钢人</h2>
+    <div class="vs">
+      <div class="side-card straw">
+        <span class="sc-tag">straw man · 稻草人</span>
+        <h3>削弱了再打</h3>
+        <p>把对方观点歪曲成弱化版再攻击。</p>
+        <p>赢了的是面子，输掉的是认知——你以为驳倒了对方，其实只驳倒了自己捏的稻草人。</p>
+      </div>
+      <div class="vs-mid"><span>对比</span></div>
+      <div class="side-card steel">
+        <span class="sc-tag">steelman · 钢人</span>
+        <h3>补到最强再判断</h3>
+        <p>先把对方观点补到最强版本，再下判断。</p>
+        <p>过了钢人这一关还站得住的结论，才是真的站得住——赢的是真分歧。</p>
+      </div>
+    </div>
+    <p>双向钢人的结构（两路强化，汇到真分歧）：</p>
+    <svg class="svg-g" viewBox="0 0 680 190" role="img" aria-label="双向钢人结构图：你的观点与反对观点各自强化到最强，谄媚抵消后在真分歧处汇合，人拍板">
+      <defs>
+        <marker id="ar5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="sg-fill"/>
+        </marker>
+      </defs>
+      <rect x="30" y="30" width="200" height="46" rx="12" class="sg-stroke"/>
+      <text x="130" y="59" text-anchor="middle" font-size="13.5" class="sg-txt">你的观点</text>
+      <rect x="30" y="112" width="200" height="46" rx="12" class="sg-stroke"/>
+      <text x="130" y="141" text-anchor="middle" font-size="13.5" class="sg-txt">反对你的观点</text>
+      <line x1="234" y1="53" x2="322" y2="82" class="sg-flow" marker-end="url(#ar5)"/>
+      <line x1="234" y1="135" x2="322" y2="106" class="sg-flow" marker-end="url(#ar5)"/>
+      <text x="278" y="46" text-anchor="middle" font-size="11.5" class="sg-faint">强化到最强</text>
+      <text x="278" y="160" text-anchor="middle" font-size="11.5" class="sg-faint">强化到最强</text>
+      <rect x="326" y="70" width="150" height="48" rx="12" class="sg-stroke"/>
+      <text x="401" y="92" text-anchor="middle" font-size="13" class="sg-txt">谄媚互相抵消</text>
+      <text x="401" y="110" text-anchor="middle" font-size="11.5" class="sg-ink">各自不留情面</text>
+      <line x1="480" y1="94" x2="556" y2="94" class="sg-flow" marker-end="url(#ar5)"/>
+      <rect x="560" y="70" width="96" height="48" rx="12" class="sg-stroke"/>
+      <text x="608" y="92" text-anchor="middle" font-size="13" class="sg-txt">真分歧</text>
+      <text x="608" y="110" text-anchor="middle" font-size="11.5" class="sg-ink">人拍板</text>
+      <text x="340" y="178" text-anchor="middle" font-size="11.5" class="sg-faint">AI 负责把两边都补到最强，判断永远留给人</text>
+    </svg>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>来龙去脉</h2>
+    <ul>
+      <li>straw man（稻草人谬误）→ 反造词 steelman（钢人论证）</li>
+      <li>内核古已有之：《论自由》"只知其一等于无知"（He who knows only his own side of the case knows little of that）</li>
+      <li>用途本质：<strong>AI 时代最强反谄媚工具</strong></li>
+    </ul>
+    <blockquote>只知其一，等于无知。<span class="q-src">—— 密尔《论自由》第二章（已核对原文）</span></blockquote>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>优化版 Prompt（吸收评论区批评）</h2>
+    <pre class="prompt"><span class="p-hi">先别急着回答，也别默认我把问题想清楚了。</span>
+请对这个问题做一次"双向钢人论证"：
+1. 重述我真正想解决的问题——不是字面意思，是背后的真实困惑。如果我问错了问题，直接指出。
+2. 钢人强化：①假设我是对的，给出最强论证；②给出反对它的最强替代方案（可能不止一个），
+   不留情面，写成独立报告，不许照顾我的面子。所有论证基于可核实的事实，没证据的标注[推测]。
+3. 找出双方真正的分歧点，回答：如果只能改变一个假设就能翻转结论，那个假设是什么？
+4. 只问我一个最关键的问题。等我回答后，再给明确判断、理由和下一步行动。
+
+我的问题是：
+[粘贴问题]</pre>
+    <p>比原版强在三处（来自评论区）：</p>
+    <div class="strong3">
+      <div class="s"><b>"反方"→"最强替代方案"</b>避免硬造二元对立</div>
+      <div class="s"><b>证据约束 + [推测] 标注</b>防"逻辑完整但事实悬空"</div>
+      <div class="s"><b>"独立报告、不留情面"</b>对抗自己钢自己的软</div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>三条使用规矩（比 Prompt 更重要 ·核心）</h2>
+    <div class="rules3">
+      <div class="rl">
+        <h3>开关原则</h3>
+        <p>只在"复杂 + 拿不准 + 代价大"时用。小事别上钢人，弊大于利。</p>
+        <span class="who">提出：陆子男</span>
+      </div>
+      <div class="rl">
+        <h3>反方独立原则</h3>
+        <p>同一个模型自己正说反说天然偏软。重大决定把反方报告贴到新对话/另一模型去攻击——双保险。</p>
+        <span class="who">提出：王洛川</span>
+      </div>
+      <div class="rl">
+        <h3>人拍板原则</h3>
+        <p>钢人提高的是思考质量，<strong>不保证结论真实性</strong>——很容易把"论证完整"误当"结论正确"。最后一步永远是：自己核对事实 + 自己拍板。</p>
+        <span class="who">提出：LR + 陈恺晨</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>边界</h2>
+    <ul>
+      <li>只保证"没把反方想弱"，不保证结论为真</li>
+      <li>修的是"立场锁定"（已有倾向需验证）；修不了"问题没问对"——那是 grill / 苏格拉底式提问的活</li>
+      <li>模型可能"表演钢人"（本质还是谄媚），重大事项配反方独立原则使用</li>
+    </ul>
+    <div class="warn"><b>触发词提醒：</b>重大决策（花钱/发布/难回头）桑老哥说"钢人一下"时，按本词条的优化版 Prompt 执行双向钢人论证。</div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">本词条是其中"扮演反方"的系统化升级版，四条对抗法在此衔接</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">同为"人守判断层"的工具：一个管执行前定目标，一个管决策前想全面</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">交执行不交决策——钢人后的拍板永远留给人</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>卡兹克《一个极度实用的深度思考 Prompt》（公众号"数字生命卡兹克"，2026-08；作者确认可转载）</li>
+      <li>Reddit 原帖（作者转述，未直接回溯）[待核实]</li>
+      <li>《论自由》第二章引文（已核对原文）</li>
+      <li>评论区增量：陈恺晨 / 王洛川 / 陆子男 / gpt-5.6-sol 三条修订 / 硅基X档案优化版</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 钢人论证</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/钢人论证.md（2026-08-18 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">稻草人 vs 钢人</a></li>
+    <li><a href="#s3">来龙去脉</a></li>
+    <li><a href="#s4">优化版 Prompt</a></li>
+    <li><a href="#s5">三条使用规矩 ·核心</a></li>
+    <li><a href="#s6">边界</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

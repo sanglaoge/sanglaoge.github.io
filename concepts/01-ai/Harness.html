@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（系统·克制·可信） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：流程布局（演进条 + 闭环/链条 + 案例卡） ---- */
+
+/* 演化因果链演进条 */
+.genevo { display:flex; overflow-x:auto; margin:16px 0 4px; }
+.gcell { flex:1 1 0; min-width:118px; padding:11px 12px 10px; border-left:1px solid var(--line); background:var(--g0); }
+.gcell:first-child { border-left:none; }
+.gcell .e-no { font-size:13px; font-weight:700; color:var(--ink-faint); letter-spacing:.08em; }
+.gcell .e-name { font-weight:700; font-size:15px; color:var(--ink); margin:2px 0; }
+.gcell .e-why { font-size:13.5px; color:var(--ink-soft); margin-top:4px; line-height:1.55; }
+.gcell.now { background:var(--fam-soft); }
+.gcell.now .e-name { color:var(--fam-deep); }
+.genevo-cap { font-size:14px; color:var(--ink-faint); margin-bottom:10px; }
+
+/* 案例卡 */
+.case2 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:780px) { .case2 { grid-template-columns:1fr 1fr; } }
+.case2 .card h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.case2 .case-stat { font-size:29px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.25; }
+.case2 .case-stat small { font-size:14px; font-weight:400; color:var(--ink-faint); display:block; }
+.case2 .card p { font-size:15px; }
+
+/* 六可卡墙 */
+.six { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .six { grid-template-columns:1fr 1fr; } }
+@media (min-width:980px) { .six { grid-template-columns:repeat(3,1fr); } }
+.six .sc6 { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:11px 14px; }
+.six .sc6 b { display:block; color:var(--fam-deep); font-size:15.5px; margin-bottom:3px; }
+.six .sc6 p { margin:0; font-size:14.5px; color:var(--g8); line-height:1.65; }
+
+/* 长程增益条形图 */
+.bars-wrap { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:16px 18px 12px; margin:14px 0; box-shadow:var(--sh-1); }
+.bars { display:flex; align-items:flex-end; gap:14px; height:150px; margin-top:8px; }
+.bar { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:5px; height:100%; }
+.bar .b-fill { width:64%; background:var(--fam-line); border-radius:4px 4px 0 0; }
+.bar.hot .b-fill { background:var(--fam); }
+.bar .b-v { font-size:14.5px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; }
+.bar .b-l { font-size:13px; color:var(--ink-faint); }
+.bars-cap { font-size:14px; color:var(--ink-faint); margin-top:8px; }
+
+/* 金句条 */
+.motto {
+  font-family:var(--font-head); font-size:clamp(17px,2.8vw,20px); line-height:1.8;
+  color:var(--ink); padding:14px 20px; margin:16px 0;
+  background:var(--fam-soft); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-box) var(--r-box) 0;
+}
+.motto b { color:var(--fam-deep); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 词源比喻双卡 */
+.etym { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:760px) { .etym { grid-template-columns:1fr 1fr; } }
+.etym .ec { border-radius:var(--r-el); padding:12px 15px; font-size:15px; background:var(--g0); border:1px solid var(--line); }
+.etym .ec b { display:block; color:var(--fam-deep); margin-bottom:4px; }
+.etym .ec p { margin:0; color:var(--g8); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">Harness</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · L7 工具执行层核心</p>
+    <h1>Harness（AI 脚手架）</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-11</span>
+      <span>更新 2026-08-24</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒墙探头，示意Harness是Agent跑起来之前先张望的门与跑道"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <div class="motto"><b>Model + Harness = Agent</b>。模型只是大脑，Harness 是大脑之外让 AI 真正把事干成的所有工程——循环怎么收敛、工具返回什么、状态存哪、跑偏怎么拽回来。</div>
+    <p>AI 长任务跑偏多半不是模型笨，是 Harness 不够。两个比喻把「为什么」说透：</p>
+    <div class="etym">
+      <div class="ec"><b>马具 · 力量为什么可控</b><p>harness 本义马具、安全带，动词指「控制并利用某种力量」。马有力量但不可控，套上马具力量才能被人用——Harness 不是给模型加能力，是让已有能力变得可控可用。</p></div>
+      <div class="ec"><b>轮班工程师 · 为什么需要交接</b><p>长任务是轮班工程师接力的项目，每班到岗都没有上一班的记忆。Harness 留交接班记录（进度文件 + git log）、留验收清单（干完一条翻一条）、每班先定位再动手——压缩会吃掉记忆，跨会话续命靠的是 Harness 不是模型。</p></div>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：第一次给 Harness 量出分</h2>
+    <p>行业等式 Model + Harness = Agent 里，左半边（模型）每次发布都有榜单，右半边（Harness）长期没有尺子。2026-08，AOE Tech Labs（Floatboat）用最便宜的 DeepSeek-V4-Flash 做底座跑自家 Harness，<strong>五项第三方基准全胜贵 <span class="num">57.1</span> 倍的 Claude Opus 4.8</strong>。关键实验：同一个模型，接原厂 Harness 输，接 Floatboat Harness 赢——模型不变，变量只有 Harness。</p>
+    <div class="case2">
+      <div class="card">
+        <h3>Floatboat 实验</h3>
+        <p class="case-stat">57.1 倍<small>价差之下五项基准全胜</small></p>
+        <p>DeepSeek-V4-Flash + 自研 Harness，赢了贵 57.1 倍的 Claude Opus 4.8。报告：<a class="ext" href="https://floatboat.ai/news/harness-benchmark" target="_blank" rel="noopener noreferrer">floatboat.ai</a></p>
+      </div>
+      <div class="card">
+        <h3>Composio 四套壳</h3>
+        <p class="case-stat">成本差 2 倍以上<small>同一个模型，只换壳</small></p>
+        <p>同一 DeepSeek V4 Flash 装进 4 套 Harness：质量基本不变，单任务成本差 2 倍多——每轮上下文少 3 倍、只暴露 4 个工具、历史噪声少。HLR 不只量质量，还量钱包。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>演化因果链：Harness 怎么一层层长出来 ·核心</h2>
+    <p>每层部件都是模型撞墙撞出来的，不是设计出来的：</p>
+    <div class="genevo" aria-label="光杆LLM到子Agent七层演化条">
+      <div class="gcell"><span class="e-no">起点</span><div class="e-name">光杆 LLM</div><p class="e-why">只会一问一答</p></div>
+      <div class="gcell"><span class="e-no">撞墙 1</span><div class="e-name">上下文</div><p class="e-why">记不住上轮</p></div>
+      <div class="gcell"><span class="e-no">撞墙 2</span><div class="e-name">工具</div><p class="e-why">碰不到世界</p></div>
+      <div class="gcell"><span class="e-no">撞墙 3</span><div class="e-name">循环</div><p class="e-why">一步做不完</p></div>
+      <div class="gcell"><span class="e-no">撞墙 4</span><div class="e-name">长期记忆</div><p class="e-why">历史装不下（程序/语义/情景三类）</p></div>
+      <div class="gcell"><span class="e-no">撞墙 5</span><div class="e-name">权限沙箱</div><p class="e-why">动作有真实后果</p></div>
+      <div class="gcell now"><span class="e-no">撞墙 6</span><div class="e-name">子 Agent</div><p class="e-why">一个循环不够</p></div>
+    </div>
+    <p class="genevo-cap">用这条链能判断任何 AI 工具长到哪一层。<strong>Agent 决定下一步做什么，Harness 决定这一步在什么上下文、权限、生命周期与持久化规则下发生。</strong></p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>六个「可」：把强模型变成稳定干活的系统</h2>
+    <div class="six">
+      <div class="sc6"><b>可连接</b><p>模型能连外部世界（文件/接口/数据）——MCP 协议</p></div>
+      <div class="sc6"><b>可执行</b><p>能调工具、做动作、产生真实影响——<a href="../03-agent/MCP-Skill-Hook三件套.html">MCP-Skill-Hook三件套</a></p></div>
+      <div class="sc6"><b>可约束</b><p>守规矩、高风险不乱来——红黄绿灯 + 闸门 + CLAUDE.md</p></div>
+      <div class="sc6"><b>可观测</b><p>知道 AI 在干啥、干得怎么样——自改进循环的「评测监控同源」</p></div>
+      <div class="sc6"><b>可恢复</b><p>挂了能续上、能回滚到检查点——工作日记 hook + 跨会话恢复</p></div>
+      <div class="sc6"><b>可验证</b><p>产出能被独立验收、不被自评骗——<a href="../01-ai/图谱工程.html">图谱工程</a> 验证器</p></div>
+    </div>
+    <p>六个「可」不是并列功能，是缺任何一个，「强模型」就变不成「稳定干活的系统」。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>四层结构 × 长程规律</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>层</th><th>解决什么</th><th>对应死法</th></tr></thead>
+      <tbody>
+        <tr><td>Runtime 运行时</td><td>AI 能碰到什么（文件/权限/沙盒）</td><td>任务要改 7 个文件却没读写权</td></tr>
+        <tr><td>Agent Loop 循环</td><td>长程能否收敛（= <a href="../01-ai/循环工程.html">循环工程</a>）</td><td>跑着跑着忘了最初目标</td></tr>
+        <tr><td>Tools 工具</td><td>返回结构清不清楚</td><td>工具把失败报成空字符串，AI 自信做错决定</td></tr>
+        <tr><td>Infra 基础设施</td><td>失败能不能被发现</td><td>状态没存好，哪步坏了都不知道</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>关键</strong>：四层有一层是别人的（套壳），上限就是别人的上限。自研 vs 套壳不是「修得好不好」，是「能不能修」。</p>
+    <p>Harness 增益按任务程长排列，<strong>单调递增没例外</strong>：</p>
+    <div class="bars-wrap">
+      <div class="bars" aria-label="Harness增益随任务变长递增条形图">
+        <div class="bar"><span class="b-v">1.9%</span><div class="b-fill" style="height:12px"></div><span class="b-l">一次问答</span></div>
+        <div class="bar"><span class="b-v">9.6%</span><div class="b-fill" style="height:49px"></div><span class="b-l">短任务</span></div>
+        <div class="bar"><span class="b-v">12.6%</span><div class="b-fill" style="height:64px"></div><span class="b-l">中程</span></div>
+        <div class="bar"><span class="b-v">19.9%</span><div class="b-fill" style="height:101px"></div><span class="b-l">长程</span></div>
+        <div class="bar hot"><span class="b-v">23.6%</span><div class="b-fill" style="height:120px"></div><span class="b-l">最长程</span></div>
+      </div>
+      <p class="bars-cap">比喻：短跑靠腿，马拉松靠配速/补给/节奏整套系统。短任务考模型单次输出，长任务考整个执行系统。</p>
+    </div>
+    <p><strong>HLR 杠杆率</strong>（给 Harness 装尺子）：HLR = 换 Harness 的收益 ÷ 换模型的收益。HLR &gt; 1 意思是同一笔预算，花在执行系统上比花在升级模型上更值。数据来自 Floatboat 自家基准，HLR 是新提指标（非行业标准），但分子分母全用第三方公开分数，可重算。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>长任务为什么跑偏 + 真正的 Proactive</h2>
+    <p>不是某步答错，是循环没收敛——越跑离交付标准越远。两个病根：</p>
+    <ol>
+      <li><strong>交付标准一开始没说清</strong>。真实工作的标准随中间产物才清晰——「语气对不对」「能不能直接交付」这些在第一句话里根本不存在。</li>
+      <li><strong>微小偏差滚雪球</strong>。模型每轮有微小偏差，下一轮把偏差当前提，20 步后累积成方向性错误——每步都合理，合起来不是你要的。</li>
+    </ol>
+    <p>这正好是 <a href="../01-ai/循环工程.html">循环工程</a> 讲的「循环不收敛」，Harness 的活就是按住它。</p>
+    <p><strong>真正的 Proactive（颠覆认知）</strong>：多数人以为「主动 Agent」= 定时自动干活（触发器主动）。真主动是——你说个模糊目标（自己都没想清要啥），Agent 在长程任务里不断探索/观察/修正，主动帮你发现「自己真正要什么」，并把它做到。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>四问诊断框架（贾克斯，2026-09-14 并入）</h2>
+    <p>AI 没干好，先查四问缺了哪问，别急着骂模型——这是「六个可」的口语版诊断入口：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>四问</th><th>英文</th><th>查什么</th></tr></thead>
+      <tbody>
+        <tr><td>它知道吗</td><td>Context</td><td>材料给够没</td></tr>
+        <tr><td>它做得到吗</td><td>Capability</td><td>工具配了没</td></tr>
+        <tr><td>它看得见结果吗</td><td>Evidence</td><td>测试/结果跑给它看没</td></tr>
+        <tr><td>它知道啥时候算完吗</td><td>Gates</td><td>完成标准写死没</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li><strong>道术之分</strong>：OpenWiki/Hook/多 Agent 全是「术」，四问才是「道」</li>
+      <li><strong>双保险</strong>：AGENTS.md 教流程（软）+ PreToolUse Hook 拦关键动作（硬，改代码前查 Spec 没有就拒绝）——光教不拦它可能跳过（同构：咱家 CLAUDE.md 教规矩 + 红黄绿灯拦动作）</li>
+      <li><strong>干完留三类资产</strong>：业务事实（查得到依据）/ 回归测试（错了能报警）/ 机器可判规则（AI 自己会查），下次任务不从零开始</li>
+    </ul>
+    <div class="motto">不只是告诉 Agent 什么叫完成，而是<b>让不满足条件的任务无法被当成完成</b>。</div>
+    <p>Co-Evolving 印证（DAIR.AI 论文周报）：让 AI 整套照抄专家工作全轨迹反而降 <span class="num">4-30</span> 分，只纠失败步骤、保留自己打法的才涨——抄壳子配置没用，缺的是自家四问的答案。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>生态动态：DSH 四部曲与四种壳（2026-08 并入）</h2>
+    <p>DeepSeek 开源 DeepSeek Harness（DSH），四篇文章连读成一条线：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>篇</th><th>增量</th></tr></thead>
+      <tbody>
+        <tr><td>贾栾：DSH 是什么</td><td>一切皆插件（模型适配器/工具/会话日志/主循环全可替换）；能调度 Claude Code/Codex；Developer Preview 别迁关键工作</td></tr>
+        <tr><td>从零开发 DSH 插件</td><td>5 分钟跑通第一个插件；配置铁律：凡是两个部署可能想要不同的值，必须是配置字段；预构建产物分发 = 不跑陌生脚本</td></tr>
+        <tr><td>空格：build-your-harness</td><td>两半论：工具给的内核 + 你自己搭的外围（文件/权限/记忆）；五层体检 34 项（安全 yolo 告警/冷启动 12878 token/21 个死 Skill/记忆死链/半年没 git）</td></tr>
+        <tr><td>lencx：Minke v0.2.0</td><td>远程控制新姿势：传消息不传画面（手机=控制面，车间不动）；从接缝挂载不改内核；能碰电脑的默认关</td></tr>
+      </tbody>
+    </table></div>
+    <p>三个跨篇认知：①<strong>一切皆插件被三度实证</strong>——好架构留接缝，不让人动承重墙；②<strong>两半论落地</strong>——桑老哥的 vault（CLAUDE.md/docs/memory）就是「懂你」的那一半，壳子随便换，vault 才是不可替换的；③<strong>控制面模式已在用</strong>——手机发链接给飞书 bot、活在 Mac 上干，就是「传消息不传画面」的日常版。</p>
+    <div class="warn"><b>辨伪注脚：</b>Codex Harness「突然开源」系伪新闻（模块早已开源，自媒体炒冷饭）——看到「XX 突然开源」先问一句：之前真是闭源的吗？</div>
+    <h3>四种壳四种活法（无标准答案）</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>壳</th><th>活法</th></tr></thead>
+      <tbody>
+        <tr><td>Pi</td><td>极简：快和便宜（Pi 通过率 66.7% 最高、中位成本 $0.012 最低），代价 = 没权限系统要外挂沙箱</td></tr>
+        <tr><td>OpenCode</td><td>事件流：回复拆成 Reasoning/Tool/Patch 等结构化 Part，出事能回放、断点能恢复</td></tr>
+        <tr><td>Codex</td><td>安全边界：Approval 和 Sandbox 是两道独立锁；Thread/Turn/Item 三层任务状态，重但可监督可恢复（OpenBench 73.8%）</td></tr>
+        <tr><td>Hermes</td><td>自进化：写入-检索-正确应用全链路，PAST-Bench 四类跨会话能力全正增益 +0.13</td></tr>
+      </tbody>
+    </table></div>
+    <div class="motto">模型越强，外面的运行时越不能含糊。<b>Agent 干的活越多，设计和管理 Harness 的人越值钱。</b></div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>轻记：川处安万字入门增量（2026-09-16 并入）</h2>
+    <ul>
+      <li><strong>四大件口语版</strong>：上下文管理（管草稿纸）/ 工具调用（是手脚）/ Agent Loop（踩油门）/ 状态管理（仓库存档）——状态管理管「存下来」，上下文管理管「这次拿哪些给大脑看」</li>
+      <li><strong>MCP 常驻吃约 <span class="num">20%</span> 上下文窗口</strong>（作者实测「一点没夸张」），Skill 渐进式加载远低于此——「全挂腰上」vs「用哪个翻哪个抽屉」</li>
+      <li><strong>「套壳」是外行话的正面论证</strong>：同脑不同身能力差很远；身体干的活远不止换皮（与「四层有一层是别人的，上限就是别人的上限」同一条线）</li>
+      <li><strong>记忆翻车一手案例</strong>：作者告诉 Gemini「我是程序员」后被钉死在该人设，只能关记忆——长期记忆「如何更新」难点的活例子（接 <a href="../01-ai/AI记忆系统三层架构.html">AI记忆系统三层架构</a>）</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>边界</h2>
+    <ul>
+      <li>Harness 不是 MCP 那种统一协议，是各家自研的工程层，暂无行业标准</li>
+      <li>数据来自 Floatboat 自家基准 + HLR 是新提指标（非行业标准），但分子分母全用第三方公开分数，可重算</li>
+      <li>短任务（一次问答）Harness 增益小（<span class="num">1.9%</span>），这种场景升级模型更直接</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>你做视频/写 Listing/做设计，AI 跑偏不是模型笨，是你（或工具）没搭好「拽回标准」的机制</li>
+      <li>你其实已经在搭简易 Harness：CLAUDE.md 规则 = 长期工作约束；闸门系统 = 收敛机制；<a href="../01-ai/上下文工程.html">上下文工程</a>三件套 = 管什么信息留窗口/压缩/丢；<a href="../01-ai/循环工程.html">循环工程</a> = Loop 层</li>
+      <li>区别只是 Floatboat 做到了工业级且量化了价值（HLR）；你搭的是<strong>个人级 Harness，原理一致</strong></li>
+      <li>与「执行贬值判断力升值」（<a href="../01-ai/AI与人的分工原则.html">AI与人的分工原则</a>）同一条线：执行外包给 Agent，判断和管壳留在人手里</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">四层里的 Agent Loop 层</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">撞墙 1 号：记不住上轮</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">等式的另一半：Model + Harness</span></a>
+      <a href="../01-ai/Agent自进化.html"><span class="rel-t">Agent自进化</span><span class="rel-d">自进化改的主战场就是 Harness</span></a>
+      <a href="../01-ai/AI概念导航图.html"><span class="rel-t">AI概念导航图</span><span class="rel-d">L7 工具执行层的坐标</span></a>
+      <a href="../03-agent/MCP-Skill-Hook三件套.html"><span class="rel-t">MCP-Skill-Hook三件套</span><span class="rel-d">「可执行」的具体护栏</span></a>
+      <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">「可验证」的验证器来源</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">执行外包，判断和管壳留人</span></a>
+    </div>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>机器之心《贵57.1倍的Claude Opus 4.8五项全输，赢它的不是模型，是Harness》（2026-08-08）</li>
+      <li>Floatboat Harness 基准报告：<a href="https://floatboat.ai/news/harness-benchmark" target="_blank" rel="noopener noreferrer">floatboat.ai/news/harness-benchmark</a></li>
+      <li>DSH 四部曲（2026-08 WaytoAGI 飞书转载）：贾栾《DeepSeek Harness 到底是什么》/《从零开发一个 DeepSeek Harness 插件》/ 空格《从零开始，搭建你的 Harness》/ lencx《DSH：Minke v0.2.0 发布了》</li>
+      <li>贾克斯《AI 写代码越快，企业越需要自己的 Harness》（上海 AI Maker Summit 2026-09-13）：<a href="https://waytoagi.feishu.cn/wiki/CPWDw9UKfio1XbkIWofcHcPvnUg" target="_blank" rel="noopener noreferrer">waytoagi.feishu.cn</a>（四问诊断 2026-09-15 并入）</li>
+      <li>ivanxxie、davoszhang《从一次 LLM 调用到完整 Harness，Agent 到底经历了什么？》（2026-09-07，演化地图与第二组成本证据并入）</li>
+      <li>川处安《一篇速通入门：重新理解 AI Agent 的一切》：<a href="https://waytoagi.feishu.cn/wiki/FRoKwi7r3ij4SlkwlD4csmlSngd" target="_blank" rel="noopener noreferrer">waytoagi.feishu.cn</a>（2026-09-16 并入）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Harness</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Harness.md（2026-08-11 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">演化因果链 ·核心</a></li>
+    <li><a href="#s4">六个「可」</a></li>
+    <li><a href="#s5">四层 × 长程规律</a></li>
+    <li><a href="#s6">跑偏病根 + Proactive</a></li>
+    <li><a href="#s7">四问诊断</a></li>
+    <li><a href="#s8">DSH 与四种壳</a></li>
+    <li><a href="#s9">川处安轻记</a></li>
+    <li><a href="#s10">边界</a></li>
+    <li><a href="#s11">桑老哥适用</a></li>
+    <li><a href="#s12">关联词条</a></li>
+    <li><a href="#s13">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

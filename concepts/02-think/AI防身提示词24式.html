@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI防身提示词24式 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root { --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0; }
+/* ---- 页面专属：词典网格布局（分组卡墙 + 提示词模板） ---- */
+
+.main-col > section { margin-bottom:48px; }
+.creed {
+  font-family:var(--font-head);
+  font-size:clamp(19px,3vw,23px); line-height:1.8; color:var(--g9);
+  padding:20px 8px 4px; max-width:38em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 组头 */
+.grp { margin-bottom:34px; }
+.grp-head {
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  border-bottom:2px solid var(--fam); padding-bottom:8px; margin-bottom:14px;
+}
+.grp-head .g-no {
+  font-family:var(--font-head); font-weight:700; font-size:24px; color:var(--fam);
+  font-variant-numeric:tabular-nums;
+}
+.grp-head .g-t { font-family:var(--font-head); font-weight:700; font-size:20px; color:var(--ink); }
+.grp-head .g-d { font-size:14.5px; color:var(--ink-faint); }
+.grp-head .g-range {
+  margin-left:auto; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 12px; font-variant-numeric:tabular-nums;
+}
+
+/* 卡墙 */
+.wall { display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:640px) { .wall { grid-template-columns:1fr 1fr; } }
+@media (min-width:1024px) { .wall { grid-template-columns:1fr 1fr 1fr; } }
+.move {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 14px 12px 16px; position:relative;
+}
+.move::before {
+  content:""; position:absolute; left:0; top:10px; bottom:10px;
+  width:3px; border-radius:2px; background:var(--fam-line);
+}
+.move .m-head { display:flex; align-items:baseline; gap:8px; margin-bottom:5px; }
+.move .m-no {
+  font-variant-numeric:tabular-nums; font-weight:700; font-size:14.5px; color:var(--fam);
+}
+.move .m-t { font-weight:700; font-size:15.5px; color:var(--ink); }
+.move .m-p {
+  font-size:14.5px; color:var(--g7); line-height:1.75;
+  background:var(--fam-soft); border-radius:6px; padding:6px 10px;
+}
+.move .m-p b { color:var(--fam-deep); }
+.move.pick { border-color:var(--fam); box-shadow:var(--sh-1); }
+.move.pick::before { background:var(--fam); }
+.move .m-flag {
+  display:inline-block; font-size:14.5px; font-weight:700; color:#ffffff;
+  background:var(--fam); border-radius:999px; padding:0 10px; margin-left:6px;
+  vertical-align:2px;
+}
+
+/* 总纲反转示意 */
+.flip { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .flip { grid-template-columns:1fr 1fr; } }
+.flip .f-card {
+  border-radius:var(--r-el); padding:12px 16px; font-size:15px; color:var(--g8);
+}
+.flip .f-old { background:var(--g2); border:1px solid var(--line); }
+.flip .f-new { background:var(--fam-soft); border:1px solid var(--fam-line); }
+.flip .f-t { font-weight:700; margin-bottom:4px; }
+.flip .f-old .f-t { color:var(--ink-soft); }
+.flip .f-new .f-t { color:var(--fam-deep); }
+
+/* 测试计划 */
+.plan {
+  background:var(--g0); border:1px solid var(--line); border-left:5px solid var(--fam);
+  border-radius:var(--r-box); padding:16px 20px; margin:16px 0;
+}
+.plan .p-t { font-weight:700; margin-bottom:6px; }
+.plan .p-code {
+  display:inline-block; font-size:15px; background:var(--fam-soft);
+  border:1px solid var(--fam-line); border-radius:6px; padding:2px 10px; margin:2px 4px 2px 0;
+  color:var(--fam-deep); font-weight:600;
+}
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">AI防身提示词24式</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · 人机协作防身术速查册</p>
+    <h1>AI防身提示词24式</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-02</span>
+      <span>下次复核 2026-12-02</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意管住轻信——答案再流畅，判断也要自己守着"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">思维模型反着用——不是让 AI 更聪明，是<span class="mark">防人变笨</span>。AI 交付的是结果的表象，最终的判断必须你自己守着。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>总纲：用法为什么全是反的</h2>
+    <p>原版思维模型是给<strong>人脑</strong>用的：信息不全时帮决策。AI 不需要你帮它决策——它见过的模型比你多。所以模型的新用途变成：<strong>防你过于轻信它的流畅和自信、防你把判断外包</strong>。</p>
+    <div class="flip">
+      <div class="f-card f-old"><p class="f-t">顺着问（旧用法）</p>问"怎么成功"——得到鸡汤。成功秘诀没人交底。</div>
+      <div class="f-card f-new"><p class="f-t">反着问（新用法）</p>问"怎么搞砸"——得到情报。失败经验有人认真写。</div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>二十四式 · 速查卡墙</h2>
+
+    <div class="grp">
+      <div class="grp-head">
+        <span class="g-no">壹</span><span class="g-t">验证组</span>
+        <span class="g-d">审 AI 的答案</span>
+        <span class="g-range">01-08 · 8条</span>
+      </div>
+      <div class="wall">
+        <div class="move"><div class="m-head"><span class="m-no">01</span><span class="m-t">拆前提</span></div><p class="m-p">列出结论依赖的全部前提，标注哪条最可能错、错了结论怎么变</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">02</span><span class="m-t">证据更新</span></div><p class="m-p">这是初稿，我每次给一条新信息，你只依据全部信息重写并标明改动处</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">03</span><span class="m-t">反着问</span></div><p class="m-p">先不给方案，列此事最常见的五种搞砸方式，按概率排序，每种给预防动作</p></div>
+        <div class="move pick"><div class="m-head"><span class="m-no">04</span><span class="m-t">失败报告</span><span class="m-flag">先试</span></div><p class="m-p">假设一年后已彻底失败，写失败报告：三条最可能原因+致命动作，不给安慰不给方案</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">05</span><span class="m-t">左右互搏</span></div><p class="m-p">忘掉刚才的回答，切换为此方案的竞争对手，列出全部死穴不留情面（即 <a href="../01-ai/钢人论证.html">钢人论证</a>）</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">06</span><span class="m-t">五连问</span></div><p class="m-p">对你的回答依次答：证据来源 / 最强反例 / 换表述是否成立 / 隐含假设 / 照做最坏后果</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">07</span><span class="m-t">反例</span></div><p class="m-p">此建议什么条件下不适用？给遵循它却失败的典型场景，禁引成功案例</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">08</span><span class="m-t">因果检验</span></div><p class="m-p">结论是因果还是相关？举"做了 X 仍失败"和"没做 X 却成功"案例，都存在则因果不成立</p></div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-head">
+        <span class="g-no">贰</span><span class="g-t">操作组</span>
+        <span class="g-d">怎么问</span>
+        <span class="g-range">09-13 · 5条</span>
+      </div>
+      <div class="wall">
+        <div class="move"><div class="m-head"><span class="m-no">09</span><span class="m-t">双轨指令</span></div><p class="m-p">意图+标准+示例+反例两头都给——只说意图它猜，只给例子它抄</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">10</span><span class="m-t">先开后收</span></div><p class="m-p">给五个截然不同的方向只列名称不评价；第一个还行就深挖，等于锁死在平庸路</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">11</span><span class="m-t">删减</span></div><p class="m-p">删掉指令一半约束重新执行，对比差异，指出真正起作用的部分</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">12</span><span class="m-t">穷尽</span></div><p class="m-p">先给维度划分（互斥+穷尽）再展开，单独指出最易被忽略的维度</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">13</span><span class="m-t">最强反驳</span></div><p class="m-p">先把我的观点修成最强形式再同等强度反驳，禁给容易反驳的版本</p></div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-head">
+        <span class="g-no">叁</span><span class="g-t">分工组</span>
+        <span class="g-d">人机分活</span>
+        <span class="g-range">14-17 · 4条</span>
+      </div>
+      <div class="wall">
+        <div class="move"><div class="m-head"><span class="m-no">14</span><span class="m-t">外包清单</span></div><p class="m-p">按 AI 胜任度和我的机会成本打分，只输出双高的外包项</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">15</span><span class="m-t">找瓶颈</span></div><p class="m-p">找流程唯一瓶颈——该环节瞬间变快，则整体明显变快</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">16</span><span class="m-t">执行与判断</span></div><p class="m-p">逐项标执行/判断：执行项你完成，判断项只给我选项，不替我选</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">17</span><span class="m-t">验证分级</span></div><p class="m-p">分类可逆/不可逆：不可逆列必须人工验证的点，可逆不设验证（即红黄绿灯）</p></div>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="grp-head">
+        <span class="g-no">肆</span><span class="g-t">防身组</span>
+        <span class="g-d">防流畅 / 自信 / 顺着你</span>
+        <span class="g-range">18-24 · 7条</span>
+      </div>
+      <div class="wall">
+        <div class="move"><div class="m-head"><span class="m-no">18</span><span class="m-t">出处铁律</span></div><p class="m-p">事实性引用附原始出处，查不到标注"未能核实"，不得作论据</p></div>
+        <div class="move pick"><div class="m-head"><span class="m-no">19</span><span class="m-t">禁止夸奖</span><span class="m-flag">先试</span></div><p class="m-p">不要夸奖我。我的立场是 X，用最强论点反对它，禁"双方都有道理"</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">20</span><span class="m-t">事实验收</span></div><p class="m-p">每条标准只能以具体事实达成，不得用修辞排比姿态满足标准</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">21</span><span class="m-t">未验证清单</span></div><p class="m-p">完成前自查：列出未实际验证、仅基于语料的陈述，标注置信度</p></div>
+        <div class="move pick"><div class="m-head"><span class="m-no">22</span><span class="m-t">裸考</span><span class="m-flag">先试</span></div><p class="m-p">就领域出三道核心判断题（不出记忆题），我答完你再给答案评分</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">23</span><span class="m-t">复述检验</span></div><p class="m-p">复述核心观点，只指出错误漏洞，不补充不复述不鼓励</p></div>
+        <div class="move"><div class="m-head"><span class="m-no">24</span><span class="m-t">错误入库</span></div><p class="m-p">错误案例提炼为一条可直接写入提示词的规则，只输出规则</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>桑老哥测试计划（2026-09 立项）</h2>
+    <div class="plan">
+      <p class="p-t">作者推荐先试三件（对使用方式改变最大）：</p>
+      <p><span class="p-code">04 失败报告</span><span class="p-code">19 禁止夸奖</span><span class="p-code">22 裸考</span></p>
+      <p style="font-size:15px;color:var(--g8);margin-top:8px">测试记录用一条填一条（场景 / 哪条 / 效果 / 改动），当前状态：待测试。跟铁柱协作可直接说暗号："用05左右互搏"、"先裸考我一遍"、"写失败报告"。</p>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>边界提醒</h2>
+    <ul>
+      <li><strong>费曼技巧八卦</strong>（作者考证）：不是费曼起的名——1992 年传记作家转述，后人安名。网传出处都要过一遍出处铁律（18）</li>
+      <li>24 条是"防身"不是"抬杠"：审的是答案不是人，用完记得让 AI 继续干活</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/钢人论证.html"><span class="rel-t">钢人论证</span><span class="rel-d">第05式左右互搏的完整版双向论证流程</span></a>
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">AI 会顺着你的立场说话，防身组针对的病灶</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">分工组四式的底层原则：判断不外包</span></a>
+      <a href="../02-think/损失函数思维.html"><span class="rel-t">损失函数思维</span><span class="rel-d">哪类事可以交给 AI、哪类必须自己守的判断尺</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Simonlin《套了110个思维模型到AI之后，我帮你整理了最好用的24个（附提示词）》，公众号"Simonlin的精神世界"（2026-09-01；110 个模型经 AI 收集+人工筛出 24 个）</li>
+      <li>原文链接：<a href="https://mp.weixin.qq.com/s/YW_dqTJCauDg_7Kql-ZrXw" target="_blank" rel="noopener noreferrer">mp.weixin.qq.com/s/YW_dqTJCauDg_7Kql-ZrXw</a>（2026-09-20 读 WaytoAGI 飞书转载全文逐条核验：分组、推荐三条、核心金句全部对上）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · AI防身提示词24式</p>
+    <p>词条源：concepts(概念库)/思维模型/AI防身提示词24式.md（2026-09-02 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">总纲：反着用</a></li>
+    <li><a href="#s3">二十四式卡墙 ·核心</a></li>
+    <li><a href="#s4">测试计划</a></li>
+    <li><a href="#s5">边界提醒</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

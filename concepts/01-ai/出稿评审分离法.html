@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出稿评审分离法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（冷静·可靠·结构性） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+
+/* ---- 页面专属：对比布局（双角色对照 + 误区vs正解 + 模板块） ---- */
+.heroq {
+  font-family:var(--font-head); font-size:clamp(20px,3.4vw,28px);
+  line-height:1.65; color:var(--ink); font-weight:700;
+}
+.heroq em { font-style:normal; color:var(--fam-deep); }
+
+/* 双角色对峙 */
+.duel { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; position:relative; }
+@media (min-width:760px) { .duel { grid-template-columns:1fr 1fr; } }
+.role { border-radius:var(--r-box); padding:16px 18px; box-shadow:var(--sh-1); border:1px solid var(--line); background:var(--g0); }
+.role.wri { border-top:4px solid var(--fam); }
+.role.rev { border-top:4px solid var(--fam-deep); background:var(--fam-soft); }
+.role .r-tag { font-size:14.5px; font-weight:700; letter-spacing:.1em; color:var(--ink-faint); }
+.role h3 { margin:2px 0 8px; font-size:19px; color:var(--fam-deep); }
+.role ul { margin:0; font-size:15px; }
+.duel .vs {
+  align-self:center; justify-self:center; width:44px; height:44px; line-height:44px;
+  border-radius:50%; background:var(--fam); color:#ffffff; font-weight:700; font-size:15px;
+  text-align:center; box-shadow:var(--sh-1); margin:0 auto;
+}
+@media (max-width:759px) { .duel .vs { margin:2px auto; } }
+
+/* 三步流程 */
+.steps3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:760px) { .steps3 { grid-template-columns:1fr 1fr 1fr; } }
+.step3 { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:12px 15px; box-shadow:var(--sh-1); }
+.step3 .sp-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#ffffff; font-weight:700; font-size:14.5px; margin-right:8px;
+}
+.step3 h3 { display:inline; font-size:16.5px; color:var(--ink); }
+.step3 p { margin:8px 0 0; font-size:15px; }
+
+/* 评委 prompt 模板（直接抄块） */
+.tpl {
+  background:var(--g2); border:1px solid var(--line); border-left:4px solid var(--fam-deep);
+  border-radius:0 var(--r-box) var(--r-box) 0; padding:14px 18px; margin:16px 0;
+  font-size:15.5px; line-height:1.9; color:var(--g8);
+}
+.tpl .tpl-t { font-size:14.5px; font-weight:700; color:var(--fam-deep); margin-bottom:6px; letter-spacing:.06em; }
+
+/* 警示条（琥珀，与样张一致） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">出稿评审分离法</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 独立验收思想（一个写、一个查）</p>
+    <h1>出稿评审分离法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-29</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌打分，示意评审者独立亮出对稿子的判定"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <p class="heroq">别让同一个 AI 自己写、自己打分——<em>运动员兼裁判，必然护短</em>。</p>
+    <p>拆成「出稿者」和「评审者」两个角色，质量立刻上一档。这是「双 Agent 协作」里最值钱、也最通用的一条思想：从「一个 AI 又干又验」，升级到「一个写、一个查」。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>是什么：一个任务拆两个角色</h2>
+    <div class="duel">
+      <div class="role wri">
+        <span class="r-tag">角色一</span>
+        <h3>出稿者</h3>
+        <ul>
+          <li>专心产出：写方案/文案/代码</li>
+          <li>不负责验收自己</li>
+        </ul>
+      </div>
+      <div class="vs">VS</div>
+      <div class="role rev">
+        <span class="r-tag">角色二</span>
+        <h3>评审者</h3>
+        <ul>
+          <li>独立挑刺，不表扬、只找问题</li>
+          <li>没有「作者包袱」，能挑出真问题</li>
+        </ul>
+      </div>
+    </div>
+    <p>两者最好是<strong>不同模型</strong>，至少也要<strong>换一个新对话</strong>——同一对话里 AI 有惯性，会护着自己写的东西。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>为什么重要：自我证实偏差</h2>
+    <p>同一个 AI 验收自己的产出，会有「自我证实偏差」——倾向于说自己写得好、对自己写的毛病视而不见。拆开后评审者才能挑出真问题。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>误区：运动员兼裁判</th><th>正解：一个写、一个查</th></tr></thead>
+      <tbody>
+        <tr><td>写完自己看一遍就说好</td><td>换模型/换新对话的评审者挑刺</td></tr>
+        <tr><td>AI 默认客气、爱表扬</td><td>喂评委 prompt，明令「只挑毛病」</td></tr>
+        <tr><td>作者包袱：看不见自己的毛病</td><td>评审者没参与写作，视角独立</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>怎么用：三步</h2>
+    <div class="steps3">
+      <div class="step3"><span class="sp-no">1</span><h3>出稿</h3><p>让 AI-A 按需求出第一版。</p></div>
+      <div class="step3"><span class="sp-no">2</span><h3>评审</h3><p>把稿子丢给 AI-B（换模型或换新对话），喂它「评委 prompt」。</p></div>
+      <div class="step3"><span class="sp-no">3</span><h3>改稿</h3><p>把评审意见带回 AI-A，改到过关。</p></div>
+    </div>
+    <div class="tpl">
+      <div class="tpl-t">评委 PROMPT（直接抄）</div>
+      你是挑剔的评委。下面这份稿子，只挑毛病，不要表扬。按 3 个维度找问题：①有没有跑题或漏需求 ②有没有事实错误或逻辑漏洞 ③有没有更好的替代方案。每个问题给出具体位置和修改建议。禁止说「总体不错」。
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>同一思想家族（一个写一个查，多个名字）</h2>
+    <p>2026-08-25 桑老哥梳理：知识库里这套「独立验收、别自评」的思想有多个名字。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>表述</th><th>出处</th><th>侧重</th></tr></thead>
+      <tbody>
+        <tr><td>交叉验证</td><td><a href="../01-ai/AI确认偏误.html">AI确认偏误</a> 第3计 / <a href="../01-ai/可信完成.html">可信完成</a> / <a href="../01-ai/锯齿智能.html">锯齿智能</a></td><td>换模型/多来源，不信单一</td></tr>
+        <tr><td>独立验证器</td><td><a href="../01-ai/循环工程.html">循环工程</a> / <a href="../01-ai/目标契约与五个闸门.html">目标契约与五个闸门</a></td><td>第二个 AI 检查，不能自己打分</td></tr>
+        <tr><td>独立怀疑者/评估器</td><td><a href="../01-ai/循环工程.html">循环工程</a></td><td>独立怀疑者 &gt; 自我批判</td></tr>
+        <tr><td>验证器/Verifier</td><td><a href="../01-ai/图谱工程.html">图谱工程</a>（Worker/Verifier 不共享上下文）</td><td>干活的和验收的不能共享上下文</td></tr>
+        <tr><td>别让提方案的人移动标准线</td><td><a href="../01-ai/图谱工程.html">图谱工程</a> 规则6</td><td>被考核者不能改及格线</td></tr>
+        <tr><td><strong>出稿评审分离法</strong></td><td>本词条</td><td>拆出稿者＋评审者，最轻量可抄</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>用法：读到任何一个表述，知道它们是同一思想家族，在「谁写、谁查、查的人有没有独立依据」这三个问题上是同一个答案。</blockquote>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li><strong>简单任务别用</strong>——杀鸡用牛刀，浪费时间</li>
+      <li><strong>评审者必须换模型或换新对话</strong>——同一对话里 AI 有惯性，挑不出真问题</li>
+      <li><strong>必须喂评委 prompt</strong>——AI 默认客气、爱表扬，不明确叫它「只挑刺」它就糊弄</li>
+      <li><strong>最终拍板还是你</strong>——AI 评审是辅助，不是替你做决策</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>场景</th><th>怎么拆</th></tr></thead>
+      <tbody>
+        <tr><td>选品方案</td><td>A 出「为啥选这品」，B 当评委挑「数据准不准/逻辑硬不硬/漏没漏竞品」</td></tr>
+        <tr><td>Listing 文案</td><td>A 写标题五点，B 扮买家挑「卖点清不清/有没有看不懂的词」</td></tr>
+        <tr><td>任何重要决策</td><td>A 给方案，B 专门唱反调</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>现实映射：</b>你的铁柱（生成）＋爱马仕（评估）＋桑老哥拍板，天然满足「生成器决定产出什么，评估器决定拒绝什么」。</div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">人 vs AI 的分工；本条是 AI vs AI 的分工</span></a>
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">同一个 AI 自我验收的根因</span></a>
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">定目标+划边界+设验收，评审者是「验收」角色</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">动手前检查+独立验收，同一思想的落地</span></a>
+    </div>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 出稿评审分离法</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/出稿评审分离法.md（2026-07-29 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">是什么 ·核心</a></li>
+    <li><a href="#s3">为什么重要</a></li>
+    <li><a href="#s4">怎么用三步</a></li>
+    <li><a href="#s5">同一思想家族</a></li>
+    <li><a href="#s6">前提与局限</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">关联词条</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

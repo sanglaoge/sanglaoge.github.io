@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>目标契约与五个闸门 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：阶梯布局（五闸门台阶逐级抬升 + 契约三要素） ---- */
+
+/* 契约三要素 */
+.tri3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .tri3 { grid-template-columns:1fr 1fr 1fr; } }
+.tri3 .t { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.tri3 .t .t-en { font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; color:var(--fam-deep); font-weight:700; }
+.tri3 .t h3 { margin:4px 0 6px; font-size:16.5px; }
+.tri3 .t p { font-size:14.5px; color:var(--ink-soft); }
+
+/* 五闸门台阶 */
+.stairs { display:grid; grid-template-columns:1fr; gap:12px; margin:20px 0 8px; }
+@media (min-width:900px) {
+  .stairs { grid-template-columns:repeat(5,1fr); gap:10px; align-items:end; }
+  .stairs .stair:nth-child(1) { min-height:250px; }
+  .stairs .stair:nth-child(2) { min-height:285px; }
+  .stairs .stair:nth-child(3) { min-height:320px; }
+  .stairs .stair:nth-child(4) { min-height:355px; }
+  .stairs .stair:nth-child(5) { min-height:390px; }
+}
+.stair { background:var(--g0); border:1px solid var(--line); border-bottom:4px solid var(--fam-line); border-radius:var(--r-el); padding:14px 15px; position:relative; }
+.stair .g-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center; border-radius:50%;
+  background:var(--fam-line); color:var(--fam-deep); font-weight:700; font-size:14.5px; margin-right:7px;
+}
+.stair h3 { display:inline; font-size:16.5px; vertical-align:middle; }
+.stair .g-role { display:block; font-size:14.5px; color:var(--fam-deep); font-weight:600; margin:8px 0 4px; }
+.stair p { font-size:14.5px; color:var(--ink-soft); margin:0; }
+.stair.key { background:var(--fam-soft); border-color:var(--fam-line); border-bottom-color:var(--fam); }
+.stair.key .g-no { background:var(--fam); color:#fff; }
+.stair .g-flag {
+  display:inline-block; margin-top:8px; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  border:1px dashed var(--fam); border-radius:999px; padding:0 10px;
+}
+.stairs-cap { font-size:14.5px; color:var(--ink-faint); }
+
+/* 适用/不适用 chips（文字版，不用符号图示） */
+.chip-use, .chip-skip { display:inline-block; font-size:14.5px; font-weight:600; border-radius:999px; padding:0 12px; white-space:nowrap; }
+.chip-use { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+.chip-skip { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+
+/* 对照 bad/good */
+.bg-pair { display:grid; gap:8px; margin:12px 0; }
+.bg-pair p { border-radius:var(--r-el); padding:9px 13px; font-size:15px; margin:0; }
+.bg-pair .bad { background:var(--g2); border-left:3px solid var(--g4); color:var(--ink-soft); }
+.bg-pair .bad b { color:var(--g6); }
+.bg-pair .good { background:var(--fam-soft); border-left:3px solid var(--fam); color:var(--g8); }
+.bg-pair .good b { color:var(--fam-deep); }
+
+/* 三角色 */
+.role3 { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:768px) { .role3 { grid-template-columns:1fr 1fr 1fr; } }
+.role3 .ro { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:0 0 var(--r-el) var(--r-el); padding:13px 15px; }
+.role3 .ro h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.role3 .ro p { font-size:14.5px; color:var(--ink-soft); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+.note-box {
+  border-left:4px solid var(--fam); background:var(--fam-soft);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0; color:var(--g8); font-size:15.5px;
+}
+.note-box b { color:var(--fam-deep); }
+
+/* 五步循环条 */
+.flow5 { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; }
+.flow5 .f { background:var(--g0); border:1px solid var(--fam-line); border-radius:999px; padding:5px 14px; font-size:14.5px; color:var(--fam-deep); font-weight:600; }
+.flow5 .fa { color:var(--g5); font-weight:700; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">目标契约与五个闸门</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 执行前定规矩</p>
+    <h1>目标契约与五个闸门</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌宣告，示意动手前先把目标契约亮出来定焦点"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <blockquote>AI 现在最吓人的地方，不是它懒，是它太勤快。方向一旦歪，它会非常认真地把错误做完整。<span class="q-src">—— 老金（金先森）</span></blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>这是什么：GoalPro 与目标契约</h2>
+    <p><strong>GoalPro</strong> 是一个 Skill（github.com/KimYx0207/GoalPro），给 Codex 和 Claude Code 共用。它的任务不是替你干活，而是<strong>执行前把目标写清楚</strong>。</p>
+    <p>输入一句模糊请求，输出一份 <strong>Goal Contract（目标契约）</strong>，然后<strong>停住等你确认</strong>——默认不执行。</p>
+    <h3>Goal 三要素（Codex /goal，lencx 2026-07）</h3>
+    <div class="tri3">
+      <div class="t"><span class="t-en">outcome</span><h3>要什么结果</h3><p>不止说"做什么"，说清达成什么才算数</p></div>
+      <div class="t"><span class="t-en">constraints</span><h3>不能碰什么</h3><p>边界、禁区、必须问人的风险</p></div>
+      <div class="t"><span class="t-en">verification</span><h3>怎么算完成</h3><p>由外部证据说话，不由模型自述</p></div>
+    </div>
+    <p>完成与否<strong>不能由模型自述</strong>，要由测试、可测指标、diff、截图、外部状态或人工验收确认。目标可暂停、恢复、编辑，但不会因此获得更宽的 sandbox 或审批权限。</p>
+    <div class="warn"><b>没有停止条件和预算上限的 Goal，本质是无限循环。</b>（来源：lencx《Agent 开发指南》2026-07-28，waytoAGI 飞书）</div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>五个闸门（逐级抬升的台阶）</h2>
+    <div class="stairs" aria-label="五个闸门阶梯：意图、边界、证据、暂停、验收，逐级抬升">
+      <div class="stair">
+        <span class="g-no">1</span><h3>意图</h3>
+        <span class="g-role">翻出真实不满，不复述原话</span>
+        <p>"优化项目"背后到底是嫌可维护性差、交付不可信、还是上一个 AI 跑偏了？要挖出来。</p>
+      </div>
+      <div class="stair">
+        <span class="g-no">2</span><h3>边界</h3>
+        <span class="g-role">做 / 不做 / 必须问人的风险</span>
+        <p>没边界，AI 会把自己的"合理扩展"当成你的需求。</p>
+      </div>
+      <div class="stair key">
+        <span class="g-no">3</span><h3>证据</h3>
+        <span class="g-role">防"假完成"</span>
+        <p>命令通过 ≠ 结构检查 ≠ 本地验证 ≠ 线上验证 ≠ 人工验收——很多失控就是把其中一个当成全部。</p>
+        <span class="g-flag">老金最看重</span>
+      </div>
+      <div class="stair key">
+        <span class="g-no">4</span><h3>暂停</h3>
+        <span class="g-role">写进目标的硬规则</span>
+        <p>删数据 / 碰密钥 / 改公共接口 / 发布上线 / 路线互斥 / 无法验证 → 必须停。不是软建议。</p>
+        <span class="g-flag">老金最看重</span>
+      </div>
+      <div class="stair">
+        <span class="g-no">5</span><h3>验收</h3>
+        <span class="g-role">交出证明目标达成的材料</span>
+        <p>测试、截图、diff、行为变化、剩余风险，要对回最初的目标。</p>
+      </div>
+    </div>
+    <p class="stairs-cap">台阶越走越高：从挖清意图，到交出证据——③④两道是防"太勤快做完整错"的关键闸。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>prompt-only 闸门（设计灵魂）</h2>
+    <p><strong>Skill mention ≠ 执行授权。</strong>你说"goalpro"，它写目标；你说"按这个目标执行"，它才动手。</p>
+    <p>老金的设计哲学：</p>
+    <ul>
+      <li><strong>目标生成阶段最怕越权</strong></li>
+      <li><strong>执行阶段最怕没目标</strong></li>
+      <li>两件事混在一起，体验上省一步，但边界会变糊</li>
+    </ul>
+    <blockquote>很多失控不是从大错误开始的，而是从一句顺手的"我来继续"开始的。</blockquote>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>适用与不适用</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>场景</th><th>用不用</th></tr></thead>
+      <tbody>
+        <tr><td>改错别字、查文件名、补一句文案</td><td><span class="chip-skip">别用，太重</span></td></tr>
+        <tr><td>跨文件、跨模块、影响发布、需要研究判断</td><td><span class="chip-use">用，先写 Goal Contract</span></td></tr>
+        <tr><td>自己都觉得容易跑偏的任务</td><td><span class="chip-use">用，先写</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>与奖励工程的分工（2026-08-16 桑老哥讨论定）</h2>
+    <p>Goal 三要素（outcome/constraints/verification）与<a href="../01-ai/奖励工程RewardEngineering.html">奖励工程RewardEngineering</a>三步法（定目标/设负向约束/定验收）<strong>同源同一套</strong>，不重复讲内容。</p>
+    <div class="note-box"><b>分工一句话：</b>奖励工程管「规则写得对不对」（内容论），目标契约管「放不放行」（流程风控论）。本条的增量全在：① 先确认再执行（prompt-only，对菜单再下单）② 防假完成（证据五级不混）③ 暂停门六必停 + 最终验收人 + 两套模板（五要素填空/长任务卡）。</div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>五要素填空：日常小任务模板</h2>
+    <p>长任务用长任务卡，日常给 AI（铁柱/lark-cli/任何 Agent）下任务用五要素填空——本质是 Goal 三要素拆成的 5 个填空题。来源：AJ《100 个飞书 CLI 真实案例》@ 飞书 AI 绝活大会。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>要素</th><th>问自己</th><th>例子</th></tr></thead>
+      <tbody>
+        <tr><td><strong>范围</strong></td><td>哪个时间段/哪个群/哪个项目？</td><td>"上周的课程群"</td></tr>
+        <tr><td><strong>目标</strong></td><td>要解决什么问题？</td><td>"把高频问题沉淀成 Q&amp;A"</td></tr>
+        <tr><td><strong>处理</strong></td><td>去重/分类/分级/脱敏？</td><td>"合并重复问法、补答、清敏感信息"</td></tr>
+        <tr><td><strong>交付</strong></td><td>写成文档/表格/回复群？</td><td>"写成飞书文档"</td></tr>
+        <tr><td><strong>校验</strong></td><td>完成后查什么？</td><td>"核对每条回答出处"</td></tr>
+      </tbody>
+    </table></div>
+    <div class="bg-pair">
+      <p class="bad"><b>随手派活</b>：「帮我整理下这个课程群」→ AI 一头雾水，不知道边界</p>
+      <p class="good"><b>五要素版</b>：「范围 上周课程群 / 目标 沉淀高频问题为 Q&amp;A / 处理 合并重复、补答、清敏感 / 交付 飞书文档 / 校验 核对出处」→ AI 知道干啥、干到啥程度、交到哪、怎么算对</p>
+    </div>
+    <p><strong>配套五步循环（飞书 CLI 实战）：</strong></p>
+    <div class="flow5">
+      <span class="f">找（定位时间/人/项目）</span><span class="fa">→</span>
+      <span class="f">读（理解原文上下文）</span><span class="fa">→</span>
+      <span class="f">理（去重/分类/分级）</span><span class="fa">→</span>
+      <span class="f">写（写回文档/Base/群）</span><span class="fa">→</span>
+      <span class="f">验（重新读取确认）</span>
+    </div>
+    <p>简单任务前两步够，<strong>任务越重要越要走到"验"</strong>——校验产生信任，成本最低的信任。验的内容：记录数 / 权限 / 链接。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>长任务卡模板（老金《百万行背后 19 个坑》2026-07）</h2>
+    <p>大任务放手跑前，先填这张卡（与五个闸门一一对应）：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>长任务卡字段</th><th>对应闸门</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>目标 / 完成标准</td><td>①意图 ③证据 ⑤验收</td><td>看到什么证据才算结束；填不出先别扩 Agent</td></tr>
+        <tr><td>规则书（固定做法/必须停问的情况）</td><td>②边界</td><td>哪些照做、哪些重做</td></tr>
+        <tr><td>裁判（测试/对比/样例/人工）</td><td>③证据</td><td>用坏样本测过才可信；能运行 ≠ 行为一致</td></tr>
+        <tr><td>任务账本（自动变下一张待办）</td><td>③证据</td><td>别只存聊天里</td></tr>
+        <tr><td>断点（中断后靠哪个文件继续）</td><td>③证据</td><td>换人看文件能续上才算合格</td></tr>
+        <tr><td><strong>停止条件</strong></td><td><strong>④暂停</strong></td><td>出现什么情况立刻暂停不耗资源</td></tr>
+        <tr><td><strong>最终验收人</strong></td><td><strong>⑤验收</strong></td><td>谁为点通过负责（AI 扛不起责任）</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>填不出完成标准先别扩 Agent；裁判没拿坏样本测过先别信；账本只在聊天里先别跑一夜；断点说不清先把任务缩到一次会话能收住。<span class="q-src">—— 老金原话</span></blockquote>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>运行时自纠错循环（CyrilXBT 2026-07）</h2>
+    <p>长任务卡管的是"动手前"，这一节管的是"跑起来后怎么自己抓错、别让你当人肉校对"。<strong>三个角色必须分开（核心是隔离盲点）：</strong></p>
+    <div class="role3">
+      <div class="ro">
+        <h3>构建者</h3>
+        <p>产出第一次结果，给最大创造空间，不要求一次完美</p>
+      </div>
+      <div class="ro">
+        <h3>评审者</h3>
+        <p>不产出，只按<strong>书面标准</strong>挑错；关键是它得有构建者<strong>没有的真实依据</strong>（原始要求/源文档/测试/数据），否则只能看"通不通顺"，一份自信地错、格式优雅的答案每次都能混过去</p>
+      </div>
+      <div class="ro">
+        <h3>管理者</h3>
+        <p>读评审判定，决定交回重写 / 升级给你 / 标记完成；<strong>停止条件在这</strong></p>
+      </div>
+    </div>
+    <p><strong>结构化交接（比提示词重要）：</strong>构建者输出"交付物 + 置信度 + 已知不确定项 + 所做假设"；评审者回"通过/失败/需修订 + 核查依据 + 具体问题描述 + 置信度"。松散文字会漂移，第 100 次也得稳。</p>
+    <p><strong>停止条件必须写死在逻辑里（不是软提示词）：</strong></p>
+    <ol>
+      <li>最大迭代次数（如 3 次还失败就停，交回给你）</li>
+      <li>可机械验证的阈值（"5 项要求全打勾"，不是"差不多"）</li>
+      <li>成本/时间上限（超了立刻停，不管完没完）</li>
+    </ol>
+    <div class="warn"><b>同上下文自查没用：</b>让模型在同一段对话里"检查你刚写的"会护短——用产生错误的同一套思路审自己，越看越对。必须换调用、换提示词、换参照框架，让评判不被同一组盲点污染。这就是<a href="../01-ai/循环工程.html">循环工程</a>独立验证器的来由。</div>
+    <div class="note-box"><b>与五个闸门的关系：</b>闸门①②③④⑤是"动手前定规矩"，自纠错循环是"动手后保质量"。评审者=证据闸门（③）的运行时版，管理者+硬停止条件=暂停闸门（④）的运行时版。两者合起来：任务前先写契约，任务中自己纠错，出了真问题才交回人。</div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>Astra 配置翻转印证（2026-09-14，AdiiX X 帖）</h2>
+    <p>模型换代，约束跟着翻转——"为旧模型装的每个刹车，都是给本来就会刹车的车又装刹车"：</p>
+    <ul>
+      <li><strong>完成契约必须可脚本检查</strong>：DONE 的定义 = "文件存在/测试通过"这类能跑命令验证的，不是"觉得做完了"——正是停止条件"可机械验证的阈值"的同源印证</li>
+      <li><strong>授权台账（新增概念）</strong>：哪些动作能自动做、哪些必须点头，写成清单——别让它猜。咱家红黄绿灯分级就是台账的民间版</li>
+      <li><strong>删刹车三例</strong>：读全部文档→给地图；"有风险先问"→列具体类别清单；做完停下等确认→审批放最后一步。感觉词全换类别清单</li>
+    </ul>
+    <p style="font-size:14.5px;color:var(--ink-faint);">摘要详见 reviewed(已审文章)/工具实操/2026-09-14-GPT6-Astra-AGENTSmd设置指南.md；验证器侧增量见<a href="../01-ai/图谱工程.html">图谱工程</a> Verifier 节。</p>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>对桑老哥的实操价值</h2>
+    <ul>
+      <li>五个闸门可以当<strong>脑子里过一遍的检查清单</strong>，跟任何 AI 做大任务前用</li>
+      <li>暂停闸门和 CLAUDE.md 里"高风险操作必须确认"是同一逻辑</li>
+      <li>GoalPro 已安装到全局 skills，说"用 goalpro"即可触发</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Prompt三原则.html"><span class="rel-t">Prompt三原则</span><span class="rel-d">TERMINATION = 暂停闸门的停止条件落地</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">独立验证器与三角色互补：闸门管前，循环管后</span></a>
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">同源三要素：它管规则内容，本条管放行风控</span></a>
+      <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">Verifier 节承接"只能验出口"的增量</span></a>
+      <a href="../04-skill/Skill设计方法论.html"><span class="rel-t">Skill设计方法论</span><span class="rel-d">prompt-only 不执行 = 触发精准度的最高体现</span></a>
+      <a href="../02-think/AI-native创业公司的完整图景.html"><span class="rel-t">AI-native创业公司的完整图景</span><span class="rel-d">同一洞察：AI Loop 越自动，人越要守"目标"层</span></a>
+      <a href="../02-think/约束先行.html"><span class="rel-t">约束先行</span><span class="rel-d">同源：没有规矩的地方不动手</span></a>
+      <a href="../06-learn/提问的智慧.html"><span class="rel-t">提问的智慧</span><span class="rel-d">延伸：AI 向自己提问也要清楚</span></a>
+    </div>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>老金（金先森）开源项目 GoalPro：github.com/KimYx0207/GoalPro</li>
+      <li>原文：waytoagi 飞书 Wiki《老金开源 GoalPro，别让 AI 把目标越写越烂》</li>
+      <li>lencx《Agent 开发指南》(2026-07-28，waytoAGI 飞书)——Goal 三要素</li>
+      <li>老金《百万行背后 19 个坑》(2026-07)——长任务卡</li>
+      <li>CyrilXBT《如何打造能够自我纠错的 AI 循环》(2026-07)——三角色循环</li>
+      <li>AJ《100 个飞书 CLI 真实案例》@ 飞书 AI 绝活大会——五要素填空</li>
+      <li>AdiiX X 帖 (2026-09-14)——Astra 配置翻转；摘要见 reviewed(已审文章)/工具实操/2026-09-14-GPT6-Astra-AGENTSmd设置指南.md</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 目标契约与五个闸门</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/目标契约与五个闸门.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">GoalPro 与契约</a></li>
+    <li><a href="#s3">五个闸门 ·核心</a></li>
+    <li><a href="#s4">prompt-only 闸门</a></li>
+    <li><a href="#s5">适用与不适用</a></li>
+    <li><a href="#s6">与奖励工程的分工</a></li>
+    <li><a href="#s7">五要素填空</a></li>
+    <li><a href="#s8">长任务卡模板</a></li>
+    <li><a href="#s9">运行时自纠错循环</a></li>
+    <li><a href="#s10">Astra 翻转印证</a></li>
+    <li><a href="#s11">桑老哥实操价值</a></li>
+    <li><a href="#s12">关联词条</a></li>
+    <li><a href="#s13">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

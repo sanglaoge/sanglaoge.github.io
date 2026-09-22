@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提问的智慧 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：学习方法 · 纸感绿（自然·生长·纸面笔记感） ---- */
+:root {
+  --fam:#4d7c0f; --fam-deep:#3f6212; --fam-soft:#f7fee7; --fam-line:#d9f99d;
+}
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 四要素卡墙 */
+.dict { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin:14px 0 20px; }
+.dcard {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:14px 16px 12px; box-shadow:var(--sh-1);
+  transition:border-color .15s;
+}
+.dcard:hover { border-color:var(--fam); }
+.dcard .dn {
+  font-family:var(--font-head); font-size:27px; font-weight:700; color:var(--fam);
+  line-height:1; font-variant-numeric:tabular-nums;
+}
+.dcard .dt { font-weight:700; font-size:16px; color:var(--ink); margin:6px 0 4px; }
+.dcard .dd { font-size:14.5px; color:var(--g7); line-height:1.65; }
+.dcard .jump { margin-top:10px; display:grid; gap:6px; }
+.dcard .jump .bad, .dcard .jump .good {
+  font-size:14.5px; border-radius:var(--r-el); padding:5px 10px; line-height:1.55;
+}
+.dcard .jump .bad { background:var(--g2); border:1px solid var(--line); color:var(--g7); }
+.dcard .jump .good { background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep); font-weight:600; }
+
+/* 抽屉节标题 */
+.drawer { margin:26px 0 6px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.drawer .dw-t { font-size:17.5px; font-weight:700; color:var(--ink); margin:0; }
+.drawer .dw-c {
+  font-size:14.5px; font-weight:600; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 10px; white-space:nowrap;
+}
+.drawer .dw-h { font-size:14.5px; color:var(--ink-faint); }
+
+/* 现场演示条 */
+.demo {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:16px 0;
+  font-size:15.5px; color:var(--g8);
+}
+.demo b { color:var(--fam-deep); }
+.demo .d-bad { color:var(--g6); text-decoration:line-through; text-decoration-thickness:1px; }
+
+/* 模板代码块 */
+.tpl {
+  background:var(--g9); color:var(--g2); border-radius:var(--r-box);
+  padding:16px 20px; margin:16px 0; overflow-x:auto;
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:15px; line-height:1.9;
+  white-space:pre;
+}
+.tpl .c-key { color:var(--fam-line); font-weight:700; }
+.tpl .c-dim { color:var(--g5); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">学习方法</span><span class="sep">›</span>
+    <span class="here">提问的智慧</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">学习方法 · 问对问题，答案自己浮上来</p>
+    <h1>提问的智慧</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意把说不清的困惑先咽下来架构成精确问题再开口"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>提问不是「说出你的困惑」，而是「架构一个问题」——<strong>把模糊的困境变成别人（或 AI）能精确帮你的格式</strong>。
+      <span class="q-src">—— 《提问的智慧》(How To Ask Questions The Smart Way, GitHub 经典)</span>
+    </blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>核心四要素 ·核心</h2>
+    <p class="drawer"><span class="dw-t">四要素卡墙</span><span class="dw-c">4 张</span><span class="dw-h">一张卡一个要素，附差问法/好问法对照</span></p>
+    <div class="dict" aria-label="提问四要素卡片">
+      <div class="dcard">
+        <div class="dn">01</div>
+        <div class="dt">说清目标</div>
+        <div class="dd">你想达到什么结果？不是「出错了」，而是「我期望 X，实际得到 Y」。</div>
+        <div class="jump">
+          <div class="bad">「出错了，帮我看看」</div>
+          <div class="good">「我期望 X，实际得到 Y」</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dn">02</div>
+        <div class="dt">给足上下文</div>
+        <div class="dd">你在什么环境下遇到这个问题？用了什么工具/版本/配置？前置步骤是什么？</div>
+        <div class="jump">
+          <div class="bad">只甩一张截图</div>
+          <div class="good">环境+版本+前置步骤全交代</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dn">03</div>
+        <div class="dt">展现已做尝试</div>
+        <div class="dd">你已经试过什么？排除了什么？比「帮我看看」有效 10 倍。</div>
+        <div class="jump">
+          <div class="bad">「帮我看看」</div>
+          <div class="good">「试了 A 报错 X，试了 B 没反应」</div>
+        </div>
+      </div>
+      <div class="dcard">
+        <div class="dn">04</div>
+        <div class="dt">提供最小复现</div>
+        <div class="dd">能让问题在最少步骤内重现。截图、报错信息、操作步骤——越具体越好。</div>
+        <div class="jump">
+          <div class="bad">「反正就是不行」</div>
+          <div class="good">「步骤 1→2→3 必现，附报错原文」</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>现场演示：一次就搞定</h2>
+    <p>桑老哥每天和铁柱交互，这四要素直接决定铁柱能不能一次搞定：</p>
+    <div class="demo">
+      <p><span class="d-bad">差：「帮我看看这个」</span></p>
+      <p><b>好：</b>「这个 Listing 图片在手机端显示被裁切了（<b>目标</b>：完整展示），我用的是 Amazon 标准主图尺寸 1500×1500（<b>上下文</b>），我已经试过换背景和缩小产品（<b>已做尝试</b>），附上截图（<b>最小复现</b>）」——四要素各就各位，一遍说清。</p>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>模板：一个好问题的骨架</h2>
+    <p class="drawer"><span class="dw-t">抄作业模板</span><span class="dw-c">4 行</span><span class="dw-h">对 AI、对人、对技术社区通用</span></p>
+<pre class="tpl"><span class="c-key">【目标】</span>我期望 <span class="c-dim">X</span>，实际得到 <span class="c-dim">Y</span>
+<span class="c-key">【上下文】</span>环境 <span class="c-dim">…</span> / 工具+版本 <span class="c-dim">…</span> / 前置步骤 <span class="c-dim">…</span>
+<span class="c-key">【已试】</span>试了 <span class="c-dim">A</span>（结果 <span class="c-dim">…</span>）、试了 <span class="c-dim">B</span>（结果 <span class="c-dim">…</span>）
+<span class="c-key">【复现】</span>步骤 1→2→3 必现，附截图/报错原文</pre>
+    <p>开口前照着填一遍，填不出来的格子，就是你还没想清楚的地方——<strong>填模板的过程本身就是想清楚的过程</strong>。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>和提示词工程的关系</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th></th><th>提问的智慧</th><th>提示词工程</th></tr></thead>
+      <tbody>
+        <tr><td>管什么</td><td>怎么「架构一个问题」</td><td>怎么「让 AI 理解你要什么」</td></tr>
+        <tr><td>偏哪边</td><td>通用问题表达</td><td>AI 交互技巧</td></tr>
+        <tr><td>适用面</td><td>对 AI、对人、对技术社区都适用</td><td>AI 场景</td></tr>
+        <tr><td>关系</td><td colspan="2"><strong>互补：提示词工程是提问的智慧在 AI 场景的特化版</strong></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>适用于所有需要求助的场景，不仅限技术问题</li>
+      <li>对 AI 提问时，「展现已做尝试」这一条可以省略（AI 没有耐心成本），但<strong>「说清目标+给足上下文」永远不能省</strong></li>
+      <li>原文面向开源社区提问，商业场景可以适当简化，但核心四要素不变</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/提示词工程.html"><span class="rel-t">提示词工程</span><span class="rel-d">AI 场景的特化版，7 个实战技巧</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">「给足上下文」在 AI 对话中的系统化实践</span></a>
+      <a href="../06-learn/AI学习七步回路.html"><span class="rel-t">AI学习七步回路</span><span class="rel-d">「定义最小问题」就是提问的智慧在学习场景的应用</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>《提问的智慧》(How To Ask Questions The Smart Way, GitHub 经典博客)</li>
+      <li>CS科班自学指南（Seven×北大V）补充视角（2026-06-01 提取更新）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 学习方法家族 · 提问的智慧</p>
+    <p>词条源：concepts(概念库)/学习方法/提问的智慧.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">核心四要素 ·核心</a></li>
+    <li><a href="#s3">现场演示</a></li>
+    <li><a href="#s4">好问题骨架模板</a></li>
+    <li><a href="#s5">和提示词工程的关系</a></li>
+    <li><a href="#s6">前提与局限</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

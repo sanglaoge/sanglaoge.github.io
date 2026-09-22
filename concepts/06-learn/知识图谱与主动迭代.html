@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识图谱与主动迭代 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：学习方法 · 纸感绿（自然·生长·纸面笔记感） ---- */
+:root {
+  --fam:#4d7c0f; --fam-deep:#3f6212; --fam-soft:#f7fee7; --fam-line:#d9f99d;
+}
+/* ---- 页面专属：叙事布局 ---- */
+
+/* 时间线 */
+.tl { list-style:none; margin:18px 0; padding:0; border-left:2px solid var(--fam-line); }
+.tl li { position:relative; padding:0 0 20px 26px; }
+.tl li:last-child { padding-bottom:4px; }
+.tl li::before {
+  content:""; position:absolute; left:-8px; top:7px; width:12px; height:12px;
+  border-radius:50%; background:var(--fam); border:2px solid var(--g0);
+}
+.tl .tl-date { font-size:14.5px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; }
+.tl .tl-t { font-weight:700; font-size:16px; color:var(--ink); margin:2px 0; }
+.tl p { font-size:15px; margin-bottom:0; }
+
+/* 故事卡 */
+.story { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .story { grid-template-columns:1fr 1fr; } }
+.story .card { border-top:4px solid var(--fam); }
+.story .card h3 { margin:0 0 4px; font-size:17px; color:var(--fam-deep); }
+.story .card .st-en { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.story .card p { font-size:15px; }
+.story .card .st-home {
+  margin-top:10px; font-size:14.5px; color:var(--fam-deep); font-weight:600;
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-el); padding:6px 10px; line-height:1.6;
+}
+
+/* 活图谱 vs 孤岛 SVG 配色（fill/stroke 全走 class→var） */
+.graph { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 10px 4px; margin:16px 0; }
+.graph svg { width:100%; height:auto; display:block; }
+.gn-live { fill:var(--fam); }
+.gn-dead { fill:var(--g4); }
+.ge { stroke:var(--fam); stroke-width:1.8; opacity:.5; }
+.giso { stroke:var(--g4); stroke-width:1.4; stroke-dasharray:4 4; fill:none; }
+.gdiv { stroke:var(--line); stroke-width:1.4; }
+.gtxt { fill:var(--ink); font-weight:700; }
+.gsub { fill:var(--g6); }
+.graph-cap { font-size:14.5px; color:var(--ink-faint); margin:8px 4px 6px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">学习方法</span><span class="sep">›</span>
+    <span class="here">知识图谱与主动迭代</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">学习方法 · 知识怎么摆、怎么养</p>
+    <h1>知识图谱与主动迭代</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-15</span>
+      <span>下次复核 2026-12-15</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒墙探头张望，示意顺着词条链接在知识网络里顺藤摸瓜"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <blockquote>知识库不是收藏夹。笔记之间连成图谱（放），加上定期回顾评测让图谱活起来（迭代）——<strong>只囤不迭代，图谱就是坟场</strong>。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>知识的两条腿：<strong>图谱</strong> = 用 <code>[[wikilink]]</code> 把笔记互相连接，形成能顺藤摸瓜的网络；<strong>主动迭代</strong> = 定期回顾、评测、更新旧知识，让连接保持有效。<strong>收藏不等于学会，连接+回顾才约等于学会。</strong></p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>来历：一条时间线</h2>
+    <ul class="tl" aria-label="词条来历时间线">
+      <li>
+        <div class="tl-date num">2026-04-12</div>
+        <div class="tl-t">三人讨论组里生出来</div>
+        <p>1人2agent讨论组《如何快速内化知识并做输出》（观自方法论），第一次把「图谱」和「迭代」绑成一对说。原始讨论存档在 <span style="color:var(--ink-faint)">AGI共学笔记/讨论组/discussion/</span>。</p>
+      </li>
+      <li>
+        <div class="tl-date num">2026-04 → 08</div>
+        <div class="tl-t">在共学里慢慢长</div>
+        <p>概念库词条养成「关联词条」区+强制挂链的规矩，新知识入库必须挂链接，不造孤岛——图谱这条腿先落地。</p>
+      </li>
+      <li>
+        <div class="tl-date num">2026-09-15</div>
+        <div class="tl-t">断链扫描逼出来的补建</div>
+        <p>铁柱跑全库体检，发现 4 处引用欠账——大家都在 <code>[[</code>链接<code>]]</code> 到这个概念，词条本身却不存在。本条由铁柱综合补建还账，<span class="num">4</span> 处欠账一次结清。</p>
+      </li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>两个部件 ·核心</h2>
+    <div class="story" aria-label="两个部件故事卡">
+      <div class="card">
+        <h3>部件一：知识图谱（放）</h3>
+        <p class="st-en">把笔记互链，检索时顺藤摸瓜</p>
+        <p>单条笔记是孤零零的点，<code>[[wikilink]]</code> 把点连成网。查一个概念，顺着链接能带出一串相关概念——检索不是靠搜索框碰运气，是靠网络顺藤摸瓜。</p>
+        <p class="st-home">在咱家对应：概念库词条的「关联词条」区 + Obsidian 双链</p>
+      </div>
+      <div class="card">
+        <h3>部件二：主动迭代（养）</h3>
+        <p class="st-en">定期回顾/评测/更新，删过时的、并重复的</p>
+        <p>连接会过期：旧知识被推翻、链接失效、重复词条冒出来。定期回顾评测，把假话改掉、把重复并掉，图谱才一直可信。</p>
+        <p class="st-home">在咱家对应：<span style="color:var(--ink-faint)">学习账本</span>的对账日 + 全库体检（断链/孤岛/重复词条扫描）</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>活图谱 vs 孤岛坟场</h2>
+    <div class="graph">
+      <svg viewBox="0 0 680 270" role="img" aria-label="对比图：左边活图谱，节点互相连接成网可顺藤摸瓜；右边孤岛坟场，节点互不相连，检索只能靠运气">
+        <line x1="340" y1="20" x2="340" y2="250" class="gdiv"/>
+        <text x="170" y="34" text-anchor="middle" font-size="15" class="gtxt">活图谱：连成网</text>
+        <text x="510" y="34" text-anchor="middle" font-size="15" class="gtxt">孤岛坟场：只囤不迭代</text>
+        <g>
+          <line x1="70" y1="90" x2="160" y2="66" class="ge"/>
+          <line x1="160" y1="66" x2="252" y2="98" class="ge"/>
+          <line x1="70" y1="90" x2="112" y2="160" class="ge"/>
+          <line x1="112" y1="160" x2="206" y2="172" class="ge"/>
+          <line x1="206" y1="172" x2="252" y2="98" class="ge"/>
+          <line x1="160" y1="66" x2="206" y2="172" class="ge"/>
+          <line x1="206" y1="172" x2="292" y2="140" class="ge"/>
+          <line x1="112" y1="160" x2="70" y2="90" class="ge"/>
+          <circle cx="70" cy="90" r="10" class="gn-live"/>
+          <circle cx="160" cy="66" r="10" class="gn-live"/>
+          <circle cx="252" cy="98" r="10" class="gn-live"/>
+          <circle cx="112" cy="160" r="10" class="gn-live"/>
+          <circle cx="206" cy="172" r="10" class="gn-live"/>
+          <circle cx="292" cy="140" r="10" class="gn-live"/>
+        </g>
+        <text x="170" y="225" text-anchor="middle" font-size="12.5" class="gsub">查一个带一串，顺藤摸瓜</text>
+        <text x="170" y="246" text-anchor="middle" font-size="12.5" class="gsub">定期回顾让连接保持有效</text>
+        <g>
+          <circle cx="392" cy="80" r="10" class="gn-dead"/>
+          <circle cx="392" cy="80" r="20" class="giso"/>
+          <circle cx="486" cy="64" r="10" class="gn-dead"/>
+          <circle cx="486" cy="64" r="20" class="giso"/>
+          <circle cx="588" cy="96" r="10" class="gn-dead"/>
+          <circle cx="588" cy="96" r="20" class="giso"/>
+          <circle cx="436" cy="150" r="10" class="gn-dead"/>
+          <circle cx="436" cy="150" r="20" class="giso"/>
+          <circle cx="546" cy="164" r="10" class="gn-dead"/>
+          <circle cx="546" cy="164" r="20" class="giso"/>
+          <circle cx="624" cy="186" r="10" class="gn-dead"/>
+          <circle cx="624" cy="186" r="20" class="giso"/>
+        </g>
+        <text x="510" y="225" text-anchor="middle" font-size="12.5" class="gsub">互不相连，检索靠运气</text>
+        <text x="510" y="246" text-anchor="middle" font-size="12.5" class="gsub">收藏了安心，用时找不着</text>
+      </svg>
+    </div>
+    <p class="graph-cap">图谱的「健康检查」可以借用评测体系的思路：断链 = 血管堵塞，孤岛 = 死组织。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>和其他词条的咬合</h2>
+    <ul>
+      <li><a href="../06-learn/飞轮学习法.html">飞轮学习法</a> — 主动迭代是飞轮的动力源：每转一圈（回顾一次）图谱更准</li>
+      <li><a href="../06-learn/IPO知识内化方法论.html">IPO知识内化方法论</a> — 本词条管 O 阶段（Output 后的知识怎么摆）：图谱是组织形态，迭代是维护动作</li>
+      <li>评测体系 — 知识图谱的「健康检查」：断链=血管堵塞，孤岛=死组织</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li>每月让铁柱跑一次「全库体检」（AGENTS.md 规则 8）：断链、孤岛、导航过时三查——这就是<strong>主动迭代的制度化</strong></li>
+      <li>新知识入库<strong>必须挂链接</strong>（不造孤岛），旧知识被推翻<strong>必须改词条</strong>（不留假话）</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../06-learn/飞轮学习法.html"><span class="rel-t">飞轮学习法</span><span class="rel-d">主动迭代的动力源，每转一圈图谱更准</span></a>
+      <a href="../06-learn/IPO知识内化方法论.html"><span class="rel-t">IPO知识内化方法论</span><span class="rel-d">本词条管 O 阶段：输出后的知识怎么摆</span></a>
+      <a href="../02-think/信号与噪音过滤器.html"><span class="rel-t">信号与噪音过滤器</span><span class="rel-d">决定什么值得进图谱，先过滤再连接</span></a>
+    </div>
+    <p style="font-size:14.5px;color:var(--ink-faint)">另有 <span style="color:var(--ink-faint)">学习账本</span>（无独立页面）——迭代对账日的落地工具。</p>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>观自知识内化工作流（2026-04-12 三人讨论，原始讨论存档在 AGI共学笔记/讨论组/discussion/）</li>
+      <li>桑老哥共学实践综合（2026-09-15 铁柱补建，还 4 处引用欠账）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 学习方法家族 · 知识图谱与主动迭代</p>
+    <p>词条源：concepts(概念库)/学习方法/知识图谱与主动迭代.md（2026-09-15 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">一句话说清楚</a></li>
+    <li><a href="#s3">来历时间线</a></li>
+    <li><a href="#s4">两个部件 ·核心</a></li>
+    <li><a href="#s5">活图谱vs孤岛</a></li>
+    <li><a href="#s6">词条咬合</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

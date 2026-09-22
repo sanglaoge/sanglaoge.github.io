@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP-Skill-Hook三件套 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Agent自动化 · 机械青（冷峻·工程感·护栏） ---- */
+:root {
+  --fam:#0e7490; --fam-deep:#155e75; --fam-soft:#ecfeff; --fam-line:#a5f3fc;
+}
+/* ---- 页面专属：对比布局（三列对照 + 软硬对撞 + 渐进分级条） ---- */
+
+/* 三件套三列对照 */
+.tri3 { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:768px) { .tri3 { grid-template-columns:1fr 1fr 1fr; } }
+.tri3 .p-card {
+  background:var(--g0); border:1px solid var(--line); border-top:4px solid var(--fam);
+  border-radius:var(--r-box); padding:16px 18px; box-shadow:var(--sh-1);
+}
+.tri3 .p-card .p-ab {
+  font-size:14.5px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em;
+}
+.tri3 .p-card h3 { margin:2px 0 4px; font-size:19px; color:var(--fam-deep); }
+.tri3 .p-card .p-say { font-size:15px; font-weight:700; color:var(--ink); margin-bottom:8px; }
+.tri3 .p-card dl { margin:0; font-size:14.5px; }
+.tri3 .p-card dt { color:var(--ink-faint); font-weight:600; margin-top:6px; }
+.tri3 .p-card dd { margin:0; color:var(--ink-soft); line-height:1.6; }
+
+/* 软 vs 硬 对撞 */
+.soft-hard { display:grid; grid-template-columns:1fr; gap:0; margin:18px 0; border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; box-shadow:var(--sh-1); }
+@media (min-width:768px) { .soft-hard { grid-template-columns:1fr 64px 1fr; } }
+.soft-hard .sh-side { padding:18px 20px; }
+.soft-hard .sh-soft { background:var(--g2); }
+.soft-hard .sh-hard { background:var(--fam-soft); }
+.soft-hard h3 { margin:0 0 8px; font-size:17px; }
+.soft-hard .sh-soft h3 { color:var(--g6); }
+.soft-hard .sh-hard h3 { color:var(--fam-deep); }
+.soft-hard p, .soft-hard li { font-size:14.5px; color:var(--ink-soft); }
+.soft-hard .sh-mid {
+  display:flex; align-items:center; justify-content:center;
+  background:var(--g0); border-top:1px solid var(--line); font-weight:700; color:var(--fam-deep);
+}
+@media (min-width:768px) {
+  .soft-hard .sh-mid { border-top:none; border-left:1px solid var(--line); border-right:1px solid var(--line); }
+}
+
+/* 四级安全分级：渐进条 */
+.tier4 { display:flex; gap:6px; margin:18px 0 6px; }
+.tier4 .tier {
+  flex:1 1 0; border-radius:var(--r-el); padding:12px 12px 14px; min-width:0;
+}
+.tier4 .t-lv { font-size:14.5px; font-weight:700; letter-spacing:.04em; }
+.tier4 .t-name { font-weight:700; font-size:15.5px; margin:2px 0; }
+.tier4 .t-what { font-size:14.5px; line-height:1.55; }
+.tier4 .t1 { background:var(--fam-soft); border:1px solid var(--fam-line); }
+.tier4 .t1 .t-lv, .tier4 .t1 .t-name { color:var(--fam-deep); }
+.tier4 .t1 .t-what { color:var(--ink-soft); }
+.tier4 .t2 { background:var(--fam-line); }
+.tier4 .t2 .t-lv, .tier4 .t2 .t-name { color:var(--fam-deep); }
+.tier4 .t2 .t-what { color:var(--ink); }
+.tier4 .t3 { background:var(--fam); }
+.tier4 .t3 .t-lv, .tier4 .t3 .t-name, .tier4 .t3 .t-what { color:#ffffff; }
+.tier4 .t4 { background:var(--fam-deep); }
+.tier4 .t4 .t-lv, .tier4 .t4 .t-name, .tier4 .t4 .t-what { color:#ffffff; }
+@media (max-width:767px) {
+  .tier4 { flex-direction:column; }
+}
+.tier-cap { text-align:center; font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.tier-cap .arrow { color:var(--fam); font-weight:700; }
+
+/* 工程演进链路条 */
+.chain { display:flex; gap:0; margin:18px 0 6px; overflow-x:auto; }
+.chain .ch {
+  flex:1 1 0; min-width:118px; padding:12px 12px 10px; position:relative;
+  border-left:1px solid var(--line); background:var(--g0);
+}
+.chain .ch:first-child { border-left:none; }
+.chain .ch .ch-name { font-weight:700; font-size:15px; color:var(--ink); }
+.chain .ch .ch-do { font-size:14.5px; color:var(--ink-faint); margin-top:2px; line-height:1.5; }
+.chain .ch.now { background:var(--fam-soft); }
+.chain .ch.now .ch-name { color:var(--fam-deep); }
+.chain .ch.now::after {
+  content:"桑老哥在这"; position:absolute; top:-11px; right:6px;
+  background:var(--fam); color:#fff; font-size:14.5px; font-weight:700;
+  padding:1px 9px; border-radius:999px;
+}
+.chain-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+
+/* 金句 */
+.creed {
+  background:var(--fam-soft); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:16px 20px; margin:16px 0; font-size:clamp(17px,2.6vw,20px);
+  font-family:var(--font-head); color:var(--g9); line-height:1.8;
+}
+.creed b { color:var(--fam-deep); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Agent自动化</span><span class="sep">›</span>
+    <span class="here">MCP-Skill-Hook三件套</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Agent自动化 · 给大模型装上能力、规矩、底线的三层护栏</p>
+    <h1>MCP-Skill-Hook三件套</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-27</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意管AI不靠嘴上保证、靠绕不开的硬闸"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <div class="creed">Agent 三件套 = <b>MCP 给能力（手）</b> + <b>Skill 定流程（脑）</b> + <b>Hook 管底线（闸）</b>。</div>
+    <p>分工：MCP 解决「能干啥」，Skill 解决「按啥顺序干」，Hook 解决「被允许咋干」。打个比方——把 AI 当新来的实习生：MCP 是双手（没手只能动嘴），Skill 是脑子里的操作手册（先做啥再做啥），Hook 是安检门（每次伸手前过一道闸）。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三件套各管什么 ·核心</h2>
+    <div class="tri3">
+      <div class="p-card">
+        <span class="p-ab">手</span>
+        <h3>MCP</h3>
+        <p class="p-say">能操作什么</p>
+        <dl>
+          <dt>解决</dt><dd>接外部能力：数据库、搜索、API</dd>
+          <dt>铁柱里的对应</dt><dd>sorftime / tavily-search / lark-cli</dd>
+        </dl>
+      </div>
+      <div class="p-card">
+        <span class="p-ab">脑</span>
+        <h3>Skill</h3>
+        <p class="p-say">怎么正确操作</p>
+        <dl>
+          <dt>解决</dt><dd>编排顺序：先做啥再做啥</dd>
+          <dt>铁柱里的对应</dt><dd>PAI / frontend-design / luban 等 <span class="num">27</span> 个</dd>
+        </dl>
+      </div>
+      <div class="p-card">
+        <span class="p-ab">闸</span>
+        <h3>Hook</h3>
+        <p class="p-say">被允许怎么操作</p>
+        <dl>
+          <dt>解决</dt><dd>安全边界：拦危险动作</dd>
+          <dt>铁柱里的对应</dt><dd>CLAUDE.md 的「别直接删」「高风险先问」「口播句强制」</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>MCP 三种原语（控制权是核心轴）</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>原语</th><th>控制权</th><th>加载方式</th><th>适合场景</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Tools</strong></td>
+          <td>模型控制（Model-controlled）</td>
+          <td>客户端启动时注册，供模型按需调用（「注入 system prompt」只是部分客户端的实现细节，非规范）</td>
+          <td>CRUD、部署、启停等「动手」操作（唯一能改外部状态）</td>
+        </tr>
+        <tr>
+          <td><strong>Resources</strong></td>
+          <td>应用控制（Application-controlled）</td>
+          <td>惰性按需拉取</td>
+          <td>表 schema、数据字典等大量结构化参考（不占 prompt）</td>
+        </tr>
+        <tr>
+          <td><strong>Prompts</strong></td>
+          <td>用户控制（User-controlled）</td>
+          <td>惰性按需获取</td>
+          <td>标准化引导的重复性任务</td>
+        </tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>四级安全分级：最该抄的作业 ·核心</h2>
+    <p>Hook 不是二元「允许/拒绝」，是渐进式四级：</p>
+    <div class="tier4">
+      <div class="tier t1"><span class="t-lv">一级</span><div class="t-name">静默放行</div><p class="t-what">纯查询，不打扰</p></div>
+      <div class="tier t2"><span class="t-lv">二级</span><div class="t-name">审计记录</div><p class="t-what">低风险写操作（存草稿），悄悄记一笔账</p></div>
+      <div class="tier t3"><span class="t-lv">三级</span><div class="t-name">弹窗确认</div><p class="t-what">高风险写操作（发布上线），必须用户点头</p></div>
+      <div class="tier t4"><span class="t-lv">四级</span><div class="t-name">硬阻断</div><p class="t-what">不可逆删除（删数据库），直接拦死</p></div>
+    </div>
+    <p class="tier-cap">风险越高 <span class="arrow">→</span> 闸越硬：从「不打扰」到「拦死」</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>全篇金句：软嘴 vs 硬闸</h2>
+    <div class="soft-hard">
+      <div class="sh-side sh-soft">
+        <h3>prompt 约束是软的</h3>
+        <ul>
+          <li>CLAUDE.md 里写一百条「不要 X」</li>
+          <li>AI 一「自信」就绕过</li>
+          <li>靠嘴保证，没有强制力</li>
+        </ul>
+      </div>
+      <div class="sh-mid">对撞</div>
+      <div class="sh-side sh-hard">
+        <h3>Hook 是硬的</h3>
+        <ul>
+          <li>工具调用链路上 AI 绕不开的道闸</li>
+          <li>写进程序，不靠模型自觉</li>
+          <li>管 AI 得靠硬闸，不靠嘴</li>
+        </ul>
+      </div>
+    </div>
+    <div class="creed"><b>安全边界不靠 prompt 保证，靠工程架构保障。</b></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>AI 工程演进链路：桑老哥在哪一层</h2>
+    <div class="chain">
+      <div class="ch"><div class="ch-name">Prompt 工程</div><p class="ch-do">写提示词</p></div>
+      <div class="ch"><div class="ch-name">Context 工程</div><p class="ch-do">管上下文</p></div>
+      <div class="ch now"><div class="ch-name">Harness 工程</div><p class="ch-do">搭外壳 + 钩子</p></div>
+      <div class="ch"><div class="ch-name">Loop 工程</div><p class="ch-do">自动循环</p></div>
+      <div class="ch"><div class="ch-name">Graph 工程</div><p class="ch-do">多 AI 协调</p></div>
+    </div>
+    <p>桑老哥当前位置：从 Prompt（写 CLAUDE.md）往 Context（PAI 自动加载）和 Harness（hook 系统、日记 hook）走，已到第三层。下一站 <a href="../01-ai/图谱工程.html">图谱工程</a>。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>轻记：WebMCP（2026-08-31 并入）</h2>
+    <p>Chrome 和 Edge 团队在做同一个浏览器 API：让网站把能做的操作写成清单（名称 + 给模型读的描述 + 输入类型），智能体照单调用——<strong>声明胜过猜测</strong>（Akshay 科普，2026-08-29，附<a class="ext" href="https://developer.chrome.com/docs/ai/webmcp" target="_blank" rel="noopener noreferrer">官方文档</a>）。</p>
+    <p>智能体到达应用的六种方式：原始 API / 后端 MCP 服务器 / 计算机使用（截图点击）/ 浏览器自动化 / WebMCP / 站内助手——WebMCP 是唯一「自己的智能体 + 零配置 + 真命名操作」三者全留。</p>
+    <ul>
+      <li><strong>登录白送</strong>：在用户已登录的会话里跑，不用 API 密钥</li>
+      <li><strong>不会误点</strong>：拿到清单不是猜按钮</li>
+      <li><strong>网站改版不失灵</strong>：菜单网站自己维护</li>
+    </ul>
+    <p>给商家的启示：未来「把能做什么写清楚」的网站拿到更可靠的 AI 流量——与详情页写明卖点同理，这次的读者是 AI。MCP 生态从「工具方搭服务器」走向「网页自我声明」。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>Hook 不是万能：规则写太严，AI 会「动弹不得」，啥都问人，效率反降。软（prompt）和硬（hook）要配合，不是全押硬的</li>
+      <li>tier 条件链、SA-Market、symlink、Agent Plugin Factory 等工程实现细节，是程序员搭 MCP Server 才用的，桑老哥不写代码可跳过</li>
+      <li>WebMCP 还是进行中的浏览器提案，落地节奏看 Chrome/Edge 官方进度</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li>铁柱本身就是这三件套搭的。理解底层逻辑后，优化自己的系统有方向：把 CLAUDE.md 里的「软嘴」（不要 X）逐步升级成 Hook 的「硬闸」（绕不开的强制检查）</li>
+      <li>配置类高风险操作（删文件/推代码/花钱）值得做成 Hook 三级（弹窗确认）或四级（硬阻断），而不是只写在 prompt 里</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">Skill 层的深入：能力商品，认知架构</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">MCP/Skill/Hook 都属于 Harness（AI 的身体）</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">三件套服务的对象</span></a>
+      <a href="../02-think/约束先行.html"><span class="rel-t">约束先行</span><span class="rel-d">Hook 的思想源头：先定规矩再动手</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">prompt-only 的安全检查（没 Hook 强制，不执行）</span></a>
+      <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">工程链路的下一站（Graph 层）</span></a>
+      <a href="Agent工程规范.html"><span class="rel-t">Agent工程规范</span><span class="rel-d">安全边界在工程总纲里的位置</span></a>
+      <a href="Context%20Loop搭建法.html"><span class="rel-t">Context Loop搭建法</span><span class="rel-d">用这三件套搭自进化循环</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>邵炜杰《一文讲透Agent三件套：MCP、Skill、Hook如何给大模型装上护栏》（腾讯云开发者 2026-07-23，waytoAGI 飞书转载）</li>
+      <li>WebMCP 轻记：Akshay 科普（2026-08-29，官方文档 developer.chrome.com/docs/ai/webmcp，2026-08-31 并入）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Agent自动化家族 · MCP-Skill-Hook三件套</p>
+    <p>词条源：concepts(概念库)/Agent与自动化/MCP-Skill-Hook三件套.md（2026-07-27 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">三件套各管什么 ·核心</a></li>
+    <li><a href="#s3">MCP 三种原语</a></li>
+    <li><a href="#s4">四级安全分级 ·核心</a></li>
+    <li><a href="#s5">软嘴 vs 硬闸</a></li>
+    <li><a href="#s6">工程演进链路</a></li>
+    <li><a href="#s7">轻记：WebMCP</a></li>
+    <li><a href="#s8">前提与局限</a></li>
+    <li><a href="#s9">桑老哥适用</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evals评测体系 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（系统·克制·可信） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：词典网格（卡墙 + 抽屉分组速查） ---- */
+
+/* 抽屉分组标题 */
+.drawer-t { display:flex; align-items:center; gap:10px; margin:0 0 12px; }
+.drawer-t .dt-chip { background:var(--fam); color:#ffffff; border-radius:6px; padding:1px 10px; font-size:13.5px; font-weight:700; white-space:nowrap; }
+.drawer-t h3 { margin:0; font-size:17px; }
+
+/* 死法卡墙 */
+.wall { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:780px) { .wall { grid-template-columns:repeat(3,1fr); } }
+.wall.two { grid-template-columns:1fr; }
+@media (min-width:780px) { .wall.two { grid-template-columns:repeat(2,1fr); } }
+.wcard { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:var(--r-box); padding:15px 16px; box-shadow:var(--sh-1); }
+.wcard .wc-no { font-size:13px; font-weight:700; color:var(--fam-deep); letter-spacing:.08em; }
+.wcard h4 { margin:3px 0 4px; font-size:16.5px; color:var(--ink); }
+.wcard .wc-met { font-size:13.5px; color:var(--ink-faint); margin-bottom:8px; }
+.wcard p { font-size:14.5px; color:var(--g8); margin:0; line-height:1.75; }
+
+/* 建考卷规矩清单 */
+.rule-list { list-style:none; padding:0; margin:14px 0; }
+.rule-list li { position:relative; padding:11px 0 11px 40px; border-bottom:1px dashed var(--line); font-size:15.5px; color:var(--g8); }
+.rule-list li:last-child { border-bottom:none; }
+.rule-list .r-no {
+  position:absolute; left:0; top:11px; width:26px; height:26px; line-height:24px; text-align:center;
+  border:2px solid var(--fam); border-radius:7px; color:var(--fam-deep);
+  font-weight:700; font-size:13.5px; background:var(--fam-soft); font-variant-numeric:tabular-nums;
+}
+.rule-list b { color:var(--ink); }
+
+/* 数字速查条 */
+.statline { display:flex; flex-wrap:wrap; gap:12px 28px; margin:14px 0; }
+.statline .st-item { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:10px 16px; font-size:14.5px; color:var(--ink-soft); }
+.statline .st-item b { display:block; font-size:22px; color:var(--fam-deep); font-variant-numeric:tabular-nums; line-height:1.3; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">Evals评测体系</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 磊叔100问 · 核心五件套</p>
+    <h1>Evals评测体系</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-08</span>
+      <span>下次复核 2026-12-08</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌宣告，示意分数不退步才准上线"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>AI 产品每次改动的考卷——分数不退步才准上线；考卷本身错了一起白搭。</blockquote>
+    <p>模型输出是概率性的：改句提示词、换个模型，到底变好还是变差说不准——<span class="num">95 题变好、5 题变蠢</span>，不知道是哪 5 题。Evals 就是一套<strong>固定考卷：改动前后各考一次，分数对比</strong>。</p>
+    <p>考卷本体叫 <strong>golden set（金标准题库）</strong>，磊叔书里叫「模型迭代时的刹车片」。比喻：员工送培训，培训前后同一张卷子各考一次，凭分数说话，不凭感觉。</p>
+    <p>与 <a href="../01-ai/奖励工程RewardEngineering.html">奖励工程RewardEngineering</a> 的分工：奖励工程管「怎么打分」（考场上尺子歪不歪），Evals 管「拿什么题考」（考卷出得对不对）。外部 benchmark 骗人四式（饱和/污染/尺子歪/作弊）在自家考卷上同样成立。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>考卷做错的三种死法</h2>
+    <div class="drawer-t"><span class="dt-chip">卡墙一</span><h3>做了 Evals 还翻车，不是没用，是做错了</h3></div>
+    <div class="wall">
+      <div class="wcard">
+        <span class="wc-no">死法一</span>
+        <h4>只看聚合分</h4>
+        <p class="wc-met">比喻：孩子考 85 分只盯分数不改错题</p>
+        <p>哪 <span class="num">15%</span> 错、为什么错、是否反复同类错——模式藏在错题里，聚合分一个都看不见。</p>
+      </div>
+      <div class="wcard">
+        <span class="wc-no">死法二</span>
+        <h4>考卷一成不变</h4>
+        <p class="wc-met">比喻：拿三年前的中考卷练今天的考试</p>
+        <p>业务在变用户在变；<strong>三个月没更新的评测集基本已失效</strong>。</p>
+      </div>
+      <div class="wcard">
+        <span class="wc-no">死法三</span>
+        <h4>不收错题库</h4>
+        <p class="wc-met">比喻：错题本不做，期末只刷新题</p>
+        <p>失败 case 是金矿，大部分团队「把金矿当废料倒了」。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>建考卷的规矩</h2>
+    <div class="drawer-t"><span class="dt-chip">卡墙二</span><h3>三条规矩，出题前过一遍</h3></div>
+    <ul class="rule-list">
+      <li><span class="r-no">1</span><b>题目必须来自真实用户提问</b>——老师自己编题是自嗨。</li>
+      <li><span class="r-no">2</span><b><span class="num">500</span> 条精选 &gt; <span class="num">5000</span> 条粗糙</b>——错题本贵在精不在厚。</li>
+      <li><span class="r-no">3</span><b>三层覆盖</b>：常见题保基本盘、边界题探极限、对抗题防人使坏。</li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>AI 裁判（LLM-as-a-Judge）</h2>
+    <div class="drawer-t"><span class="dt-chip">卡墙三</span><h3>让 AI 批卷：量大、便宜、快</h3></div>
+    <div class="statline">
+      <div class="st-item"><b>100 → 10 美元</b>每千条批卷成本</div>
+      <div class="st-item"><b>10%-20%</b>人（老师）抽改校准松紧</div>
+    </div>
+    <p>定位 = <strong>学霸先改，老师（人）抽改 10%-20% 校准松紧</strong>。成本从每千条 100 美元降到 10 美元，但最后那口得人兜。</p>
+    <p>学霸三类题乱打分：</p>
+    <div class="wall">
+      <div class="wcard">
+        <span class="wc-no">乱打分一</span>
+        <h4>主观偏好类</h4>
+        <p>偏爱字多、口气自信的答案。活案例见 <a href="../01-ai/Agent自进化.html">Agent自进化</a>：裁判偏爱长文，Agent 进化学会把答案越写越长讨好裁判。</p>
+      </div>
+      <div class="wcard">
+        <span class="wc-no">乱打分二</span>
+        <h4>自我评估类</h4>
+        <p>GPT-4 给 GPT-4 打分系统性偏高——自恋。同底座保留同盲点，与 <a href="../01-ai/循环工程.html">循环工程</a>「独立怀疑者 &gt; 自我批判」同一条。</p>
+      </div>
+      <div class="wcard">
+        <span class="wc-no">乱打分三</span>
+        <h4>维度模糊类</h4>
+        <p>「回答质量怎么样」这种没给尺子的，基本瞎打。</p>
+      </div>
+    </div>
+    <div class="warn"><b>对照记忆：</b>打分前先问三句——题目哪来的、多久没更新、谁批的卷。这三句正好对应三种死法。</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>桑老哥的用法</h2>
+    <ul>
+      <li><strong>评测任何 AI 工具</strong>：别看官方跑分，拿自己的真实任务当考卷（10 条起步），改一版考一版</li>
+      <li><strong>看 AI 生成的评测报告</strong>：先问题目哪来的、多久没更新、谁批的卷</li>
+      <li><strong>与信任校准同源</strong>：摸清「它哪类行哪类不行」，就是给自己建 golden set</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>Evals 只管「拿什么题考」——尺子歪不歪归 <a href="../01-ai/奖励工程RewardEngineering.html">奖励工程RewardEngineering</a> 管，两边都得正</li>
+      <li>考卷有保质期：业务在变，三个月不更新基本失效</li>
+      <li>AI 裁判省钱不省心：最后那 10%-20% 的校准必须人兜</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">尺子 vs 考卷：怎么打分 vs 拿什么题考</span></a>
+      <a href="../01-ai/Agent自进化.html"><span class="rel-t">Agent自进化</span><span class="rel-d">分数上涨先排除四假象，靠的就是考卷</span></a>
+      <a href="../01-ai/RAG检索增强生成.html"><span class="rel-t">RAG检索增强生成</span><span class="rel-d">检索质量好不好，也得考卷说话</span></a>
+      <a href="../01-ai/锯齿智能.html"><span class="rel-t">锯齿智能</span><span class="rel-d">哪里强哪里弱，考卷画出来才看得见</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">可验证：产出能被独立验收</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">判卷最后那口归人</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>磊叔《AI产品经理的100个问题》Q24-Q26（第二章 · 核心五件套）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Evals评测体系</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Evals评测体系.md（2026-09-08 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">三种死法 ·核心</a></li>
+    <li><a href="#s3">建考卷的规矩</a></li>
+    <li><a href="#s4">AI 裁判</a></li>
+    <li><a href="#s5">桑老哥的用法</a></li>
+    <li><a href="#s6">前提与局限</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

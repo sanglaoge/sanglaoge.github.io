@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人味与AI味 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：个人IP · 媒体红（内容人的浓红，只做点缀） ---- */
+:root {
+  --fam:#be123c; --fam-deep:#881337; --fam-soft:#fff1f2; --fam-line:#fecdd3;
+}
+/* ---- 页面专属：对比布局 ---- */
+
+/* 大对照：减法 vs 加法 */
+.vs { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:820px) { .vs { grid-template-columns:1fr 1fr; } }
+.vs-col { border-radius:var(--r-box); padding:16px 20px; border:1px solid var(--line); position:relative; }
+.vs-col.dead { background:var(--g2); }
+.vs-col.alive { background:var(--fam-soft); border-color:var(--fam-line); }
+.vs-col .vs-name { font-family:var(--font-head); font-weight:700; font-size:18px; color:var(--ink); display:inline-block; margin-right:10px; }
+.vs-col .vs-badge {
+  display:inline-block; font-size:14.5px; font-weight:700; border-radius:999px;
+  padding:0 12px; vertical-align:2px;
+}
+.vs-col.dead .vs-badge { background:var(--g5); color:var(--g0); }
+.vs-col.alive .vs-badge { background:var(--fam); color:#fff; }
+.vs-col .vs-how { font-size:15px; color:var(--g8); margin:10px 0; padding-bottom:10px; border-bottom:1px dashed var(--line); }
+.vs-col ul { margin-bottom:0; }
+.vs-col li { font-size:15px; color:var(--g8); }
+.vs-col.alive li b { color:var(--fam-deep); }
+
+/* 镜子 vs 靶子 */
+.mirror { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:820px) { .mirror { grid-template-columns:1fr auto 1fr; align-items:stretch; } }
+.mi-card { border-radius:var(--r-box); border:1px solid var(--line); background:var(--g0); padding:14px 18px; }
+.mi-card .mi-t { font-weight:700; font-size:16.5px; margin-bottom:6px; }
+.mi-card.ok .mi-t { color:var(--fam-deep); }
+.mi-card.ng .mi-t { color:var(--ink-soft); }
+.mi-card p { font-size:15px; margin-bottom:6px; }
+.mi-card .mi-v { font-size:14.5px; color:var(--ink-faint); border-top:1px dashed var(--line); padding-top:6px; margin:0; }
+.mi-mid { display:flex; align-items:center; justify-content:center; }
+.mi-mid span {
+  font-family:var(--font-head); font-weight:700; font-size:15px; color:var(--ink-faint);
+  writing-mode:vertical-rl; letter-spacing:.3em;
+}
+@media (max-width:819px) { .mi-mid { display:none; } }
+
+/* 反噬案例卡 */
+.backfire { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:820px) { .backfire { grid-template-columns:1fr 1fr 1fr; } }
+.bf-card { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:var(--r-box); padding:13px 16px; }
+.bf-card .bf-stat { font-size:24px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; line-height:1.3; }
+.bf-card .bf-stat small { font-size:14.5px; font-weight:400; color:var(--ink-faint); display:block; }
+.bf-card p { font-size:14.5px; color:var(--ink-soft); margin:6px 0 0; }
+
+/* 小黑话对照表内高亮 */
+.dict-tbl td.k { font-weight:600; color:var(--ink); }
+
+/* 官方组合拳框（与提示词工程的挂链） */
+.official {
+  background:var(--g0); border:1.5px dashed var(--fam-line); border-radius:var(--r-box);
+  padding:14px 18px; margin:16px 0;
+}
+.official .o-t { font-weight:700; color:var(--fam-deep); margin-bottom:6px; font-size:15.5px; }
+
+/* 警示条（琥珀，非家族色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">个人IP</span><span class="sep">›</span>
+    <span class="here">人味与AI味</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">个人IP · 写作里的指纹学</p>
+    <h1>人味与AI味</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-24</span>
+      <span>下次复核 2026-11-24</span>
+      <span class="num">验证 true · 置信 high</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意人味是藏在自己都说不清的用词选择里"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>AI 味就是均值味——所有检测器测的都是你离"平均水位"多远；去 AI 味，减法是死路，加三样东西才是活路。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>AI 味 = 均值味</h2>
+    <p><span class="num">1964</span> 年《联邦党人文集》悬案：12 篇不知是汉密尔顿还是麦迪逊写的，哈佛统计学家不看观点不看文采，只数 upon/by/whilst 这 30 个虚词的频率，全部判给麦迪逊。道理：<strong>写了什么可以模仿，你自己都意识不到的用词习惯模仿不了</strong>——这就是功能词指纹（Burrows Delta，60 年后成了 AI 检测器的祖师爷）。</p>
+    <p>所有 AI 检测器（GPTZero 等）不管叫什么名字，五个旋钮测的都是同一件事：<strong>你的文字离模型输出的平均值多远</strong>——挑词是不是太"最可能"（困惑度低）、节奏是不是太平（突发性低）、结构是不是总分总模板、用词分布像不像模型指纹（delves 一词 2024 年医学论文暴增 28 倍）。</p>
+    <p>所以：越像平均值，越像 AI。<strong>人味 = 偏离平均值的那部分。</strong></p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>去味两条路：减法死路，加法活路 ·核心</h2>
+    <div class="vs" aria-label="减法路线与加法路线左右对照">
+      <div class="vs-col dead">
+        <span class="vs-name">减法路线</span><span class="vs-badge">死路</span>
+        <p class="vs-how">做法：humanizer 工具——删破折号、删"此外然而"、打散模板。</p>
+        <ul>
+          <li>参数就二三十个，全世界卷死</li>
+          <li>随便改写一遍，检测率 <span class="num">70% → 4.6%</span>，永远在过期</li>
+          <li>最致命：<strong>只能不像 AI，不能更像你</strong></li>
+        </ul>
+      </div>
+      <div class="vs-col alive">
+        <span class="vs-name">加法路线</span><span class="vs-badge">活路</span>
+        <p class="vs-how">做法：加具体+判断+在场（几乎没人走）。</p>
+        <ul>
+          <li><b>具体度</b>：真实数字、地名、细节——AI 生造不出来的低概率锚点</li>
+          <li><b>判断浓度</b>：不可外包的观点，敢拍板的结论</li>
+          <li><b>在场感</b>（不可替换性）：一句话检验——把作者换成任何别人，这句话还成立吗？"我认为这很重要"换谁都成立=假在场；"我昨天在杭州被这个 bug 坑了三小时"=真在场</li>
+        </ul>
+        <p style="font-size:15px; margin:10px 0 0; color:var(--fam-deep); font-weight:600;">检测器测不出判断是不是不可外包的，天然免疫猫鼠游戏。</p>
+      </div>
+    </div>
+    <div class="official">
+      <p class="o-t">官方操作模板：与提示词工程的挂链</p>
+      <p style="font-size:15px; margin-bottom:0;"><a href="../01-ai/提示词工程.html">提示词工程</a>里的官方"去 AI 味组合拳"（<strong>负面清单+正面规范</strong>，2026-09-22 并入）= 本文加法路线的官方操作模板——<strong>官方禁的口水词正是"均值味"高发词</strong>。两页互为表里：本页讲为什么，那页讲怎么写。</p>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>检测器反噬：以维护人味之名，消灭人味</h2>
+    <p>古德哈特崩塌（指标跟权力挂钩就失真，详见<a href="../01-ai/图谱工程.html">图谱工程</a>）的社会版：</p>
+    <div class="backfire">
+      <div class="bf-card">
+        <p class="bf-stat">61.3%<small>91 篇真人托福作文被误判</small></p>
+        <p>非母语学生用词简单，恰好撞上"均值味"判据。</p>
+      </div>
+      <div class="bf-card">
+        <p class="bf-stat">主动写差<small>学生躲检测的新姿势</small></p>
+        <p>简化用词、删有力段落、故意加错别字。</p>
+      </div>
+      <div class="bf-card">
+        <p class="bf-stat">2-8 倍<small>人类对多样性的贡献 vs GPT-4</small></p>
+        <p>AI 辅助悖论：人人觉得作品更有创意，所有作品更相似——每个人都更像"合格的人"，最后全都一样。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>镜子不是靶子：可诊断，不可优化</h2>
+    <p>作者预注册实验：8 篇确定人写的中文，让 AI 做一次最普通的"润色通顺专业"，抹掉 <span class="num">11</span> 个具体锚点（年龄、数字、口语细节）；8 个去 AI 味工具修复，最高救回 <span class="num">1</span> 个。</p>
+    <p><strong>洗掉的人味没有任何工具找得回来。人味没有修复，只有预防——别让 AI 覆盖你的分布。</strong></p>
+    <div class="mirror" aria-label="镜子与靶子对照">
+      <div class="mi-card ok">
+        <p class="mi-t">工具是镜子（可以）</p>
+        <p>告诉你哪段塌了，诊断交还作者。</p>
+        <p class="mi-v">改写权在自己手里</p>
+      </div>
+      <div class="mi-mid"><span>对照</span></div>
+      <div class="mi-card ng">
+        <p class="mi-t">工具是靶子（不行）</p>
+        <p>自动改到过线——一旦接上自动改写，工具自己就变成同质化引擎。</p>
+        <p class="mi-v">改写权绝不外放</p>
+      </div>
+    </div>
+    <p>这是<a href="../01-ai/出稿评审分离法.html">出稿评审分离法</a>的写作版：诊断交还作者，改写权绝不外放。本文自身就是示范——作者大方声明"研究和统计是 AI 干的，选题、观点、取舍是我定的"，即<a href="../01-ai/AI与人的分工原则.html">AI与人的分工原则</a>的活例。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>IP 落地三招</h2>
+    <ol>
+      <li>别让 AI"润色到通顺专业"——那是把你的指纹推向模型中心，<strong>越润越像所有人</strong></li>
+      <li>分工：AI 管研究、检索、搭结构，你管判断、细节、经历——你的"被坑三小时"别人写不出来</li>
+      <li>写完自检一条：这段话换别人还成立吗？成立就删或改</li>
+    </ol>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>小白说法 ↔ 专业术语</h2>
+    <div class="tbl-scroll"><table class="tbl dict-tbl">
+      <thead><tr><th>小白说法</th><th>专业术语</th></tr></thead>
+      <tbody>
+        <tr><td class="k">你的用词习惯像指纹</td><td>功能词指纹（Burrows Delta）</td></tr>
+        <tr><td class="k">AI 味 = 大家都这么写</td><td>均值味（低困惑度、低突发性）</td></tr>
+        <tr><td class="k">删掉 AI 痕迹</td><td>减法路线（humanizer）</td></tr>
+        <tr><td class="k">写具体、写判断、写自己</td><td>加法路线（不可替换性）</td></tr>
+        <tr><td class="k">为过检测而写反而毁写作</td><td>古德哈特崩塌</td></tr>
+        <tr><td class="k">只照镜子不打靶</td><td>诊断 ≠ 优化</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>和已学概念的连接</h2>
+    <ul>
+      <li><a href="../01-ai/AI与人的分工原则.html">AI与人的分工原则</a>：AI 管研究你管判断，本文是写作场景的实证</li>
+      <li><a href="../01-ai/提示词工程.html">提示词工程</a>：官方"去 AI 味组合拳"（负面清单+正面规范，2026-09-22 并入）= 本文加法路线的官方操作模板——官方禁的口水词正是"均值味"高发词</li>
+      <li><a href="../01-ai/出稿评审分离法.html">出稿评审分离法</a> / <a href="../01-ai/Agent自进化.html">Agent自进化</a>：镜子不是靶子 = 控制面分离，评估权不外放</li>
+      <li><a href="../01-ai/图谱工程.html">图谱工程</a>：检测器反噬 = 古德哈特定律（AI 客服解决率骗局同款）</li>
+      <li><a href="../02-think/隐性知识.html">隐性知识</a>：在场感 = 说不出但藏在选择里的那部分知识</li>
+      <li><a href="../02-think/最后一公里.html">最后一公里</a>：AI 产出中位数，人味就是最后 10% 的打磨</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>一句话带走</h2>
+    <blockquote>写完问一句：这段话换别人还成立吗？成立就删——<strong>人味就是删剩下的那部分</strong>。</blockquote>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/提示词工程.html"><span class="rel-t">提示词工程</span><span class="rel-d">去AI味组合拳 = 加法路线的官方操作模板（双向挂链）</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">AI 管研究你管判断的活例</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">镜子不是靶子的原型</span></a>
+      <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">检测器反噬 = 古德哈特定律</span></a>
+      <a href="../01-ai/Agent自进化.html"><span class="rel-t">Agent自进化</span><span class="rel-d">控制面分离：评估权不外放</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">在场感 = 藏在选择里的知识</span></a>
+      <a href="../02-think/最后一公里.html"><span class="rel-t">最后一公里</span><span class="rel-d">人味 = 最后 10% 的打磨</span></a>
+      <a href="../07-ip/公众号写作系统.html"><span class="rel-t">公众号写作系统</span><span class="rel-d">写作流水线里守人味：AI 填肉不换骨</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>李韭二《什么他妈的叫他妈的人味》（@li9292，2026-08-18。自称"10亿 Token、100 篇论文、10+ 开源项目"，含预注册实验；WaytoAGI 飞书转载）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 个人IP家族 · 人味与AI味</p>
+    <p>词条源：concepts(概念库)/个人IP/人味与AI味.md（2026-08-24 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">AI味=均值味</a></li>
+    <li><a href="#s3">减法vs加法 ·核心</a></li>
+    <li><a href="#s4">检测器反噬</a></li>
+    <li><a href="#s5">镜子不是靶子</a></li>
+    <li><a href="#s6">IP落地三招</a></li>
+    <li><a href="#s7">小白说法↔专业术语</a></li>
+    <li><a href="#s8">和已学概念的连接</a></li>
+    <li><a href="#s9">一句话带走</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DESIGN.md-给AI的视觉角色卡 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：电商设计 · 明快橙（叙事布局·一份说明书的故事） ---- */
+:root {
+  --fam:#c2410c; --fam-deep:#7c2d12; --fam-soft:#fff7ed; --fam-line:#fed7aa;
+}
+/* ---- 页面专属：叙事布局 ---- */
+
+/* 草稿提示条 */
+.draft-note {
+  border:1.5px dashed var(--g4); background:var(--g2); color:var(--g7);
+  border-radius:var(--r-el); padding:8px 14px; font-size:14.5px; margin:14px 0 4px;
+}
+.st-draft { background:#f5f5f4; color:#57534e; border:1px solid #e7e5e4; }
+
+/* 病例卡（故事的起因） */
+.sick {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:16px 0;
+}
+.sym {
+  background:var(--g2); border:1px solid var(--g4); border-radius:var(--r-el);
+  padding:10px 14px; font-size:14.5px; color:var(--g7); text-align:center;
+}
+.diagnosis {
+  border-left:4px solid var(--fam); background:var(--fam-soft);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:12px 18px; margin:16px 0;
+  font-size:15.5px; color:var(--g8);
+}
+.diagnosis b { color:var(--fam-deep); }
+
+/* 两层结构 */
+.two-layer { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .two-layer { grid-template-columns:1fr 1fr; } }
+.layer { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 18px; }
+.layer .ly-tag { display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:0 10px; margin-bottom:6px; }
+.layer.m .ly-tag { background:var(--g2); color:var(--g7); border:1px solid var(--g4); }
+.layer.h .ly-tag { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.layer .ly-t { font-weight:700; font-size:15.5px; }
+.layer .ly-d { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+.layer .ly-w { font-size:14.5px; color:var(--ink-faint); margin-top:6px; }
+
+/* 时间线（4 步闭环的故事） */
+.tl { position:relative; margin:20px 0; padding-left:30px; }
+.tl::before { content:""; position:absolute; left:9px; top:8px; bottom:12px; width:2px; background:var(--fam-line); }
+.tl-item { position:relative; margin-bottom:12px; background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 18px; box-shadow:var(--sh-1); }
+.tl-item::before {
+  content:""; position:absolute; left:-27px; top:18px; width:12px; height:12px;
+  border-radius:50%; background:var(--fam); border:2px solid var(--g0); box-shadow:0 0 0 2px var(--fam-line);
+}
+.tl-item .tl-t { font-weight:700; font-size:15.5px; color:var(--ink); }
+.tl-item .tl-d { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+.tl-item.grow::before { background:var(--g0); }
+.tl-item.grow .tl-t { color:var(--fam-deep); }
+
+/* 三件套 */
+.trio { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .trio { grid-template-columns:repeat(3,1fr); } }
+.trio .card { padding:12px 16px; }
+.trio .tr-f { font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; font-weight:700; color:var(--fam-deep); }
+.trio .tr-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; }
+.trio .card.hl2 { border-color:var(--fam-line); background:var(--fam-soft); }
+
+/* 避坑列表 */
+.nots { list-style:none; padding-left:0; counter-reset:n6; }
+.nots li {
+  counter-increment:n6; position:relative; padding:7px 0 7px 44px;
+  border-bottom:1px solid var(--line); color:var(--g8); font-size:15.5px;
+}
+.nots li:last-child { border-bottom:none; }
+.nots li::before {
+  content:"不要"; position:absolute; left:0; top:8px;
+  font-size:13px; font-weight:700; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el);
+  padding:0 7px; line-height:1.7;
+}
+.nots li b { color:var(--g9); }
+
+/* 模板代码块 */
+pre.tmpl {
+  background:var(--g2); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:14px 16px;
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8;
+  overflow-x:auto; white-space:pre-wrap; color:var(--g8); margin:14px 0;
+}
+
+/* 工具链接行 */
+.tool { font-size:15px; }
+.tool a { word-break:break-all; }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">电商设计</span><span class="sep">›</span>
+    <span class="here">DESIGN.md-给AI的视觉角色卡</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">电商设计 · AI 视觉人格的说明书</p>
+    <h1>DESIGN.md：给 AI 的视觉角色卡</h1>
+    <div class="entry-meta">
+      <span class="st st-draft">草稿·待验证</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂嘴，示意设计师说不清的视觉感觉要写成说明书"></div>
+  </div>
+
+  <div class="draft-note">本条为半成品概念（源词条 verified: false）——思路可用，具体工具与流程待实测验证，复习时请留意。</div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话本质</h2>
+    <blockquote>DESIGN.md 不是 token 文件，也不是灵感网站，而是给 AI 的一份「视觉人格说明书」——告诉它产品长什么样、为什么这样、什么永远不能乱来。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>故事的起因：一股「默认模板味」</h2>
+    <div class="sick">
+      <div class="sym">紫蓝渐变打底</div>
+      <div class="sym">大圆角卡片随手摆</div>
+      <div class="sym">按钮位置像猜的</div>
+      <div class="sym">字体间距没有章法</div>
+    </div>
+    <div class="diagnosis"><b>诊断：</b>不是模型不会设计，是它没有稳定的设计上下文。你说「像 Linear 一样干净」对设计师够用，对 AI 太软——它只会输出训练数据的平均值。</div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>它长什么样：两层结构</h2>
+    <div class="two-layer">
+      <div class="layer m">
+        <span class="ly-tag">机器读</span>
+        <div class="ly-t">YAML front matter</div>
+        <div class="ly-d">颜色、字体、间距、圆角、组件属性</div>
+        <div class="ly-w">传统 token 只做到这一层：告诉 AI「有什么值」</div>
+      </div>
+      <div class="layer h">
+        <span class="ly-tag">人/AI 都读</span>
+        <div class="ly-t">Markdown body</div>
+        <div class="ly-d">品牌气质、颜色怎么用、组件不要怎么做</div>
+        <div class="ly-w">DESIGN.md 的增量：告诉 AI「为什么和什么时候用」</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>进入团队：三份文件配齐</h2>
+    <div class="trio">
+      <div class="card"><div class="tr-f">AGENTS.md</div><div class="tr-d">工程协作：怎么跑项目、改代码、测试</div></div>
+      <div class="card"><div class="tr-f">SKILL.md</div><div class="tr-d">专业工作流：遇到某类任务怎么做</div></div>
+      <div class="card hl2"><div class="tr-f">DESIGN.md</div><div class="tr-d">视觉人格：产品长什么样，什么不能乱来</div></div>
+    </div>
+    <p>三层齐全，AI 才不会每次开新会话都重新发明一套界面。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>6 个工具怎么选（四梯队）</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>梯队</th><th>工具</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td>第一梯队</td><td class="tool"><a href="https://styles.refero.design/" target="_blank" rel="noopener noreferrer">Refero Styles</a></td><td>先找方向，帮 AI 建立「见过好设计」的前置经验</td></tr>
+        <tr><td>第二梯队</td><td class="tool"><a href="https://www.designmd.supply/" target="_blank" rel="noopener noreferrer">designmd.supply</a> / <a href="https://designmd.me/" target="_blank" rel="noopener noreferrer">DesignMD.me</a></td><td>已有目标网站，快速生成可执行规范</td></tr>
+        <tr><td>第三梯队</td><td class="tool"><a href="https://github.com/bergside/design-md-chrome" target="_blank" rel="noopener noreferrer">design-md-chrome</a></td><td>浏览器随时抓，不打断工作流</td></tr>
+        <tr><td>第四梯队</td><td class="tool"><a href="https://neuform.ai/" target="_blank" rel="noopener noreferrer">Neuform</a> / <a href="https://getdesign.md/" target="_blank" rel="noopener noreferrer">getdesign.md</a></td><td>prompt 直接出页面 / 品牌灵感对照</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>首选 Refero 的原因</strong>：打开一个风格就能拿到 5 层资产——Preview（看整体气质）、DESIGN.md（给 agent 的说明书）、CSS Variables / Tailwind v4（接入主题层）、Components（按组件级规则生成）、Do/Dont（验收清单）。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>四步闭环：说明书是养出来的</h2>
+    <div class="tl">
+      <div class="tl-item"><div class="tl-t">1 · 选方向</div><div class="tl-d">Refero 选 1 个主风格 + 1-2 个辅助（一个主方向就够，别贪多）</div></div>
+      <div class="tl-item"><div class="tl-t">2 · 生成</div><div class="tl-d">designmd 抓目标网站 → 生成 DESIGN.md</div></div>
+      <div class="tl-item"><div class="tl-t">3 · 上岗</div><div class="tl-d">放项目根目录 → 让 AI 读 + 复述原则 + 写代码</div></div>
+      <div class="tl-item grow"><div class="tl-t">4 · 回写变厚</div><div class="tl-d">截图自审 → 把新规则回写 DESIGN.md——它是产品的视觉记忆，随项目迭代持续沉淀，不是一次性下载文件</div></div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>避坑：六条不要</h2>
+    <ol class="nots">
+      <li><b>不要复制大品牌外观</b>——借的是规则不是皮肤</li>
+      <li><b>不要当万能药</b>——它只提高起点，仍需截图验收和人工判断</li>
+      <li><b>不要只写 token</b>——没有设计理由，AI 还是会乱用</li>
+      <li><b>不要一次塞太多风格</b>——一个主方向 + 两个辅助就够</li>
+      <li><b>不要忘记移动端</b>——写明断点、触控尺寸、信息密度</li>
+      <li><b>不要长期不更新</b>——每次沉淀新组件都应回写</li>
+    </ol>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>给 coding agent 的提示词模板</h2>
+<pre class="tmpl">你是资深前端设计工程师。请基于这个 Refero Styles 页面
+[粘贴链接] 里的 DESIGN.md、CSS Variables、Tailwind v4 和
+Design Tokens，为我的[产品/页面]生成一版可运行页面。
+
+开始写代码前先做三件事：
+1. 读取 DESIGN.md 和 tokens
+2. 输出 5 条不可违反的视觉原则
+3. 给出页面结构草案
+
+实现时必须把 tokens 接入主题层，组件样式优先使用 tokens。
+请从当前 Refero 页面提取主 CTA 颜色、卡片处理方式、圆角、
+字号、间距和按钮高度等规则。
+
+交付时请列出修改文件，并按颜色、字体、间距、圆角、卡片、
+CTA、图片使用逐项自查。</pre>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>铁柱注解 · 桑老哥适用</h2>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">对桑老哥的实际价值</h3>
+      <p>做跨境电商图片/视频，AI 出图时如果带上 DESIGN.md，「模板味」问题能直接缓解。入手顺序：先用 Refero 找 2-3 个喜欢的风格 → 把设计说明放进自己的提示词库 → 后续生图/做页面都带它。</p>
+    </div>
+    <div class="card hl">
+      <h3 style="margin-top:0;">上位概念</h3>
+      <p><a href="../07-ip/AI角色设定集.html">AI角色设定集</a>——「一份角色文档约束所有输出」的人设层版本，本条是它的视觉层特化。配合 <a href="../08-ecomm/海报构图16式.html">海报构图16式</a>（单张骨架）与 <a href="../08-ecomm/生图提示词排查表.html">生图提示词排查表</a>（交付质检）三层各管一段。</p>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li><a href="https://waytoagi.feishu.cn/wiki/BtcmwsCDMiZJPbkbIYhcJO9xnLb" target="_blank" rel="noopener noreferrer">waytoagi 飞书文章</a>（2026-07-13 归档 · 铁柱）</li>
+      <li>源词条自评：verified false / confidence low——思路引用，待实测</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 电商设计家族 · DESIGN.md-给AI的视觉角色卡</p>
+    <p>词条源：concepts(概念库)/电商设计/DESIGN.md-给AI的视觉角色卡.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话本质</a></li>
+    <li><a href="#s2">起因·模板味</a></li>
+    <li><a href="#s3">两层结构</a></li>
+    <li><a href="#s4">三件套</a></li>
+    <li><a href="#s5">6 工具四梯队</a></li>
+    <li><a href="#s6">四步闭环 ·核心</a></li>
+    <li><a href="#s7">避坑六不要</a></li>
+    <li><a href="#s8">提示词模板</a></li>
+    <li><a href="#s9">桑老哥适用</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

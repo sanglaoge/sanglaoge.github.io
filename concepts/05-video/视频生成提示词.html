@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频生成提示词 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 三大痛点卡 */
+.pain { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:768px) { .pain { grid-template-columns:1fr 1fr 1fr; } }
+.pain .card h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.pain .card p { font-size:14.5px; line-height:1.7; margin:0 0 4px; }
+.pain .p-why { font-size:14.5px; color:var(--ink-faint); }
+
+/* 七层结构栈 */
+.stack { display:grid; gap:8px; margin:16px 0; }
+.lay {
+  display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:10px 14px;
+}
+.lay .l-no {
+  flex:none; min-width:30px; text-align:center; align-self:center;
+  background:var(--fam); color:#ffffff; border-radius:6px;
+  font-weight:700; font-size:14.5px; padding:1px 4px; font-variant-numeric:tabular-nums;
+}
+.lay .l-t { font-weight:700; font-size:16px; }
+.lay .l-en { font-size:14.5px; color:var(--ink-faint); font-weight:400; }
+.lay .l-d { font-size:15px; color:var(--g8); flex:1 1 260px; }
+.lay.neg { border-style:dashed; }
+.lay.neg .l-no { background:var(--g6); }
+
+/* 监视器风代码块（影像黑家族：底色走 var） */
+.tpl {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8;
+  background:var(--fam-deep); color:var(--g1);
+  border-radius:var(--r-box); padding:14px 18px; margin:14px 0;
+  overflow-x:auto; white-space:pre;
+}
+.tpl .k { color:var(--fam-line); font-weight:700; }
+.tpl .c { color:var(--g5); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 维度小标 */
+.dim-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:999px;
+  padding:0 10px; margin-right:6px;
+}
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">视频生成提示词</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 生成指令怎么写</p>
+    <h1>视频生成提示词</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+      <span>2026-09-18 审计并入 CINEDANCE</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑出镜，示意这是最上手的一篇：填空就能出片"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      视频生成不是"描述画面"，是"控制时间切片中的物理状态"。
+    </blockquote>
+    <p>必须用<strong>分层结构化指令</strong>显式定义主体、动作、运镜、光影、物理属性五个维度——否则模型会自行幻觉补全，导致动态坍塌、语义漂移、镜头失控。</p>
+    <p>适用模型：Seedance 2.0 / 可灵 3.0 / Veo 3.1。（注意）Sora：2026-03-24 OpenAI 官宣关停，App 端 <span class="num">4/26</span>、API 端 <span class="num">9/24</span> 下线，已从推荐中移除。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>为什么视频比生图难</h2>
+    <p>视频模型本质在<strong>模拟物理世界的时间切片</strong>。只描述画面、不定义时间维度，模型会全量幻觉补全，落成三大痛点：</p>
+    <div class="pain">
+      <div class="card">
+        <h3>动态坍塌</h3>
+        <p>主体像幻灯片平移，背景不动只有嘴动。</p>
+        <p class="p-why">原因：缺乏物理惯性定义</p>
+      </div>
+      <div class="card">
+        <h3>语义漂移</h3>
+        <p>前 2 秒男人后 2 秒变女人，衣服颜色随光影变。</p>
+        <p class="p-why">原因：缺乏主体一致性约束</p>
+      </div>
+      <div class="card">
+        <h3>镜头失控</h3>
+        <p>想推镜头却生成主体变大，空间透视崩塌。</p>
+        <p class="p-why">原因：混淆运镜与缩放</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>七层结构框架 ·核心</h2>
+    <p>The 7-Layer Structure——视频提示词的标准写法，按以下 7 层依次定义：</p>
+    <div class="stack">
+      <div class="lay"><span class="l-no">1</span><span class="l-t">主体</span><span class="l-en">Subject</span><span class="l-d">谁/什么——外貌、服装、姿态</span></div>
+      <div class="lay"><span class="l-no">2</span><span class="l-t">动作</span><span class="l-en">Action</span><span class="l-d">做什么——动作的起止状态</span></div>
+      <div class="lay"><span class="l-no">3</span><span class="l-t">环境</span><span class="l-en">Environment</span><span class="l-d">在哪——场景、天气、时间</span></div>
+      <div class="lay"><span class="l-no">4</span><span class="l-t">运镜</span><span class="l-en">Camera</span><span class="l-d">镜头怎么动——推拉摇移跟（术语表见下）</span></div>
+      <div class="lay"><span class="l-no">5</span><span class="l-t">光影</span><span class="l-en">Lighting</span><span class="l-d">光线方向、色温、氛围</span></div>
+      <div class="lay"><span class="l-no">6</span><span class="l-t">物理</span><span class="l-en">Physics</span><span class="l-d">重力、惯性、材质交互（水溅、布料飘动）</span></div>
+      <div class="lay neg"><span class="l-no">7</span><span class="l-t">负向</span><span class="l-en">Negative</span><span class="l-d">不要什么——视频模型的负向提示必须显式写出</span></div>
+    </div>
+    <h3>运镜控制标准术语</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>术语</th><th>英文</th><th>效果</th></tr></thead>
+      <tbody>
+        <tr><td>推镜头</td><td>Dolly In</td><td>镜头向主体靠近，背景虚化加深</td></tr>
+        <tr><td>拉镜头</td><td>Dolly Out</td><td>镜头远离主体，展示更多环境</td></tr>
+        <tr><td>摇镜头</td><td>Pan</td><td>镜头左右旋转，主体不动视角动</td></tr>
+        <tr><td>移镜头</td><td>Tracking Shot</td><td>镜头平移跟随主体</td></tr>
+        <tr><td>升降</td><td>Crane / Tilt</td><td>镜头上下运动</td></tr>
+        <tr><td>环绕</td><td>Orbit / Arc</td><td>镜头绕主体旋转</td></tr>
+        <tr><td>手持</td><td>Handheld</td><td>模拟手持晃动，增加真实感</td></tr>
+        <tr><td>慢动作</td><td>Slow Motion</td><td>放慢动作速度，强调细节</td></tr>
+      </tbody>
+    </table></div>
+    <h3>负向提示词四条常用</h3>
+    <pre class="tpl"><code>Blurry, Low resolution          <span class="c">— 避免画质下降</span>
+Static, No motion                <span class="c">— 避免动态坍塌</span>
+Face morphing, Identity change   <span class="c">— 避免语义漂移</span>
+Camera zoom instead of dolly     <span class="c">— 避免镜头失控</span></code></pre>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>产品推广视频模板（Seedance 2.0 / 10-15 秒）</h2>
+    <p>做跨境电商产品推广视频，直接套七层填空：</p>
+    <pre class="tpl"><code><span class="k">主体：</span>[产品名称]，[材质/颜色/状态]，[展示角度]
+<span class="k">动作：</span>[产品如何被使用/展示]，[动作节奏]
+<span class="k">环境：</span>[使用场景]，[背景元素]，[时间/天气]
+<span class="k">运镜：</span>[开头镜头] → [中间转场] → [结尾镜头]
+<span class="k">光影：</span>[光线方向]，[色温]，[氛围感]
+<span class="k">物理：</span>[产品与环境的物理交互]，[材质质感表现]
+<span class="k">负向：</span>[不要出现的元素]</code></pre>
+    <p>实际填空示例（户外折叠椅）：</p>
+    <pre class="tpl"><code><span class="k">主体：</span>户外折叠椅，展开状态，军绿色尼龙面料，铝合金支架
+<span class="k">动作：</span>从折叠状态流畅展开，支架咔嗒锁定到位
+<span class="k">环境：</span>山顶露营地，远处有帐篷和湖泊，清晨薄雾
+<span class="k">运镜：</span>开篇 Tracking Shot 从侧面跟随 → 展开瞬间 Cut to 特写锁定机构 → 结尾 Crane 上升俯拍全景
+<span class="k">光影：</span>清晨金色逆光，产品边缘有轮廓光，雾气散射柔光
+<span class="k">物理：</span>布料展开时自然下垂有重力感，支架锁定时有轻微弹跳反馈
+<span class="k">负向：</span>模糊、画面抖动、产品变形、无意义背景运动</code></pre>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>实战简化版：四件套法（Seedance / 即梦）</h2>
+    <p>七层是完整框架，字节即梦 Seedance 这类工具实操只需填 <strong>4 个字段</strong>——七层的实战简化版（来源：阿文 Seedance 实测）：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>字段</th><th>填什么</th><th>技巧</th></tr></thead>
+      <tbody>
+        <tr><td>主体</td><td>镜头里的角色/物品</td><td>用 image2 出角色表；即梦里"新建主体"后 @ 复用</td></tr>
+        <tr><td>场景</td><td>拍摄环境</td><td>上传场景图，<strong>带上主角</strong>交代比例，防失调</td></tr>
+        <tr><td>音乐</td><td>不要 BGM</td><td>只生成音效，给后期剪辑留配乐空间</td></tr>
+        <tr><td>镜头</td><td>每个 Shot 的景别 + 发生什么</td><td>文字只讲故事，不堆比喻/情绪渲染</td></tr>
+      </tbody>
+    </table></div>
+    <h3>四条反常识</h3>
+    <ol>
+      <li><strong>文字只讲故事</strong>——上传真人参考图后，不用在文字里再描述主角长相、场景细节</li>
+      <li><strong>不需要故事板</strong>——X 上千转万转的华丽分镜故事板（带镜头运动曲线），丢进 Seedance 反而错漏百出</li>
+      <li><strong>不需要时间戳</strong>——模型不按时间戳分配时长，<strong>Shot 数量</strong>才是时长关键</li>
+      <li><strong>不要 BGM 只生成音效</strong>——给后期剪辑留配乐空间</li>
+    </ol>
+    <div class="warn"><b>适用边界：</b>成片需要二次剪辑（电商视频/带货/广告）用四件套；成片直发（不需后期配乐）不适用；纯文字描述复杂场景必须上传参考图。</div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>电影级加强：CINEDANCE 11 维骨架</h2>
+    <p>来源：Higgsfield 95 分钟 AI 电影《Hell Grind》<span class="num">11 万+</span>条生成记录全公开 + 官方 CINEDANCE SKILL.md——第一次有人把"电影级稳定出片"的 prompt 骨架完整开源。<strong>电影感不是写出来的，是拆出来的</strong>：把"要电影感"这种虚词换成具体维度指令（2026-09-18 审计并入）。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>维度</th><th>管什么</th><th>举例</th></tr></thead>
+      <tbody>
+        <tr><td>STYLE</td><td>画面调性</td><td>Kodak 胶片质感、暖色调、自然颗粒</td></tr>
+        <tr><td>FIRST FRAME</td><td>第一帧谁在场</td><td>所有人物已在正确位置，不空帧</td></tr>
+        <tr><td>CHARACTER</td><td>身份以参考图为准</td><td>脸/身材/服装以参考图为真实源</td></tr>
+        <tr><td>POSITION</td><td>朝向</td><td>躯干朝 X、眼睛锁定 X</td></tr>
+        <tr><td>CAMERA</td><td>运镜</td><td>手持呼吸感、缓慢推近、不要数字抖动</td></tr>
+        <tr><td>ACTION</td><td>动作顺序</td><td>按时间顺序，一个时间块一个动作</td></tr>
+        <tr><td>PHYSICS</td><td>物理真实</td><td>重力/质量/惯性/摩擦，不要飘</td></tr>
+        <tr><td>LIGHTING</td><td>灯光</td><td>镜头在阴影侧、脸部深影、不要正面平光</td></tr>
+        <tr><td>CONTINUITY</td><td>跨镜头一致</td><td>屏幕方向/视线/灯光方向/位置跨镜头不变</td></tr>
+        <tr><td>AUDIO</td><td>声音</td><td>只说台词本里的话，不即兴</td></tr>
+        <tr><td>TECHNICAL</td><td>技术参数</td><td>24fps、180 度快门、自然动态模糊</td></tr>
+      </tbody>
+    </table></div>
+    <h3>产品视频精简 5 维（电商不用全套 11 维）</h3>
+    <ol>
+      <li><span class="dim-tag">STYLE</span>具体到色调质感（"暖光家居、柔焦、生活感"，不是"要电影感"）</li>
+      <li><span class="dim-tag">LIGHTING</span>是产品视频的命：侧逆光突出织物纹理，正面平光把纹理拍平——新手最常犯</li>
+      <li><span class="dim-tag">CAMERA</span>缓慢推近 &gt; 快速切换</li>
+      <li><span class="dim-tag">ACTION</span>一个时间块一个动作（挤一起 AI 就乱）</li>
+      <li><span class="dim-tag">CONTINUITY</span>多镜头刚需："同一毯子花纹方向、灯光方向跨镜头不变"——Listing 多镜头最容易踩坑</li>
+    </ol>
+    <p><strong>抄作业方法</strong>：别硬翻 <span class="num">11 万</span>条记录——先找和目标效果最接近的镜头；只看三类句子（镜头怎么动/人物怎么动/灯光怎么打）；保留写法，把人物/场景/动作换成自己的产品。不是整段抄，是拿"控制效果的那几句话"换自己内容。</p>
+    <p>项目页：higgsfield.ai/@higgsfield.studio/projects/hell-grind（<a class="ext" href="https://higgsfield.ai/@higgsfield.studio/projects/hell-grind" target="_blank" rel="noopener noreferrer">Higgsfield</a>）</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>与生图提示词的核心区别</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>维度</th><th>生图（Seedance/Flux）</th><th>视频（Seedance 2.0）</th></tr></thead>
+      <tbody>
+        <tr><td>核心逻辑</td><td>画面里有什么</td><td>画面随时间怎么变</td></tr>
+        <tr><td>关键维度</td><td>主体+环境+光影+风格</td><td>主体+动作+运镜+物理+光影</td></tr>
+        <tr><td>最大风险</td><td>语义溢出（颜色绑错物体）</td><td>动态坍塌（像幻灯片）</td></tr>
+        <tr><td>负向提示</td><td>可选</td><td><strong>必须有</strong></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>实战经验（跨路线通用）</h2>
+    <p>来自 Remotion + Claude Design 路线（@bozhou_ai 心法），对 AI 直接生成视频同样适用。</p>
+    <h3>积累比单条重要</h3>
+    <p>和 skill/memory 体系同构——做视频不是每次从零开始：</p>
+    <ul>
+      <li><strong>模板先行</strong>：固定元素（背景/人像区/字幕区/章节进度条）调好后固化成一个 skill，每条视频从模板起步，基础问题再也不管</li>
+      <li><strong>素材库 LIBRARY.md</strong>：每个素材登记一行（是什么/适合什么场景/不适合什么）。AI 做新视频先读清单，有现成的直接拿，新做的好东西再登记回去</li>
+      <li><strong>错误沉淀进 skill</strong>：AI 犯的错要固化进 skill，而不是只修当前这条视频——不然下条还在同一个坑摔。<strong>"AI 的记性得你帮它长"</strong></li>
+    </ul>
+    <h3>验收三个血泪教训</h3>
+    <ol>
+      <li><strong>先低画质调试</strong>：反复调都用低画质渲染，确认整条没问题再出高画质（直接渲 4K、十几分钟渲完发现中段空白、全部重来）</li>
+      <li><strong>检查通过不等于画面没问题</strong>：AI 会跑各种检查说一切正常，交付前一定要抽几个关键帧用自己眼睛看（录屏接没接上、文字溢没溢出、元素挡没挡）</li>
+      <li><strong>出问题先问基准</strong>：音画不同步，先问"现在成片里实际播的是哪条音频"——基准没统一，怎么调都白调</li>
+    </ol>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>电商产品视频走"四件套 + 七层模板"双轨：日常出片用四件套快跑，重要 Campaign 用七层填满</li>
+      <li>Listing 多镜头必带 CONTINUITY——花纹方向、灯光方向跨镜头不变，是最容易翻车也最容易被买家看出不专业的一处</li>
+      <li>生成阶段就给剪辑留接口：七层里的"动作·起止状态"写成可接续的（与 <a href="../05-video/剪辑思维七手法.html">剪辑思维七手法</a> 的匹配剪辑联动）</li>
+      <li>拍不出"打斗级"复杂交互时，动作写法升级用 <a href="../05-video/动作导演六层法.html">动作导演六层法</a> 的一攻一应因果链</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>七层/四件套/11 维是三档精度，不是三选一的宗教——按成片用途选档，直发和需二剪的边界先想清楚</li>
+      <li>模型迭代快：适用名单（Seedance 2.0/可灵 3.0/Veo 3.1）随版本更替会过期，用前核对现状（Sora 已关停是前车之鉴）</li>
+      <li>四件套的"不需要故事板/时间戳"是 Seedance/即梦的实测结论，换模型要重新验证</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/提示词工程.html"><span class="rel-t">提示词工程</span><span class="rel-d">文本提示词和视觉提示词的通用技巧</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">四件套配 2-3 秒一抽卡才是完整工作流</span></a>
+      <a href="../05-video/AI视频清晰度最优解.html"><span class="rel-t">AI视频清晰度最优解</span><span class="rel-d">720p 生成 + Topaz 放大 4K 的工程化做法</span></a>
+      <a href="../08-ecomm/生图提示词排查表.html"><span class="rel-t">生图提示词排查表</span><span class="rel-d">生图侧的排查镜子：语义溢出在这查</span></a>
+      <a href="../05-video/剪辑思维七手法.html"><span class="rel-t">剪辑思维七手法</span><span class="rel-d">生成时留匹配剪辑接口</span></a>
+      <a href="../05-video/动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">复杂动作的提示词升级件</span></a>
+    </div>
+    <p><span style="color:var(--ink-faint)">Seedance（模型使用指南，未单独建条）</span></p>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>饼干哥哥AGI《怎么写好一个AI提示词？10个场景与50个技巧》（七层结构与产品模板主源）</li>
+      <li>尹小歪《95分钟AI电影，把每个镜头的提示词都公开了》+ Higgsfield《Hell Grind》官方 CINEDANCE SKILL.md（电影级 11 维骨架，2026-09-18 审计并入）</li>
+      <li>阿文 Seedance 实测（四件套与四条反常识）</li>
+      <li>@bozhou_ai（Remotion + Claude Design 路线实战经验）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · 视频生成提示词</p>
+    <p>词条源：concepts(概念库)/AI视频制作/视频生成提示词.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">为什么视频比生图难</a></li>
+    <li><a href="#s3">七层结构框架 ·核心</a></li>
+    <li><a href="#s4">产品推广视频模板</a></li>
+    <li><a href="#s5">四件套简化版</a></li>
+    <li><a href="#s6">CINEDANCE 11 维</a></li>
+    <li><a href="#s7">与生图的区别</a></li>
+    <li><a href="#s8">实战经验</a></li>
+    <li><a href="#s9">桑老哥适用</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

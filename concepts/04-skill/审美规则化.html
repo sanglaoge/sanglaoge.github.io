@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>审美规则化 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Skill工程 · 工具灰（车间感·冷静克制） ---- */
+:root {
+  --fam:#475569; --fam-deep:#1e293b; --fam-soft:#f1f5f9; --fam-line:#cbd5e1;
+}
+/* ---- 页面专属：对比布局 ---- */
+
+/* 核心对照双栏 */
+.vs2 { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:768px) { .vs2 { grid-template-columns:1fr 52px 1fr; align-items:stretch; } }
+.vs-p { border-radius:var(--r-box); padding:16px 18px; }
+.vs-p.bad { background:var(--g2); border:1.5px dashed var(--g4); }
+.vs-p.good { background:var(--g0); border:1.5px solid var(--fam-line); box-shadow:var(--sh-1); }
+.vs-p .vs-t { font-weight:700; font-size:16px; margin-bottom:10px; }
+.vs-p.bad .vs-t { color:var(--ink-soft); }
+.vs-p.good .vs-t { color:var(--fam-deep); }
+.vs-p .vs-cap { font-size:14.5px; color:var(--ink-faint); margin-top:10px; line-height:1.6; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chip {
+  display:inline-block; padding:3px 12px; border-radius:999px;
+  background:var(--g0); border:1px solid var(--g4); color:var(--ink-soft);
+  font-size:14.5px;
+}
+.kv { display:flex; flex-wrap:wrap; gap:6px 0; }
+.kv .k-row {
+  width:100%; display:flex; align-items:baseline; gap:8px;
+  padding:6px 0; border-bottom:1px dashed var(--line); font-size:15px;
+}
+.kv .k-row:last-child { border-bottom:none; }
+.kv .k { flex:none; font-weight:600; color:var(--ink); }
+.kv .v { color:var(--ink-soft); }
+.vs-mid { display:flex; align-items:center; justify-content:center; }
+.vs-mid .vs-badge {
+  width:40px; height:40px; line-height:40px; text-align:center; border-radius:50%;
+  background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+  box-shadow:var(--sh-1);
+}
+@media (max-width:767px) { .vs-mid { padding:2px 0; } .vs-mid .vs-badge { width:34px; height:34px; line-height:34px; } }
+
+/* 三步法 */
+.steps3 { counter-reset:st; display:grid; grid-template-columns:1fr; gap:16px; margin:22px 0; }
+@media (min-width:768px) { .steps3 { grid-template-columns:1fr 1fr 1fr; } }
+.step { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:18px 18px 14px; counter-increment:st; position:relative; }
+.step::before {
+  content:counter(st); position:absolute; top:-13px; left:16px;
+  width:26px; height:26px; line-height:26px; text-align:center;
+  background:var(--fam); color:#fff; border-radius:50%; font-weight:700; font-size:14.5px;
+}
+.step .st-t { font-weight:700; color:var(--ink); margin:4px 0 8px; font-size:16.5px; }
+.step p, .step li { font-size:15px; color:var(--g8); }
+.step ul { padding-left:1.3em; }
+
+/* 色卡小圆点（内容数据，非皮肤） */
+.sw {
+  display:inline-block; width:13px; height:13px; border-radius:3px;
+  border:1px solid var(--g4); vertical-align:-2px; margin-right:5px;
+}
+
+/* 变现对照小条 */
+.vs-mini { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .vs-mini { grid-template-columns:1fr 1fr; } }
+.mini { border-radius:var(--r-el); padding:12px 16px; font-size:15px; line-height:1.7; }
+.mini.a { background:var(--g2); border:1px dashed var(--g4); color:var(--ink-soft); }
+.mini.b { background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--g8); }
+.mini b { color:var(--fam-deep); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Skill工程</span><span class="sep">›</span>
+    <span class="here">审美规则化</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Skill工程 · 把经验变成 AI 能复用的资产</p>
+    <h1>审美规则化</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-07</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意把审美定成一条条可执行的规则"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      好看不是玄学——是字体/颜色/层级/间距/组件/规则，能拆成 AI 一条条执行的。把「审美偏好」变成「主题变量」。
+      <span class="q-src">—— 甲木排版 Skill 方法论</span>
+    </blockquote>
+    <p>把脑子里「好看」的模糊判断，拆成 AI 能执行的具体规则（颜色值、字号、间距、材质、组件清单）。这条词条讲的就是这一拆。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>模糊审美 vs 可执行参数</h2>
+    <div class="vs2">
+      <div class="vs-p bad">
+        <p class="vs-t">拆之前：嘴上的模糊词</p>
+        <div class="chips">
+          <span class="chip">好看</span>
+          <span class="chip">高端</span>
+          <span class="chip">温馨有质感</span>
+          <span class="chip">有设计感</span>
+        </div>
+        <p class="vs-cap">这些词人能「感觉到」，AI 只能瞎猜——同一句「高级感」每次猜出来的都不一样，猜完就忘，下次重来。</p>
+      </div>
+      <div class="vs-mid"><span class="vs-badge">VS</span></div>
+      <div class="vs-p good">
+        <p class="vs-t">拆之后：AI 能执行的规则</p>
+        <div class="kv">
+          <div class="k-row"><span class="k">颜色</span><span class="v"><span class="sw" style="background:#A8D8B9"></span><code>#A8D8B9</code> · <span class="sw" style="background:#F4C2C2"></span><code>#F4C2C2</code></span></div>
+          <div class="k-row"><span class="k">色温</span><span class="v"><code>2700K</code></span></div>
+          <div class="k-row"><span class="k">字号/间距</span><span class="v">具体数值，不给形容词</span></div>
+          <div class="k-row"><span class="k">组件</span><span class="v">封面+标题+正文+引用+卡片+代码块…</span></div>
+        </div>
+        <p class="vs-cap">写成「主题变量」后，规则定一次处处生效，Agent 照单执行，不靠运气。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>怎么做：三步法</h2>
+    <div class="steps3">
+      <div class="step">
+        <p class="st-t">拆解</p>
+        <p>把「温馨有质感」「高端」这种模糊词，拆成具体道具+属性。</p>
+        <ul>
+          <li>温馨有质感 → 家具里的「沙发」</li>
+          <li>沙发 → 软包 + 马卡龙配色</li>
+        </ul>
+      </div>
+      <div class="step">
+        <p class="st-t">参数化</p>
+        <p>属性再赋具体值，落到 AI 认识的参数上。</p>
+        <ul>
+          <li>马卡龙 → 薄荷绿 <span class="sw" style="background:#A8D8B9"></span><code>#A8D8B9</code> / 樱花粉 <span class="sw" style="background:#F4C2C2"></span><code>#F4C2C2</code></li>
+          <li>色温 → <code>2700K</code></li>
+        </ul>
+      </div>
+      <div class="step">
+        <p class="st-t">组件化</p>
+        <p>一套主题 = 十几个组件，不是一张图。</p>
+        <ul>
+          <li>封面 / 标题 / 正文 / 引用</li>
+          <li>卡片 / 代码块 …各自定规格</li>
+        </ul>
+      </div>
+    </div>
+    <p>三步的关系：拆解找到「东西」，参数化给「数值」，组件化拼成「整套系统」。跳过前两步直接组件化，组件里装的还是模糊词，等于没拆。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>拆解对照表（示例）</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>你嘴里的词</th><th>第一步 拆解（道具+属性）</th><th>第二步 参数化（赋具体值）</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>温馨有质感</td>
+          <td>沙发 → 软包 + 马卡龙配色</td>
+          <td>薄荷绿 <code>#A8D8B9</code> · 樱花粉 <code>#F4C2C2</code> · 色温 <code>2700K</code></td>
+        </tr>
+        <tr>
+          <td>一套好看的排版</td>
+          <td>主题 → 拆成十几个组件</td>
+          <td>封面 / 标题 / 正文 / 引用 / 卡片 / 代码块，各定字号间距色值</td>
+        </tr>
+      </tbody>
+    </table></div>
+    <p>左边那列是你现在说的话，右边两列是 AI 需要的话——审美规则化就是把表格从左往右填满。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>为什么重要：设计师经验变现的钥匙</h2>
+    <div class="vs-mini">
+      <div class="mini a"><b>不拆：</b>审美锁在你脑子里，AI 永远学不会；人在经验在，人走经验走，每次协作都从零开始教。</div>
+      <div class="mini b"><b>拆了：</b>规则可复用无数次，还能封装成 Skill 卖——经验从「感觉」变成「产品」（见 <a href="../04-skill/Skill知识资产.html">Skill知识资产</a>）。</div>
+    </div>
+    <p>设计师的经验（审美）如果不拆成规则，AI 永远学不会；拆了就能复用无数次。<strong>这是设计师经验变现的钥匙。</strong></p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li><strong>IP 内容排版</strong>：审美拆成主题变量交给 Agent（gzh-design-skill 已装到 IP 工坊）</li>
+      <li><strong>listing 设计</strong>：高端感/温馨感拆成具体视觉规则，不再靠形容词下需求</li>
+      <li><strong>配图提示词</strong>：把风格词拆成可执行参数（色号/光线/构图）</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>拆规则费功夫，但拆一次复用无数次——前期成本换来后期躺赢</li>
+      <li>只能拆「能确定的」审美；感性判断（够不够打动人）还是人/模型来拍板</li>
+      <li>方法论来自排版场景，迁移到其他领域要重调组件清单</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../04-skill/Skill知识资产.html"><span class="rel-t">Skill知识资产</span><span class="rel-d">审美规则化后封装成 Skill 可商业化</span></a>
+      <a href="../02-think/约束先行.html"><span class="rel-t">约束先行</span><span class="rel-d">规则即约束，先定再动手</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">规则交给 Agent 执行</span></a>
+      <a href="../04-skill/技能内化.html"><span class="rel-t">技能内化</span><span class="rel-d">把经验显式化成可执行规则</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">审美是隐性知识，规则化 = 显式化</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>甲木 gzh-design-skill（排版 Skill 方法论，2026-07-07 建条收录）</li>
+      <li>源文章评审摘要：<span style="color:var(--ink-faint)">2026-07-07-排版Skill-gzh-design</span>（日期类文源，不做页面）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Skill工程家族 · 审美规则化</p>
+    <p>词条源：concepts(概念库)/Skill工程/审美规则化.md（2026-07-07 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">模糊 vs 可执行参数</a></li>
+    <li><a href="#s3">三步法 ·核心</a></li>
+    <li><a href="#s4">拆解对照表</a></li>
+    <li><a href="#s5">变现钥匙</a></li>
+    <li><a href="#s6">桑老哥适用</a></li>
+    <li><a href="#s7">前提与局限</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频清晰度最优解 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（克制·影像质感） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 衬线金句 */
+blockquote.bq p {
+  font-family:var(--font-head); font-size:18.5px; line-height:1.75; color:var(--ink);
+}
+
+/* 为什么三点 */
+.why { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .why { grid-template-columns:1fr 1fr 1fr; } }
+.why .card h3 { margin:0 0 4px; font-size:16.5px; color:var(--fam-deep); }
+.why .card p { font-size:15px; margin:0; }
+
+/* 四级台阶：逐级抬升 */
+.stair-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.stairs { display:grid; grid-template-columns:1fr; gap:12px; margin:10px 0 6px; }
+.stair {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:16px 18px; box-shadow:var(--sh-1);
+}
+.stair .st-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700;
+  font-size:14.5px; margin-right:8px; font-variant-numeric:tabular-nums;
+}
+.stair .st-t { font-weight:700; font-size:17px; color:var(--ink); }
+.stair .st-tag { font-size:14.5px; color:var(--ink-faint); margin-left:6px; font-weight:400; }
+.stair .st-d { font-size:15px; color:var(--ink-soft); margin-top:8px; }
+.stair.s2 { margin-left:14px; }
+.stair.s3 { margin-left:28px; }
+.stair.s4 { margin-left:42px; border-color:var(--fam-line); background:var(--fam-soft); }
+@media (min-width:900px) {
+  .stairs { grid-template-columns:repeat(4,1fr); gap:14px; align-items:start; }
+  .stair { margin-left:0; }
+  .stair.s1 { margin-top:96px; }
+  .stair.s2 { margin-top:64px; }
+  .stair.s3 { margin-top:32px; }
+  .stair.s4 { margin-top:0; }
+}
+
+/* Topaz 说明卡 */
+.tz { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .tz { grid-template-columns:1fr 1fr; } }
+.tz .card h3 { margin:0 0 8px; font-size:16.5px; color:var(--fam-deep); }
+.tz .card p, .tz .card li { font-size:15px; }
+.tz .deal {
+  margin-top:10px; padding:8px 12px; background:var(--fam-soft);
+  border:1px solid var(--fam-line); border-radius:var(--r-el);
+  font-size:15px; color:var(--ink); font-weight:600;
+}
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI视频清晰度最优解</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频家族 · 清晰度的省钱路线</p>
+    <h1>AI视频清晰度最优解</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意720p轻装抽卡、放大留到最后"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote class="bq">
+      <p>抽卡阶段用 720p，定稿后用 Topaz 放大到 4K——别在生成阶段追 1080p。</p>
+      <span class="q-src">—— Seedance 经验谈</span>
+    </blockquote>
+    <p>这条和 <a href="../05-video/AI视频抽卡策略.html">AI视频抽卡策略</a> 是同一套账的两半：720p 让抽卡又便宜又快，Topaz 把「贵的一步」留到选完片之后。两半合起来，质量更好、总成本反而更低。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>为什么不是 1080p</h2>
+    <div class="why">
+      <div class="card">
+        <h3>响应最敏感</h3>
+        <p>模型对 720p 的提示词响应最好，改提示词有「立竿见影的进步」</p>
+      </div>
+      <div class="card">
+        <h3>便宜且快</h3>
+        <p>算力便宜、生成速度快，同样的钱抽卡次数翻倍</p>
+      </div>
+      <div class="card">
+        <h3>1080p 反而更差</h3>
+        <p>1080p 看似清晰，实际效果反而更差——模型在该分辨率下提示词响应弱</p>
+      </div>
+    </div>
+    <p>反直觉但关键：<strong>生成阶段的「清晰」是假清晰</strong>。分辨率数字上去了，模型听话程度下来了，等于花更多钱买更不听话的生成。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>工作流：四级台阶 ·核心</h2>
+    <p class="stair-cap">台阶逐级抬升，越往后越接近成片——贵的动作全部留在楼上：</p>
+    <div class="stairs">
+      <div class="stair s1">
+        <span class="st-no">1</span><span class="st-t">720p 抽卡</span><span class="st-tag">生成 3-5 次</span>
+        <p class="st-d">低分辨率多轮生成，提示词响应最好、最便宜、最快，挑得出好素材</p>
+      </div>
+      <div class="stair s2">
+        <span class="st-no">2</span><span class="st-t">选定素材</span>
+        <p class="st-d">从多轮抽卡里锁定最终要用的那批镜头</p>
+      </div>
+      <div class="stair s3">
+        <span class="st-no">3</span><span class="st-t">Topaz 放大</span><span class="st-tag">到 4K</span>
+        <p class="st-d">用 Topaz Video AI 把选定的低分辨率素材放大到 4K</p>
+      </div>
+      <div class="stair s4">
+        <span class="st-no">4</span><span class="st-t">后期成片</span>
+        <p class="st-d">调色 + 配乐，交付。清晰度在这一级才真正定型</p>
+      </div>
+    </div>
+    <div class="warn"><b>别在第一级就跳到顶：</b>一开始就上 1080p，等于把最贵的一步放在最不稳的环节——质量没提升，成本翻倍。</div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>Topaz 是什么</h2>
+    <div class="tz">
+      <div class="card">
+        <h3>专业视频放大工具</h3>
+        <p><strong>Topaz Video AI</strong>：用 AI 模型把低分辨率视频无损放大到 4K/8K。</p>
+        <p>不是简单的插值放大，是<strong>逐帧 AI 重绘</strong>——每一帧都重新画过，细节是「算出来的」，不是拉伸出来的。</p>
+      </div>
+      <div class="card">
+        <h3>为什么划算</h3>
+        <ul>
+          <li>抽卡阶段省出来的时间 + 算力钱，远比直接买 4K 生成划算</li>
+          <li>放大只做一次、只做好素材——不浪费在废稿上</li>
+        </ul>
+        <p class="deal">省下的钱和时间，就是 720p 路线比 1080p 路线多出来的产能。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>两条路线对账</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>路线</th><th>质量</th><th>成本</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>一开始就 1080p</td>
+          <td>质量没提升（提示词响应反而弱）</td>
+          <td>成本翻倍</td>
+        </tr>
+        <tr>
+          <td><strong>720p 抽卡 + Topaz 4K 后期</strong></td>
+          <td><strong>质量更好</strong>（抽得准 + 逐帧重绘）</td>
+          <td><strong>总成本反而更低</strong></td>
+        </tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>适用边界</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>场景</th><th>适不适合</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td>商业视频：电商 / 广告 / 内容创作</td><td><strong>适用</strong></td><td>非实时、可后期，正好走完四级台阶</td></tr>
+        <tr><td>直播流</td><td>不适用</td><td>必须实时，不能等后期放大</td></tr>
+        <tr><td>极短片段（1-2 秒素材）</td><td>不适用</td><td>放大成本不划算</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">720p 是抽卡阶段的标配</span></a>
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">提示词响应度跟清晰度选择强相关</span></a>
+      <a href="../05-video/AI视频白模预演.html"><span class="rel-t">AI视频白模预演</span><span class="rel-d">同一逻辑：把贵的一步留到最后</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Seedance 经验谈（飞书；2026-07-13 提取，源档案 2026-09-20 删）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI视频清晰度最优解</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI视频清晰度最优解.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">为什么不是 1080p</a></li>
+    <li><a href="#s3">工作流四级台阶 ·核心</a></li>
+    <li><a href="#s4">Topaz 是什么</a></li>
+    <li><a href="#s5">两条路线对账</a></li>
+    <li><a href="#s6">适用边界</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

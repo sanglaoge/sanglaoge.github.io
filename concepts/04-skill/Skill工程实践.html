@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill工程实践 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Skill工程 · 工具灰（工程感·克制·结构优先） ---- */
+:root {
+  --fam:#475569; --fam-deep:#1e293b; --fam-soft:#f1f5f9; --fam-line:#cbd5e1;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 演进条：Prompt 模板到认知资产 */
+.evo { display:flex; gap:0; margin:18px 0 6px; overflow-x:auto; }
+.evo .gen {
+  flex:1 1 0; min-width:150px; padding:12px 14px 10px;
+  border-left:1px solid var(--line); position:relative; background:var(--g0);
+}
+.evo .gen:first-child { border-left:none; }
+.evo .gen .g-no { font-size:14.5px; font-weight:700; color:var(--ink-faint); letter-spacing:.08em; }
+.evo .gen .g-name { font-weight:700; font-size:15.5px; color:var(--ink); margin:2px 0; }
+.evo .gen .g-solve { font-size:14.5px; color:var(--ink-soft); margin-top:6px; line-height:1.55; }
+.evo .gen.now { background:var(--fam-soft); }
+.evo .gen.now .g-name { color:var(--fam-deep); }
+.evo .gen.now::after {
+  content:"本条立场"; position:absolute; top:-11px; right:8px;
+  background:var(--fam); color:#fff; font-size:14.5px; font-weight:700;
+  padding:1px 9px; border-radius:999px;
+}
+.evo-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+
+/* 三层加载图 */
+.stack { margin:20px 0 6px; }
+.stack svg { width:100%; height:auto; display:block; }
+.stack .ly1 { fill:var(--fam-deep); }
+.stack .ly2 { fill:var(--fam); }
+.stack .ly3 { fill:var(--fam-soft); stroke:var(--fam-line); stroke-width:1.6; }
+.stack .tx-w { fill:#ffffff; font-weight:700; }
+.stack .tx-w2 { fill:#ffffff; }
+.stack .tx-d { fill:var(--fam-deep); font-weight:700; }
+.stack .tx-s { fill:var(--ink-faint); }
+.stack .mk { fill:var(--fam); }
+.stack .ln { fill:none; stroke:var(--fam); stroke-width:2; }
+.stack-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin:8px 0 10px; }
+
+/* 数据对比卡 */
+.stat2 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .stat2 { grid-template-columns:1fr 1fr 1fr; } }
+.stat2 .card h3 { margin:0 0 8px; font-size:16px; color:var(--fam-deep); }
+.stat2 .case-stat { font-size:28px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.25; }
+.stat2 .case-stat small { font-size:14.5px; font-weight:400; color:var(--ink-faint); display:block; }
+
+/* 坑卡 */
+.pit { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .pit { grid-template-columns:1fr 1fr 1fr; } }
+.pit .card h3 { margin:0 0 8px; font-size:16px; color:var(--fam-deep); }
+.pit .p-no {
+  display:inline-block; font-size:14.5px; font-weight:700; color:#92400e;
+  background:#fffbeb; border:1px solid #fde68a; border-radius:999px; padding:1px 12px; margin-bottom:8px;
+}
+
+/* 判定胶囊 */
+.pill-y { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 10px; font-size:14.5px; font-weight:600; white-space:nowrap; }
+.pill-n { background:var(--g2); color:var(--ink-soft); border:1px solid var(--line);
+  border-radius:999px; padding:1px 10px; font-size:14.5px; font-weight:600; white-space:nowrap; }
+
+/* 提示框 */
+.note {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.note b { color:#92400e; }
+.imp {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:18px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.imp b { color:var(--fam-deep); }
+.imp .imp-t { display:block; font-weight:700; color:var(--fam-deep); margin-bottom:4px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Skill工程</span><span class="sep">›</span>
+    <span class="here">Skill工程实践</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Skill工程 · 从一个 Skill 到一群 Skill 的工程账</p>
+    <h1>Skill工程实践</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意规模化之后那些说不出口的隐藏坑"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <blockquote>Skill 不是工具，是认知架构的一部分。操作型 Skill 教 Agent 完成一件事，认知型 Skill 改变 Agent 完成所有事的方式。</blockquote>
+    <p>先摆清它和 Prompt 模板的分界，后面的工程账才有意义：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th></th><th>Prompt 模板</th><th>Skill</th></tr></thead>
+      <tbody>
+        <tr><td>性质</td><td>用完即走的消耗品</td><td><strong>可规模化复用的认知资产</strong></td></tr>
+        <tr><td>加载</td><td>每次手动注入</td><td>成为 Agent 认知环境的一部分</td></tr>
+        <tr><td>适合</td><td>一次性任务</td><td>持续运行的 AI 工作流</td></tr>
+      </tbody>
+    </table></div>
+    <p class="evo-cap">从模板到资产的演进：</p>
+    <div class="evo" aria-label="Prompt 模板到 Skill 资产演进条">
+      <div class="gen"><span class="g-no">阶段一</span><div class="g-name">Prompt 模板</div><p class="g-solve">手动注入 · 用完即走</p></div>
+      <div class="gen"><span class="g-no">阶段二</span><div class="g-name">单个 Skill</div><p class="g-solve">沉淀一个动作的完整打法</p></div>
+      <div class="gen now"><span class="g-no">阶段三</span><div class="g-name">Skill 工程</div><p class="g-solve">一群 Skill 的加载/触发/依赖一起管</p></div>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>不是所有能力都该做 Skill</h2>
+    <p>判断标准只有一句：<strong>一个人类在这个角色上，会使用专门的工具，还是运用自己的专业判断？</strong></p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>能力类型</th><th>该做吗</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td>调用 API、处理 PDF</td><td><span class="pill-y">做 · 工具型</span></td><td>按需触发</td></tr>
+        <tr><td>知道自己不知道什么</td><td><span class="pill-n">不做 · 元认知</span></td><td>应内化为行为准则</td></tr>
+        <tr><td>用第一性原理思考</td><td><span class="pill-y">做 · 认知函数</span></td><td>复杂决策时触发</td></tr>
+        <tr><td>一次性任务</td><td><span class="pill-n">不做</span></td><td>直接写 prompt 即可</td></tr>
+        <tr><td>还没跑过 3 次的工作流</td><td><span class="pill-n">不做</span></td><td>过早固化锁死改进方向</td></tr>
+      </tbody>
+    </table></div>
+    <div class="imp"><span class="imp-t">关键发现：self-compass 实验</span>作者把自我能力边界评估从 Skill 删掉、改成 3 行行为准则，效果反而更好——从「需要主动调用的工具」变成了「永远在线的默认思考模式」。<strong>有些能力做成 Skill 反而降级了。</strong></div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>渐进式加载：三层架构 ·核心</h2>
+    <div class="stack">
+      <svg viewBox="0 0 680 236" role="img" aria-label="渐进式加载三层架构：第一层 name 和 description 约一百词常驻上下文，第二层 SKILL.md 正文触发后加载，第三层脚本和引用资源需要时才读取">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <rect class="ly1" x="150" y="14" width="380" height="52" rx="10"/>
+        <text class="tx-w" x="340" y="36" text-anchor="middle" font-size="16">第一层 · name + description（约 100 词）</text>
+        <text class="tx-w2" x="340" y="56" text-anchor="middle" font-size="14.5">始终在上下文 · 常驻</text>
+
+        <path class="ln" d="M340 70 L340 92" marker-end="url(#ar2)"/>
+
+        <rect class="ly2" x="90" y="96" width="500" height="52" rx="10"/>
+        <text class="tx-w" x="340" y="118" text-anchor="middle" font-size="16">第二层 · SKILL.md 正文（小于 500 行）</text>
+        <text class="tx-w2" x="340" y="138" text-anchor="middle" font-size="14.5">触发后才加载 · 按需</text>
+
+        <path class="ln" d="M340 152 L340 174" marker-end="url(#ar2)"/>
+
+        <rect class="ly3" x="30" y="178" width="620" height="52" rx="10"/>
+        <text class="tx-d" x="340" y="200" text-anchor="middle" font-size="16">第三层 · 引用资源（scripts / references）</text>
+        <text class="tx-s" x="340" y="220" text-anchor="middle" font-size="14.5">正文里写「需要时读取 X」 · 按需</text>
+      </svg>
+    </div>
+    <p class="stack-cap">越往下越厚，但只有第一层在天天交税——这就是「中心短，辐射厚」的加载版</p>
+    <div class="stat2">
+      <div class="card">
+        <h3>30 个 Skill 全量注入</h3>
+        <p class="case-stat">60000<small>词常驻上下文</small></p>
+      </div>
+      <div class="card">
+        <h3>渐进加载</h3>
+        <p class="case-stat">3000<small>词常驻上下文</small></p>
+      </div>
+      <div class="card">
+        <h3>省下的</h3>
+        <p class="case-stat">95%<small>上下文成本</small></p>
+      </div>
+    </div>
+    <div class="note"><b>注意：</b>注意力机制的计算成本是 n² 的，不是线性增长——上下文不是「大点没关系」，是平方级变贵。</div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>200+ Skill 时的三个坑</h2>
+    <div class="pit">
+      <div class="card">
+        <span class="p-no">坑 1 · 超过 80 个开始</span>
+        <h3>触发精度断崖式下降</h3>
+        <p>description 语义互相干扰，模型犹豫、误触发。解法：分层可见性，每个 Agent 限制在 40-60 个 Skill 内；大型 Skill 库必须有外部权威分类法当坐标系。</p>
+      </div>
+      <div class="card">
+        <span class="p-no">坑 2</span>
+        <h3>同一个 Skill，不同 Agent 行为完全不同</h3>
+        <p>解法：Skill 参数化（parameters 字段），按角色/场景切换行为模式。</p>
+      </div>
+      <div class="card">
+        <span class="p-no">坑 3</span>
+        <h3>Skill 之间隐藏依赖会炸</h3>
+        <p>重命名/删除一个 Skill 不触发依赖检查。解法：YAML 前言显式声明 dependencies，Skill-as-Code 纳入 GitOps。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>五个设计模式</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>模式</th><th>做法</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td><strong>领域变体</strong></td><td>references/ 分离变体逻辑</td><td>一个 Skill 支持多个技术栈</td></tr>
+        <tr><td><strong>脚本捆绑</strong></td><td>重复写的脚本固化到 scripts/</td><td>Claude 每次写类似代码时</td></tr>
+        <tr><td><strong>模板驱动</strong></td><td>SKILL.md 定义精确输出模板</td><td>固定格式的报告、邮件、review</td></tr>
+        <tr><td><strong>渐进引用</strong></td><td>大文档放 references/，附目录导航</td><td>大型参考文档</td></tr>
+        <tr><td><strong>认知函数</strong></td><td>定义「如何思考」不是「做什么」</td><td>第一性原理、批判性思维</td></tr>
+      </tbody>
+    </table></div>
+    <div class="imp"><span class="imp-t">最有价值的模式</span>认知函数型 Skill 的价值密度远高于操作型：装一个 PDF 处理 Skill，只在处理 PDF 时有用；装一个第一性原理 Skill，<strong>做任何决策时都会更清醒</strong>。</div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>跨平台标准与自我进化</h2>
+    <h3>agentskills.io — 一份 SKILL.md，30+ 客户端</h3>
+    <p>Anthropic 主导的开放标准：Claude Code、Cursor、Codex、Copilot、Gemini CLI、VS Code 等都能加载同一份 SKILL.md。Skill 不再是某个工具的私产，而是<strong>跨平台资产</strong>（<a class="ext" href="https://agentskills.io" target="_blank" rel="noopener noreferrer">agentskills.io</a>）。</p>
+    <h3>CQS 评分：让 Skill 自己进化</h3>
+    <p>范式转移（详见关联词条·技能进化）：过去一次写 90 分才上线，现在 <strong>60 分上线，靠真实失败迭代</strong>。CQS（Character Quality Score）五个维度各 0-10 分——角色一致性、任务完成度、信息准确性、边界意识、表达清晰度。Δ &gt; +0.5 才 promote，否则 discard。关键设计：<strong>Shadow 部署</strong>（影子 session 不影响生产）+ <strong>Capsule 留底</strong>（每次改动可回滚）。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>对桑老哥的实操指导</h2>
+    <ul>
+      <li><strong>不是越多越好</strong>：每多装一个 Skill，增加其他 Skill 误触发概率。</li>
+      <li><strong>装之前问</strong>：这个该做 Skill 还是写进行为准则？我真正会用吗？</li>
+      <li><strong>先 60 分再迭代</strong>：不追求一次写完美，收集使用反馈后优化。</li>
+      <li><strong>description 要差异化</strong>：语义重叠=误触发，加互斥指向（「Do NOT use for → 其他技能」）。</li>
+      <li><strong>定期清理</strong>：不用的 Skill 白占语义空间，及时删。</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>本条是规模化之后的工程账：手里没几个 Skill 时，「三层加载」「200+ 坑」只是预防针，别提前优化。</li>
+      <li>元认知类能力（知道自己不知道什么）做成 Skill 反而变差——先分清能力类型再动手。</li>
+      <li>CQS 评分与 Shadow 部署是作者实践提炼，量化和回滚机制需要 Git 纪律撑着。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">60 分上线靠真实失败迭代</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">Skill 运行在 Harness 之上</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">Skill 是 Agent 的认知模块</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">GoalPro 实战：prompt-only 闸门是触发精准度的最高体现</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥共学总结（source_type: self-created · validation: logical）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Skill工程家族 · Skill工程实践</p>
+    <p>词条源：concepts(概念库)/Skill工程/Skill工程实践.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">该不该做 Skill</a></li>
+    <li><a href="#s3">三层加载 ·核心</a></li>
+    <li><a href="#s4">200+ 的三个坑</a></li>
+    <li><a href="#s5">五个设计模式</a></li>
+    <li><a href="#s6">标准与自我进化</a></li>
+    <li><a href="#s7">桑老哥实操</a></li>
+    <li><a href="#s8">前提与局限</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

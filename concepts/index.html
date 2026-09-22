@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念馆 · 门户</title>
+<link rel="icon" type="image/webp" href="assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 门户：八家族色各出现一次，只做点缀 ---- */
+:root {
+  --fam-01:#1d4ed8; --fam-02:#8c4a1f; --fam-03:#0e7490; --fam-04:#475569;
+  --fam-05:#27272a; --fam-06:#4d7c0f; --fam-07:#be123c; --fam-08:#c2410c;
+}
+
+/* 词条头 */
+.portal-head { padding:34px 0 6px; }
+.portal-head .kicker { margin-bottom:6px; }
+.portal-head h1 { font-size:34px; }
+.portal-head .lead { font-size:17px; color:var(--ink-soft); margin:10px 0 14px; max-width:640px; }
+.portal-meta { display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:14.5px; color:var(--ink-faint); }
+.portal-meta b { color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* 家族卡墙 */
+.fam-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(212px,1fr)); gap:12px; margin:22px 0 8px; }
+.fcard {
+  display:block; background:var(--g0); border:1px solid var(--line); border-top:4px solid var(--fc);
+  border-radius:var(--r-box); padding:14px 16px 12px; box-shadow:var(--sh-1);
+  transition:box-shadow .15s, border-color .15s;
+}
+.fcard:hover { border-color:var(--fc); box-shadow:var(--sh-2); }
+.fcard .fno { font-size:13px; font-weight:700; color:var(--fc); letter-spacing:.08em; font-variant-numeric:tabular-nums; }
+.fcard .fname { font-size:18.5px; font-weight:700; color:var(--ink); margin:3px 0 6px; }
+.fcard .fdesc { font-size:14.5px; color:var(--ink-soft); line-height:1.6; min-height:46px; }
+.fcard .fcount { font-size:14.5px; color:var(--ink-faint); margin-top:8px; }
+.fcard .fcount b { color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* 过滤器 */
+.filter-bar { position:sticky; top:0; z-index:5; background:var(--g0); border-bottom:1px solid var(--line); margin:18px 0 6px; padding:10px 0; }
+.filter-bar input {
+  width:100%; box-sizing:border-box; font:inherit; font-size:16px;
+  padding:9px 14px; border:1px solid var(--line); border-radius:999px;
+  background:var(--g1); color:var(--ink); outline:none;
+}
+.filter-bar input:focus { border-color:var(--g6); }
+.filter-bar .fstat { font-size:14.5px; color:var(--ink-faint); margin-top:6px; }
+.filter-bar .fstat b { color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* 家族分节词条墙 */
+.fam-sec { margin:26px 0 6px; }
+.fam-sec .sec-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; border-bottom:2px solid var(--fc); padding-bottom:8px; }
+.fam-sec .sec-head .s-no { font-size:14px; font-weight:700; color:var(--fc); letter-spacing:.08em; }
+.fam-sec .sec-head h2 { font-size:21px; margin:0; }
+.fam-sec .sec-head .s-count { font-size:14.5px; color:var(--ink-faint); }
+.fam-sec .sec-head .s-note { font-size:14.5px; color:var(--ink-faint); margin-left:auto; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 4px; }
+.chip {
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--g0); border:1px solid var(--line); border-radius:999px;
+  padding:6px 13px; font-size:15px; color:var(--g8); text-decoration:none;
+  transition:border-color .15s;
+}
+a.chip:hover { border-color:var(--fc); color:var(--ink); }
+.chip .dot { width:8px; height:8px; border-radius:50%; background:#15803d; flex:none; }
+.chip.is-merge .dot { background:#78716c; }
+.chip.is-merge { color:var(--ink-faint); }
+
+.no-hit { display:none; padding:22px 0; font-size:15.5px; color:var(--ink-faint); }
+.no-hit.show { display:block; }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .fcard, .chip { transition:none; }
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <span class="here">概念馆</span><span class="sep">›</span><span class="ink-faint" style="color:var(--ink-faint)">全部词条</span>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="portal-head">
+    <p class="kicker">AGI 共学可视化笔记</p>
+    <h1>概念馆</h1>
+    <p class="lead">桑老哥的 82 条 AI 概念，按八大家族分馆陈列——每条一页，骨架统一、各馆画风不同。下面按家族逛，或用过滤框直达。</p>
+    <div class="portal-meta">
+      <span><b>82</b> 词条</span>
+      <span><b>8</b> 家族</span>
+      <span><b>81</b> 稳定</span>
+      <span><b>1</b> 已并转址</span>
+      <span>状态取自概念库 frontmatter · 2026-09-22</span>
+    </div>
+    <div class="ip-spot"><img src="assets/ip/01-微笑.webp" alt="IP形象微笑迎客，概念馆门童"></div>
+  </div>
+
+  <nav class="fam-grid" aria-label="八大家族">
+    <a class="fcard" style="--fc:var(--fam-01)" href="#f01"><span class="fno">01-ai</span><div class="fname">AI底层逻辑</div><div class="fdesc">循环、上下文、Harness、评测——AI 时代的思维操作系统</div><div class="fcount"><b>28</b> 条 · 27 稳定 + 1 转址</div></a>
+    <a class="fcard" style="--fc:var(--fam-02)" href="#f02"><span class="fno">02-think</span><div class="fname">思维模型</div><div class="fdesc">判断尺子与过滤器——遇事怎么想、怎么不被带跑</div><div class="fcount"><b>13</b> 条 · 全稳定</div></a>
+    <a class="fcard" style="--fc:var(--fam-03)" href="#f03"><span class="fno">03-agent</span><div class="fname">Agent与自动化</div><div class="fdesc">让 AI 干活的工程规矩：规范、组队、Context Loop</div><div class="fcount"><b>5</b> 条 · 全稳定</div></a>
+    <a class="fcard" style="--fc:var(--fam-04)" href="#f04"><span class="fno">04-skill</span><div class="fname">Skill工程</div><div class="fdesc">把手艺写成文件，让 AI 接手复用、代代进化</div><div class="fcount"><b>9</b> 条 · 全稳定</div></a>
+    <a class="fcard" style="--fc:var(--fam-05)" href="#f05"><span class="fno">05-video</span><div class="fname">AI视频</div><div class="fdesc">抽卡、运镜、白模预演、剪辑——视频生产线全流程</div><div class="fcount"><b>9</b> 条 · 全稳定</div></a>
+    <a class="fcard" style="--fc:var(--fam-06)" href="#f06"><span class="fno">06-learn</span><div class="fname">学习方法</div><div class="fdesc">七步回路、IPO 内化、提问的智慧——怎么学才留得下</div><div class="fcount"><b>6</b> 条 · 全稳定</div></a>
+    <a class="fcard" style="--fc:var(--fam-07)" href="#f07"><span class="fno">07-ip</span><div class="fname">个人IP</div><div class="fdesc">从冷启动攒硬货，到一人公司的内容获客循环</div><div class="fcount"><b>6</b> 条 · 全稳定</div></a>
+    <a class="fcard" style="--fc:var(--fam-08)" href="#f08"><span class="fno">08-ecomm</span><div class="fname">电商设计</div><div class="fdesc">生图排查、构图 32 式、GEO——卖货视觉弹药库</div><div class="fcount"><b>6</b> 条 · 全稳定</div></a>
+  </nav>
+
+  <div class="filter-bar">
+    <input id="q" type="search" placeholder="输入关键词过滤 82 条词条，如：循环 / 提示词 / 构图" aria-label="过滤词条">
+    <p class="fstat" id="fstat">显示 <b>82</b> / 82 条</p>
+  </div>
+
+  <section id="f01" class="fam-sec" style="--fc:var(--fam-01)">
+    <div class="sec-head"><span class="s-no">01-ai</span><h2>AI底层逻辑</h2><span class="s-count">28 条</span><span class="s-note">工程蓝 · 循环与上下文是两大门厅</span></div>
+    <div class="chips">
+      <a class="chip" href="01-ai/AGI五级楼梯.html"><span class="dot"></span>AGI五级楼梯</a>
+      <a class="chip" href="01-ai/AI与人的分工原则.html"><span class="dot"></span>AI与人的分工原则</a>
+      <a class="chip" href="01-ai/AI交互范式.html"><span class="dot"></span>AI交互范式</a>
+      <a class="chip" href="01-ai/AI原生开发手册.html"><span class="dot"></span>AI原生开发手册</a>
+      <a class="chip" href="01-ai/AI工程技能地图.html"><span class="dot"></span>AI工程技能地图</a>
+      <a class="chip" href="01-ai/AI概念导航图.html"><span class="dot"></span>AI概念导航图</a>
+      <a class="chip" href="01-ai/AI确认偏误.html"><span class="dot"></span>AI确认偏误</a>
+      <a class="chip" href="01-ai/AI记忆系统三层架构.html"><span class="dot"></span>AI记忆系统三层架构</a>
+      <a class="chip" href="01-ai/Agent自进化.html"><span class="dot"></span>Agent自进化</a>
+      <a class="chip" href="01-ai/Agent（智能体）.html"><span class="dot"></span>Agent（智能体）</a>
+      <a class="chip" href="01-ai/Evals评测体系.html"><span class="dot"></span>Evals评测体系</a>
+      <a class="chip" href="01-ai/Harness.html"><span class="dot"></span>Harness</a>
+      <a class="chip is-merge" href="01-ai/Prompt三原则.html" title="已并入词条，此页为转址说明"><span class="dot"></span>Prompt三原则（转址）</a>
+      <a class="chip" href="01-ai/RAG检索增强生成.html"><span class="dot"></span>RAG检索增强生成</a>
+      <a class="chip" href="01-ai/System%20One判断模型.html"><span class="dot"></span>System One判断模型</a>
+      <a class="chip" href="01-ai/Tokenmaxxing.html"><span class="dot"></span>Tokenmaxxing</a>
+      <a class="chip" href="01-ai/上下文工程.html"><span class="dot"></span>上下文工程</a>
+      <a class="chip" href="01-ai/上下文注入方法.html"><span class="dot"></span>上下文注入方法</a>
+      <a class="chip" href="01-ai/上下文组织原则.html"><span class="dot"></span>上下文组织原则</a>
+      <a class="chip" href="01-ai/出稿评审分离法.html"><span class="dot"></span>出稿评审分离法</a>
+      <a class="chip" href="01-ai/可信完成.html"><span class="dot"></span>可信完成</a>
+      <a class="chip" href="01-ai/图谱工程.html"><span class="dot"></span>图谱工程</a>
+      <a class="chip" href="01-ai/奖励工程RewardEngineering.html"><span class="dot"></span>奖励工程RewardEngineering</a>
+      <a class="chip" href="01-ai/循环工程.html"><span class="dot"></span>循环工程</a>
+      <a class="chip" href="01-ai/提示词工程.html"><span class="dot"></span>提示词工程</a>
+      <a class="chip" href="01-ai/目标契约与五个闸门.html"><span class="dot"></span>目标契约与五个闸门</a>
+      <a class="chip" href="01-ai/钢人论证.html"><span class="dot"></span>钢人论证</a>
+      <a class="chip" href="01-ai/锯齿智能.html"><span class="dot"></span>锯齿智能</a>
+    </div>
+  </section>
+
+  <section id="f02" class="fam-sec" style="--fc:var(--fam-02)">
+    <div class="sec-head"><span class="s-no">02-think</span><h2>思维模型</h2><span class="s-count">13 条</span><span class="s-note">赭墨棕 · 尺子馆</span></div>
+    <div class="chips">
+      <a class="chip" href="02-think/AI-native创业公司的完整图景.html"><span class="dot"></span>AI-native创业公司的完整图景</a>
+      <a class="chip" href="02-think/AI工作流重构三步法.html"><span class="dot"></span>AI工作流重构三步法</a>
+      <a class="chip" href="02-think/AI防身提示词24式.html"><span class="dot"></span>AI防身提示词24式</a>
+      <a class="chip" href="02-think/人才公式（Taste×Agency）.html"><span class="dot"></span>人才公式（Taste×Agency）</a>
+      <a class="chip" href="02-think/信号与噪音过滤器.html"><span class="dot"></span>信号与噪音过滤器</a>
+      <a class="chip" href="02-think/四阶段验证框架.html"><span class="dot"></span>四阶段验证框架</a>
+      <a class="chip" href="02-think/损失函数思维.html"><span class="dot"></span>损失函数思维</a>
+      <a class="chip" href="02-think/最后一公里.html"><span class="dot"></span>最后一公里</a>
+      <a class="chip" href="02-think/约束先行.html"><span class="dot"></span>约束先行</a>
+      <a class="chip" href="02-think/聚焦原则.html"><span class="dot"></span>聚焦原则</a>
+      <a class="chip" href="02-think/隐性知识.html"><span class="dot"></span>隐性知识</a>
+      <a class="chip" href="02-think/难的分类学.html"><span class="dot"></span>难的分类学</a>
+      <a class="chip" href="02-think/需求弹性.html"><span class="dot"></span>需求弹性</a>
+    </div>
+  </section>
+
+  <section id="f03" class="fam-sec" style="--fc:var(--fam-03)">
+    <div class="sec-head"><span class="s-no">03-agent</span><h2>Agent与自动化</h2><span class="s-count">5 条</span><span class="s-note">机械青 · 工程规矩馆</span></div>
+    <div class="chips">
+      <a class="chip" href="03-agent/Agent工程规范.html"><span class="dot"></span>Agent工程规范</a>
+      <a class="chip" href="03-agent/Agent组队机制.html"><span class="dot"></span>Agent组队机制</a>
+      <a class="chip" href="03-agent/Context%20Loop搭建法.html"><span class="dot"></span>Context Loop搭建法</a>
+      <a class="chip" href="03-agent/Git版本管理.html"><span class="dot"></span>Git版本管理</a>
+      <a class="chip" href="03-agent/MCP-Skill-Hook三件套.html"><span class="dot"></span>MCP-Skill-Hook三件套</a>
+    </div>
+  </section>
+
+  <section id="f04" class="fam-sec" style="--fc:var(--fam-04)">
+    <div class="sec-head"><span class="s-no">04-skill</span><h2>Skill工程</h2><span class="s-count">9 条</span><span class="s-note">工具灰 · 手艺文件化馆</span></div>
+    <div class="chips">
+      <a class="chip" href="04-skill/QBS问题读书法.html"><span class="dot"></span>QBS问题读书法</a>
+      <a class="chip" href="04-skill/Skills（技能文件）.html"><span class="dot"></span>Skills（技能文件）</a>
+      <a class="chip" href="04-skill/Skill工程实践.html"><span class="dot"></span>Skill工程实践</a>
+      <a class="chip" href="04-skill/Skill知识资产.html"><span class="dot"></span>Skill知识资产</a>
+      <a class="chip" href="04-skill/Skill设计方法论.html"><span class="dot"></span>Skill设计方法论</a>
+      <a class="chip" href="04-skill/审美规则化.html"><span class="dot"></span>审美规则化</a>
+      <a class="chip" href="04-skill/技能内化.html"><span class="dot"></span>技能内化</a>
+      <a class="chip" href="04-skill/技能进化.html"><span class="dot"></span>技能进化</a>
+      <a class="chip" href="04-skill/隐性知识抽取.html"><span class="dot"></span>隐性知识抽取</a>
+    </div>
+  </section>
+
+  <section id="f05" class="fam-sec" style="--fc:var(--fam-05)">
+    <div class="sec-head"><span class="s-no">05-video</span><h2>AI视频</h2><span class="s-count">9 条</span><span class="s-note">影像黑 · 生产线馆</span></div>
+    <div class="chips">
+      <a class="chip" href="05-video/AI视频抽卡策略.html"><span class="dot"></span>AI视频抽卡策略</a>
+      <a class="chip" href="05-video/AI视频清晰度最优解.html"><span class="dot"></span>AI视频清晰度最优解</a>
+      <a class="chip" href="05-video/AI视频白模预演.html"><span class="dot"></span>AI视频白模预演</a>
+      <a class="chip" href="05-video/AI视频运镜速查.html"><span class="dot"></span>AI视频运镜速查</a>
+      <a class="chip" href="05-video/AI角色演技提示词.html"><span class="dot"></span>AI角色演技提示词</a>
+      <a class="chip" href="05-video/创意制作分发-价值在哪一层.html"><span class="dot"></span>创意制作分发-价值在哪一层</a>
+      <a class="chip" href="05-video/剪辑思维七手法.html"><span class="dot"></span>剪辑思维七手法</a>
+      <a class="chip" href="05-video/动作导演六层法.html"><span class="dot"></span>动作导演六层法</a>
+      <a class="chip" href="05-video/视频生成提示词.html"><span class="dot"></span>视频生成提示词</a>
+    </div>
+  </section>
+
+  <section id="f06" class="fam-sec" style="--fc:var(--fam-06)">
+    <div class="sec-head"><span class="s-no">06-learn</span><h2>学习方法</h2><span class="s-count">6 条</span><span class="s-note">纸感绿 · 留得下馆</span></div>
+    <div class="chips">
+      <a class="chip" href="06-learn/AI学习七步回路.html"><span class="dot"></span>AI学习七步回路</a>
+      <a class="chip" href="06-learn/DBS框架.html"><span class="dot"></span>DBS框架</a>
+      <a class="chip" href="06-learn/IPO知识内化方法论.html"><span class="dot"></span>IPO知识内化方法论</a>
+      <a class="chip" href="06-learn/提问的智慧.html"><span class="dot"></span>提问的智慧</a>
+      <a class="chip" href="06-learn/知识图谱与主动迭代.html"><span class="dot"></span>知识图谱与主动迭代</a>
+      <a class="chip" href="06-learn/飞轮学习法.html"><span class="dot"></span>飞轮学习法</a>
+    </div>
+  </section>
+
+  <section id="f07" class="fam-sec" style="--fc:var(--fam-07)">
+    <div class="sec-head"><span class="s-no">07-ip</span><h2>个人IP</h2><span class="s-count">6 条</span><span class="s-note">媒体红 · 获客循环馆</span></div>
+    <div class="chips">
+      <a class="chip" href="07-ip/AI角色设定集.html"><span class="dot"></span>AI角色设定集</a>
+      <a class="chip" href="07-ip/IP冷启动-先攒硬货再借势.html"><span class="dot"></span>IP冷启动-先攒硬货再借势</a>
+      <a class="chip" href="07-ip/IP配图方法论.html"><span class="dot"></span>IP配图方法论</a>
+      <a class="chip" href="07-ip/一人公司内容获客循环.html"><span class="dot"></span>一人公司内容获客循环</a>
+      <a class="chip" href="07-ip/人味与AI味.html"><span class="dot"></span>人味与AI味</a>
+      <a class="chip" href="07-ip/公众号写作系统.html"><span class="dot"></span>公众号写作系统</a>
+    </div>
+  </section>
+
+  <section id="f08" class="fam-sec" style="--fc:var(--fam-08)">
+    <div class="sec-head"><span class="s-no">08-ecomm</span><h2>电商设计</h2><span class="s-count">6 条</span><span class="s-note">明快橙 · 卖货弹药馆</span></div>
+    <div class="chips">
+      <a class="chip" href="08-ecomm/AI对跨境电商设计师的价值边界.html"><span class="dot"></span>AI对跨境电商设计师的价值边界</a>
+      <a class="chip" href="08-ecomm/Blender入门五概念.html"><span class="dot"></span>Blender入门五概念</a>
+      <a class="chip" href="08-ecomm/DESIGN.md-给AI的视觉角色卡.html"><span class="dot"></span>DESIGN.md-给AI的视觉角色卡</a>
+      <a class="chip" href="08-ecomm/GEO生成式引擎优化.html"><span class="dot"></span>GEO生成式引擎优化</a>
+      <a class="chip" href="08-ecomm/海报构图16式.html"><span class="dot"></span>海报构图16式</a>
+      <a class="chip" href="08-ecomm/生图提示词排查表.html"><span class="dot"></span>生图提示词排查表</a>
+    </div>
+  </section>
+
+  <p class="no-hit" id="nohit">没有匹配的词条——换个关键词试试。</p>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 门户</p>
+    <p>词条源：concepts(概念库)/ 八家族 82 条 · 状态取自各词条 frontmatter · 本页生成 2026-09-22</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 词条过滤
+  var q = document.getElementById('q');
+  var fstat = document.getElementById('fstat');
+  var nohit = document.getElementById('nohit');
+  var chips = document.querySelectorAll('.chip');
+  var secs = document.querySelectorAll('.fam-sec');
+  var total = chips.length;
+  function filter(){
+    var k = q.value.trim().toLowerCase();
+    var shown = 0;
+    chips.forEach(function(c){
+      var hit = !k || c.textContent.toLowerCase().indexOf(k) > -1;
+      c.style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    });
+    secs.forEach(function(s){
+      var any = s.querySelectorAll('.chip:not([style*="none"])').length > 0;
+      s.style.display = any ? '' : 'none';
+    });
+    fstat.innerHTML = '显示 <b>' + shown + '</b> / ' + total + ' 条';
+    nohit.classList.toggle('show', shown === 0);
+  }
+  q.addEventListener('input', filter);
+})();
+</script>
+</body>
+</html>

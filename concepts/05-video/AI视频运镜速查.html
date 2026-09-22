@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频运镜速查 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（克制·影像质感） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 用法三步 */
+.use3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .use3 { grid-template-columns:1fr 1fr 1fr; } }
+.use3 .u-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700;
+  font-size:14.5px; margin-right:8px; font-variant-numeric:tabular-nums;
+}
+.use3 .u-t { font-weight:700; font-size:15.5px; color:var(--ink); }
+.use3 .card p.body { font-size:15px; margin:8px 0 0; }
+
+/* 三种最常用 */
+.top3 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .top3 { grid-template-columns:1fr 1fr 1fr; } }
+.t3 { position:relative; }
+.t3 .t3-name { font-weight:700; font-size:17.5px; color:var(--ink); margin:0; }
+.t3 .t3-en { font-size:14.5px; color:var(--ink-faint); font-weight:400; margin-left:6px; }
+.t3 .t3-dir { font-size:14.5px; color:var(--fam-deep); font-weight:600; margin:2px 0 8px; }
+.t3 .m-chips { margin:0 0 10px; }
+.m-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.m-chips span {
+  background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:999px;
+  padding:1px 10px; font-size:14.5px; color:var(--g8); white-space:nowrap;
+}
+.tpl {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.75;
+  background:var(--g2); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:10px 12px; color:var(--g8); word-break:break-all;
+}
+.tpl b { font-weight:700; color:var(--ink); }
+.t3 .t3-ex { font-size:14.5px; color:var(--ink-faint); margin:8px 0 0; }
+
+/* 11 种卡墙 */
+.mgrid { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:560px) { .mgrid { grid-template-columns:1fr 1fr; } }
+@media (min-width:960px) { .mgrid { grid-template-columns:1fr 1fr 1fr; } }
+.mv {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:14px 16px; position:relative; box-shadow:var(--sh-1);
+}
+.mv .m-no {
+  font-size:14.5px; font-weight:700; color:var(--ink-faint);
+  font-variant-numeric:tabular-nums; letter-spacing:.06em;
+}
+.mv .m-name { font-weight:700; font-size:16.5px; color:var(--ink); display:inline; }
+.mv .m-en { font-size:14.5px; color:var(--ink-faint); font-weight:400; margin-left:5px; }
+.mv .m-what { font-size:15px; color:var(--ink-soft); margin:6px 0 8px; }
+.mv.hl { border-color:var(--fam-line); background:var(--fam-soft); }
+.mv .m-flag {
+  position:absolute; top:12px; right:12px; background:var(--fam); color:#fff;
+  font-size:14.5px; font-weight:700; padding:1px 10px; border-radius:999px;
+}
+
+/* 心法列表加粗引导 */
+.minds { counter-reset:mi; list-style:none; padding:0; }
+.minds li {
+  position:relative; padding:8px 0 8px 40px; border-bottom:1px dashed var(--line);
+  font-size:15.5px; color:var(--g8);
+}
+.minds li:last-child { border-bottom:none; }
+.minds li::before {
+  content:counter(mi); counter-increment:mi; position:absolute; left:4px; top:9px;
+  width:24px; height:24px; line-height:24px; text-align:center; border-radius:50%;
+  background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+  font-variant-numeric:tabular-nums;
+}
+
+/* 警示/提示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI视频运镜速查</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频家族 · 镜头语言工具书</p>
+    <h1>AI视频运镜速查</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-08</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意入门工具书轻松翻用不用背"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>这页是什么</h2>
+    <p>运镜 = 镜头怎么动。同样一个场景，加一句运镜指令，视频立刻有情绪、有节奏。<strong>AI 视频 / 真人剪辑通用。</strong></p>
+    <p>本页是工具书——不用背，做视频时翻。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>怎么用（3 步）</h2>
+    <div class="use3">
+      <div class="card">
+        <span class="u-no">1</span><span class="u-t">想情绪</span>
+        <p class="body">想要啥情绪，查对应的「情绪关键词」</p>
+      </div>
+      <div class="card">
+        <span class="u-no">2</span><span class="u-t">套模板</span>
+        <p class="body">套对应运镜的模板，替换【】里的内容</p>
+      </div>
+      <div class="card">
+        <span class="u-no">3</span><span class="u-t">放开头</span>
+        <p class="body">运镜指令放在提示词开头（AI 对开头权重最高）</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>三种最常用 ·核心</h2>
+    <p>先练这 3 个，甩开一大截：</p>
+    <div class="top3">
+      <div class="card t3">
+        <p class="t3-name">推镜头<span class="t3-en">Push In</span></p>
+        <p class="t3-dir">从远到近</p>
+        <div class="m-chips"><span>聚焦</span><span>紧张</span><span>亲密</span><span>强调</span><span>悬疑揭示</span></div>
+        <div class="tpl"><b>模板</b>：缓慢推镜头，从【全景】推进至【特写】。【主体+动作/表情变化】，镜头持续靠近，景深变浅背景虚化，【情绪/风格】。</div>
+        <p class="t3-ex">例：缓慢推镜头，从中景推进至面部大特写。男人表情从平静变震惊，悬疑紧张。</p>
+      </div>
+      <div class="card t3">
+        <p class="t3-name">拉镜头<span class="t3-en">Pull Out</span></p>
+        <p class="t3-dir">从近到远</p>
+        <div class="m-chips"><span>疏离</span><span>开阔</span><span>释然</span><span>宏大</span><span>原来他在这里</span></div>
+        <div class="tpl"><b>模板</b>：拉镜头，从【特写】后退拉远，逐步揭示周围场景。【环境展开】，镜头持续拉远直到【最终画面】，【情绪】。</div>
+        <p class="t3-ex">例：从女孩面部拉远，揭示她独自站在雪原，最终变成画面中的小黑点，孤寂感。</p>
+      </div>
+      <div class="card t3">
+        <p class="t3-name">跟随镜头<span class="t3-en">Follow Shot</span></p>
+        <p class="t3-dir">紧跟主体</p>
+        <div class="m-chips"><span>紧张</span><span>动感</span><span>沉浸</span><span>在场感</span><span>Vlog</span></div>
+        <div class="tpl"><b>模板</b>：跟随镜头，从【身后/侧面/前方】紧跟【主体】同步移动。【主体动作】，【两侧环境掠过】，【手持晃动感】，【风格】。</div>
+        <p class="t3-ex">例：从身后紧跟女孩穿过曼谷夜市，两侧灯光人群快速掠过，轻微手持晃动，vlog 生活感。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>全 11 种速查（用的时候翻）</h2>
+    <div class="mgrid">
+      <div class="mv"><span class="m-no">01</span> <span class="m-name">固定</span><span class="m-en">Fixed</span>
+        <p class="m-what">画面不动，靠主体动作和光线</p>
+        <div class="m-chips"><span>冷静</span><span>客观</span><span>沉稳</span></div>
+      </div>
+      <div class="mv hl"><span class="m-no">02</span> <span class="m-name">推</span><span class="m-en">Push In</span><span class="m-flag">常用</span>
+        <p class="m-what">从远到近，拽注意力</p>
+        <div class="m-chips"><span>聚焦</span><span>紧张</span><span>亲密</span></div>
+      </div>
+      <div class="mv hl"><span class="m-no">03</span> <span class="m-name">拉</span><span class="m-en">Pull Out</span><span class="m-flag">常用</span>
+        <p class="m-what">从近到远，揭示环境</p>
+        <div class="m-chips"><span>疏离</span><span>开阔</span><span>释然</span></div>
+      </div>
+      <div class="mv"><span class="m-no">04</span> <span class="m-name">水平摇</span><span class="m-en">Pan</span>
+        <p class="m-what">站原地左右转头环顾</p>
+        <div class="m-chips"><span>流畅</span><span>探索</span><span>跟随</span></div>
+      </div>
+      <div class="mv"><span class="m-no">05</span> <span class="m-name">垂直摇</span><span class="m-en">Tilt</span>
+        <p class="m-what">抬头/低头，展纵向层次</p>
+        <div class="m-chips"><span>震撼</span><span>揭示</span><span>层次</span></div>
+      </div>
+      <div class="mv hl"><span class="m-no">06</span> <span class="m-name">跟随</span><span class="m-en">Follow</span><span class="m-flag">常用</span>
+        <p class="m-what">紧跟主体同步移动</p>
+        <div class="m-chips"><span>动感</span><span>沉浸</span><span>在场</span></div>
+      </div>
+      <div class="mv"><span class="m-no">07</span> <span class="m-name">环绕</span><span class="m-en">Circular</span>
+        <p class="m-what">绕主体 360°，多角度</p>
+        <div class="m-chips"><span>史诗</span><span>立体</span><span>高级</span></div>
+      </div>
+      <div class="mv"><span class="m-no">08</span> <span class="m-name">升降</span><span class="m-en">Crane</span>
+        <p class="m-what">整个视角垂直升/降（非仰头）</p>
+        <div class="m-chips"><span>宏大</span><span>壮观</span><span>震撼</span></div>
+      </div>
+      <div class="mv"><span class="m-no">09</span> <span class="m-name">希区柯克变焦</span><span class="m-en">Dolly Zoom</span>
+        <p class="m-what">主体不变、背景扭曲拉伸</p>
+        <div class="m-chips"><span>不安</span><span>震惊</span><span>眩晕</span></div>
+      </div>
+      <div class="mv"><span class="m-no">10</span> <span class="m-name">一镜到底</span><span class="m-en">Long Take</span>
+        <p class="m-what">无剪切连续走完场景</p>
+        <div class="m-chips"><span>流畅</span><span>沉浸</span><span>高级</span></div>
+      </div>
+      <div class="mv"><span class="m-no">11</span> <span class="m-name">快速甩镜</span><span class="m-en">Whip Pan</span>
+        <p class="m-what">极速甩出+运动模糊，转场用</p>
+        <div class="m-chips"><span>急促</span><span>冲击</span><span>转场</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>5 条心法（写提示词必看） ·核心</h2>
+    <ol class="minds">
+      <li><strong>运镜放开头</strong> — AI 对开头权重高，先写「环绕镜头，画面围绕…」再写场景</li>
+      <li><strong>写清「从哪到哪」</strong> — 别只写「推镜头」，要写「从全景推近到面部特写」，给起点+终点</li>
+      <li><strong>给速度 = 给情绪</strong> — 缓慢=优雅/深情/悬疑；快速=紧张/冲击/惊吓</li>
+      <li><strong>运镜 + 情绪词搭配</strong> — 「缓慢推镜头，悬疑感」「环绕镜头，史诗感」，两个词 AI 才懂你要啥感觉</li>
+      <li><strong>一条只用 1-2 种</strong> — 塞多了 AI 乱套，复杂的拆成多条分别生成再拼接</li>
+    </ol>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>固定镜头的救命招</h2>
+    <blockquote>
+      <p>固定镜头里，光线 = 运镜替代品。描述光线方向变化（「阳光从云后逐渐透出照亮面部」），画面立刻有呼吸感，不死板。</p>
+    </blockquote>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>前提与验证</h2>
+    <div class="warn"><b>未做一手验证：</b>本条为综合整理（synthesized，verified: false），方法论未实测过——用时先小样试一条，有效再批量。</div>
+    <p>「运镜放开头权重最高」这类结论来自社区经验，不同模型的实际权重可能有差异，以自己实测为准。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">Seedance/Sora 提示词七层结构（结构框架），与本页运镜技巧互补</span></a>
+      <a href="../07-ip/IP配图方法论.html"><span class="rel-t">IP配图方法论</span><span class="rel-d">图片侧的对应方法论</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>科蚪《AI视频入门基础——运镜（一）》</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI视频运镜速查</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI视频运镜速查.md（2026-07-08 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">这页是什么</a></li>
+    <li><a href="#s2">怎么用（3 步）</a></li>
+    <li><a href="#s3">三种最常用 ·核心</a></li>
+    <li><a href="#s4">全 11 种速查</a></li>
+    <li><a href="#s5">5 条心法 ·核心</a></li>
+    <li><a href="#s6">固定镜头救命招</a></li>
+    <li><a href="#s7">前提与验证</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

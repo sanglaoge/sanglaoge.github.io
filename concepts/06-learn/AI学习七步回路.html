@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI学习七步回路 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：学习方法 · 纸感绿（自然·生长·纸面笔记感） ---- */
+:root {
+  --fam:#4d7c0f; --fam-deep:#3f6212; --fam-soft:#f7fee7; --fam-line:#d9f99d;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 七步回路条 */
+.steps7 { display:flex; gap:0; margin:18px 0 8px; overflow-x:auto; }
+.st7 {
+  flex:1 1 0; min-width:126px; padding:12px 12px 10px;
+  border-left:1px solid var(--line); position:relative; background:var(--g0);
+}
+.st7:first-child { border-left:none; }
+.st7 .s-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+}
+.st7 .s-name { font-weight:700; font-size:15.5px; color:var(--ink); margin:6px 0 2px; }
+.st7 .s-hint { font-size:14.5px; color:var(--ink-faint); line-height:1.55; }
+.st7.key { background:var(--fam-soft); }
+.st7.key .s-name { color:var(--fam-deep); }
+.st7.key::after {
+  content:"关键"; position:absolute; top:-11px; right:8px;
+  background:var(--fam); color:#fff; font-size:14.5px; font-weight:700;
+  padding:0 9px; border-radius:999px;
+}
+.steps-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:12px; }
+
+/* 回路 SVG 配色（fill/stroke 全走 class→var） */
+.loop7 { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 10px 6px; margin:16px 0; }
+.loop7 svg { width:100%; height:auto; display:block; }
+.sg-box { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.4; }
+.sg-box-hl { fill:var(--fam-line); stroke:var(--fam); stroke-width:1.8; }
+.sg-line { stroke:var(--fam); stroke-width:1.8; fill:none; }
+.sg-dash { stroke:var(--fam-deep); stroke-width:1.6; fill:none; stroke-dasharray:6 5; }
+.sg-t { fill:var(--ink); font-weight:700; }
+.sg-td { fill:var(--fam-deep); font-weight:700; }
+.sg-s { fill:var(--g6); }
+.sg-mk { fill:var(--fam); }
+
+/* 七原则卡 */
+.p3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .p3 { grid-template-columns:1fr 1fr 1fr; } }
+.p3 .card h3 { margin:0 0 6px; font-size:16px; color:var(--fam-deep); }
+.p3 .card .p-to { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.p3 .card p { font-size:15px; }
+
+/* 状态 chip（对照表用） */
+.chip { display:inline-block; padding:0 10px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; }
+.chip-ok { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+.chip-wip { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+.chip-half { background:#f5f5f4; color:#57534e; border:1px solid #e7e5e4; }
+
+/* 反模式警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">学习方法</span><span class="sep">›</span>
+    <span class="here">AI学习七步回路</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">学习方法 · 家族主回路：把 AI 配置成学习系统</p>
+    <h1>AI学习七步回路</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-06</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意宣告本条主张：AI是教练不是按摩师"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      把 AI 配置成学习系统，不是答案机器。
+      <span class="q-src">—— byoungd《用 AI 学习》</span>
+    </blockquote>
+    <p>AI 是健身教练不是按摩师——逼你输出、纠错、复盘，累但真会了。七步回路：<strong>输入材料 → 主动回忆 → 分步讲解 → 输出任务 → 反馈纠错 → 间隔复习 → 项目交付</strong>。</p>
+    <p>比喻：AI 当答案机器是按摩师（你躺着，舒服但没变强）；AI 当学习系统是教练（逼你举铁，累但长肌肉）。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉</h2>
+    <p>byoungd（中文前端开发者）在 up 仓库提出。背景：早几年用 AI 是「问它一个问题，它给答案」，现在更值得做的是<strong>把 AI 配置成学习系统</strong>。</p>
+    <p>核心判断：AI 不会自动让一个人变强，它只会<strong>放大你的学习方式</strong>。你要答案，它让你更快得到答案也更快忘掉答案。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>学之前先定：目标四维度</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>维度</th><th>问自己</th><th>范例</th></tr></thead>
+      <tbody>
+        <tr><td>结果</td><td>最终交付什么</td><td>能写一个自动整理 Excel 的小工具</td></tr>
+        <tr><td>场景</td><td>在哪真实使用</td><td>能写 10 页行业分析报告</td></tr>
+        <tr><td>时间</td><td>每周几小时</td><td>每周 5 小时</td></tr>
+        <tr><td>证据</td><td>怎么证明学会</td><td>每周一个可运行小作品</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>错法：「我想学编程怎么办」——AI 只能给你一份看着对但没法执行的清单。</li>
+      <li>对法：拆成「X 周计划，每周有可验证作品」。</li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>七步回路 ·核心</h2>
+    <div class="loop7">
+      <svg viewBox="0 0 680 210" role="img" aria-label="七步回路图：输入材料、主动回忆、分步讲解、输出任务、反馈纠错、间隔复习、项目交付，七步首尾相接循环转动">
+        <defs>
+          <marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="sg-mk"/>
+          </marker>
+        </defs>
+        <g>
+          <rect x="24" y="30" width="80" height="46" rx="10" class="sg-box"/>
+          <rect x="116" y="30" width="80" height="46" rx="10" class="sg-box-hl"/>
+          <rect x="208" y="30" width="80" height="46" rx="10" class="sg-box"/>
+          <rect x="300" y="30" width="80" height="46" rx="10" class="sg-box"/>
+          <rect x="392" y="30" width="80" height="46" rx="10" class="sg-box-hl"/>
+          <rect x="484" y="30" width="80" height="46" rx="10" class="sg-box-hl"/>
+          <rect x="576" y="30" width="80" height="46" rx="10" class="sg-box"/>
+        </g>
+        <g text-anchor="middle">
+          <text x="64" y="49" font-size="13" class="sg-td">1 输入</text>
+          <text x="64" y="66" font-size="11.5" class="sg-s">材料</text>
+          <text x="156" y="49" font-size="13" class="sg-td">2 回忆</text>
+          <text x="156" y="66" font-size="11.5" class="sg-s">先考自己</text>
+          <text x="248" y="49" font-size="13" class="sg-td">3 讲解</text>
+          <text x="248" y="66" font-size="11.5" class="sg-s">四层递进</text>
+          <text x="340" y="49" font-size="13" class="sg-td">4 输出</text>
+          <text x="340" y="66" font-size="11.5" class="sg-s">小任务</text>
+          <text x="432" y="49" font-size="13" class="sg-td">5 反馈</text>
+          <text x="432" y="66" font-size="11.5" class="sg-s">纠错</text>
+          <text x="524" y="49" font-size="13" class="sg-td">6 复习</text>
+          <text x="524" y="66" font-size="11.5" class="sg-s">间隔</text>
+          <text x="616" y="49" font-size="13" class="sg-td">7 交付</text>
+          <text x="616" y="66" font-size="11.5" class="sg-s">项目</text>
+        </g>
+        <g>
+          <line x1="104" y1="53" x2="114" y2="53" class="sg-line" marker-end="url(#a7)"/>
+          <line x1="196" y1="53" x2="206" y2="53" class="sg-line" marker-end="url(#a7)"/>
+          <line x1="288" y1="53" x2="298" y2="53" class="sg-line" marker-end="url(#a7)"/>
+          <line x1="380" y1="53" x2="390" y2="53" class="sg-line" marker-end="url(#a7)"/>
+          <line x1="472" y1="53" x2="482" y2="53" class="sg-line" marker-end="url(#a7)"/>
+          <line x1="564" y1="53" x2="574" y2="53" class="sg-line" marker-end="url(#a7)"/>
+        </g>
+        <path d="M 616 76 L 616 130 Q 616 152 594 152 L 86 152 Q 64 152 64 130 L 64 78" class="sg-dash" marker-end="url(#a7)"/>
+        <text x="340" y="147" text-anchor="middle" font-size="12.5" fill="#57534e">交付带出新问题 → 新素材再进回路（复习回接第 2 步主动回忆）</text>
+        <text x="340" y="185" text-anchor="middle" font-size="12.5" fill="#78716c">七步不是单程线，是一个会自己转的圈</text>
+      </svg>
+    </div>
+    <p class="steps-cap">横着看七步（第 2/5/6 步带「关键」标记）：</p>
+    <div class="steps7" aria-label="七步回路条">
+      <div class="st7"><span class="s-no">1</span><div class="s-name">输入材料</div><p class="s-hint">给 AI 具体素材，不凭空讲</p></div>
+      <div class="st7 key"><span class="s-no">2</span><div class="s-name">主动回忆</div><p class="s-hint">讲解前先考你 5 个问题</p></div>
+      <div class="st7"><span class="s-no">3</span><div class="s-name">分步讲解</div><p class="s-hint">一句话/类比/定义/案例</p></div>
+      <div class="st7"><span class="s-no">4</span><div class="s-name">输出任务</div><p class="s-hint">30 分钟小任务证明懂了</p></div>
+      <div class="st7 key"><span class="s-no">5</span><div class="s-name">反馈纠错</div><p class="s-hint">只挑 3 个最关键问题</p></div>
+      <div class="st7 key"><span class="s-no">6</span><div class="s-name">间隔复习</div><p class="s-hint">10 卡片+5 应用题+复盘</p></div>
+      <div class="st7"><span class="s-no">7</span><div class="s-name">项目交付</div><p class="s-hint">2 周项目，有验收有复盘</p></div>
+    </div>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>步</th><th>做什么</th><th>关键操作</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td>输入材料</td><td>先让 AI 判断材料「适合解决什么、需要哪些前置」</td></tr>
+        <tr><td class="n">2</td><td>主动回忆</td><td>暴露你不知道什么，再针对性讲</td></tr>
+        <tr><td class="n">3</td><td>分步讲解</td><td>四层：一句话/类比/定义/案例，每层后出检查题，一层层确认</td></tr>
+        <tr><td class="n">4</td><td>输出任务</td><td>写总结/做题/讲一遍，AI 按清晰度+准确性+可迁移性评</td></tr>
+        <tr><td class="n">5</td><td>反馈纠错</td><td>每个含原因+建议+重做小练习；<strong>自己改，不替你改</strong></td></tr>
+        <tr><td class="n">6</td><td>间隔复习</td><td>转成 10 卡片+5 应用题+一周复盘，题型混合：概念/应用/易错点</td></tr>
+        <tr><td class="n">7</td><td>项目交付</td><td>2 周项目，有交付物+里程碑+验收+复盘，不要只安排阅读任务</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>七原则增量并入（2026-09-20 并档）</h2>
+    <p>原「快速学习七原则」（Hades）七条中五条与已有词条互证，词条删除，三条独有增量落位：</p>
+    <div class="p3">
+      <div class="card">
+        <h3>先挣扎再搜索</h3>
+        <p class="p-to">并入第 2 步 · 主动回忆</p>
+        <p>遇到问题先自己憋几分钟猜一猜再问 AI 对照——「我猜是 X，对吗」比「这是啥」学得多；<strong>挣扎的部分才是教你最多的</strong>（与吴恩达「AI 交作业不等于学会」同源）。</p>
+      </div>
+      <div class="card">
+        <h3>反馈循环定速度</h3>
+        <p class="p-to">并入第 5 步 · 反馈纠错</p>
+        <p>学习速度 = 发现错误的速度；无反馈重复 100 次 = 把错误练熟 100 次。写十篇不发布 = 一倍工作量零循环，发一篇改一篇 = 十次循环。</p>
+      </div>
+      <div class="card">
+        <h3>先连接再收集</h3>
+        <p class="p-to">已在 <a href="../06-learn/IPO知识内化方法论.html">IPO知识内化方法论</a></p>
+        <p>防第二大脑变收藏夹，不重录；存词条时强制挂链的规矩同源。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>五步法前身：三个独有增量（2026-08-28 并入）</h2>
+    <p>AI辅助学习五步法（本词条前身，壳页 2026-09-18 审计删除）并入，三个独有概念补进对应步骤：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>五步法独有概念</th><th>并入到</th><th>大白话</th></tr></thead>
+      <tbody>
+        <tr><td>定义最小问题</td><td>第 1 步 输入材料</td><td>别问「怎么学 X」，拆成「X 里我最先卡住的具体问题」</td></tr>
+        <tr><td>画粗糙地图</td><td>第 1 步 输入材料</td><td>先让 AI 画一张不精确的全景图，知道地形再深入</td></tr>
+        <tr><td>留面包屑</td><td>第 7 步 项目交付</td><td>把路径记录留在概念库/笔记里，别人（和未来的你）能顺着走</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>五步法是七步的前身，七步 = 五步 + 主动回忆 + 项目交付。2026-08-28 合并归档。</blockquote>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用：七步对照 AGI 共学</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>步</th><th>你的现状</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td>输入材料</td><td>发飞书/GitHub 链接，铁柱抓内容</td><td><span class="chip chip-ok">强</span></td></tr>
+        <tr><td>主动回忆</td><td>直接让铁柱判断+讲，没先考自己</td><td><span class="chip chip-wip">缺口</span></td></tr>
+        <tr><td>分步讲解</td><td>铁柱的错法对法、大白话</td><td><span class="chip chip-ok">强</span></td></tr>
+        <tr><td>输出任务</td><td>费曼笔记、概念库词条、HTML 可视化</td><td><span class="chip chip-ok">强</span></td></tr>
+        <tr><td>反馈纠错</td><td>铁柱讲完就过，少「自己重做」</td><td><span class="chip chip-half">半个</span></td></tr>
+        <tr><td>间隔复习</td><td>概念库+<span style="color:var(--ink-faint)">学习账本</span>，但翻得少</td><td><span class="chip chip-wip">有但偏弱</span></td></tr>
+        <tr><td>项目交付</td><td>词条入库、HTML 页面</td><td><span class="chip chip-ok">强</span></td></tr>
+      </tbody>
+    </table></div>
+    <p>七步占五步强，回路比大多数人完整。<strong>概念库就是「项目交付」的活体。</strong></p>
+    <p>两个最大优化点：</p>
+    <ol>
+      <li><strong>补主动回忆</strong>：下次发链接，先说「铁柱先问我 5 个问题再讲」——暴露不知道什么，吸收率更高</li>
+      <li><strong>加间隔复习</strong>：学完一周后翻概念库复习一次（现在偏弱）</li>
+    </ol>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>五个反模式（作者强调）</h2>
+    <div class="warn">
+      <b>反模式清单：</b>
+      <ol>
+        <li>目标太大无法执行（「我想学 X 怎么办」）</li>
+        <li>把 AI 当答案机器</li>
+        <li>让 AI 替你完成所有输出——<strong>至少保留一个自己完成</strong>（自己解释/写/讲给别人）</li>
+        <li>停在「我看懂了」没交付物——没有输出，学习只是「看了很多」</li>
+        <li>把事实判断全交 AI——涉法律/医疗/金融/政策要回官方来源</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>工具分工（byoungd 建议）</h2>
+    <p>按任务分工，别纠结谁第一：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>工具</th><th>适合的活</th></tr></thead>
+      <tbody>
+        <tr><td>Gemini</td><td>做闪卡、测验</td></tr>
+        <tr><td>ChatGPT</td><td>分步学习、项目积累</td></tr>
+        <tr><td>Claude（铁柱）</td><td>长文、写作反馈、复杂资料</td></tr>
+        <tr><td>NotebookLM</td><td>固定来源学习</td></tr>
+        <tr><td>Perplexity</td><td>搜索筛选</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>七步是完整理想态，不是每次都得跑满。简单概念跑前四步就够，复杂主题才跑满</li>
+      <li>byoungd 是技术从业者视角，例子多编程/写作，但方法论通用</li>
+      <li>工具分工是建议不是硬规矩，按自己手头的工具分工即可</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../06-learn/飞轮学习法.html"><span class="rel-t">飞轮学习法</span><span class="rel-d">间隔复习+项目交付的积累效应</span></a>
+      <a href="../06-learn/IPO知识内化方法论.html"><span class="rel-t">IPO知识内化方法论</span><span class="rel-d">输出任务那一步的理论基础</span></a>
+      <a href="../06-learn/提问的智慧.html"><span class="rel-t">提问的智慧</span><span class="rel-d">主动回忆那一步怎么问好问题</span></a>
+      <a href="../02-think/最后一公里.html"><span class="rel-t">最后一公里</span><span class="rel-d">「至少保留一个自己完成」的同源</span></a>
+    </div>
+    <p style="font-size:14.5px;color:var(--ink-faint)">另有 <span style="color:var(--ink-faint)">学习账本</span>（无独立页面）——间隔复习的落地工具。</p>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>byoungd《用 AI 学习》up 仓库 part-3（<a href="https://github.com/byoungd/up/blob/master/docs/threads/part-3/1-ai-learning.md" target="_blank" rel="noopener noreferrer">github.com/byoungd/up</a>）</li>
+      <li>Hades《The Principles of Learning Faster》（@0xHvdes, X 2026-08-30；原快速学习七原则词条 2026-09-20 并入本条）</li>
+      <li>AI辅助学习五步法（本词条前身，2026-08-28 并入，壳页 2026-09-18 审计删除）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 学习方法家族 · AI学习七步回路</p>
+    <p>词条源：concepts(概念库)/学习方法/AI学习七步回路.md（2026-08-06 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">目标四维度</a></li>
+    <li><a href="#s4">七步回路 ·核心</a></li>
+    <li><a href="#s5">七原则增量并入</a></li>
+    <li><a href="#s6">五步法独有增量</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">五个反模式</a></li>
+    <li><a href="#s9">工具分工</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

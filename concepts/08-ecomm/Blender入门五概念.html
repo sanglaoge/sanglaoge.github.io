@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blender入门五概念 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：电商设计 · 明快橙（阶梯布局·入门台阶） ---- */
+:root {
+  --fam:#c2410c; --fam-deep:#7c2d12; --fam-soft:#fff7ed; --fam-line:#fed7aa;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 五级台阶：逐级右移抬升，移动端收回纵列 */
+.stairs { display:flex; flex-direction:column; gap:8px; margin:20px 0 24px; }
+.stair {
+  display:flex; gap:16px; align-items:baseline;
+  background:var(--g0); border:1px solid var(--line); border-left:5px solid var(--fam);
+  border-radius:var(--r-el); padding:12px 18px 11px;
+  box-shadow:var(--sh-1); transition:border-color .15s;
+}
+.stair:hover { border-color:var(--fam); }
+.stair .sn {
+  font-family:var(--font-head); font-size:30px; font-weight:700; color:var(--fam);
+  line-height:1; min-width:36px; font-variant-numeric:tabular-nums;
+}
+.stair .st-body { flex:1; }
+.stair .st-t { font-weight:700; font-size:16.5px; color:var(--ink); }
+.stair .st-d { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+.stair .st-k {
+  display:inline-block; margin-top:5px; font-size:13px; font-weight:600;
+  background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line);
+  border-radius:999px; padding:0 10px; white-space:nowrap;
+}
+.stair.escape { border-left-color:var(--g5); }
+.stair.escape .sn { color:var(--g6); }
+.stair.escape .st-k { background:var(--g2); color:var(--g7); border-color:var(--g4); }
+/* 桌面逐级抬升 */
+@media (min-width:768px) {
+  .stair:nth-child(1) { margin-left:0; }
+  .stair:nth-child(2) { margin-left:7%; }
+  .stair:nth-child(3) { margin-left:14%; }
+  .stair:nth-child(4) { margin-left:21%; }
+  .stair:nth-child(5) { margin-left:28%; }
+  .stair:nth-child(6) { margin-left:35%; }
+}
+.stairs-note { font-size:14.5px; color:var(--ink-faint); text-align:right; margin-top:-14px; }
+@media (max-width:767px) { .stairs-note { display:none; } }
+
+/* 心智模型卡 */
+.minds { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .minds { grid-template-columns:repeat(3,1fr); } }
+.mind { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:0 0 var(--r-el) var(--r-el); padding:12px 16px; }
+.mind .m-t { font-weight:700; font-size:15.5px; color:var(--fam-deep); }
+.mind .m-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; }
+
+/* Mac 避坑：别开 vs 该开 */
+.sw { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .sw { grid-template-columns:1fr 1fr; } }
+.sw-col { border-radius:var(--r-box); padding:14px 18px 12px; }
+.sw-col.off { background:var(--g2); border:1px solid var(--g4); }
+.sw-col.on { background:var(--fam-soft); border:1px solid var(--fam-line); }
+.sw-col .sw-h { font-weight:700; font-size:15.5px; margin-bottom:8px; }
+.sw-col.off .sw-h { color:var(--g7); }
+.sw-col.on .sw-h { color:var(--fam-deep); }
+.sw-col ul { padding-left:1.2em; margin:0; }
+.sw-col li { font-size:14.5px; color:var(--g8); margin-bottom:6px; }
+.sw-col.off li { color:var(--g7); }
+
+/* 六步 */
+.steps6 { counter-reset:s6x; list-style:none; padding-left:0; }
+.steps6 li {
+  counter-increment:s6x; position:relative; padding:7px 0 7px 40px;
+  border-bottom:1px solid var(--line); color:var(--g8); font-size:15.5px;
+}
+.steps6 li:last-child { border-bottom:none; }
+.steps6 li::before {
+  content:counter(s6x); position:absolute; left:0; top:8px;
+  width:26px; height:26px; line-height:26px; text-align:center; border-radius:var(--r-el);
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  font-weight:700; font-size:14.5px;
+}
+.steps6 li code { font-size:.9em; }
+
+/* 口诀条 */
+.chant {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:13px 18px; margin:16px 0;
+  font-size:15.5px; color:var(--g8);
+}
+.chant b { color:var(--fam-deep); }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">电商设计</span><span class="sep">›</span>
+    <span class="here">Blender入门五概念</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">电商设计 · 3D 出图的第一级台阶</p>
+    <h1>Blender入门五概念</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-09</span>
+      <span>下次复核 2026-12-09</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意轻松入门第一级台阶"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>五个概念一条递进线——能反悔、能看、能选、看得真、出图；先学会反悔才敢放手乱按。</blockquote>
+    <p><strong>为什么设计师看 Blender：</strong>家纺产品图的新可能——布料模拟（Cloth Simulation）+ 织物材质 + Cycles 渲染，床品/窗帘/抱枕的照片级渲染在家具/室内行业已是成熟工作流（Blendkit 有现成 render-ready 面料资产，Blender Market 有程序化织物材质生成器）。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>五级台阶（macOS 触控板版）</h2>
+    <div class="stairs">
+      <div class="stair"><div class="sn">0</div><div class="st-body"><div class="st-t">能反悔</div><div class="st-d">撤销 / 重做 / 回到存档，安全网先装好</div><span class="st-k">⌘Z · ⇧⌘Z · File→Revert</span></div></div>
+      <div class="stair"><div class="sn">1</div><div class="st-body"><div class="st-t">能看</div><div class="st-d">绕焦点旋转 / 平移 / 缩放</div><span class="st-k">双指转 · Shift+双指平移 · 捏合缩放</span></div></div>
+      <div class="stair"><div class="sn">2</div><div class="st-body"><div class="st-t">能选</div><div class="st-d">右上 Outliner 点名字选中，藏与恢复</div><span class="st-k">H 隐藏 · Alt+H 全恢复</span></div></div>
+      <div class="stair"><div class="sn">3</div><div class="st-body"><div class="st-t">看得真</div><div class="st-d">Solid 日常操作，Rendered 看效果</div><span class="st-k">视口头栏右侧小球图标</span></div></div>
+      <div class="stair"><div class="sn">4</div><div class="st-body"><div class="st-t">出图</div><div class="st-d">进相机视角再渲染，保存成品</div><span class="st-k">0 · Fn+F12 · Image→Save As</span></div></div>
+      <div class="stair escape"><div class="sn">+</div><div class="st-body"><div class="st-t">逃生</div><div class="st-d">误按 Tab 画面变成密密麻麻点线，再按一次回来</div><span class="st-k">Tab · Esc</span></div></div>
+    </div>
+    <p class="stairs-note">台阶逐级抬升：先能反悔，才谈出图</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>三条心智模型（比键位更值钱）</h2>
+    <div class="minds">
+      <div class="mind"><div class="m-t">快捷键发给鼠标下方</div><div class="m-d">Blender 不认「当前窗口」，只看鼠标指针停在哪个区域。停错区按键没反应，不是坏了</div></div>
+      <div class="mind"><div class="m-t">动的是眼睛不是场景</div><div class="m-d">视口绕「焦点」旋转。焦点跑偏（如 5 公里外的海面）就越转越别扭；解药是 ` 键（Esc 下方）→ View Selected 把焦点钉在选中物上</div></div>
+      <div class="mind"><div class="m-t">你的视角不等于出图</div><div class="m-d">渲染永远用场景里那台 Camera（摄影师的三脚架）。按 0 看到的矩形框内才是出图范围；别勾 Lock Camera to View（会把调好的机位弄乱）</div></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>Mac 触控板专属避坑：两个别开，两个该开</h2>
+    <div class="sw">
+      <div class="sw-col off">
+        <div class="sw-h">别开（网上教程让你开的）</div>
+        <ul>
+          <li><strong>Emulate Numpad</strong>——顶掉 Edit Mode 里 1/2/3 的点/边/面选择；主键盘 <code>.</code> 从 2.8 起就是 Pivot Point 菜单，开不开都一样（流传很广的误解）</li>
+          <li><strong>Emulate 3 Button Mouse</strong>——触控板双指拖本来就是旋转，开了反而劫持 Option+左键</li>
+        </ul>
+      </div>
+      <div class="sw-col on">
+        <div class="sw-h">该开（⌘, → Navigation）</div>
+        <ul>
+          <li><strong>Zoom to Mouse Position</strong>——朝鼠标方向缩放，大场景不卡死</li>
+          <li><strong>Auto Depth</strong>——旋转时焦点自动对准鼠标下方</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>常见「吓一跳」对照</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>症状</th><th>真相</th><th>解法</th></tr></thead>
+      <tbody>
+        <tr><td>画面变成密密麻麻点线</td><td>误按 Tab 进了 Edit Mode</td><td>再按 Tab</td></tr>
+        <tr><td>桥跟着鼠标跑</td><td>误按 G（移动）</td><td>Esc 取消 / ⌘Z</td></tr>
+        <tr><td>物体莫名消失</td><td>远裁剪距离不够</td><td>N 面板 → View → Clip End 调大</td></tr>
+        <tr><td>第一次切 Rendered 卡住</td><td>在编译 Metal 着色器</td><td>等 1-2 分钟，不是死机</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>第一个 5 分钟（六步）</h2>
+    <ol class="steps6">
+      <li>鼠标移到中间 3D 视图</li>
+      <li>Outliner 点 <code>Bridge_Steel</code> → <code>`</code> → View Selected</li>
+      <li>双指拖动绕桥转一圈，捏合推近看细节</li>
+      <li>点掉 Water/Hill 的眼睛观察结构 → Alt+H 恢复</li>
+      <li>按 <code>0</code> 进相机视角，切 Rendered 等渲染</li>
+      <li>Render → Render Image 出图 → Image → Save As</li>
+    </ol>
+    <div class="chant"><b>工作流口诀：</b>灰模转好角度 → 切 Rendered 看效果 → 看完切回 Solid（Rendered 挂久风扇狂转）。</div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>家纺应用：能做，路线成熟</h2>
+    <ul>
+      <li><strong>褶皱</strong>：内置 Cloth Simulation 物理计算垂坠/褶皱，床单/窗帘/抱枕是常规操作（Arch-Viz 行业标配工作流）</li>
+      <li><strong>织物质感</strong>：程序化织物材质（织法可调）或现成材质库（HR-Fabric 465 Pro 等，「超写实复刻真实面料」）</li>
+      <li><strong>渲染</strong>：Cycles 照片级 + Apple Silicon 的 Metal GPU 加速默认开启</li>
+      <li><strong>天花板不在软件在功夫</strong>：照片级要过三关——模拟参数、材质调试、灯光；「和实物一样」需要实物照片对照调</li>
+      <li><strong>现实定位</strong>：主图仍以实拍为主（信任度）；3D 强在场景图、颜色/印花变体批产——一个模型换 20 个色比拍 20 次快</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥直用</h2>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">上手顺序</h3>
+      <p>先把 0（反悔）和 1（能看）练熟，再走六步流程；渲染图作为场景图/变体批产弹药，主图仍走实拍。出图后的选图判断回 <a href="../08-ecomm/生图提示词排查表.html">生图提示词排查表</a> 的成功标准维度。</p>
+    </div>
+    <div class="card hl">
+      <h3 style="margin-top:0;">配套</h3>
+      <p>渲染成品进详情页/海报时，构图按 <a href="../08-ecomm/海报构图16式.html">海报构图16式</a> 选骨架——3D 相机视角就是构图的取景框。</p>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../08-ecomm/生图提示词排查表.html"><span class="rel-t">生图提示词排查表</span><span class="rel-d">3D 渲染图与 AI 生图共用交付质检逻辑</span></a>
+      <a href="../08-ecomm/海报构图16式.html"><span class="rel-t">海报构图16式</span><span class="rel-d">相机视角怎么摆，构图词先想好</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>WquGuru《图解 Blender for macOS》(@wquguru, X 2026-09-08, WaytoAGI 飞书转载)</li>
+      <li>Blender Market / Designs for Textiles 织物材质库（布料模拟能力佐证，2026-09-09 检索）</li>
+      <li>快捷键事实（⌘Z/Tab/0/F12/H/Alt+H/Pivot Point 菜单）经交叉验证准确</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 电商设计家族 · Blender入门五概念</p>
+    <p>词条源：concepts(概念库)/电商设计/Blender入门五概念.md（2026-09-09 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话·为什么</a></li>
+    <li><a href="#s2">五级台阶 ·核心</a></li>
+    <li><a href="#s3">三条心智模型</a></li>
+    <li><a href="#s4">Mac 避坑</a></li>
+    <li><a href="#s5">吓一跳对照</a></li>
+    <li><a href="#s6">第一个5分钟</a></li>
+    <li><a href="#s7">家纺应用</a></li>
+    <li><a href="#s8">桑老哥直用</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

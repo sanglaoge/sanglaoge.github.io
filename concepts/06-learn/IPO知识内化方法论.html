@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPO知识内化方法论 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：学习方法 · 纸感绿（自然·生长·纸面笔记感） ---- */
+:root {
+  --fam:#4d7c0f; --fam-deep:#3f6212; --fam-soft:#f7fee7; --fam-line:#d9f99d;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 三级台阶：逐级抬升，O 是顶点 */
+.stair { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:start; margin:20px 0 8px; }
+.step {
+  background:var(--g0); border:1px solid var(--line); border-top:4px solid var(--fam);
+  border-radius:var(--r-box); padding:16px 16px 14px; box-shadow:var(--sh-1);
+}
+.step .st-l {
+  font-family:var(--font-head); font-size:34px; font-weight:700; color:var(--fam);
+  line-height:1; font-variant-numeric:tabular-nums;
+}
+.step .st-n { font-weight:700; font-size:16.5px; color:var(--ink); margin:6px 0 2px; }
+.step .st-w { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.step .st-who {
+  display:inline-block; font-size:14.5px; font-weight:600; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:0 10px; margin-bottom:10px;
+}
+.step p { font-size:15px; margin-bottom:8px; }
+.step.st1 { margin-top:88px; }
+.step.st2 { margin-top:44px; }
+.step.st3 { margin-top:0; background:var(--fam-soft); border-color:var(--fam-line); }
+.step.st3 .st-l { color:var(--fam-deep); }
+.stair-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:16px; }
+@media (max-width:767px) {
+  .stair { grid-template-columns:1fr; }
+  .step.st1, .step.st2 { margin-top:0; }
+  .step { border-left:4px solid var(--fam); border-top:1px solid var(--line); }
+}
+
+/* 最小闭环链 */
+.mini {
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  border:1.5px dashed var(--fam-line); background:var(--g0);
+  border-radius:var(--r-box); padding:13px 16px; margin:16px 0; font-size:15px;
+}
+.mini .nd { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:2px 10px; color:var(--fam-deep); font-weight:600; }
+.mini .ar { color:var(--fam); font-weight:700; }
+
+/* 舵手系统四件套 */
+.helm { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:14.5px; color:var(--g7); margin:12px 0 4px; }
+.helm .nd { background:var(--g2); border:1px solid var(--line); border-radius:var(--r-el); padding:2px 10px; }
+.helm .ar { color:var(--fam); font-weight:700; }
+
+/* 拷问警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 提示条 */
+.tip {
+  border-left:4px solid var(--fam); background:var(--fam-soft);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.tip b { color:var(--fam-deep); }
+
+/* 小对照（先学再做 vs 先做再学） */
+.duo { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:640px) { .duo { grid-template-columns:1fr 1fr; } }
+.duo .card h3 { margin:0 0 6px; font-size:16px; }
+.duo .card.school { background:var(--g2); }
+.duo .card.koe { background:var(--fam-soft); border-color:var(--fam-line); }
+.duo .card.koe h3 { color:var(--fam-deep); }
+.duo .card p { font-size:15px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">学习方法</span><span class="sep">›</span>
+    <span class="here">IPO知识内化方法论</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">学习方法 · 输入到输出的完整闭环</p>
+    <h1>IPO知识内化方法论</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意先跑通最小闭环轻松起步，别一上来搞全套工具链"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <blockquote>知识内化不是「读完就完」，而是 Input（收集）→ Process（消化）→ Output（表达）的完整闭环。<strong>用 AI 做研究，用人做表达。</strong>
+      <span class="q-src">—— 观自《00后电商专业AI方法论》/ Dan Koe《如何记住你读过的所有内容》（2026-07 强化输出导向+创作闭环）</span>
+    </blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三阶段台阶 ·核心</h2>
+    <p>三个阶段像上台阶：输入垫底、处理过渡、<strong>输出是顶点</strong>——没有 O，前两级白爬。</p>
+    <div class="stair" aria-label="IPO 三级台阶：输入、处理、输出逐级抬升">
+      <div class="step st1">
+        <div class="st-l">I</div>
+        <div class="st-n">输入</div>
+        <div class="st-w">Input · 收集</div>
+        <span class="st-who">多平台收集信息</span>
+        <p>把所有来源转成 Markdown 格式——PDF、网页、视频字幕都转。</p>
+      </div>
+      <div class="step st2">
+        <div class="st-l">P</div>
+        <div class="st-n">处理</div>
+        <div class="st-w">Process · 消化</div>
+        <span class="st-who">AI 辅助深度消化</span>
+        <p>喂进 NotebookLM，用 AI 按框架批量提问：背景/现状/案例/趋势/应用。</p>
+      </div>
+      <div class="step st3">
+        <div class="st-l">O</div>
+        <div class="st-n">输出</div>
+        <div class="st-w">Output · 表达（顶点）</div>
+        <span class="st-who">创作自己的内容</span>
+        <p>基于问答结果，<strong>用自己的话</strong>写文章/笔记/选品报告。没有 O，I/P 都是收藏夹。</p>
+      </div>
+    </div>
+    <p class="stair-cap">台阶只能一级级上：跳过 P 直接堆 I 是囤积，停在 P 不上 O 是「看懂了」的错觉。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>核心原则</h2>
+    <ul>
+      <li><strong>用 AI 做研究，用人做表达</strong>：AI 负责筛选、提炼、整理，人负责决策和创作</li>
+      <li><strong>先跑通最小闭环，再升级工具链</strong>：别一开始就想搞全套，先用网页版 NotebookLM 走一遍</li>
+      <li><strong>提问比工具更重要</strong>：学会「问对问题」比学会用工具更有价值</li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>桑老哥的最小闭环</h2>
+    <div class="mini">
+      <span class="nd">给 AI 一个链接</span><span class="ar">→</span>
+      <span class="nd">AI 筛选相关内容</span><span class="ar">→</span>
+      <span class="nd">提炼成能看懂的笔记</span><span class="ar">→</span>
+      <span class="nd">存进 Obsidian</span>
+    </div>
+    <p>四步就是一个完整 IPO：I（链接进来）、P（AI 筛选提炼）、O（自己看懂的笔记）+ 落库。工具链先不管，闭环先转起来。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>Dan Koe 的强化：目标驱动 + 创作闭环</h2>
+    <p>和 IPO 同源，但强化了「输出导向」——<strong>没有 O（输出），I/P 都是收藏夹</strong>。</p>
+
+    <h3>学习是舵手系统（目标驱动纠偏）</h3>
+    <p>控制论四件套，少了任何一件船就打转：</p>
+    <div class="helm">
+      <span class="nd">目标</span><span class="ar">→</span>
+      <span class="nd">感知现状</span><span class="ar">→</span>
+      <span class="nd">比较差距</span><span class="ar">→</span>
+      <span class="nd">行动调整</span><span class="ar">→</span>
+      <span class="nd">回到目标</span>
+    </div>
+    <p>没有目标就没有「偏离」，学习失去方向——这解释了「学了一堆用不上」。</p>
+
+    <h3>先开工别先备课（反直觉）</h3>
+    <div class="duo">
+      <div class="card school">
+        <h3>学校路径：先学再做</h3>
+        <p>先刷完教程，再找机会用。学着学着忘了为什么学，噪声全进脑子。</p>
+      </div>
+      <div class="card koe">
+        <h3>Dan Koe：先做再学</h3>
+        <p>学 AE 别先刷教程，先定作品，缺啥学啥；学吉他先挑一首想弹的歌，卡住才学乐理。<strong>项目会自动过滤噪声</strong>：不能推动项目的内容，学了也留不住。</p>
+      </div>
+    </div>
+
+    <h3>第二大脑别变成豪华收藏夹（灵魂拷问）</h3>
+    <ul>
+      <li>大多数笔记系统 = 收藏了不看 = 自我感动</li>
+      <li>大师（奥勒留/达芬奇/蒙田）和笔记爱好者的区别：<strong>收集是为了变成作品</strong></li>
+      <li>关键是「找回」不是「整理」</li>
+    </ul>
+    <div class="warn"><b>对桑老哥的拷问：</b>概念库 59 个词条（建条时点数），是真在用（创作时调用），还是收藏了安心？Obsidian+铁柱+Skills 已具备「找回」能力，但缺「创作调用」——词条没变成 IP 内容/作品，就是豪华收藏夹。</div>
+
+    <h3>创作完成闭环</h3>
+    <p>没有项目，知识库只是仓库。完整闭环：收集 → 找回 → 创作输出 → 现实反馈淘汰。<strong>AI 降摩擦但不替你发言</strong>：事实信息可用 AI，价值观判断必须自己推敲。</p>
+    <div class="tip"><b>给桑老哥的闭环：</b>共学应该导向输出。今天学的 4 个 AI 概念 = 4 篇 IP 内容素材（三件套/上下文工程/图谱/GEO）。</div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../06-learn/DBS框架.html"><span class="rel-t">DBS框架</span><span class="rel-d">P 阶段的知识组织方法</span></a>
+      <a href="../06-learn/知识图谱与主动迭代.html"><span class="rel-t">知识图谱与主动迭代</span><span class="rel-d">O 阶段的 Obsidian 管理</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">工具链中的 AI 技能</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">控制 AI 处理成本的工程</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Dan Koe 知识内化思想；Dan Koe《如何记住你读过的所有内容》（2026-07，强化输出导向+创作闭环）</li>
+      <li>观自《00后电商专业AI方法论》</li>
+      <li>桑老哥共学提炼（2026-08-03 建条）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 学习方法家族 · IPO知识内化方法论</p>
+    <p>词条源：concepts(概念库)/学习方法/IPO知识内化方法论.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">三阶段台阶 ·核心</a></li>
+    <li><a href="#s3">核心原则</a></li>
+    <li><a href="#s4">最小闭环</a></li>
+    <li><a href="#s5">Dan Koe 强化</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

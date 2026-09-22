@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System One判断模型 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（冷静·可靠·结构性） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+
+/* ---- 页面专属：判断路线布局（衬线金句 + SVG 路线图 + 打分卡） ---- */
+.heroq {
+  font-family:var(--font-head); font-size:clamp(20px,3.4vw,28px);
+  line-height:1.65; color:var(--ink); font-weight:700;
+}
+.heroq em { font-style:normal; color:var(--fam-deep); }
+
+/* 三种题型打分卡 */
+.qtype { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .qtype { grid-template-columns:1fr 1fr 1fr; } }
+.qt {
+  background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam);
+  border-radius:var(--r-box); padding:14px 16px; box-shadow:var(--sh-1);
+}
+.qt .qt-en { font-size:14.5px; color:var(--ink-faint); font-weight:700; letter-spacing:.08em; }
+.qt h3 { margin:2px 0 6px; font-size:17px; color:var(--fam-deep); }
+.qt .qt-ret {
+  display:inline-block; margin-top:8px; padding:1px 9px; border-radius:999px;
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  color:var(--fam-deep); font-size:14.5px; font-weight:600;
+}
+
+/* 数字速览 */
+.statrow { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+@media (min-width:760px) { .statrow { grid-template-columns:repeat(4,1fr); } }
+.stat {
+  background:var(--g0); border:1px solid var(--fam-line); border-radius:var(--r-el);
+  padding:10px 12px;
+}
+.stat .sv { font-size:21px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; line-height:1.35; }
+.stat .sl { font-size:14.5px; color:var(--ink-soft); line-height:1.5; }
+
+/* 门控路线图 + 侧卡 */
+.gate-wrap { display:grid; grid-template-columns:1fr; gap:16px; margin:16px 0; align-items:center; }
+@media (min-width:900px) { .gate-wrap { grid-template-columns:1.7fr 1fr; } }
+.gate-wrap svg { width:100%; height:auto; }
+.lane { display:grid; gap:10px; }
+.lane .ln {
+  background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:var(--r-el); padding:10px 14px; font-size:15px;
+}
+.lane .ln b { color:var(--fam-deep); }
+
+/* 用法三招 */
+.moves { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .moves { grid-template-columns:1fr 1fr 1fr; } }
+.move { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 16px; box-shadow:var(--sh-1); }
+.move .mv-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#ffffff; font-weight:700; font-size:14.5px; margin-right:8px;
+}
+.move h3 { display:inline; font-size:16.5px; color:var(--ink); }
+.move p { font-size:15px; margin:8px 0 0; }
+
+/* 四次失败案例 */
+.fail4 { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:700px) { .fail4 { grid-template-columns:1fr 1fr; } }
+.fail4 .f { background:var(--g0); border:1px dashed var(--line); border-radius:var(--r-el); padding:10px 14px; font-size:15px; }
+.fail4 .f b { color:var(--ink); }
+
+/* 警示条（琥珀，与样张一致） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 玩法案例 chips */
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.chip {
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  border-radius:999px; padding:4px 13px; font-size:14.5px; line-height:1.6;
+}
+
+/* SVG 用色一律 class→var */
+.c-fam{fill:var(--fam);} .c-deep{fill:var(--fam-deep);} .c-soft{fill:var(--fam-soft);}
+.c-ink{fill:var(--g8);} .c-faint{fill:var(--g6);} .c-w{fill:#ffffff;} .c-line{fill:var(--fam-line);}
+.s-fam{stroke:var(--fam);} .s-line{stroke:var(--fam-line);} .s-deep{stroke:var(--fam-deep);} .s-dash{stroke:var(--g4);} .s-ink{stroke:var(--g6);}
+.nof{fill:none;}
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">System One判断模型</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 判断题专用零件</p>
+    <h1>System One判断模型</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-19</span>
+      <span>下次复核 2026-12-19</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子宣告判断结果，示意判断模型只交判断不写作文"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p class="heroq">只做判断题，不写作文——ChatGPT 给人写答案，<em>Jev 给程序做判断</em>。</p>
+    <p>平时让大模型干的事，一大半根本不需要它写作文：判断一条内容要不要进日报、判断客户要退款还是问物流、判断 Agent 下一步调哪个工具——全是判断题。System One 模型把「判断」这一个环节单独做成了模型类目。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：一道判断题的浪费</h2>
+    <p>以前为了「这条留言在骂客服吗」这道判断题，得动用几十上百亿参数的大模型：等它慢吞吞吐两秒钟字、花几分钱、再写一堆防御逻辑从它吐出的废话里抠结果。</p>
+    <p><strong>TypeSafe</strong>（旧金山创业公司，2026-09-15 出隐身，4000 万美元种子轮，创始人 Diogo Almeida 是 InstructGPT 论文作者之一）把这一环节做成了独立模型类目：</p>
+    <ul>
+      <li><strong>类目名 System One</strong>：取自卡尼曼《思考，快与慢》的快思考（System 1）</li>
+      <li><strong>首模型 Jev</strong>：取自提出杰文斯悖论的经济学家——判断成本降到一分钱以下，判断的用量会不降反升</li>
+    </ul>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>三种题型（打分卡）</h2>
+    <div class="qtype">
+      <div class="qt">
+        <span class="qt-en">Noul</span>
+        <h3>判断题</h3>
+        <p>是/否。如「这条留言在骂客服吗？」</p>
+        <span class="qt-ret">返回：布尔概率（如 0.94）</span>
+      </div>
+      <div class="qt">
+        <span class="qt-en">Choice</span>
+        <h3>选择题</h3>
+        <p>选项定死的单选。如「工单归哪类？」上限 255 项</p>
+        <span class="qt-ret">返回：所选项＋完整分布＋置信度</span>
+      </div>
+      <div class="qt">
+        <span class="qt-en">Score</span>
+        <h3>打分题</h3>
+        <p>在你描述的等级尺上定位。如「怒气值 1-5」</p>
+        <span class="qt-ret">返回：分数＋分布＋置信度</span>
+      </div>
+    </div>
+    <p><strong>杀手锏：读一遍材料并行答题</strong>——同一状态可挂十几道题，几百毫秒一起交卷，加题几乎不加延迟只加便宜 token。</p>
+    <div class="statrow">
+      <div class="stat"><div class="sv num">70-500ms</div><div class="sl">延迟（大模型同类判断 3-329 秒）</div></div>
+      <div class="stat"><div class="sv num">4.2 美分</div><div class="sl">百万输入 token；输出免费（几乎没有输出）</div></div>
+      <div class="stat"><div class="sv num">12 倍便宜</div><div class="sl">官方案例 13 题并答 vs 13 次顺序调用（还快 10 倍）</div></div>
+      <div class="stat"><div class="sv num">约 32K</div><div class="sl">上下文上限（实测补充）</div></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>为什么快、为什么敢信</h2>
+    <div class="gate-wrap">
+      <svg viewBox="0 0 680 268" role="img" aria-label="置信度三档门控路线图：材料交给打分模型，按置信度分流为自动放行、转人工确认、不动作三条路">
+        <defs>
+          <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="c-fam"/>
+          </marker>
+        </defs>
+        <rect x="8" y="104" width="120" height="58" rx="10" class="c-soft" stroke-width="1.6"/>
+        <rect x="8" y="104" width="120" height="58" rx="10" class="nof s-fam" stroke-width="1.6"/>
+        <text x="68" y="128" text-anchor="middle" font-size="15" font-weight="700" class="c-deep">读一遍材料</text>
+        <text x="68" y="150" text-anchor="middle" font-size="13" class="c-faint">状态只发一次</text>
+
+        <line x1="128" y1="133" x2="196" y2="133" class="nof s-fam" stroke-width="2" marker-end="url(#ar1)"/>
+
+        <rect x="198" y="96" width="150" height="74" rx="10" class="c-fam"/>
+        <text x="273" y="124" text-anchor="middle" font-size="16" font-weight="700" class="c-w">打分不生成</text>
+        <text x="273" y="148" text-anchor="middle" font-size="13" class="c-w">一次读出概率分布</text>
+
+        <line x1="348" y1="120" x2="414" y2="52" class="nof s-fam" stroke-width="2" marker-end="url(#ar1)"/>
+        <line x1="348" y1="133" x2="414" y2="133" class="nof s-fam" stroke-width="2" marker-end="url(#ar1)"/>
+        <line x1="348" y1="146" x2="414" y2="214" class="nof s-fam" stroke-width="2" marker-end="url(#ar1)"/>
+
+        <rect x="416" y="20" width="248" height="58" rx="10" class="c-fam"/>
+        <text x="540" y="44" text-anchor="middle" font-size="15.5" font-weight="700" class="c-w">高置信 → 自动放行</text>
+        <text x="540" y="66" text-anchor="middle" font-size="13" class="c-w">实测 ≥90% 档 255 判断全对</text>
+
+        <rect x="416" y="104" width="248" height="58" rx="10" class="c-line"/>
+        <text x="540" y="128" text-anchor="middle" font-size="15.5" font-weight="700" class="c-deep">中置信 → 转人工确认</text>
+        <text x="540" y="150" text-anchor="middle" font-size="13" class="c-ink">80% 放行线放掉 89% 请求只错 1 个</text>
+
+        <rect x="416" y="188" width="248" height="58" rx="10" class="nof" stroke-width="1.6"/>
+        <rect x="416" y="188" width="248" height="58" rx="10" class="nof s-ink" stroke-width="1.6"/>
+        <text x="540" y="212" text-anchor="middle" font-size="15.5" font-weight="700" class="c-ink">低置信 → 不动作</text>
+        <text x="540" y="234" text-anchor="middle" font-size="13" class="c-faint">影子测试：模糊 rm -rf 得 0.33 转问人</text>
+
+        <text x="340" y="262" text-anchor="middle" font-size="13" class="c-faint">阈值写在代码里，归人定、可修改——红黄绿灯的模型版</text>
+      </svg>
+      <div class="lane">
+        <div class="ln"><b>快</b>：不逐字生成（无自回归），输出层直接算概率分布——结构上吐不出格式外的值（「0% 类型错误率」是结构保证不是统计保证）</div>
+        <div class="ln"><b>敢信</b>：RLCD（强化学习校准决策）训练出校准的概率——说 80% 把握，一百次里真对八十次左右，模型自带仪表盘</div>
+        <div class="ln"><b>门控</b>：高自动放行 / 中转人工 / 低不动作——任何 AI 流程都能抄这个思路</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>用法三招</h2>
+    <div class="moves">
+      <div class="move"><span class="mv-no">1</span><h3>投机扇出</h3><p>状态只发一次，问题全并行问（连「可能用不上」的也一起问）。别一次次顺序调用。</p></div>
+      <div class="move"><span class="mv-no">2</span><h3>组合评分</h3><p>别问「优先级多高」这种大问题，拆成几个 Score 在代码里加权（如严重度 0.6 / 愤怒度 0.3 / 报告质量 0.1）。排名不合意改系数即可，不用重写提示词。</p></div>
+      <div class="move"><span class="mv-no">3</span><h3>意图路由</h3><p>查订单走数据库不碰 LLM，产品咨询才叫大模型，投诉按「需要多少思考」分流转人工——贵的资源只为需要的请求开机。</p></div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>短板红线（官方自曝 jaggedness 页）</h2>
+    <ul>
+      <li><strong>数数、精确算数、日期先后全不行</strong>——留给代码（数「列表里几个是水果」＝每项一个 Noul 再求和）</li>
+      <li>中文比英文弱，上线前先小样本测试</li>
+      <li><strong>提示词注入仍有效</strong>——退款/资金/删库类高危动作，硬代码权限拦截该留还得留（＝「分析可全自动，花钱不行」金律）</li>
+      <li>状态塞无关内容准确率就掉——判断模型也要做上下文卫生</li>
+      <li>写题诀窍：<strong>描述情境，不描述程度</strong>（「功能损坏但有变通方案」有用，「中等严重」没用）</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>生态位：军师＋传令兵</h2>
+    <p>大模型坐军师（拆解复杂任务/生成核心代码创意），判断模型当前线传令兵（工具分拣/条件路由/合规拦截）——一次用户操作背后可以是几十次隐形小判断，完全不显示 AI 界面。</p>
+    <p>LangChain 的 AutoMode 中间件已把「工具执行前先分级」做成现成零件（只读/可逆/不可逆，低置信度转问人）＝权限金律产品化；早期影子测试里一条模糊 <code>rm -rf</code> 拿到 0.33 低置信度，代码自动转问人而非瞎执行。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>实测下半场：剔掉虚火之后的真实账</h2>
+    <p>发布不到一周，huangserva 亲自跑了四败两成，比概念更值钱的是这层数据（2026-09-20 并入）。</p>
+    <p><strong>「便宜 40-400 倍」的边界（最重要修正）</strong>：只对前沿大模型成立。300 判断对照实验里，Jev 94.7% 对 Qwen Flash 93.0%，各花 0.003 美元——对便宜大模型<strong>无成本优势</strong>。它真正多出来的只有两样：时间稳定（国内实测约 0.7 秒、最慢 1.5 秒，Qwen Flash 中位数相当但最慢 32 秒——赢在「无长尾」不是快）＋可分流的校准把握度。</p>
+    <div class="fail4">
+      <div class="f"><b>失败一：Claude Code 压缩插件</b>——为塞 32K 先砍内容，Jev 只见工具名不见内容＝无脑删</div>
+      <div class="f"><b>失败二：Codex 模型路由</b>——反而多花 59-184%、每步多等 1-2 秒（代理把请求变重 2.5 倍还丢缓存）</div>
+      <div class="f"><b>失败三：自稿挑 AI 味</b>——62 句误报 22 句</div>
+      <div class="f"><b>失败四：40 个大视频删除判断</b>——判 0 个，纯规则能判 7 个</div>
+    </div>
+    <p>根因都不在模型：<strong>看不到内容 / 订阅制杀死经济学（Codex/CC 判断已含在月费里边际成本为零）/ 只会判断不会干活</strong>。217 个生态项目审计：今天真能用的 15 个里 14 个是 LangChain/pydantic-ai 等框架接口层，唯一应用是 browser-use 的 jev-ultrafast（机票搜索 9.5 秒→7.1 秒）。</p>
+    <p><strong>三步落地法（huangserva 版）</strong>：列出业务里「LLM 只返回一个选项」的调用（没有就别追）→ 挑一个用真实历史数据盲测，重点盯 70%-90% 档的真实正确率 → 在大模型前加 Jev 闸门，90% 阈值起步看数据下调。</p>
+    <div class="warn"><b>结论一句话：</b>想拿它给自己提效，走不通；把它当零件做进产品，才有可能。</div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>打分机制拆解：快 200 倍的原理</h2>
+    <ul>
+      <li><strong>改考卷不写作文</strong>：普通调用是自回归逐 token「写」答案；Jev 是预填充后一次读出所有候选的 logits，打分归一化直接交卷。警惕冒牌货——「让模型吐 JSON」（结构化输出）看着像选择题，其实仍逐字生成，一点没省。<strong>判断一个产品是否真用上决策模型：看它是生成答案，还是打分选择</strong></li>
+      <li><strong>分数强弱本身是信号</strong>：两张工单都判给计费，91% 遥遥领先 vs 46% 几乎打平——margin（差距）大小决定自动处理还是转人工，阈值写在代码里归人定改（＝置信度门控的机制底座）</li>
+      <li><strong>confidence ≠ 正确率</strong>：confidence 由分布集中度算出，分布集中也可能全错，不能当本次回答的正确率用；0.91 只是押注比例，拿带标签的真实结果回头对账才是校准</li>
+      <li><strong>本地可复现</strong>：Jev 闭源，但打分推理路径开源就能复现（SGLang /v1/score 接口＋Qwen/DeepSeek 实测）——护城河不在打分技术，在 RLCD 校准训练</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>部署方法论：7 步安全上线</h2>
+    <ol>
+      <li>选边界清晰的低风险决策</li>
+      <li>先定 rubric（评分标准）</li>
+      <li>采集含模糊/对抗样本</li>
+      <li>影子模式并行（先旁路观察，不接管）</li>
+      <li>画准确度-置信度曲线，按数据定阈值</li>
+      <li>先自动化最安全分支</li>
+      <li>固定模型版本/问题/标准/阈值，可重放</li>
+    </ol>
+    <p>Agent 里第三种放法是「验证与监督」（测试过没？是否重复空转？输出合规吗？）。</p>
+    <div class="warn"><b>幻觉要精确说：</b>schema 错误 0% ≠ 决策正确 100%——它不会答选项外的答案，但会自信地选错合法选项（TypeSafe CEO 自己承认），合规错误仍会退错款。</div>
+    <p><strong>玩法案例库（逛逛GitHub 汇编）</strong>：</p>
+    <div class="chips">
+      <span class="chip">40 秒拆 37 品牌 724 条广告只要 9 美分</span>
+      <span class="chip">浏览器查航班 7 秒 0.39 美分</span>
+      <span class="chip">MuJoCo 火箭回收 245 次调用 4 美分</span>
+      <span class="chip">游戏实时控制 0.7 秒/步</span>
+      <span class="chip">写作实时测传播潜力</span>
+      <span class="chip">用 Jev 给别的 Agent 压上下文（接 <a href="../01-ai/上下文工程.html">上下文工程</a>）</span>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p><del>视频工厂流水线里所有「要不要/是哪类/打几分」环节，现在有几分钱级的零件可换</del>——2026-09-20 实测纠偏：咱用 Codex/Claude Code 是订阅制，判断已含在月费里边际成本为零，外加 Jev 反而多花钱，「零件」只在按 token 计费、调用量大的自建产品里成立。</p>
+    <ul>
+      <li>仍然成立的方向：把它当零件做进<strong>自己的产品</strong>（如视频工厂对外服务、选品工具），走 OpenRouter 免排队直调 <code>typesafe/jev</code>；自用提效路线已被四次实测证伪</li>
+      <li>值得借鉴的是<strong>思路不是模型</strong>：置信度三档门控（高自动/中转人/低不动）在任何 AI 流程里都能用便宜大模型自己实现</li>
+      <li>「列出业务里 LLM 只返回一个选项的调用」这个清单动作，今天就能做</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>发布仅 4 天（2026-09-15），社区案例全是早期 demo，<strong>演示 ≠ 生产力</strong>（217 项目审计里今天真能用的仅 15 个）</li>
+      <li>快 200 倍便宜 400 倍是厂商工作流自评上限且<strong>只对前沿模型成立</strong>；实际按「每解决一个任务的成本」算综合账</li>
+      <li>「永不幻觉」要精确理解：不会答选项外的答案 ≠ 不会选错</li>
+      <li>完全闭源只有云 API；仅文本不支持图像音视频；上下文仅约 32K</li>
+      <li>数数算数日期归代码，无法提取未知值（先找候选再选），多步隐藏推理吃力</li>
+      <li>需要文本生成时仍需大模型——两者是组合不是替代</li>
+    </ul>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">安全跑道：判断模型在跑道上做分拣</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">循环里的隐形小判断零件</span></a>
+      <a href="../03-agent/Agent工程规范.html"><span class="rel-t">Agent工程规范</span><span class="rel-d">Agent 侧的工程护栏，与判断门控互补</span></a>
+      <a href="../01-ai/Evals评测体系.html"><span class="rel-t">Evals评测体系</span><span class="rel-d">打分卡背后的评测思想</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">判断模型也要做上下文卫生；还能反向压上下文</span></a>
+      <a href="../01-ai/Tokenmaxxing.html"><span class="rel-t">Tokenmaxxing</span><span class="rel-d">反面教材：省 token 的账怎么算</span></a>
+    </div>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>TypeSafe 官方博客《Introducing System One Models &amp; Jev》（2026-09-15，<a class="ext" href="https://typesafe.ai" target="_blank" rel="noopener noreferrer">typesafe.ai</a>，存在性/创始人已核）</li>
+      <li>泊舟《火爆全网的Jev到底是什么？》（X @bozhou_ai 2026-09-18，WaytoAGI 转载）</li>
+      <li>Flavio Copes《A deep dive into Jev》（<a class="ext" href="https://flaviocopes.com/jev" target="_blank" rel="noopener noreferrer">flaviocopes.com/jev</a> 2026-09-18，WaytoAGI 转载）</li>
+      <li>Sydney Runkle（LangChain）《Building a Harness with Jev》（X 2026-09-18，WaytoAGI 转载）</li>
+      <li>Akshay《详解 Jev 模型》（X @akshay_pachaar 2026-09-19，WaytoAGI 转载，2026-09-20 并入）</li>
+      <li>huangserva《拿到Jev，然后呢？剔掉虚火之后的一份真实落地清单》（X @servasyy_ai 2026-09-19，WaytoAGI 转载，2026-09-20 并入，实测级）</li>
+      <li>逛逛GitHub《外网3500万人围观的Jev模型，有这10个神奇玩法》（2026-09-19，WaytoAGI 转载，2026-09-20 并入，案例汇编）</li>
+      <li>CY《一口气搞懂 Jev：它是什么、有什么用、怎么用？》（2026-09-20，WaytoAGI 转载，2026-09-21 并入）</li>
+      <li>Avi Chawla《Build your own Jev (100% local)》（X 2026-09-20，WaytoAGI 转载，2026-09-21 并入，技术复现）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · System One判断模型</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/System One判断模型.md（2026-09-19 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">三种题型 ·核心</a></li>
+    <li><a href="#s4">为什么快、为什么敢信</a></li>
+    <li><a href="#s5">用法三招</a></li>
+    <li><a href="#s6">短板红线</a></li>
+    <li><a href="#s7">生态位</a></li>
+    <li><a href="#s8">实测下半场</a></li>
+    <li><a href="#s9">打分机制拆解</a></li>
+    <li><a href="#s10">部署方法论</a></li>
+    <li><a href="#s11">桑老哥适用</a></li>
+    <li><a href="#s12">前提与局限</a></li>
+    <li><a href="#s13">关联词条</a></li>
+    <li><a href="#s14">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI对跨境电商设计师的价值边界 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：电商设计 · 明快橙（对比布局·人机分工） ---- */
+:root {
+  --fam:#c2410c; --fam-deep:#7c2d12; --fam-soft:#fff7ed; --fam-line:#fed7aa;
+}
+/* ---- 页面专属：对比布局 ---- */
+
+/* 核心对照双栏：AI 的量 vs 人的质 */
+.vs { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:768px) { .vs { grid-template-columns:1fr 1fr; } }
+.vs-col { border-radius:var(--r-box); padding:16px 20px 14px; border:1px solid var(--line); background:var(--g0); }
+.vs-col .vs-tag {
+  display:inline-block; font-size:13px; font-weight:700; border-radius:999px;
+  padding:1px 12px; margin-bottom:10px;
+}
+.vs-col.ai { background:var(--fam-soft); border-color:var(--fam-line); }
+.vs-col.ai .vs-tag { color:var(--fam-deep); background:var(--g0); border:1px solid var(--fam-line); }
+.vs-col.hu { background:var(--g9); border-color:var(--g9); }
+.vs-col.hu .vs-tag { color:var(--g9); background:var(--g2); border:1px solid var(--g5); }
+.vs-col h3 { margin:0 0 8px; color:inherit; }
+.vs-col.ai h3 { color:var(--fam-deep); }
+.vs-col.hu h3 { color:#fafaf9; }
+.vs-col ul { padding-left:1.2em; margin:0; }
+.vs-col li { font-size:15px; }
+.vs-col.ai li { color:var(--g8); }
+.vs-col.hu li { color:var(--g2); }
+.vs-mid {
+  text-align:center; font-size:14.5px; color:var(--ink-faint); margin:-4px 0 8px;
+}
+@media (min-width:768px) { .vs-mid { margin:8px 0; } }
+.vs-mid b { color:var(--fam-deep); }
+
+/* 三层架构纵列 */
+.arch { display:grid; gap:0; margin:16px 0; max-width:560px; }
+.arch .lay {
+  display:flex; gap:14px; align-items:baseline; flex-wrap:wrap;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:10px 16px;
+}
+.arch .lay + .arrow { text-align:center; color:var(--fam); font-size:15px; line-height:1.4; }
+.arch .lay .ly-t { font-weight:700; font-size:15.5px; color:var(--fam-deep); white-space:nowrap; }
+.arch .lay .ly-d { font-size:14.5px; color:var(--ink-soft); }
+
+/* 数据锚点 */
+.facts { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:16px 0; }
+.fact {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 14px 10px; text-align:left;
+}
+.fact .fv { font-size:24px; font-weight:700; color:var(--fam); line-height:1.2; font-variant-numeric:tabular-nums; }
+.fact .fk { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+.fact b { color:var(--g9); }
+
+/* 三个条件 */
+.conds { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; counter-reset:c3; }
+@media (min-width:640px) { .conds { grid-template-columns:repeat(3,1fr); } }
+.cond {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:14px 16px 12px; counter-increment:c3; position:relative;
+}
+.cond::before {
+  content:counter(c3); position:absolute; top:-10px; left:14px;
+  width:24px; height:24px; line-height:24px; text-align:center; border-radius:50%;
+  background:var(--fam); color:#fff; font-weight:700; font-size:13px;
+}
+.cond .cd-t { font-weight:700; font-size:15.5px; margin-top:4px; }
+.cond .cd-d { font-size:14.5px; color:var(--ink-soft); }
+
+/* Task vs Job 对照条 */
+.tj { margin:16px 0; border:1px solid var(--fam-line); border-radius:var(--r-box); overflow:hidden; }
+.tj-row { display:grid; grid-template-columns:96px 1fr; }
+@media (max-width:639px) { .tj-row { grid-template-columns:1fr; } }
+.tj-row + .tj-row { border-top:1px solid var(--line); }
+.tj-h {
+  background:var(--fam-soft); color:var(--fam-deep); font-weight:700;
+  padding:10px 14px; font-size:15px; font-family:var(--font-head);
+}
+.tj-c { padding:10px 14px; background:var(--g0); font-size:15px; color:var(--g8); }
+.tj-c b { color:var(--g9); }
+
+/* 历史证据三卡 */
+.hist { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .hist { grid-template-columns:repeat(3,1fr); } }
+.hcard { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 16px; }
+.hcard .h-t { font-weight:700; font-size:15px; color:var(--ink); }
+.hcard .h-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">电商设计</span><span class="sep">›</span>
+    <span class="here">AI对跨境电商设计师的价值边界</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">电商设计 · 人机分工的判断尺</p>
+    <h1>AI对跨境电商设计师的价值边界</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-04-11</span>
+      <span>下次复核 2026-08-03</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象趴在墙上张望，示意站在人机分工的边界上看两边"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>AI 是效率倍增器不是替代品。它能帮你干 10 倍的活，但「哪张图能转化」「哪个品类该投入」这种判断，只有人才能做。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>核心对照：AI 负责量，人负责质</h2>
+    <div class="vs">
+      <div class="vs-col ai">
+        <span class="vs-tag">交给 AI（执行与量产）</span>
+        <h3>AI 擅长的：可标准化的大量</h3>
+        <ul>
+          <li>选品调研：5 分钟拉出竞品矩阵+价格分布+月销量报告</li>
+          <li>Listing 与广告：三套算法同时通杀，广告每天自动诊断</li>
+          <li>独立站批量操作：300 个产品 meta description 一小时搞定</li>
+          <li>SEO+GEO：批量生成长尾页面，接住 AI 搜索流量</li>
+          <li>运营自动化：补货预测、客服分类、竞品监控</li>
+        </ul>
+      </div>
+      <div class="vs-col hu">
+        <span class="vs-tag">留给人（判断与定调）</span>
+        <h3>AI 做不到的：说不清的质</h3>
+        <ul>
+          <li>审美判断——AI 不懂「这张图为什么好看」，只能模仿</li>
+          <li>品牌调性理解——每个品牌有自己的风格 DNA</li>
+          <li>商业直觉——「这个品类未来会不会火」靠人的市场嗅觉</li>
+          <li>转化率判断——AI 能生成 100 张图，不知道哪张带来销量</li>
+        </ul>
+      </div>
+    </div>
+    <div class="vs-mid"><b>用 AI 省下来的时间，去做 AI 做不了的事</b>——审美把关、商业决策、品牌建设。</div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>三层架构：Claude Code 做跨境电商</h2>
+    <div class="arch">
+      <div class="lay"><span class="ly-t">引擎（Claude Code）</span><span class="ly-d">执行所有操作</span></div>
+      <div class="arrow">↓</div>
+      <div class="lay"><span class="ly-t">数据管道（MCP）</span><span class="ly-d">Sorftime 拉亚马逊/TikTok 数据，Amazon Ads API 直连广告后台</span></div>
+      <div class="arrow">↓</div>
+      <div class="lay"><span class="ly-t">业务逻辑（Skill）</span><span class="ly-d">把运营 SOP 写成可反复执行的代码</span></div>
+    </div>
+    <p>三层齐全，AI 才从「聊天助手」变成「干活的队」。通用版本见 <a href="../01-ai/Harness.html">Harness</a>。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>亚马逊三套 Listing 算法 + 关键认知差</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>算法</th><th>看什么</th><th>关键</th></tr></thead>
+      <tbody>
+        <tr><td>A10</td><td>销量速度 / CTR / 转化率 / 卖家权重 / 外部流量</td><td>A9 升级版，不是单纯关键词匹配</td></tr>
+        <tr><td>COSMO</td><td>语义意图</td><td>「送女朋友的生日礼物」→ 场景词和人群词比关键词重要</td></tr>
+        <tr><td>Rufus</td><td>AI 购物助手引用</td><td>写「超静音」不认，写「运行噪音 45 分贝」才能被引用</td></tr>
+      </tbody>
+    </table></div>
+    <h3>三个认知差（数字在这）</h3>
+    <div class="facts">
+      <div class="fact num"><div class="fv">7 倍</div><div class="fk">广告迭代差：每周复盘 <b>52 次/年</b>，接 API 每天诊断 <b>365 次/年</b></div></div>
+      <div class="fact num"><div class="fv">6 倍</div><div class="fk">GEO 流量转化率是传统 SEO 的 6 倍（HubSpot 2026 报告）</div></div>
+      <div class="fact num"><div class="fv">2-3 小时</div><div class="fk">运营自动化每天省下的时间</div></div>
+    </div>
+    <p>Reddit 选品反向思路：传统选品追爆款（看什么在卖），Reddit 选品找痛点（看用户对什么不满意）。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>适合交给 AI 的三个条件</h2>
+    <div class="conds">
+      <div class="cond"><div class="cd-t">重复频率高</div><div class="cd-d">每周至少做一次的活</div></div>
+      <div class="cond"><div class="cd-t">流程可标准化</div><div class="cd-d">你能写出 SOP</div></div>
+      <div class="cond"><div class="cd-t">结果可量化</div><div class="cd-d">做完能算出省了多少时间或钱</div></div>
+    </div>
+    <p>三条全中才交；缺一条，AI 只会把它做得更快也更歪。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>Task vs Job：AI 压缩任务，工作会变形</h2>
+    <blockquote>AI 先压缩可描述、可验收、可复制的<b>任务（task）</b>，剩下的工作向<b>判断、协调和选择</b>移动。不等于「同样的事用更少人做」。<span class="q-src">Benedict Evans</span></blockquote>
+    <div class="tj">
+      <div class="tj-row"><div class="tj-h">被压缩的 task</div><div class="tj-c">批量生成 Listing、自动诊断广告、拉竞品数据——描述得清、验收得了、复制得动</div></div>
+      <div class="tj-row"><div class="tj-h">更值钱的 job</div><div class="tj-c">该推哪个品类、这张图能不能转化、品牌调性怎么定——<b>判断反而涨价</b></div></div>
+    </div>
+    <h3>历史上的证据：工具变强，岗位没消失</h3>
+    <div class="hist">
+      <div class="hcard"><div class="h-t">会计</div><div class="h-d">加法机→Excel→云软件，工具一轮轮变强，美国会计岗位数量长期上升</div></div>
+      <div class="hcard"><div class="h-t">投行</div><div class="h-d">Excel 没让高盛助理提前下班，反而建更多模型、跑更多情景、服务更多交易</div></div>
+      <div class="hcard"><div class="h-t">咨询</div><div class="h-d">AI 让 75 页 PPT 更便宜，但客户付钱的不是 PPT，是找到人没说出口的阻力</div></div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>1997 年类比：像早期的互联网</h2>
+    <ul>
+      <li>1997 年的人也知道互联网会改变世界，但不知道 Yahoo 和 Google 谁赢</li>
+      <li>当前 AI 也一样：知道会变，但模型公司、定价、入口、价值链都还在混战</li>
+      <li><strong>别急着押注唯一结局，先把自己放到变化现场</strong></li>
+      <li>最危险的姿势不是判断错了某家公司，是拒绝获得一手手感</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥适用</h2>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">设计师本行</h3>
+      <p>AI 出图走 <a href="../08-ecomm/生图提示词排查表.html">生图提示词排查表</a>把执行交给 AI；「哪张能转化」的判断留给自己——这正是本条说的量质分界。整体风格定调可配 <a href="../08-ecomm/DESIGN.md-给AI的视觉角色卡.html">DESIGN.md-给AI的视觉角色卡</a>。</p>
+    </div>
+    <div class="card hl">
+      <h3 style="margin-top:0;">决策口诀</h3>
+      <p>接活先过<strong>三个条件</strong>（重复/可标准化/可量化），判断类的事（审美/调性/直觉/转化）不外包给 AI。AI 负责量，人负责质。</p>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">更通用的分工方法论，本条是它在电商设计岗的特化</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">三层架构的通用版本</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">长 session 做电商任务时避免 context rot</span></a>
+      <a href="../02-think/人才公式（Taste×Agency）.html"><span class="rel-t">人才公式（Taste×Agency）</span><span class="rel-d">Taste（判断力）+ Agency（主动性）= AI 时代的护城河</span></a>
+      <a href="../08-ecomm/GEO生成式引擎优化.html"><span class="rel-t">GEO生成式引擎优化</span><span class="rel-d">认知差里「GEO 流量 6 倍转化」的完整方法论</span></a>
+    </div>
+    <p style="margin-top:10px;"><span style="color:var(--ink-faint)">Agent-Led Growth</span>（GEO 就是它在电商的落地；原词条 2026-09-20 删，思想已并入本词条与 GEO 条）</p>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥实践总结（自建词条，practiced 验证）</li>
+      <li>Benedict Evans：Task vs Job 论述</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 电商设计家族 · AI对跨境电商设计师的价值边界</p>
+    <p>词条源：concepts(概念库)/电商设计/AI对跨境电商设计师的价值边界.md（2026-04-11 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话</a></li>
+    <li><a href="#s2">量质对照 ·核心</a></li>
+    <li><a href="#s3">三层架构</a></li>
+    <li><a href="#s4">三套算法·认知差</a></li>
+    <li><a href="#s5">交给 AI 三条件</a></li>
+    <li><a href="#s6">Task vs Job</a></li>
+    <li><a href="#s7">1997 类比</a></li>
+    <li><a href="#s8">桑老哥适用</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

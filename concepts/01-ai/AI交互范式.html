@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI交互范式 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 四招卡墙 */
+.move-grid { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .move-grid { grid-template-columns:1fr 1fr; } }
+.mv-card {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:16px 18px; box-shadow:var(--sh-1); display:flex; flex-direction:column;
+}
+.mv-card.best { border-color:var(--fam-line); background:var(--fam-soft); }
+.mv-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.mv-no {
+  flex:none; width:30px; height:30px; line-height:30px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:15px;
+}
+.mv-card.best .mv-no { background:var(--fam-deep); }
+.mv-t { font-weight:700; font-size:17px; color:var(--ink); }
+.mv-best-tag {
+  margin-left:auto; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  border:1px solid var(--fam-line); background:var(--g0); border-radius:999px; padding:1px 10px;
+}
+.mv-formula {
+  font-size:15px; color:var(--fam-deep); background:var(--g0);
+  border:1px dashed var(--fam-line); border-radius:var(--r-el);
+  padding:8px 12px; margin:6px 0 10px; line-height:1.7;
+}
+.mv-card.best .mv-formula { background:var(--g0); }
+.mv-card p { font-size:15px; margin-bottom:8px; }
+.mv-edge {
+  margin-top:auto; font-size:14.5px; color:var(--ink-soft);
+  border-top:1px solid var(--line); padding-top:8px; line-height:1.65;
+}
+.mv-edge b { color:var(--ink); }
+
+/* 乒乓 vs 协作 对照条 */
+.ping { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .ping { grid-template-columns:1fr auto 1fr; align-items:center; } }
+.ping .p-box { border-radius:var(--r-el); padding:12px 14px; font-size:15px; line-height:1.7; }
+.ping .p-old { background:var(--g2); border:1px solid var(--line); color:var(--ink-soft); }
+.ping .p-new { background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--g8); }
+.ping .p-new b { color:var(--fam-deep); }
+.ping .p-arrow { text-align:center; font-weight:700; color:var(--fam-deep); font-size:15px; padding:4px 0; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">AI交互范式</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 用法速查卡墙</p>
+    <h1>AI交互范式</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑比出手势，示意轻松上手四招交互技巧"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      把"问一句答一句"升级成"协作推进任务"的四招——来自 Claude Code 工程师 Thariq。
+    </blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：从乒乓式到协作式</h2>
+    <p>大多数人用 AI 的方式是"问一句 → 答一句 → 再问一句"。但这种"乒乓球式"交互效率低——AI 不知道你真正缺什么，你也不知道该问什么。Thariq 提出四招，把交互从"问答"升级为"协作"。</p>
+    <div class="ping" aria-label="乒乓式与协作式交互对照">
+      <div class="p-box p-old">乒乓式：问一句答一句，AI 不知道你缺什么，你不知道该问什么</div>
+      <div class="p-arrow">升级为</div>
+      <div class="p-box p-new"><b>协作式</b>：扫盲区、给参考、要多方向、做完考你——一起把任务往前推</div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>四招卡墙（·核心）</h2>
+    <div class="move-grid">
+      <div class="mv-card best">
+        <div class="mv-head"><span class="mv-no num">1</span><span class="mv-t">盲区扫描</span><span class="mv-best-tag">天天最用得上</span></div>
+        <div class="mv-formula">公式：我是谁 + 我不懂啥 + 帮我扫坑/潜规则 + 该看啥指标</div>
+        <p>开始前让 AI 找"你不知道自己不知道的"。</p>
+        <p>例·买二手车："我是新手，二手车市场有哪些潜规则和坑？该看哪些参数才不被骗？"</p>
+        <p class="mv-edge"><b>边界</b>：只在新领域用，熟门熟路别扫。</p>
+      </div>
+      <div class="mv-card">
+        <div class="mv-head"><span class="mv-no num">2</span><span class="mv-t">给参考别描述</span></div>
+        <div class="mv-formula">公式：说不清想要啥时，给图给例比描述准</div>
+        <p>例·理发："照这张图剪"比"剪短点精神点"准。AI 也一样，截图比形容词强。</p>
+        <p class="mv-edge"><b>边界</b>：脑子里清楚的直接说；模糊/视觉的给参考。</p>
+      </div>
+      <div class="mv-card">
+        <div class="mv-head"><span class="mv-no num">3</span><span class="mv-t">要多个不同方向</span></div>
+        <div class="mv-formula">公式：让 AI 给 N 个完全不同方向的，挑着混</div>
+        <p>关键：要"差异大"，不是要 N 个差不多的。</p>
+        <p>例·布置房间："给我 4 个完全不同风格（森林/星空/萌宠/极简）"，不是"给我 4 个方案"。</p>
+        <p class="mv-edge"><b>边界</b>：算数查事实要一个对的；起名/设计/文案要多个。</p>
+      </div>
+      <div class="mv-card">
+        <div class="mv-head"><span class="mv-no num">4</span><span class="mv-t">做完让它考你</span></div>
+        <div class="mv-formula">公式：AI 干完一堆活，让它出题考你，全答对才算真接住</div>
+        <p>例·分析"该不该买车"：讲完让它考你 3 题，答对才算想清楚。</p>
+        <p class="mv-edge"><b>边界</b>：简单任务不用；复杂/要你拍板的必须考。</p>
+      </div>
+    </div>
+    <p>天天最用得上的：<strong>第 1 招盲区扫描</strong>——进新领域时先让 AI 扫描你不知道的坑，比自己摸索快十倍。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>学新东西（AGI 共学、选品新品类）时，<strong>第 1 招盲区扫描</strong>最实用。</li>
+      <li>搞设计时<strong>第 2 招（给参考别描述）</strong>和<strong>第 3 招（要多个不同方向）</strong>正好对上路子。</li>
+      <li>学完概念让铁柱出题考一遍（第 4 招），防止"AI 交作业不等于学会"。</li>
+    </ul>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>四招是技巧不是框架——复杂任务还需要更系统的提示词工程。</li>
+      <li>第 4 招（让它考你）适合学习场景，日常干活不用。</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/提示词工程.html"><span class="rel-t">提示词工程</span><span class="rel-d">四招的系统化上层建筑</span></a>
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">第 4 招考你 = 对抗谄媚的验过程</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">第 4 招的评审版</span></a>
+      <a href="../06-learn/AI学习七步回路.html"><span class="rel-t">AI学习七步回路</span><span class="rel-d">第 1/4 招嵌进学习闭环的位置</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Thariq（Claude Code 工程师）· 存档于 AGI 共学笔记 · 2026-07-07</li>
+      <li>2026-08-13 与旧词条「AI对话四招」（电商设计目录）合并，实操公式并入本词条</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AI交互范式</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AI交互范式.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">从乒乓式到协作式</a></li>
+    <li><a href="#s3">四招卡墙 ·核心</a></li>
+    <li><a href="#s4">桑老哥适用</a></li>
+    <li><a href="#s5">前提与局限</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent组队机制 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Agent自动化 · 机械青（冷峻·工程感·护栏） ---- */
+:root {
+  --fam:#0e7490; --fam-deep:#155e75; --fam-soft:#ecfeff; --fam-line:#a5f3fc;
+}
+/* ---- 页面专属：流程布局（缺陷条 + 机制SVG + 对照案例卡） ---- */
+
+/* 大数字结论卡 */
+.headline {
+  background:var(--g0); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:18px 20px; margin:16px 0; text-align:center; box-shadow:var(--sh-1);
+}
+.headline .hl-n {
+  font-size:clamp(26px,4.5vw,34px); font-weight:700; color:var(--fam-deep);
+  font-variant-numeric:tabular-nums; line-height:1.3;
+}
+.headline .hl-d { font-size:15px; color:var(--ink-soft); margin-top:6px; }
+
+/* 四大缺陷条（Leader-Worker 的毛病） */
+.flaws { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .flaws { grid-template-columns:1fr 1fr; } }
+.flaw {
+  background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:var(--r-el); padding:12px 14px; box-shadow:var(--sh-1);
+}
+.flaw .f-t { font-weight:700; color:var(--ink); font-size:15.5px; }
+.flaw .f-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; line-height:1.6; }
+
+/* 三步开工流程图 */
+.flow { margin:18px 0 6px; }
+.flow svg { width:100%; height:auto; display:block; }
+.flow .dia { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.flow .dia-end { fill:var(--fam); stroke:var(--fam); stroke-width:1.8; }
+.flow .ln { stroke:var(--fam); stroke-width:2; fill:none; }
+.flow .ed { stroke:var(--fam-line); stroke-width:1.6; fill:none; }
+.flow .mk { fill:var(--fam); }
+.flow .tx { fill:var(--fam-deep); font-weight:700; }
+.flow .tx-w { fill:#ffffff; font-weight:700; }
+.flow .tx-w2 { fill:var(--fam-soft); }
+.flow .tx-s { fill:var(--ink-faint); }
+.flow-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 好领导四条 */
+.lead4 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .lead4 { grid-template-columns:1fr 1fr; } }
+.lead4 .l-card {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 14px; box-shadow:var(--sh-1);
+}
+.lead4 .l-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+  margin-right:8px;
+}
+.lead4 .l-t { font-weight:700; color:var(--ink); }
+.lead4 .l-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; line-height:1.6; }
+
+/* 启发式管理对照双卡 */
+.vs2 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .vs2 { grid-template-columns:1fr 1fr; } }
+.vs2 .card { padding:16px 18px; }
+.vs2 .card h3 { margin:0 0 8px; font-size:16.5px; }
+.vs2 .cmd h3 { color:var(--g6); }
+.vs2 .enc h3 { color:var(--fam-deep); }
+.vs2 .cmd { background:var(--g2); border-color:var(--g4); }
+.vs2 .enc { background:var(--fam-soft); border-color:var(--fam-line); }
+.vs2 .say {
+  font-size:15.5px; line-height:1.8; padding:10px 14px; border-radius:var(--r-el);
+  background:var(--g0); border:1px dashed var(--g4); margin-bottom:8px;
+}
+.vs2 .enc .say { border-color:var(--fam-line); }
+.vs2 .card p { font-size:14.5px; margin-bottom:6px; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Agent自动化</span><span class="sep">›</span>
+    <span class="here">Agent组队机制</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Agent自动化 · 多 Agent 协作的真实瓶颈在「协作语义」</p>
+    <h1>Agent组队机制</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-01</span>
+      <span>下次复核 2026-12-01</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意对AI好好说话的启发式管理"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      现在的 AI 组队是「包工头派活」——Leader 当分发器、成员互相隔离。该学真团队：懂业务能兜底、好好说话、先商量再开工、成员互相通气。
+    </blockquote>
+    <div class="headline">
+      <p class="hl-n">砍掉协作机制，<span class="num">20</span> 个 Agent 干活 = <span class="num">1</span> 个 Agent</p>
+      <p class="hl-d">多 Agent 的价值 <span class="num">100%</span> 来自协作机制本身，堆数量不产生任何价值</p>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>现状：Leader-Worker 架构的毛病</h2>
+    <p>主流框架（CrewAI / AutoGen / MetaGPT）的 Leader 本质是调度器：切任务→扔给 Worker→收结果。对比真团队有四大缺陷：</p>
+    <div class="flaws">
+      <div class="flaw"><span class="f-t">无方案讨论</span><p class="f-d">直接拆活，不商量怎么干</p></div>
+      <div class="flaw"><span class="f-t">Worker 互相隔离</span><p class="f-d">只跟 Leader 单线联系，互相不通气</p></div>
+      <div class="flaw"><span class="f-t">无进度管理</span><p class="f-d">干到哪了没人跟踪</p></div>
+      <div class="flaw"><span class="f-t">改方案不审查</span><p class="f-d">出错才返工</p></div>
+    </div>
+    <p>阿里 AgentTeams 开源案例证明：<strong>基础设施已成熟</strong>（通信、共享存储、安全都解决了），<strong>缺的是协作语义</strong>——「能不能说话」解决了，「该说什么、怎么共识、说完怎么沉淀」没解决。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>五问五答：五篇论文串成生命周期链</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>问题</th><th>代表工作</th><th>答了一半的</th></tr></thead>
+      <tbody>
+        <tr><td>队形怎么排</td><td>协作类型学 (arXiv 2501.06322)</td><td>五种形态（Flat/Hierarchical/Team/Society/Hybrid）无银弹；需互相救场的活 Flat 反而优于层级</td></tr>
+        <tr><td>活怎么分</td><td>MetaGPT / Agent-Oriented Planning</td><td>写死流程求稳 vs 动态拆解求准；但都是自上而下，Worker 不参与定目标</td></tr>
+        <tr><td>目标怎么对齐</td><td>OKR-Agent (arXiv 2311.16542)</td><td>OKR 搬给 AI 可行；但 Worker 只能领任务，不能说「这活我干不了」</td></tr>
+        <tr><td>经验怎么攒</td><td>Experiential Co-Learning (ACL 2024)</td><td>个体长记性（<span class="num">0.43 → 0.73</span>）；攒的是「我手艺更好」不是「我们配合更好」，未成团队资产</td></tr>
+        <tr><td>团队怎么进化</td><td>Meta-Team / EvoChamber</td><td>三层演化（个体/交互/团队）+ <span class="num">6.6%</span>；刺眼数字：去掉协作机制，<span class="num">20</span> Agent = <span class="num">1</span> Agent</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>作者方案：好领导四条 + 三步开工 ·核心</h2>
+    <div class="lead4">
+      <div class="l-card"><span class="l-no">1</span><span class="l-t">深度参与方案制定</span><p class="l-d">不是黑盒切分，Leader 懂业务</p></div>
+      <div class="l-card"><span class="l-no">2</span><span class="l-t">先商量共识再执行</span><p class="l-d">与 Worker 讨论后再动工</p></div>
+      <div class="l-card"><span class="l-no">3</span><span class="l-t">能兜底</span><p class="l-d">Leader 用更强模型 + 更长 context，不是弱化版 Worker</p></div>
+      <div class="l-card"><span class="l-no">4</span><span class="l-t">审查方案变更</span><p class="l-d">防局部最优毁全局</p></div>
+    </div>
+    <div class="flow">
+      <svg viewBox="0 0 680 170" role="img" aria-label="三步开工流程：Leader提方案，Worker从各自视角反馈，共识后动工">
+        <defs>
+          <marker id="fa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <rect x="16" y="40" width="170" height="64" rx="10" class="dia"/>
+        <text x="101" y="66" text-anchor="middle" font-size="15" class="tx">① Leader 提方案</text>
+        <text x="101" y="88" text-anchor="middle" font-size="12.5" class="tx-s">不是黑盒切分</text>
+        <line x1="190" y1="72" x2="248" y2="72" class="ln" marker-end="url(#fa)"/>
+        <rect x="252" y="40" width="176" height="64" rx="10" class="dia"/>
+        <text x="340" y="66" text-anchor="middle" font-size="15" class="tx">② Worker 反馈</text>
+        <text x="340" y="88" text-anchor="middle" font-size="12.5" class="tx-s">从各自视角提意见</text>
+        <line x1="432" y1="72" x2="490" y2="72" class="ln" marker-end="url(#fa)"/>
+        <rect x="494" y="40" width="170" height="64" rx="10" class="dia-end"/>
+        <text x="579" y="66" text-anchor="middle" font-size="15" class="tx-w">③ 共识后动工</text>
+        <text x="579" y="88" text-anchor="middle" font-size="12.5" class="tx-w2">执行有共同目标</text>
+        <path d="M579 108 C 579 150, 101 150, 101 108" class="ed" stroke-dasharray="5 4" marker-end="url(#fa)"/>
+        <text x="340" y="146" text-anchor="middle" font-size="12.5" class="tx-s">有分歧回到①再议</text>
+      </svg>
+    </div>
+    <p class="flow-cap">人类的开会成本（沟通/等待/情绪）在 Agent 侧几乎为零，三步秒级完成</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>最值钱发现：启发式管理（对 AI 好好说话） ·核心</h2>
+    <p>同一个 AI、同一个任务，两种派活姿势，产出两副面孔：</p>
+    <div class="vs2">
+      <div class="card cmd">
+        <h3>命令式</h3>
+        <p class="say">「你负责 X，别搞砸了。」</p>
+        <p>产出保守机械，只做最低要求。</p>
+      </div>
+      <div class="card enc">
+        <h3>鼓励式</h3>
+        <p class="say">「这块我看好你，放开试几种思路。」</p>
+        <p>深度和创造性肉眼可见提升。</p>
+      </div>
+    </div>
+    <p><strong>机理</strong>：主流模型经 RLHF 对齐——「鼓励探索」语境挂着高质量回复分布，「命令否定」语境挂着保守免责分布。<strong>给 Agent 什么语气，就激活什么行为模式。</strong></p>
+    <h3>派活姿势两条</h3>
+    <ul>
+      <li>不说「你去做 X」，说「这个方向你的视角比我细，先说你会怎么切入」</li>
+      <li>验收不只挑毛病，明确指出好在哪里——为下次高水平输出立锚点</li>
+    </ul>
+    <div class="warn"><b>冷冰冰的派发 = 永远只用到 AI 的 <span class="num">60%</span> 能力。</b></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥直用</h2>
+    <ul>
+      <li>给铁柱派活用启发式：「这图你有想法放开试，拿不准我们聊」好过「把这图做一下」——同一规律</li>
+      <li>铁柱带 Subagent 干活时同样适用：鼓励式引导 + 验收点亮点，不用冷冰冰的命令 prompt</li>
+      <li>认知锚：看到「多 Agent 平台」宣传先问一句——协作机制是什么？还是只是拉了个群？</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>多 Agent 不是越多越好：每多一层协作就多一层延迟、费用和信息损耗（与 Agent工程规范误区三互证）</li>
+      <li>「三步开工」的前提是 Leader 模型够强——Leader 弱，商量出来的共识也弱</li>
+      <li>启发式管理提升的是输出的深度与创造性；要精确、要零出错的机械活，命令式更稳</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">组队的主角：单 Agent 是什么</span></a>
+      <a href="../01-ai/Agent自进化.html"><span class="rel-t">Agent自进化</span><span class="rel-d">转起来后怎么自己变好</span></a>
+      <a href="MCP-Skill-Hook三件套.html"><span class="rel-t">MCP-Skill-Hook三件套</span><span class="rel-d">每个成员的手、脑、闸</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">单兵先跑通循环，再谈组队</span></a>
+      <a href="Agent工程规范.html"><span class="rel-t">Agent工程规范</span><span class="rel-d">派活的通用合同与刹车</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>蒋泽林（林曜）《从 ReAct 到 Agent Teams：一个工程师视角的 Agent 协作机制思考》（公众号「千问AI平台」，2026-08-31，引 <span class="num">7</span> 篇 arXiv 论文；WaytoAGI 飞书转载 P6p1wDQ3yipgrUk6KEEcuTU5nIb）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Agent自动化家族 · Agent组队机制</p>
+    <p>词条源：concepts(概念库)/Agent与自动化/Agent组队机制.md（2026-09-01 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">Leader-Worker 的毛病</a></li>
+    <li><a href="#s3">五问五答</a></li>
+    <li><a href="#s4">好领导四条+三步开工 ·核心</a></li>
+    <li><a href="#s5">启发式管理 ·核心</a></li>
+    <li><a href="#s6">桑老哥直用</a></li>
+    <li><a href="#s7">前提与局限</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

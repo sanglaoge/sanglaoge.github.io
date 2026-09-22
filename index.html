@@ -149,6 +149,26 @@
     padding: 3px 12px; border-radius: 999px; letter-spacing: 1px;
   }
 
+  /* ---------- 概念馆主卡 ---------- */
+  .hall-card {
+    display: block; margin-top: 26px; padding: 28px 26px;
+    background: linear-gradient(135deg, #FFF7EF, var(--card));
+    border: 1.5px solid var(--accent);
+    border-radius: 14px; text-decoration: none; color: var(--text);
+    transition: box-shadow .2s ease, transform .2s ease;
+  }
+  .hall-card:hover { box-shadow: 0 10px 30px rgba(196,87,59,.16); transform: translateY(-2px); }
+  .hall-card .tag { font-size: 10.5px; letter-spacing: 3px; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+  .hall-card .t { font-size: 24px; font-weight: 600; letter-spacing: 2px; margin-bottom: 8px; }
+  .hall-card .d { font-size: 13.5px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+  .hall-card .fams { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hall-card .fam {
+    font-size: 11.5px; color: var(--accent);
+    border: 1px solid rgba(196,87,59,.35);
+    padding: 3px 12px; border-radius: 999px; letter-spacing: 1px;
+  }
+  .hall-card .go { margin-top: 16px; font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 1px; }
+
   /* ---------- 关于 ---------- */
   .about { font-size: 14px; color: var(--muted); }
   .about li {
@@ -187,6 +207,7 @@
   <div class="topbar">
     <div class="brand serif">桑老哥</div>
     <nav>
+      <a href="#hall">概念馆</a>
       <a href="#notes">笔记</a>
       <a href="#works">作品</a>
       <a href="#about">关于</a>
@@ -203,11 +224,30 @@
     <p class="tagline reveal">给家纺做视觉的设计师，业余啃 AI 的奶爸。</p>
     <p class="sub reveal">一个不懂代码的跨境电商设计师，和一个 AI，每天啃一篇硬核文章——这里是啃完后的可视化笔记。</p>
     <div class="meta reveal">
-      <span><b>8</b> 篇笔记</span>
+      <span><b>90</b> 篇笔记</span>
       <span>主线进度 <b>22 / 22</b></span>
       <span>持续更新中</span>
     </div>
   </header>
+
+  <section id="hall">
+    <a class="hall-card reveal" href="concepts/index.html">
+      <div class="tag">CONCEPT HALL · 82 ENTRIES · NEW</div>
+      <div class="t serif">概念馆 · 82 条概念全图</div>
+      <div class="d">地基学完后攒下的概念库，全部做成了可视化页面：一条概念一页，八个家族各有画风，手机电脑都能看，持续更新。</div>
+      <div class="fams">
+        <span class="fam">AI底层逻辑 28</span>
+        <span class="fam">思维模型 13</span>
+        <span class="fam">Agent 5</span>
+        <span class="fam">Skill工程 9</span>
+        <span class="fam">AI视频 9</span>
+        <span class="fam">学习方法 6</span>
+        <span class="fam">个人IP 6</span>
+        <span class="fam">电商设计 6</span>
+      </div>
+      <div class="go">进馆 →</div>
+    </a>
+  </section>
 
   <section id="notes">
     <div class="sec-title">

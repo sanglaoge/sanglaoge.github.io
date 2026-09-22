@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四阶段验证框架 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root { --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0; }
+/* ---- 页面专属：对比布局（过关动作 vs 致命错误 + 阶段推进条） ---- */
+
+.main-col > section { margin-bottom:50px; }
+.creed {
+  font-family:var(--font-head);
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:22px 8px 4px; max-width:38em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 死因数据牌 */
+.death {
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-box); padding:14px 20px; margin:16px 0;
+}
+.death .n {
+  font-family:var(--font-head); font-weight:700; font-size:34px; color:var(--fam);
+  font-variant-numeric:tabular-nums; line-height:1.2;
+}
+.death .d { flex:1; min-width:220px; font-size:15px; color:var(--g8); }
+
+/* 阶段推进条 */
+.stepper { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:20px 0 26px; }
+.stepcell { text-align:center; position:relative; padding-top:8px; }
+.stepcell::before {
+  content:""; position:absolute; top:14px; left:50%; right:-50%;
+  height:2px; background:var(--fam-line);
+}
+.stepcell:last-child::before { display:none; }
+.stepcell .dot {
+  position:relative; z-index:1; width:28px; height:28px; line-height:28px;
+  margin:0 auto; border-radius:50%; background:var(--fam); color:#ffffff;
+  font-weight:700; font-size:14.5px; font-variant-numeric:tabular-nums;
+}
+.stepcell .sc-t { font-weight:700; font-size:15px; margin-top:6px; color:var(--ink); }
+.stepcell .sc-g { font-size:14.5px; color:var(--ink-faint); }
+@media (max-width:639px) {
+  .stepper { grid-template-columns:1fr 1fr; }
+  .stepcell::before { display:none; }
+}
+
+/* 阶段对比卡：过关 vs 致命 */
+.stage { margin-bottom:26px; }
+.stage-head {
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  border-bottom:2px solid var(--fam); padding-bottom:8px; margin-bottom:12px;
+}
+.stage-head .st-no {
+  font-family:var(--font-head); font-weight:700; font-size:24px; color:var(--fam);
+  font-variant-numeric:tabular-nums;
+}
+.stage-head .st-t { font-family:var(--font-head); font-weight:700; font-size:20px; color:var(--ink); }
+.stage-head .st-q { font-size:14.5px; color:var(--ink-faint); }
+.stage-head .st-exit {
+  margin-left:auto; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 12px;
+}
+.vs { display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:768px) { .vs { grid-template-columns:1fr 1fr; } }
+.vs .col { border-radius:var(--r-el); padding:12px 16px; }
+.vs .col .v-t { font-weight:700; font-size:15px; margin-bottom:6px; }
+.vs .col ul { margin:0; padding-left:1.2em; }
+.vs .col li { font-size:15px; }
+.col-good { background:#f0fdf4; border:1px solid #bbf7d0; }
+.col-good .v-t { color:#166534; }
+.col-good li { color:var(--g8); }
+.col-bad { background:#fffbeb; border:1px solid #fde68a; }
+.col-bad .v-t { color:#92400e; }
+.col-bad li { color:var(--g8); }
+.vs-note { font-size:14.5px; color:var(--ink-faint); margin-top:8px; }
+
+/* 补充智慧故事卡 */
+.wisdom { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .wisdom { grid-template-columns:1fr 1fr 1fr; } }
+.wcard {
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-box); padding:16px 18px;
+}
+.wcard .w-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  border-bottom:2px solid var(--fam); padding-bottom:2px; margin-bottom:8px;
+}
+.wcard .w-t { font-weight:700; font-size:16px; margin-bottom:6px; color:var(--ink); }
+.wcard p { font-size:14.5px; color:var(--g8); margin:0 0 8px; line-height:1.75; }
+.wcard .w-key {
+  font-family:var(--font-head); font-size:15.5px; color:var(--fam-deep);
+  border-left:3px solid var(--fam); padding-left:10px; margin:8px 0 0;
+}
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">四阶段验证框架</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · 动手建之前的四道闸</p>
+    <h1>四阶段验证框架</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-05-19</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意每阶段出口都有一块过关牌：退出标准达标才放行"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">想法→MVP→上线→规模化，每阶段有明确的<span class="mark">退出标准</span>，不能跳步。核心理念：在证据支撑之前，不动手建。</p>
+    <div class="death">
+      <span class="n">42%</span>
+      <span class="d">创业公司的死因是"建了没人要的东西"。AI 让建东西变得极容易，人们跳过验证直接开干——"能建"被误认为"验证"，这个框架强制你在每个阶段停下来。</span>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>四阶段推进条</h2>
+    <div class="stepper">
+      <div class="stepcell"><div class="dot">1</div><p class="sc-t">想法</p><p class="sc-g">出口：问题-方案匹配</p></div>
+      <div class="stepcell"><div class="dot">2</div><p class="sc-t">MVP</p><p class="sc-g">出口：产品-市场匹配</p></div>
+      <div class="stepcell"><div class="dot">3</div><p class="sc-t">上线</p><p class="sc-g">出口：可重复增长引擎</p></div>
+      <div class="stepcell"><div class="dot">4</div><p class="sc-t">规模化</p><p class="sc-g">出口：创始人可退出</p></div>
+    </div>
+    <p style="font-size:15px;color:var(--g8)">来自 Anthropic 创始人手册。箭头方向不可逆着走：退出标准没达标就进下一阶段，等于把债务滚大。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>逐阶段对照：过关动作 vs 致命错误 ·核心</h2>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="st-no">01</span><span class="st-t">想法阶段</span>
+        <span class="st-q">核心问题：值得建吗？</span>
+        <span class="st-exit">退出标准：问题-方案匹配</span>
+      </div>
+      <div class="vs">
+        <div class="col col-good">
+          <p class="v-t">过关动作</p>
+          <ul>
+            <li>和真人对话，验证痛点真实存在</li>
+            <li>竞品分析：别人为什么没解决好</li>
+            <li>主动找反面证据，试着推翻自己</li>
+          </ul>
+        </div>
+        <div class="col col-bad">
+          <p class="v-t">致命错误</p>
+          <ul>
+            <li>把"能建"当"验证"——AI 时代最常见</li>
+            <li>问题只存在于自己的想象里</li>
+          </ul>
+        </div>
+      </div>
+      <p class="vs-note">退出线：有定性证据证明真实问题存在，才进下一阶段。</p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="st-no">02</span><span class="st-t">MVP 阶段</span>
+        <span class="st-q">核心问题：先建什么？</span>
+        <span class="st-exit">退出标准：产品-市场匹配</span>
+      </div>
+      <div class="vs">
+        <div class="col col-good">
+          <p class="v-t">过关动作</p>
+          <ul>
+            <li>最小可用产品：只建验证假设所需的最小集</li>
+            <li>Sean Ellis 测试：40% 用户表示"非常失望"</li>
+          </ul>
+        </div>
+        <div class="col col-bad">
+          <p class="v-t">致命错误</p>
+          <ul>
+            <li>功能堆砌，越建越重</li>
+            <li>过早优化没人要的细节</li>
+          </ul>
+        </div>
+      </div>
+      <p class="vs-note">退出线：用户回来用、愿意付费，才算匹配。</p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="st-no">03</span><span class="st-t">上线阶段</span>
+        <span class="st-q">核心问题：怎么增长？</span>
+        <span class="st-exit">退出标准：可重复增长引擎</span>
+      </div>
+      <div class="vs">
+        <div class="col col-good">
+          <p class="v-t">过关动作</p>
+          <ul>
+            <li>找到可持续的获客渠道</li>
+            <li>CAC / LTV 可量化、算得清账</li>
+          </ul>
+        </div>
+        <div class="col col-bad">
+          <p class="v-t">致命错误</p>
+          <ul>
+            <li>依赖不可持续的增长手段（烧一波就没）</li>
+          </ul>
+        </div>
+      </div>
+      <p class="vs-note">退出线：增长引擎可重复、成本可量化。</p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="st-no">04</span><span class="st-t">规模化阶段</span>
+        <span class="st-q">核心问题：怎么变大？</span>
+        <span class="st-exit">退出标准：创始人能退出日常运营</span>
+      </div>
+      <div class="vs">
+        <div class="col col-good">
+          <p class="v-t">过关动作</p>
+          <ul>
+            <li>建系统、上自动化</li>
+            <li>培养能接住日常运营的团队</li>
+          </ul>
+        </div>
+        <div class="col col-bad">
+          <p class="v-t">致命错误</p>
+          <ul>
+            <li>创始人成为瓶颈——什么都过你的手</li>
+          </ul>
+        </div>
+      </div>
+      <p class="vs-note">退出线：创始人抽身，业务照转。</p>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>三份补充智慧</h2>
+    <div class="wisdom">
+      <div class="wcard">
+        <span class="w-tag">Mark Pincus（2026-06-14）</span>
+        <p class="w-t">Proven · Better · New</p>
+        <p>Zynga 创始人细化"想法→MVP"：先研究已被验证的行为（Proven），做现有用户 10/10 都说好的版本（Better），最后才加最小创新（New）。</p>
+        <p class="w-key">团队兴奋不等于用户点头；自己觉得"更好"，常常只是"new"。</p>
+      </div>
+      <div class="wcard">
+        <span class="w-tag">Boris Cherny（2026-06-16）</span>
+        <p class="w-t">验证 Agent 不等于跑单元测试</p>
+        <p>真正的验证是 Agent 能启动应用、点界面、触发功能、看到错误、自己修好再复测——不是 lint 和 type check，那些本来就容易自动化。</p>
+        <p class="w-key">每一阶段都要"跑起来"验证，而不只是"看起来对"。</p>
+      </div>
+      <div class="wcard">
+        <span class="w-tag">张梦飞i（2026-08-20）</span>
+        <p class="w-t">不写代码一天上线小程序</p>
+        <p>《儿童三假医院》v1 砍掉摄像头扫描和 AI 识别，只留"点开就播视频"，并先写 5 条"不做什么"清单——正是 MVP 阶段的反面示范照妖镜：不堆砌、不早优化。</p>
+        <p class="w-key">一次性几十秒的小工具，少一步通常比多一个漂亮页面更有用。</p>
+      </div>
+    </div>
+    <p style="font-size:14.5px;color:var(--ink-faint)">前两条来源：<span style="color:var(--ink-faint)">2026-06-14-Zynga创始人-Proven-Better-New</span>、<span style="color:var(--ink-faint)">2026-08-20-宝宝三假医院-不写代码一天做小程序</span>（日期文章，不建页面）。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>原框架针对硅谷 SaaS 创业公司，中国电商场景需调整</li>
+      <li>"和潜在用户交谈"在电商里更接近"分析竞品评论和搜索数据"</li>
+      <li>退出标准要本地化：Sean Ellis 测试 → 复购率 / 退货率</li>
+      <li>不能教条化——有时通过建原型才能发现问题</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥适用：选品四阶段映射</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>框架阶段</th><th>你的场景</th><th>怎么做</th></tr></thead>
+      <tbody>
+        <tr><td>想法阶段</td><td>选品</td><td>先验证需求（搜索量+评论痛点），不要没验证就大量备货</td></tr>
+        <tr><td>MVP 阶段</td><td>选定 SKU</td><td>小批量测试，确认有人买再放大</td></tr>
+        <tr><td>上线阶段</td><td>稳定出单</td><td>找到可重复的增长引擎（哪个广告渠道 ROI 最高）</td></tr>
+        <tr><td>规模化阶段</td><td>放大品类</td><td>让 AI+工具接手日常运营，你专注判断</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">为什么"能建"会被自己误认为"验证"</span></a>
+      <a href="../02-think/信号与噪音过滤器.html"><span class="rel-t">信号与噪音过滤器</span><span class="rel-d">本框架是过滤器第②③问的工程化</span></a>
+      <a href="../02-think/AI工作流重构三步法.html"><span class="rel-t">AI工作流重构三步法</span><span class="rel-d">重构后的流程要过四阶段验证，不跳步</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">验证环节哪些交给 AI、哪些人守</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">把验证器固化进系统骨架的做法</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Anthropic 创始人手册（2026-05-19 共学）</li>
+      <li>Mark Pincus（Zynga 创始人）Proven / Better / New（2026-06-14）</li>
+      <li>Boris Cherny：Agent 验证补充（2026-06-16）</li>
+      <li>张梦飞i：儿童三假医院小程序实例（2026-08-20）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · 四阶段验证框架</p>
+    <p>词条源：concepts(概念库)/思维模型/四阶段验证框架.md（2026-05-19 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">四阶段推进条</a></li>
+    <li><a href="#s3">逐阶段对照 ·核心</a></li>
+    <li><a href="#s4">三份补充智慧</a></li>
+    <li><a href="#s5">前提与局限</a></li>
+    <li><a href="#s6">桑老哥适用</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

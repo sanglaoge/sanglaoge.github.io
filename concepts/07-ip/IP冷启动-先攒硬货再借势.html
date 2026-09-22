@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP冷启动-先攒硬货再借势 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：个人IP · 媒体红（内容人的浓红，只做点缀） ---- */
+:root {
+  --fam:#be123c; --fam-deep:#881337; --fam-soft:#fff1f2; --fam-line:#fecdd3;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 三级台阶：逐级抬升（桌面端阶梯，手机端纵向梯） */
+.stairs { display:flex; align-items:flex-end; gap:12px; margin:20px 0 8px; }
+.stair {
+  flex:1 1 0; background:var(--g0); border:1px solid var(--line);
+  border-top:3px solid var(--fam); border-radius:var(--r-box);
+  padding:14px 16px; box-shadow:var(--sh-1); position:relative;
+}
+.stair.s1 { min-height:150px; }
+.stair.s2 { min-height:195px; background:var(--fam-soft); border-color:var(--fam-line); }
+.stair.s3 { min-height:240px; }
+.stair .st-no {
+  display:inline-block; font-family:var(--font-head); font-weight:700;
+  font-size:14.5px; color:#fff; background:var(--fam);
+  border-radius:999px; padding:0 12px; margin-bottom:8px;
+}
+.stair .st-name { font-weight:700; font-size:16.5px; color:var(--ink); margin-bottom:6px; }
+.stair.s2 .st-name { color:var(--fam-deep); }
+.stair .st-p { font-size:14.5px; color:var(--ink-soft); line-height:1.6; }
+.stair .st-you {
+  position:absolute; top:-12px; right:10px; font-size:14.5px; font-weight:700;
+  background:var(--g9); color:var(--g0); border-radius:999px; padding:0 10px;
+}
+.stairs-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:12px; }
+@media (max-width:767px) {
+  .stairs { flex-direction:column; align-items:stretch; gap:14px; }
+  .stair { min-height:0 !important; }
+  .stair.s2 { margin-left:18px; }
+  .stair.s3 { margin-left:36px; }
+  .stair .st-you { position:static; display:inline-block; margin-left:8px; vertical-align:middle; }
+}
+
+/* 别做 / 该做 双卡 */
+.duo { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .duo { grid-template-columns:1fr 1fr; } }
+.duo .d-card { border-radius:var(--r-box); padding:14px 18px; border:1px solid var(--line); background:var(--g0); }
+.duo .d-card .d-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; border-radius:999px;
+  padding:1px 14px; margin-bottom:10px;
+}
+.duo .d-no .d-tag { background:var(--g2); color:var(--ink-soft); border:1px solid var(--line); }
+.duo .d-go .d-tag { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.duo .d-card ul { margin-bottom:0; }
+.duo .d-card li { font-size:15.5px; color:var(--g8); }
+
+/* 弹药清单 */
+.ammo { list-style:none; padding-left:0; margin:14px 0; }
+.ammo li {
+  padding:10px 0 10px 34px; position:relative; border-bottom:1px dashed var(--line);
+  font-size:15.5px; color:var(--g8);
+}
+.ammo li::before {
+  content:attr(data-i); position:absolute; left:0; top:10px;
+  width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam-soft); color:var(--fam-deep);
+  border:1px solid var(--fam-line); font-weight:700; font-size:14.5px;
+}
+.ammo li:last-child { border-bottom:none; }
+.ammo .a-note { font-size:14.5px; color:var(--ink-faint); }
+
+/* 裁定章 */
+.ruled {
+  border-left:4px solid var(--fam); background:var(--fam-soft);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:10px 16px; margin:14px 0;
+  font-size:15px; color:var(--g8);
+}
+.ruled b { color:var(--fam-deep); }
+
+/* 警示条（琥珀，非家族色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">个人IP</span><span class="sep">›</span>
+    <span class="here">IP冷启动-先攒硬货再借势</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">个人IP · 起号阶段的顺序学</p>
+    <h1>IP 冷启动：先攒硬货再借势</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-15</span>
+      <span>下次复核 2026-11-18</span>
+      <span class="num">验证 logical · 置信 medium</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头张望墙外，示意冷启动正站在入口处往外看"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p><strong>别一上来找涨粉捷径、借大 V——你没有筹码，没人推空账号。先攒硬货，硬货吸引节点，节点帮你放大。</strong></p>
+    <div class="ruled"><b>裁定转正（2026-09-20）</b>：桑老哥裁定——思路与现行内容打法一致（先攒硬货）。</div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>案例拆解：姚金刚 3.5 个月 X 涨粉 1.8W</h2>
+    <p>文章表面写的是"向阳背书 + 持续分享"，真实归因有 4 个：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>归因</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>① 借大 V 的势冷启动</td><td>向阳（<span class="num">10 万粉</span> AI 大V）导流，一天 <span class="num">2000</span> 粉的主因</td></tr>
+        <tr><td>② 入驻时已有"硬货"</td><td>带 GEOFlow（开源）、GEO 大会 organizer、红蓝皮书入场。大 V 愿意推，因为推的是有真东西的人</td></tr>
+        <tr><td>③ 持续输出养习惯</td><td>冷启动后天天分享</td></tr>
+        <tr><td>④ 本身有料</td><td><span class="num">48 万字</span>认知随笔、GEO 专家</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>残酷真相：</b>这 1.8W 很大成分是"向阳导流"——人脉/资源打法，不是内容打法。<strong>普通人复制不了①。</strong></div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>能用的底层逻辑（顺序不能错）</h2>
+    <p class="stairs-cap">台阶必须从左往右一级级上，跳级会摔：</p>
+    <div class="stairs" aria-label="先攒硬货、硬货吸引节点、节点帮你放大三级台阶">
+      <div class="stair s1">
+        <span class="st-no">第 1 级</span>
+        <p class="st-name">先有硬货</p>
+        <p class="st-p">开源项目、代表作、沉淀的方法论。没筹码就没得谈。</p>
+        <span class="st-you">桑老哥在这里</span>
+      </div>
+      <div class="stair s2">
+        <span class="st-no">第 2 级</span>
+        <p class="st-name">硬货吸引节点</p>
+        <p class="st-p">节点（比你大的博主）推的是"有真东西的人"，硬货就是被推的理由。</p>
+      </div>
+      <div class="stair s3">
+        <span class="st-no">第 3 级</span>
+        <p class="st-name">节点帮你放大</p>
+        <p class="st-p">一天 2000 粉的爆发发生在这一级——但它是前两级的结果，不是起点。</p>
+      </div>
+    </div>
+    <p>姚金刚快，是因为"已有硬货 + 已有大 V 朋友"<strong>同时具备</strong>；桑老哥现在是"正在攒硬货"阶段，还没到借势那步——位置摆对，就不焦虑。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>对桑老哥的校正（最重要）</h2>
+    <div class="duo">
+      <div class="d-card d-no">
+        <span class="d-tag">别做</span>
+        <ul>
+          <li>一上来找"涨粉捷径"</li>
+          <li>一上来张罗"借大 V"——没筹码，没人推空账号</li>
+        </ul>
+      </div>
+      <div class="d-card d-go">
+        <span class="d-tag">该做</span>
+        <ul>
+          <li><strong>把硬货摆出来</strong>：共学笔记里的方法论改成小红书内容，靠内容质量慢慢生根</li>
+          <li>等有了一批真实读者 + 拿得出手的代表作，<strong>节点自然会来找你</strong>——那才是你的"向阳时刻"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>桑老哥的"硬货"清单（已在攒）</h2>
+    <p>共学笔记沉淀的方法论 = IP 弹药：</p>
+    <ul class="ammo">
+      <li data-i="1"><a href="../07-ip/IP配图方法论.html">IP配图方法论</a>、<a href="../04-skill/审美规则化.html">审美规则化</a>、<a href="../01-ai/AI交互范式.html">AI交互范式</a>、<a href="../05-video/AI视频运镜速查.html">AI视频运镜速查</a></li>
+      <li data-i="2"><span style="color:var(--ink-faint)">桑老哥人生设计蓝图</span><span class="a-note">（个人故事，IP 人设素材）</span></li>
+      <li data-i="3">配图风格库<span class="a-note">（设计师 × AI 的实战壁垒）</span></li>
+    </ul>
+    <blockquote>主航道 = 设计师 × AI 生图 → IP。<strong>发第一条小红书 = 攒硬货的第一锹。</strong>急不得，方向对。</blockquote>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../07-ip/IP配图方法论.html"><span class="rel-t">IP配图方法论</span><span class="rel-d">硬货清单里的第一件兵器</span></a>
+      <a href="../02-think/人才公式（Taste×Agency）.html"><span class="rel-t">人才公式（Taste×Agency）</span><span class="rel-d">硬货背后是品味加执行力的组合</span></a>
+      <a href="../02-think/聚焦原则.html"><span class="rel-t">聚焦原则</span><span class="rel-d">主航道只押一条：设计师 × AI 生图</span></a>
+      <a href="../07-ip/一人公司内容获客循环.html"><span class="rel-t">一人公司内容获客循环</span><span class="rel-d">硬货攒够后，内容怎么变成生意</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>姚金刚《3.5个月涨粉1.8W》案例拆解（综合整理，logical 验证）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 个人IP家族 · IP冷启动-先攒硬货再借势</p>
+    <p>词条源：concepts(概念库)/个人IP/IP冷启动-先攒硬货再借势.md（2026-07-15 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">姚金刚案例拆解</a></li>
+    <li><a href="#s3">底层逻辑三级台阶 ·核心</a></li>
+    <li><a href="#s4">对桑老哥的校正</a></li>
+    <li><a href="#s5">硬货清单</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

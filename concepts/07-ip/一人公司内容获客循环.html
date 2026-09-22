@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一人公司内容获客循环 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：个人IP · 媒体红（内容人的浓红，只做点缀） ---- */
+:root {
+  --fam:#be123c; --fam-deep:#881337; --fam-soft:#fff1f2; --fam-line:#fecdd3;
+}
+/* ---- 页面专属：叙事布局（时间线 + 故事卡） ---- */
+
+/* 主角故事卡（开场） */
+.hero-card {
+  background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:var(--r-box); box-shadow:var(--sh-1); padding:18px 22px; margin:16px 0;
+}
+.hero-card .h-name { font-family:var(--font-head); font-weight:700; font-size:19px; color:var(--ink); margin-bottom:10px; }
+.h-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:12px; }
+@media (min-width:768px) { .h-stats { grid-template-columns:repeat(4,1fr); } }
+.h-stat { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:8px 12px; }
+.h-stat .v { font-size:22px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; line-height:1.3; }
+.h-stat .k { font-size:14.5px; color:var(--ink-faint); }
+
+/* 故事卡 */
+.story {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  box-shadow:var(--sh-1); padding:16px 20px; margin:14px 0;
+}
+.story .s-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  border-bottom:3px solid var(--fam-line); margin-bottom:8px; padding-bottom:2px;
+}
+.story .s-stat { font-size:26px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.3; }
+.story .s-stat small { font-size:14.5px; font-weight:400; color:var(--ink-faint); display:block; }
+
+/* 三层验证漏斗 */
+.funnel { display:flex; flex-direction:column; align-items:center; gap:8px; margin:18px 0; }
+.fl { border-radius:var(--r-box); padding:12px 18px; border:1px solid var(--fam-line); background:var(--g0); }
+.fl.f1 { width:100%; }
+.fl.f2 { width:82%; }
+.fl.f3 { width:64%; background:var(--fam-soft); }
+.fl .fl-t { font-weight:700; font-size:15.5px; color:var(--ink); }
+.fl .fl-t .no { color:var(--fam-deep); font-family:var(--font-head); margin-right:6px; }
+.fl .fl-d { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+.fl .fl-ev { display:inline-block; margin-top:6px; font-size:14.5px; font-weight:700; color:var(--fam-deep); background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:999px; padding:0 12px; }
+.fl.f3 .fl-ev { background:var(--g0); }
+.funnel-cap { text-align:center; font-size:14.5px; color:var(--ink-faint); }
+
+/* 内容机器时间线 */
+.tl { position:relative; padding-left:28px; margin:16px 0; }
+.tl::before { content:""; position:absolute; left:8px; top:8px; bottom:8px; width:2px; background:var(--fam-line); }
+.tl-item { position:relative; margin-bottom:14px; }
+.tl-item::before {
+  content:""; position:absolute; left:-26px; top:9px; width:10px; height:10px;
+  border-radius:50%; background:var(--fam); border:2px solid var(--g0);
+}
+.tl-item .t-when { font-size:14.5px; font-weight:700; color:var(--fam-deep); }
+.tl-item p { font-size:15.5px; margin:2px 0 0; }
+.tl-item:last-child { margin-bottom:0; }
+
+/* 直用清单 */
+.use { list-style:none; padding-left:0; }
+.use li { padding:10px 0 10px 30px; position:relative; border-bottom:1px dashed var(--line); font-size:15.5px; color:var(--g8); }
+.use li::before { content:"›"; position:absolute; left:8px; top:8px; color:var(--fam); font-weight:700; font-size:18px; }
+.use li:last-child { border-bottom:none; }
+
+/* 警示条（琥珀，非家族色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">个人IP</span><span class="sep">›</span>
+    <span class="here">一人公司内容获客循环</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">个人IP · 内容变成生意的闭环</p>
+    <h1>一人公司内容获客循环</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-31</span>
+      <span>下次复核 2026-11-30</span>
+      <span class="num">验证 true · 置信 high</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象轻松微笑，示意一个人每周一天做内容也能把生意做起来"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>Sabrina 一个人、不融资、每周一天做内容，做到 300 万粉+数百万美元年收入——拆开是四件事：<strong>三层验证漏斗、第一版只留一个结果、信真实行为不信嘴上反馈、长期分发压过一次完美发布</strong>。</p>
+    <div class="hero-card">
+      <p class="h-name">主角：Sabrina Ramonov（Blotato 创始人）</p>
+      <div class="h-stats">
+        <div class="h-stat"><span class="v">1 人</span><span class="k">不融资不招团队</span></div>
+        <div class="h-stat"><span class="v">300 万粉</span><span class="k">内容全部自己来</span></div>
+        <div class="h-stat"><span class="v">数百万美元</span><span class="k">年收入的两家 AI 公司</span></div>
+        <div class="h-stat"><span class="v">每周 1 天</span><span class="k">留给内容制作</span></div>
+      </div>
+      <p style="font-size:15px; margin-bottom:0;">来源：Product Faculty 访谈《She Built Two AI Businesses Solo》（WaytoAGI 飞书转载）。</p>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>第一件事：三层验证漏斗（别把点赞当需求） ·核心</h2>
+    <div class="funnel" aria-label="三层验证漏斗：公开召集、一对一访谈、付款检验，层层收窄">
+      <div class="fl f1">
+        <p class="fl-t"><span class="no">第 1 层</span>公开召集</p>
+        <p class="fl-d">30 秒短视频问"你有这麻烦吗"</p>
+        <span class="fl-ev">证据等级：态度（最便宜最不准）</span>
+      </div>
+      <div class="fl f2">
+        <p class="fl-t"><span class="no">第 2 层</span>一对一访谈</p>
+        <p class="fl-d">私信 10-20 人问：现在用什么、月花多少钱、哪步最痛苦、试过啥替代</p>
+        <span class="fl-ev">证据等级：工作流真相</span>
+      </div>
+      <div class="fl f3">
+        <p class="fl-t"><span class="no">第 3 层</span>付款检验</p>
+        <p class="fl-d">让他们掏钱</p>
+        <span class="fl-ev">证据等级：需求铁证</span>
+      </div>
+    </div>
+    <p class="funnel-cap">"我喜欢这个点子"只是态度；真实工作流和掏钱行为才接近需求。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>第二件事：第一版只保留一个结果</h2>
+    <div class="story">
+      <span class="s-tag">故事卡</span>
+      <p class="s-stat">10 天 · 1 万美元 MRR<small>第一版丑得要命但能工作</small></p>
+      <p>第一版只做"一份内容改写成一种平台帖子"，连直接发布都砍掉。AI 时代的新毛病：<strong>因为做得快，顺手做出太多无关功能</strong>，反而忘了第一版要验证哪件事。第一版的任务不是完整，是回答"用户愿不愿意为这一个结果付钱"。</p>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>第三件事：真实行为 &gt; 嘴上反馈</h2>
+    <div class="story">
+      <span class="s-tag">她最浪费时间的弯路</span>
+      <p class="s-stat">50 人候补 · 50 种用法<small>表单说的和后台录屏做的完全对不上</small></p>
+      <p>认真收集表单访谈，换来 50 人 50 种用法。<strong>承诺成本过低的反馈是噪音</strong>；只有掏钱那一刻，人才暴露真正在乎什么。上线后头几周每天 2 小时直接看用户会话回放（愤怒点击、卡点一眼可见），比看数据仪表盘快。</p>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>第四件事：长期分发 &gt; 一次完美发布</h2>
+    <div class="story">
+      <span class="s-tag">故事卡</span>
+      <p class="s-stat">发布邮件发崩<small>视频链接失效留大灰框，用户照样注册</small></p>
+      <p>内容积累的信任托住了结果。<strong>发布当天的包装重要，长期分发比一次发布重要。</strong></p>
+    </div>
+    <h3>内容机器：她的一周（每周一天 → 300 万粉）</h3>
+    <div class="tl" aria-label="内容日时间线">
+      <div class="tl-item">
+        <span class="t-when">坐下之前</span>
+        <p>选题来自一周真实工作：让 Claude 总结自己最近三种用法+抓趋势，坐下时已有十多个题目。</p>
+      </div>
+      <div class="tl-item">
+        <span class="t-when">上午</span>
+        <p>录一条 YouTube，顺手改成新闻通讯。</p>
+      </div>
+      <div class="tl-item">
+        <span class="t-when">下午</span>
+        <p>录约 20 条 TikTok。一条内容改写多平台分发——每平台重写，不搬运。</p>
+      </div>
+      <div class="tl-item">
+        <span class="t-when">发布前</span>
+        <p>Claude 技能流水线：帖子评分（开头强度/好奇心/具体度/分享价值/平台适配）→ 连续改 3-5 轮到 9 分才发 = <a href="../01-ai/出稿评审分离法.html">出稿评审分离法</a>的实操版。</p>
+      </div>
+      <div class="tl-item">
+        <span class="t-when">节奏参考</span>
+        <p>前三四周每天 1 条 TikTok，之后 3 条，约六周出第一条 10 万播放。</p>
+      </div>
+    </div>
+    <div class="warn"><b>选题彩蛋：</b>谈 Agent 热词没人看，讲 ChatGPT 基础用法反而爆——<strong>选题跟受众水平走，不跟圈子热点走。</strong></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>Vibe Coding 的边界</h2>
+    <p>AI 干 50-60%（验证想法、拿最初 10-100 个付费用户），规格、架构、取舍、测试人负责；放任 AI 改生产系统 = 意外删除+结构失控。<strong>掌握系统意图，为结果负责</strong>——与 <a href="../01-ai/AI原生开发手册.html">AI原生开发手册</a> §8 吴恩达轻记同款结论。</p>
+    <p><strong>选市场</strong>：首选自己长期经历的问题；否则找"用户已在为更差方案付费"的市场（无须教育需求，只要在某维度明显更好）。<strong>不要发明需求，去找人们已经在花钱忍受的糟糕方案。</strong></p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥直用</h2>
+    <ul class="use">
+      <li>IP 线起步动作 = 三层漏斗第一层：公开发设计师视角的内容（公开过程 = <a href="../07-ip/IP冷启动-先攒硬货再借势.html">IP冷启动-先攒硬货再借势</a>），评论区找 10 人访谈真实痛点，<strong>别拿点赞当选题依据</strong></li>
+      <li>选题池 = 每周真实工作（选品、生图踩的坑），不追 AI 圈热词；讲"新手怎么用"不讲"行业怎么看"</li>
+      <li>评分改写到 9 分才发：直接抄她的评分维度（开头强度/好奇心/具体度/分享价值/平台适配）进自己的 skill</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../07-ip/IP冷启动-先攒硬货再借势.html"><span class="rel-t">IP冷启动-先攒硬货再借势</span><span class="rel-d">起步阶段先攒硬货，再用本循环变成生意</span></a>
+      <a href="../07-ip/人味与AI味.html"><span class="rel-t">人味与AI味</span><span class="rel-d">内容里别人写不出来的那部分</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">评分 3-5 轮到 9 分才发的原型</span></a>
+      <a href="../01-ai/AI原生开发手册.html"><span class="rel-t">AI原生开发手册</span><span class="rel-d">Vibe Coding 边界同款结论：掌握意图，为结果负责</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Product Faculty 访谈《She Built Two AI Businesses Solo》（嘉宾 Sabrina Ramonov，Blotato 创始人，一人做到数百万美元年收入；WaytoAGI 飞书转载）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 个人IP家族 · 一人公司内容获客循环</p>
+    <p>词条源：concepts(概念库)/个人IP/一人公司内容获客循环.md（2026-08-31 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">三层验证漏斗 ·核心</a></li>
+    <li><a href="#s3">第一版只留一个结果</a></li>
+    <li><a href="#s4">真实行为&gt;嘴上反馈</a></li>
+    <li><a href="#s5">长期分发&gt;完美发布</a></li>
+    <li><a href="#s6">Vibe Coding 的边界</a></li>
+    <li><a href="#s7">桑老哥直用</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

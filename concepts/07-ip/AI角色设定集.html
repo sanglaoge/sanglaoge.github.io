@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI角色设定集 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：个人IP · 媒体红（内容人的浓红，只做点缀） ---- */
+:root {
+  --fam:#be123c; --fam-deep:#881337; --fam-soft:#fff1f2; --fam-line:#fecdd3;
+}
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 词典条目：术语头 + 释义体 */
+.dict { display:grid; grid-template-columns:1fr; gap:14px; }
+@media (min-width:768px) { .dict { grid-template-columns:1fr 1fr; } }
+.dict .term {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:16px 18px; box-shadow:var(--sh-1); position:relative; overflow:hidden;
+}
+.dict .term::before {
+  content:attr(data-no); position:absolute; top:10px; right:14px;
+  font-size:26px; font-weight:700; color:var(--fam-line); font-family:var(--font-head);
+}
+.dict .term .t-name {
+  font-family:var(--font-head); font-weight:700; font-size:17.5px;
+  color:var(--fam-deep); display:inline-block;
+  border-bottom:3px solid var(--fam-line); padding-bottom:2px; margin-bottom:10px;
+}
+.dict .term p { font-size:15.5px; margin-bottom:8px; }
+.dict .term .t-note {
+  font-size:14.5px; color:var(--ink-faint); border-top:1px dashed var(--line);
+  padding-top:8px; margin-top:4px;
+}
+
+/* 实例卡墙：三张一排，卡头是实例名 */
+.wall { display:grid; grid-template-columns:1fr; gap:14px; }
+@media (min-width:820px) { .wall { grid-template-columns:1fr 1fr 1fr; } }
+.ex-card {
+  background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam);
+  border-radius:var(--r-box); padding:16px 18px; box-shadow:var(--sh-1);
+  display:flex; flex-direction:column;
+}
+.ex-card .ex-tag {
+  align-self:flex-start; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 12px; margin-bottom:10px;
+}
+.ex-card .ex-name { font-weight:700; font-size:17px; color:var(--ink); margin-bottom:6px; }
+.ex-card .ex-doc { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.ex-card .ex-doc code { font-size:.95em; }
+.ex-card .ex-what { font-size:15px; color:var(--g8); }
+
+/* 两层结构示意：模板代码块 */
+.stack-box {
+  background:var(--g9); border-radius:var(--r-box); padding:18px 20px;
+  margin:16px 0; overflow-x:auto;
+}
+.stack-box pre {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8;
+  color:var(--g2); white-space:pre;
+}
+.stack-box .c-core { color:var(--fam-line); font-weight:700; }
+.stack-box .c-wrap { color:var(--g4); }
+.stack-box .c-cm { color:var(--g5); }
+
+/* 家族门厅卡 */
+.lobby {
+  background:var(--g0); border:1.5px dashed var(--fam-line);
+  border-radius:var(--r-box); padding:16px 18px; margin:18px 0;
+}
+.lobby .lb-t { font-weight:700; color:var(--fam-deep); margin-bottom:8px; font-size:16px; }
+.lobby table { width:100%; border-collapse:collapse; font-size:15px; }
+.lobby td { padding:6px 8px 6px 0; vertical-align:top; color:var(--g8); }
+.lobby td.h { white-space:nowrap; font-weight:600; color:var(--ink); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">个人IP</span><span class="sep">›</span>
+    <span class="here">AI角色设定集</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">个人IP · 让角色不飘的底层设定</p>
+    <h1>AI角色设定集</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-18</span>
+      <span>下次复核 2026-12-18</span>
+      <span class="num">验证 practiced · 置信 medium</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意设定集把角色身份一次性宣告定死"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      游戏行业的"设定集"方法论移植到 AI：一份角色文档约束所有行为输出。
+      核心身份是基础单元（能活几年），具体台词风格是封装层（会过时）——设定集管基础单元。
+      <span class="q-src">—— 核心洞见</span>
+    </blockquote>
+    <p>游戏公司做角色，先写一本厚厚的设定集：这人是谁、什么脾气、什么底线，之后所有剧情、台词、周边都从这本册子里长出来。<strong>给 AI 也写这么一本</strong>，它就不是"每次聊都换个人格的通用助手"，而是一个行为稳定、一眼认得出的角色。</p>
+    <p>关键在分层：<strong>核心身份（稳定）</strong>与<strong>封装层（易变）</strong>分开写——台词会过时，身份不会。设定集只管基础单元，封装层随时迭代不伤根基。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三个已验证的实例</h2>
+    <p>这不是理论，是已经在跑的三套真设定集：</p>
+    <div class="wall">
+      <div class="ex-card">
+        <span class="ex-tag">实例 1</span>
+        <p class="ex-name">铁柱本人</p>
+        <p class="ex-doc">载体：<code>soul.md</code> + CLAUDE.md</p>
+        <p class="ex-what">约束说话风格、口播规矩、职责边界——桑老哥身边天天在用的那一份。</p>
+      </div>
+      <div class="ex-card">
+        <span class="ex-tag">实例 2</span>
+        <p class="ex-name">Claude Design System</p>
+        <p class="ex-doc">载体：逆向 Anthropic 设计的系统提示词（GitHub <span class="num">849</span> star）</p>
+        <p class="ex-what">整套"设计师角色"，产出反 AI 味视觉。4/4 验证通过。</p>
+      </div>
+      <div class="ex-card">
+        <span class="ex-tag">实例 3</span>
+        <p class="ex-name">IP 配图锚点图</p>
+        <p class="ex-doc">载体：固定角色 + 固定骨架</p>
+        <p class="ex-what">约束配图一致性——锚点图就是设定集在配图场景的特化版，详见<a href="../07-ip/IP配图方法论.html">IP配图方法论</a>。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>设计要点（词典）</h2>
+    <div class="dict">
+      <div class="term" data-no="01">
+        <span class="t-name">分层</span>
+        <p>核心身份（稳定）与封装层（易变）<strong>分开写</strong>。</p>
+        <p class="t-note">封装层迭代不伤根基——台词随便换，人不换。</p>
+      </div>
+      <div class="term" data-no="02">
+        <span class="t-name">粒度</span>
+        <p>细到"出戏的点"都被定义。</p>
+        <p class="t-note">桑老哥追问过："铁柱的设定集颗粒度够吗？"——粗颗粒度=角色经常出戏。</p>
+      </div>
+      <div class="term" data-no="03">
+        <span class="t-name">用处</span>
+        <p>没有设定集的 AI = 通用化产出 = <strong>AI 味的根源</strong>。</p>
+        <p class="t-note">反面证词见<a href="../07-ip/人味与AI味.html">人味与AI味</a>：越像平均值越像 AI。</p>
+      </div>
+      <div class="term" data-no="04">
+        <span class="t-name">特化版</span>
+        <p>同一思想的分领域落地：视觉层见 <a href="../08-ecomm/DESIGN.md-给AI的视觉角色卡.html">DESIGN.md-给AI的视觉角色卡</a>（电商设计，草稿），配图层见<a href="../07-ip/IP配图方法论.html">IP配图方法论</a>锚点图。</p>
+        <p class="t-note">一个思想，三个战场。</p>
+      </div>
+    </div>
+    <div class="stack-box" aria-label="设定集两层结构示意">
+<pre><span class="c-core">设定集（角色文档）</span>
+├── <span class="c-core">核心身份 —— 基础单元，能活几年</span>   <span class="c-cm"># 设定集管的就这层</span>
+│     └── 是谁 / 什么脾气 / 底线 / 职责边界
+└── <span class="c-wrap">封装层 —— 会过时的部分，随时迭代</span>   <span class="c-cm"># 不伤根基</span>
+      └── 具体台词风格 / 用语习惯 / 表达偏好</pre>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>设定集家族门厅</h2>
+    <div class="lobby">
+      <p class="lb-t">一家三户，从本条进</p>
+      <table>
+        <tr><td class="h">本条·总纲</td><td>游戏设定集方法论：核心身份管到底，封装层随便换</td></tr>
+        <tr><td class="h">视觉层特化</td><td><a href="../08-ecomm/DESIGN.md-给AI的视觉角色卡.html">DESIGN.md-给AI的视觉角色卡</a>——电商设计场景的角色卡（草稿）</td></tr>
+        <tr><td class="h">配图层特化</td><td><a href="../07-ip/IP配图方法论.html">IP配图方法论</a>——锚点图+招牌特征，锁住同一张脸</td></tr>
+      </table>
+    </div>
+    <p>对桑老哥的直接意义：铁柱已经吃到了设定集的红利（行为稳定、口播规矩自动执行）；做 IP 时，<strong>角色一致性不是靠每次手调，是靠先把设定集写对</strong>。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>设定集管的是<strong>基础单元</strong>，别指望它锁死一切——封装层（台词风格）该换就换</li>
+      <li>粒度不够细，角色照样出戏：写完拿"出戏的点"过一遍自查</li>
+      <li>置信度 medium：方法论来自两个 reviewed 案例 + 自家实践，还没有大样本验证</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../07-ip/IP配图方法论.html"><span class="rel-t">IP配图方法论</span><span class="rel-d">锚点图 = 设定集在配图场景的特化版</span></a>
+      <a href="../07-ip/人味与AI味.html"><span class="rel-t">人味与AI味</span><span class="rel-d">没有设定集 = 通用化产出 = AI 味根源</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">设定集把"说不清但藏在选择里"的东西写成文</span></a>
+      <a href="../02-think/约束先行.html"><span class="rel-t">约束先行</span><span class="rel-d">先立规矩再产出，设定集就是先行的约束</span></a>
+      <a href="../08-ecomm/DESIGN.md-给AI的视觉角色卡.html"><span class="rel-t">DESIGN.md-给AI的视觉角色卡</span><span class="rel-d">同一思想的电商视觉层落地（草稿）</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>《Agent 像人一样设计》reviewed（2026-05-06，游戏行业设定集方法论）</li>
+      <li>《Claude Design System Prompt 反AI味设计》reviewed（2026-07-06，4/4 验证通过）</li>
+      <li>IP配图方法论（concepts 个人IP，实践交叉验证）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 个人IP家族 · AI角色设定集</p>
+    <p>词条源：concepts(概念库)/个人IP/AI角色设定集.md（2026-09-18 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">三个已验证实例</a></li>
+    <li><a href="#s3">设计要点 ·词典</a></li>
+    <li><a href="#s4">设定集家族门厅</a></li>
+    <li><a href="#s5">前提与局限</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

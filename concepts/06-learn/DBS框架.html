@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBS框架 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：学习方法 · 纸感绿（自然·生长·纸面笔记感） ---- */
+:root {
+  --fam:#4d7c0f; --fam-deep:#3f6212; --fam-soft:#f7fee7; --fam-line:#d9f99d;
+}
+/* ---- 页面专属：判断路线布局 ---- */
+
+/* 衬线金句 */
+.bigq {
+  font-family:var(--font-head); font-size:clamp(19px,2.6vw,24px);
+  line-height:1.8; color:var(--ink); font-weight:700;
+  padding:6px 0 6px 18px; border-left:4px solid var(--fam);
+}
+.bigq small { display:block; font-family:var(--font-body); font-weight:400; font-size:14.5px; color:var(--ink-faint); margin-top:10px; }
+
+/* 路线图 SVG 配色（fill/stroke 全走 class→var） */
+.route { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 10px 6px; margin:16px 0; }
+.route svg { width:100%; height:auto; display:block; }
+.sg-start { fill:var(--g2); stroke:var(--g6); stroke-width:1.4; }
+.sg-q { fill:var(--g0); stroke:var(--g6); stroke-width:1.4; }
+.sg-d { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.sg-b { fill:var(--fam-line); stroke:var(--fam); stroke-width:1.4; }
+.sg-s { fill:var(--g0); stroke:var(--fam); stroke-width:1.4; stroke-dasharray:0; }
+.sg-line { stroke:var(--g5); stroke-width:1.6; fill:none; }
+.sg-line-fam { stroke:var(--fam); stroke-width:1.8; fill:none; }
+.sg-t { fill:var(--ink); font-weight:700; }
+.sg-td { fill:var(--fam-deep); font-weight:700; }
+.sg-sm { fill:var(--g6); }
+.sg-mk { fill:var(--g5); }
+.sg-mkf { fill:var(--fam); }
+.route-cap { font-size:14.5px; color:var(--ink-faint); margin:8px 4px 0; }
+
+/* 打分卡 */
+.score {
+  background:var(--g0); border:1.5px dashed var(--fam-line);
+  border-radius:var(--r-box); padding:16px 18px; margin:18px 0;
+}
+.score .sc-t { font-weight:700; color:var(--fam-deep); font-size:16.5px; margin-bottom:4px; }
+.score .sc-h { font-size:14.5px; color:var(--ink-faint); margin-bottom:12px; }
+.score table { width:100%; border-collapse:collapse; font-size:15px; }
+.score td { padding:8px 8px 8px 0; vertical-align:top; color:var(--g8); border-bottom:1px dashed var(--line); }
+.score tr:last-child td { border-bottom:none; }
+.score td.q { white-space:nowrap; font-weight:600; color:var(--ink); }
+.score td.bkt { white-space:nowrap; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; }
+
+/* 三桶职责卡 */
+.duty { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .duty { grid-template-columns:1fr 1fr 1fr; } }
+.duty .card { border-top:4px solid var(--fam); }
+.duty .card h3 { margin:0 0 4px; font-size:16.5px; color:var(--fam-deep); }
+.duty .card .d-en { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.duty .card p { font-size:15px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">学习方法</span><span class="sep">›</span>
+    <span class="here">DBS框架</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">学习方法 · 知识进脑子前，先分桶</p>
+    <h1>DBS框架</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒墙探头张望，示意拿到新知识先看清形态，再决定进哪个桶"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <p class="bigq">知识不是一堆平等的清单，而是三种不同形态的东西：方向（怎么做）、蓝图（参考什么）、脚本（自动执行什么）。分清这三类，知识才能真正用起来。
+      <small>来源：hooeem《4 Workflows to integrate Claude Code with NotebookLM》</small>
+    </p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三个桶</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>桶</th><th>英文</th><th>内容</th><th>在 AI Skill 中</th><th>在知识整理中</th></tr></thead>
+      <tbody>
+        <tr><td><strong>D - 方向</strong></td><td>Direction</td><td>核心逻辑、决策树、步骤流程、错误恢复</td><td>SKILL.md 的核心</td><td>这个领域的核心流程是什么？</td></tr>
+        <tr><td><strong>B - 蓝图</strong></td><td>Blueprints</td><td>静态参考：模板、语气指南、分类规则</td><td>支撑文档</td><td>有哪些模板和案例可以参考？</td></tr>
+        <tr><td><strong>S - 脚本</strong></td><td>Scripts</td><td>确定性代码任务：API 调用、数据格式化</td><td>打包脚本</td><td>哪些步骤可以让 AI 自动执行？</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>判断路线图 ·核心</h2>
+    <p>拿到一份新知识，别急着记，先顺着路线问三个问题，落进对应的桶：</p>
+    <div class="route">
+      <svg viewBox="0 0 680 330" role="img" aria-label="DBS判断路线图：一份新知识，依次判断是否需要AI思考的核心逻辑进D桶、是否静态参考进B桶、是否确定性代码可自动执行进S桶">
+        <defs>
+          <marker id="db" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="sg-mk"/>
+          </marker>
+          <marker id="dbf" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="sg-mkf"/>
+          </marker>
+        </defs>
+        <rect x="18" y="137" width="118" height="56" rx="12" class="sg-start"/>
+        <text x="77" y="160" text-anchor="middle" font-size="14" class="sg-t">一份新知识</text>
+        <text x="77" y="178" text-anchor="middle" font-size="11.5" class="sg-sm">经验/笔记/流程</text>
+
+        <path d="M 136 165 C 170 165, 170 57, 204 57" class="sg-line" marker-end="url(#db)"/>
+        <path d="M 136 165 L 204 165" class="sg-line" marker-end="url(#db)"/>
+        <path d="M 136 165 C 170 165, 170 273, 204 273" class="sg-line" marker-end="url(#db)"/>
+
+        <rect x="208" y="29" width="216" height="56" rx="12" class="sg-q"/>
+        <text x="316" y="52" text-anchor="middle" font-size="13" class="sg-t">是核心逻辑、决策树、</text>
+        <text x="316" y="70" text-anchor="middle" font-size="13" class="sg-t">需要 AI「思考」的？</text>
+
+        <rect x="208" y="137" width="216" height="56" rx="12" class="sg-q"/>
+        <text x="316" y="160" text-anchor="middle" font-size="13" class="sg-t">是静态参考：模板、语气、</text>
+        <text x="316" y="178" text-anchor="middle" font-size="13" class="sg-t">分类规则？照着抄就行？</text>
+
+        <rect x="208" y="245" width="216" height="56" rx="12" class="sg-q"/>
+        <text x="316" y="268" text-anchor="middle" font-size="13" class="sg-t">是确定性代码任务？</text>
+        <text x="316" y="286" text-anchor="middle" font-size="13" class="sg-t">不用想，直接跑？</text>
+
+        <line x1="424" y1="57" x2="512" y2="57" class="sg-line-fam" marker-end="url(#dbf)"/>
+        <line x1="424" y1="165" x2="512" y2="165" class="sg-line-fam" marker-end="url(#dbf)"/>
+        <line x1="424" y1="273" x2="512" y2="273" class="sg-line-fam" marker-end="url(#dbf)"/>
+
+        <rect x="516" y="29" width="146" height="56" rx="12" class="sg-d"/>
+        <text x="589" y="52" text-anchor="middle" font-size="14" class="sg-td">D 方向</text>
+        <text x="589" y="70" text-anchor="middle" font-size="11.5" fill="#57534e">SKILL.md 核心</text>
+
+        <rect x="516" y="137" width="146" height="56" rx="12" class="sg-b"/>
+        <text x="589" y="160" text-anchor="middle" font-size="14" class="sg-td">B 蓝图</text>
+        <text x="589" y="178" text-anchor="middle" font-size="11.5" fill="#57534e">支撑文档</text>
+
+        <rect x="516" y="245" width="146" height="56" rx="12" class="sg-s"/>
+        <text x="589" y="268" text-anchor="middle" font-size="14" class="sg-td">S 脚本</text>
+        <text x="589" y="286" text-anchor="middle" font-size="11.5" fill="#57534e">打包脚本</text>
+
+        <text x="340" y="322" text-anchor="middle" font-size="12.5" fill="#78716c">D 是核心（决定这个知识「怎么走」），B 是支撑，S 是自动化</text>
+      </svg>
+    </div>
+    <p class="route-cap">用法：一条知识可能同时占多个桶（流程进 D、配着的模板进 B、能自动跑的步骤抽成 S），但先问 D——没有方向，蓝图和脚本都没处挂。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>为什么有用</h2>
+    <div class="duty">
+      <div class="card">
+        <h3>D = 思考</h3>
+        <p class="d-en">需要 AI「思考」的部分（核心）</p>
+        <p>核心逻辑、决策树、错误恢复。这是知识的深度所在，值得反复打磨。</p>
+      </div>
+      <div class="card">
+        <h3>B = 参考</h3>
+        <p class="d-en">需要 AI「参考」的部分（支撑）</p>
+        <p>模板、语气指南、分类规则。静态即可，用的时候翻出来照着对。</p>
+      </div>
+      <div class="card">
+        <h3>S = 执行</h3>
+        <p class="d-en">不需要 AI 思考，直接执行（自动化）</p>
+        <p>API 调用、数据格式化这类确定性任务，写成脚本一次搞定。</p>
+      </div>
+    </div>
+    <p>这种拆法让知识组织<strong>既有深度（D）又有广度（B），还能自动化（S）</strong>。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>打分卡：拿「AI 选品」练手</h2>
+    <div class="score">
+      <p class="sc-t">学任何新领域，按 DBS 三个桶整理笔记</p>
+      <p class="sc-h">以 AI 选品为例，三问过一遍，笔记自动归位：</p>
+      <table>
+        <tr><td class="q bkt">D 问</td><td>AI 选品的核心流程是什么？——决策树、选品闸门、错误恢复，写进核心文档</td></tr>
+        <tr><td class="q bkt">B 问</td><td>选品调研报告的模板、常用分析框架——存成支撑文档，用的时候翻</td></tr>
+        <tr><td class="q bkt">S 问</td><td>哪些调研步骤可以让铁柱/爱马仕自动跑？——抽成脚本，一键执行</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../06-learn/IPO知识内化方法论.html"><span class="rel-t">IPO知识内化方法论</span><span class="rel-d">DBS 在 P 阶段使用</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">DBS 是构建 Skill 的方法论</span></a>
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">Skill 的迭代优化</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>hooeem《4 Workflows to integrate Claude Code with NotebookLM》</li>
+      <li>桑老哥共学总结（2026-08-03 建条时来源待核实，以 hooeem 原文为准）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 学习方法家族 · DBS框架</p>
+    <p>词条源：concepts(概念库)/学习方法/DBS框架.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">三个桶</a></li>
+    <li><a href="#s3">判断路线图 ·核心</a></li>
+    <li><a href="#s4">为什么有用</a></li>
+    <li><a href="#s5">打分卡练手</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频抽卡策略 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（克制·影像质感） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：判断路线布局 ---- */
+
+/* 衬线金句 */
+blockquote.bq p {
+  font-family:var(--font-head); font-size:18.5px; line-height:1.75; color:var(--ink);
+}
+
+/* 三够卡 */
+.why3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .why3 { grid-template-columns:1fr 1fr 1fr; } }
+.why3 .card h3 { margin:0 0 4px; font-size:16.5px; color:var(--fam-deep); }
+.why3 .card p { font-size:15px; margin:0; }
+
+/* 抽卡公式条 */
+.calc {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:18px 20px; margin:16px 0; box-shadow:var(--sh-1);
+}
+.calc .cl {
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px;
+  padding:7px 0; border-bottom:1px dashed var(--line); font-size:15.5px; color:var(--g8);
+}
+.calc .cl:last-of-type { border-bottom:none; }
+.f-num { font-size:26px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.1; }
+.f-op { color:var(--ink-faint); font-weight:700; }
+.calc .c-res {
+  margin-top:10px; padding:8px 14px; background:var(--fam-soft);
+  border:1px solid var(--fam-line); border-radius:var(--r-el);
+  font-weight:700; color:var(--ink); font-size:15.5px;
+}
+
+/* 路线图 SVG */
+.route-wrap { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 10px 6px; margin:16px 0; }
+.route-wrap svg { width:100%; height:auto; display:block; }
+.rt-road { stroke:var(--fam-line); stroke-width:3; fill:none; }
+.rt-box { fill:var(--g0); stroke:var(--fam); stroke-width:1.5; }
+.rt-hi { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.rt-bad { fill:var(--g2); stroke:var(--g5); stroke-width:1.2; stroke-dasharray:5 4; }
+.rt-t { fill:var(--ink); font-weight:700; }
+.rt-s { fill:var(--ink-soft); }
+.rt-f { fill:var(--ink-faint); }
+.rt-arr { stroke:var(--g6); stroke-width:1.6; fill:none; }
+.rt-mk { fill:var(--g6); }
+.rt-back { stroke:var(--g5); stroke-width:1.4; fill:none; stroke-dasharray:5 4; }
+
+/* 两把尺子 */
+.ruler { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .ruler { grid-template-columns:1fr 1fr; } }
+.ruler .card h3 { margin:0 0 10px; font-size:16.5px; color:var(--fam-deep); }
+.rg2 { display:grid; grid-template-columns:1fr; gap:8px; }
+@media (min-width:480px) { .rg2 { grid-template-columns:1fr; } }
+.rg-row { border:1px solid var(--line); border-radius:var(--r-el); padding:9px 12px; font-size:15px; }
+.rg-row .rg-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; margin-bottom:3px;
+}
+.rg-row.bad { background:var(--g2); color:var(--g8); }
+.rg-row.bad .rg-tag { color:var(--ink-faint); }
+.rg-row.good { background:var(--fam-soft); border-color:var(--fam-line); color:var(--g8); }
+.rg-row.good .rg-tag { color:var(--fam-deep); }
+
+/* 适用边界打分卡 */
+.fit { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:640px) { .fit { grid-template-columns:1fr 1fr; } }
+.fit .f-col { border:1px solid var(--line); border-radius:var(--r-box); background:var(--g0); padding:14px 16px; }
+.fit .f-col.yes { border-color:#bbf7d0; }
+.fit .f-col h3 { margin:0 0 10px; font-size:16px; }
+.fit .f-col.yes h3 { color:#166534; }
+.fit .f-col.no h3 { color:var(--ink-soft); }
+.fit ul { list-style:none; padding:0; margin:0; }
+.fit li {
+  position:relative; padding:6px 8px 6px 24px; font-size:15px; color:var(--g8);
+}
+.fit li::before {
+  content:""; position:absolute; left:6px; top:15px; width:8px; height:8px; border-radius:50%;
+}
+.fit .yes li::before { background:#166534; }
+.fit .no li::before { background:var(--g4); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI视频抽卡策略</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频家族 · 生成阶段的产能纪律</p>
+    <h1>AI视频抽卡策略</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌定焦点，示意抽卡是纪律不是赌运气"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote class="bq">
+      <p>抽卡不是赌运气，是工程化做法——AI 视频的正式工序，不是兜底。</p>
+      <span class="q-src">—— Seedance 经验谈</span>
+    </blockquote>
+    <p><strong>2-3 秒一个 Shot</strong> 作为 AI 视频最小单元，15 秒直出 = 5 个连贯镜头，<strong>抽 3 次卡 = 15 个可选素材</strong>，足够一场戏。</p>
+    <p>换成人话：别指望 AI 一条视频一次生成到位。把片子拆碎、每个镜头多生成几版、从里面挑——这条流水线式打法，就是抽卡策略。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>为什么是 2-3 秒</h2>
+    <div class="why3">
+      <div class="card">
+        <h3>够短</h3>
+        <p>模型一次直出不会失控，角色一致性最强</p>
+      </div>
+      <div class="card">
+        <h3>够多</h3>
+        <p>15 秒视频能拆 5 个 Shot，一个 Shot 对应文案/动作的一个单位</p>
+      </div>
+      <div class="card">
+        <h3>够用</h3>
+        <p>3 次抽卡后可选素材量充裕，不用赌一次成功</p>
+      </div>
+    </div>
+    <p>三个「够」同时成立，2-3 秒就是 AI 视频当前的最小可用单元——短于它素材太碎，长于它模型开始失控。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>抽卡公式 ·核心</h2>
+    <div class="calc">
+      <div class="cl"><span class="f-num">15</span><span>秒视频</span><span class="f-op">÷</span><span class="f-num">2.5</span><span>秒/Shot</span><span class="f-op">=</span><span class="f-num">6</span><span>个 Shot</span></div>
+      <div class="cl"><span class="f-op">×</span><span class="f-num">3</span><span>次抽卡</span><span class="f-op">=</span><span class="f-num">18</span><span>个素材</span></div>
+      <div class="cl"><span>一场戏（30 秒以内）≈</span><span class="f-num">12</span><span>个素材</span></div>
+      <div class="c-res">→ 18 个里选 12 个，绰绰有余</div>
+    </div>
+    <p>关键在「×3」那一步：抽卡次数是主动多生成的保险，让选片永远有余量，而不是拿着唯一一版纠结哪里不对。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>一场戏的判断路线</h2>
+    <p>接到一条 15-30 秒的片子，按这条主路走；两条岔路（想一次成型、生成阶段追高清）都通向「打回重来」：</p>
+    <div class="route-wrap">
+      <svg viewBox="0 0 680 264" role="img" aria-label="抽卡判断路线图：主路是拆Shot、720p抽3次、18选12、放大定稿四站；赌一次成型和生成阶段追1080p两条岔路都被打回">
+        <defs>
+          <marker id="pa1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="rt-mk"/>
+          </marker>
+        </defs>
+        <path class="rt-road" d="M30 92 L650 92"/>
+        <g>
+          <rect class="rt-box" x="28" y="46" width="140" height="92" rx="10"/>
+          <text class="rt-t" x="98" y="76" text-anchor="middle" font-size="15">① 拆 Shot</text>
+          <text class="rt-s" x="98" y="99" text-anchor="middle" font-size="13">15 秒拆 5-6 镜</text>
+          <text class="rt-s" x="98" y="118" text-anchor="middle" font-size="13">每个 2-3 秒</text>
+        </g>
+        <g>
+          <rect class="rt-hi" x="192" y="46" width="140" height="92" rx="10"/>
+          <text class="rt-t" x="262" y="76" text-anchor="middle" font-size="15">② 720p 抽卡</text>
+          <text class="rt-s" x="262" y="99" text-anchor="middle" font-size="13">每镜抽 3 次</text>
+          <text class="rt-s" x="262" y="118" text-anchor="middle" font-size="13">素材多到不用赌</text>
+        </g>
+        <g>
+          <rect class="rt-box" x="356" y="46" width="140" height="92" rx="10"/>
+          <text class="rt-t" x="426" y="76" text-anchor="middle" font-size="15">③ 18 选 12</text>
+          <text class="rt-s" x="426" y="99" text-anchor="middle" font-size="13">一场戏（30 秒内）</text>
+          <text class="rt-s" x="426" y="118" text-anchor="middle" font-size="13">挑够连贯素材</text>
+        </g>
+        <g>
+          <rect class="rt-box" x="520" y="46" width="140" height="92" rx="10"/>
+          <text class="rt-t" x="590" y="76" text-anchor="middle" font-size="15">④ 放大定稿</text>
+          <text class="rt-s" x="590" y="99" text-anchor="middle" font-size="13">选定后 Topaz 放大</text>
+          <text class="rt-s" x="590" y="118" text-anchor="middle" font-size="13">到 4K</text>
+        </g>
+        <path class="rt-arr" d="M170 92 L188 92" marker-end="url(#pa1)"/>
+        <path class="rt-arr" d="M334 92 L352 92" marker-end="url(#pa1)"/>
+        <path class="rt-arr" d="M498 92 L516 92" marker-end="url(#pa1)"/>
+        <g>
+          <rect class="rt-bad" x="150" y="188" width="380" height="46" rx="10"/>
+          <text class="rt-s" x="340" y="216" text-anchor="middle" font-size="14.5">岔路：赌一次成型 · 生成阶段直追 1080p</text>
+        </g>
+        <path class="rt-back" d="M250 188 C 210 160, 130 160, 100 142" marker-end="url(#pa1)"/>
+        <text class="rt-f" x="118" y="168" font-size="13">打回重来</text>
+        <path class="rt-back" d="M430 188 C 470 160, 550 160, 580 142" marker-end="url(#pa1)"/>
+        <text class="rt-f" x="500" y="168" font-size="13">时间钱双输</text>
+      </svg>
+    </div>
+    <p>④ 的放大细节见关联词条 <a href="../05-video/AI视频清晰度最优解.html">AI视频清晰度最优解</a>；② 能不能「稳定抽」，前置是提示词写得住（<a href="../05-video/视频生成提示词.html">视频生成提示词</a>）。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>两把尺子（反常识）</h2>
+    <div class="ruler">
+      <div class="card">
+        <h3>尺子一 · 不要追一次成型</h3>
+        <div class="rg2">
+          <div class="rg-row bad"><span class="rg-tag">常见做法</span><br>盯着一次生成赌成功，失败就整条重来</div>
+          <div class="rg-row good"><span class="rg-tag">工程化做法</span><br>AI 视频不是写代码——抽卡是正式工序，不是兜底</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>尺子二 · 不要追高分辨率</h3>
+        <div class="rg2">
+          <div class="rg-row bad"><span class="rg-tag">常见做法</span><br>抽卡阶段就上高分辨率，赌一条高清直出</div>
+          <div class="rg-row good"><span class="rg-tag">工程化做法</span><br>抽卡阶段用 720p 即可，定稿后用 Topaz 放大到 4K</div>
+        </div>
+      </div>
+    </div>
+    <p>两把尺子指向同一个判断：<strong>把「选」留给抽卡，把「贵」留给最后</strong>。在生成阶段追求一次到位，等于把最贵的动作放在最不稳的环节。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>适用边界</h2>
+    <div class="fit">
+      <div class="f-col yes">
+        <h3>适用</h3>
+        <ul class="yes">
+          <li>商业级视频生产：电商带货、广告、内容矩阵</li>
+        </ul>
+      </div>
+      <div class="f-col no">
+        <h3>不适用</h3>
+        <ul class="no">
+          <li>实时性要求高的场景：直播、即时反馈——等不起多轮抽卡</li>
+          <li>单条重要视频：这种应该精细打磨，不靠抽卡</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">抽卡的前置：写好提示词才能稳定抽</span></a>
+      <a href="../05-video/AI视频清晰度最优解.html"><span class="rel-t">AI视频清晰度最优解</span><span class="rel-d">抽卡时用 720p，定稿再放大</span></a>
+      <a href="../05-video/AI视频白模预演.html"><span class="rel-t">AI视频白模预演</span><span class="rel-d">同族省钱路线：白模管「少抽」，本条管「抽得省」</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Seedance 经验谈（飞书；2026-07-13 提取，源档案 2026-09-20 删）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI视频抽卡策略</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI视频抽卡策略.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">为什么是 2-3 秒</a></li>
+    <li><a href="#s3">抽卡公式 ·核心</a></li>
+    <li><a href="#s4">一场戏的判断路线</a></li>
+    <li><a href="#s5">两把尺子（反常识）</a></li>
+    <li><a href="#s6">适用边界</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动作导演六层法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 试金石六样 */
+.six { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.six .chip {
+  background:var(--g0); border:1px solid var(--fam-line); border-radius:999px;
+  padding:3px 14px; font-size:14.5px; font-weight:600; color:var(--g8);
+}
+
+/* 六层阶梯：逐级抬升 */
+.stair { display:flex; flex-direction:column; gap:10px; margin:18px 0; }
+.step {
+  background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-box) var(--r-box) 0; padding:12px 16px;
+}
+@media (min-width:860px) {
+  .step:nth-child(1){ margin-left:0; }
+  .step:nth-child(2){ margin-left:11%; }
+  .step:nth-child(3){ margin-left:22%; }
+  .step:nth-child(4){ margin-left:33%; }
+  .step:nth-child(5){ margin-left:44%; }
+  .step:nth-child(6){ margin-left:55%; }
+}
+.step .stp-head { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+.step .stp-no { font-size:14.5px; font-weight:700; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+.step .stp-t { font-family:var(--font-head); font-size:18px; font-weight:700; color:var(--ink); }
+.step .stp-w { font-size:14.5px; color:var(--fam-deep); font-weight:600; }
+.step p { font-size:14.5px; color:var(--g8); margin:5px 0 0; line-height:1.7; }
+.step.key { border:1.5px solid var(--fam); background:var(--fam-soft); }
+.stp-badge {
+  display:inline-block; background:var(--fam); color:#ffffff;
+  font-size:14.5px; font-weight:700; border-radius:999px; padding:0 10px;
+}
+
+/* 因果链 chips */
+.chain { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; }
+.chip {
+  background:var(--g0); border:1px solid var(--fam-line); border-radius:999px;
+  padding:4px 14px; font-size:15px; font-weight:600; color:var(--g8);
+}
+.ch-arrow { color:var(--ink-faint); font-weight:700; }
+
+/* 正反例 */
+.wr { display:grid; grid-template-columns:1fr; gap:10px; margin:12px 0; }
+@media (min-width:768px) { .wr { grid-template-columns:1fr 1fr; } }
+.wr-cell { border-radius:var(--r-el); padding:12px 15px; font-size:15px; line-height:1.75; }
+.wr-bad { background:var(--g2); border:1px dashed var(--g4); color:var(--ink-soft); }
+.wr-good { background:var(--g0); border:1.5px solid var(--fam); color:var(--g8); }
+.wr-tag { display:block; font-size:14.5px; font-weight:700; margin-bottom:4px; }
+.wr-bad .wr-tag { color:var(--ink-faint); }
+.wr-good .wr-tag { color:var(--fam-deep); }
+
+/* 时间节奏条 */
+.tbar { display:flex; gap:8px; margin:14px 0; flex-wrap:wrap; }
+.tb {
+  flex:1 1 150px; background:var(--g0); border:1px solid var(--line);
+  border-top:3px solid var(--fam); border-radius:var(--r-el); padding:10px 12px;
+}
+.tb .tb-time { font-size:14.5px; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+.tb .tb-t { font-weight:700; font-size:15.5px; margin:1px 0 3px; }
+.tb p { font-size:14.5px; color:var(--g8); margin:0; line-height:1.65; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">动作导演六层法</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 镜头之内动作怎么写</p>
+    <h1>动作导演六层法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-04</span>
+      <span>下次复核 2026-12-04</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头张望，示意掀开打斗场面背后那套看不见的因果机关"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      人脑看到打斗会自动脑补力道和反应，AI 不会——把"来一场打斗"翻译成每一拍都有因果的动作说明书。
+    </blockquote>
+    <p>这是阿真把动作导演经验做成开源 Skill（fight-prompt-director）后沉淀的六层写法：<strong>视频模型缺的不是画面能力，是你没把"为什么这样动"写出来</strong>。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>为什么打斗是试金石</h2>
+    <p>打斗同时考验六样，任何一环松掉都穿帮（武器一变二、左右位置互换、打坏的地板下一秒复原）——所以测视频模型都拿打斗试：</p>
+    <div class="six">
+      <span class="chip">角色一致</span>
+      <span class="chip">肢体合理</span>
+      <span class="chip">真实接触</span>
+      <span class="chip">空间连续</span>
+      <span class="chip">镜头衔接</span>
+      <span class="chip">道具不复制</span>
+    </div>
+    <p>提示词的两头代价：一句话提示词（"来一场打斗"）模型会拍得很平——它倾向稳妥少动不出错；详细提示词更生动有节奏，但<strong>抽卡率也升</strong>。六层法就是把"详细"写到位的结构。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>六层阶梯 ·核心</h2>
+    <div class="stair">
+      <div class="step">
+        <div class="stp-head"><span class="stp-no">①</span><span class="stp-t">战斗目标</span><span class="stp-w">为什么打</span></div>
+        <p>有人要得到某样东西、有人阻止（也可以只是赢）。目标清楚，逼近/拉开/拖延/反击才有依据。</p>
+      </div>
+      <div class="step">
+        <div class="stp-head"><span class="stp-no">②</span><span class="stp-t">角色动作设计</span><span class="stp-w">怎么打</span></div>
+        <p>动作从身份里长出来：距离/起手/移动/攻击/防守/资源/终结——敏捷型换位借力，力量型压迫空间。</p>
+      </div>
+      <div class="step key">
+        <div class="stp-head"><span class="stp-no">③</span><span class="stp-t">一攻一应</span><span class="stp-badge">最重要</span></div>
+        <p>每拍写成连续因果链——展开见下节，全文最值钱的一层。</p>
+      </div>
+      <div class="step">
+        <div class="stp-head"><span class="stp-no">④</span><span class="stp-t">时间节奏</span><span class="stp-w">什么时候打</span></div>
+        <p><span class="num">0-3</span> 秒起手（<span class="num">0.3</span> 秒内必须动）/ <span class="num">3-7</span> 交锋（<span class="num">1.5</span> 秒前首次接触）/ <span class="num">7-11</span> 反转（中段必有一次攻防转换）/ <span class="num">11-15</span> 终结（胜负最后才揭晓）。</p>
+      </div>
+      <div class="step">
+        <div class="stp-head"><span class="stp-no">⑤</span><span class="stp-t">力量与镜头</span><span class="stp-w">怎么拍</span></div>
+        <p>力量公式 + 镜头职责（一镜一事），见下面两节。</p>
+      </div>
+      <div class="step">
+        <div class="stp-head"><span class="stp-no">⑥</span><span class="stp-t">连续性锁定</span><span class="stp-w">记住上一秒</span></div>
+        <p>角色/武器/道具/位置/运动方向/场景损伤跨镜一致；唯一道具不复制，裂纹留到收尾。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>一攻一应 ·核心</h2>
+    <p>每一拍按这条链写，攻击和回应咬在一起：</p>
+    <div class="chain" aria-label="一攻一应因果链">
+      <span class="chip">谁发起</span><span class="ch-arrow">→</span>
+      <span class="chip">打向哪</span><span class="ch-arrow">→</span>
+      <span class="chip">碰到还是落空</span><span class="ch-arrow">→</span>
+      <span class="chip">对方怎么回应</span><span class="ch-arrow">→</span>
+      <span class="chip">位置怎么变</span><span class="ch-arrow">→</span>
+      <span class="chip">下一拍怎么接</span>
+    </div>
+    <div class="wr">
+      <div class="wr-cell wr-bad">
+        <span class="wr-tag">反面写法</span>
+        写"重重一拳"没用——双方同时乱挥、攻击是空的，模型只能拍成摆Pose。
+      </div>
+      <div class="wr-cell wr-good">
+        <span class="wr-tag">正面写法</span>
+        "拳头撞上前臂，镜头在接触点短震一次，对方肩膀向右偏转，鞋底擦过积水滑出半步。"
+      </div>
+    </div>
+    <p><strong>力量公式</strong>（把"重"翻译成七段可拍的物理）：</p>
+    <div class="chain" aria-label="力量公式">
+      <span class="chip">预兆</span><span class="ch-arrow">→</span>
+      <span class="chip">加速</span><span class="ch-arrow">→</span>
+      <span class="chip">接触点</span><span class="ch-arrow">→</span>
+      <span class="chip">材质变化</span><span class="ch-arrow">→</span>
+      <span class="chip">受力方向</span><span class="ch-arrow">→</span>
+      <span class="chip">位移结果</span><span class="ch-arrow">→</span>
+      <span class="chip">余波</span>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>时间节奏：15 秒四段</h2>
+    <div class="tbar">
+      <div class="tb">
+        <span class="tb-time">0-3 秒</span>
+        <p class="tb-t">起手</p>
+        <p>0.3 秒内必须动</p>
+      </div>
+      <div class="tb">
+        <span class="tb-time">3-7 秒</span>
+        <p class="tb-t">交锋</p>
+        <p>1.5 秒前首次接触</p>
+      </div>
+      <div class="tb">
+        <span class="tb-time">7-11 秒</span>
+        <p class="tb-t">反转</p>
+        <p>中段必有一次攻防转换</p>
+      </div>
+      <div class="tb">
+        <span class="tb-time">11-15 秒</span>
+        <p class="tb-t">终结</p>
+        <p>胜负最后才揭晓</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>镜头职责：一镜一事</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>机位</th><th>只干一件事</th></tr></thead>
+      <tbody>
+        <tr><td>贴地跟拍</td><td>表现速度</td></tr>
+        <tr><td>高位俯拍</td><td>交代距离</td></tr>
+        <tr><td>侧向中景</td><td>看清接触</td></tr>
+        <tr><td>快速追远</td><td>承接受击位移</td></tr>
+        <tr><td>极近特写</td><td>接触 + 表情</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>排错对照</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>症状</th><th>药方</th></tr></thead>
+      <tbody>
+        <tr><td>接触不清</td><td>调动作描述（接触点写实）</td></tr>
+        <tr><td>镜头跳轴</td><td>调机位描述</td></tr>
+        <tr><td>角色/武器漂移复制</td><td>查参考素材一致性 + 细节是否充分</td></tr>
+        <tr><td>开头结尾多余内容</td><td>用前把检查顺一遍思路</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥直用</h2>
+    <ul>
+      <li><strong>不打架也能用</strong>：产品视频动态脚本（开箱、使用动作、场景切换）直接套"一攻一应"因果链 + "一镜一事"——手怎么伸、碰到什么、包装什么反应、下一拍接什么</li>
+      <li><strong>与 <a href="../05-video/剪辑思维七手法.html">剪辑思维七手法</a> 配对</strong>：七手法管镜头之间怎么切，本词条管镜头之内动作怎么写；再与 <a href="../05-video/视频生成提示词.html">视频生成提示词</a> 的七层结构叠加用</li>
+      <li><strong>Skill 成长法可直接抄</strong>：作者"把每次翻车塞回失败诊断和验收规则，让它慢慢长成稳定系统"——Skill 不是写完就完，是翻车回填、越长越硬</li>
+      <li><strong>用法</strong>：GitHub 拿 fight-prompt-director 给 Agent 装；输入可以很模糊，每次出三组方案（激烈度不同）三选一；说"打斗得更激烈"或"提示词更高密度"可加强</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>六层是写提示词的结构，不是保证一次成片——详细提示词会升抽卡率，良率问题交给抽卡策略管</li>
+      <li>时间节奏的秒数按 15 秒打斗设计，产品视频要按自己的时长重新分段</li>
+      <li>Skill 的失败诊断和验收规则来自作者的场景积累，换品类（打斗→产品）要重新回填自己的翻车案例</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/剪辑思维七手法.html"><span class="rel-t">剪辑思维七手法</span><span class="rel-d">镜头之间怎么切，与镜头之内互补</span></a>
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">七层结构叠加用</span></a>
+      <a href="../05-video/AI角色演技提示词.html"><span class="rel-t">AI角色演技提示词</span><span class="rel-d">打斗之外的表演指令</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">详细提示词升抽卡率后的良率解法</span></a>
+      <a href="../04-skill/Skill知识资产.html"><span class="rel-t">Skill知识资产</span><span class="rel-d">翻车回填让 Skill 长成资产</span></a>
+      <a href="../04-skill/Skill设计方法论.html"><span class="rel-t">Skill设计方法论</span><span class="rel-d">开源 Skill 的设计参照</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>阿真《打斗提示词总写不明白？分享我的动作导演 Skill》（公众号"阿真Irene" 2026-09-02）</li>
+      <li>Skill 开源：github.com/irenerachel/fight-prompt-director（<a class="ext" href="https://github.com/irenerachel/fight-prompt-director" target="_blank" rel="noopener noreferrer">GitHub</a>）</li>
+      <li>WaytoAGI 飞书转载（LfATwrOnli2XZbkBKMLcbUiJnng）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · 动作导演六层法</p>
+    <p>词条源：concepts(概念库)/AI视频制作/动作导演六层法.md（2026-09-04 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">打斗为什么是试金石</a></li>
+    <li><a href="#s3">六层阶梯 ·核心</a></li>
+    <li><a href="#s4">一攻一应 ·核心</a></li>
+    <li><a href="#s5">时间节奏 15 秒四段</a></li>
+    <li><a href="#s6">镜头职责</a></li>
+    <li><a href="#s7">排错对照</a></li>
+    <li><a href="#s8">桑老哥直用</a></li>
+    <li><a href="#s9">前提与局限</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

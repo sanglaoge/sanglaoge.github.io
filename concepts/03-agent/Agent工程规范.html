@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent工程规范 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Agent自动化 · 机械青（冷峻·工程感·护栏） ---- */
+:root {
+  --fam:#0e7490; --fam-deep:#155e75; --fam-soft:#ecfeff; --fam-line:#a5f3fc;
+}
+/* ---- 页面专属：词典网格布局（规范手册：卡墙 + 抽屉分组 + 误区对照墙） ---- */
+
+/* 术语卡墙 */
+.dict { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .dict { grid-template-columns:1fr 1fr; } }
+@media (min-width:1024px) { .dict { grid-template-columns:1fr 1fr 1fr; } }
+.term {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 14px; box-shadow:var(--sh-1);
+}
+.term .t-name { font-weight:700; color:var(--fam-deep); font-size:15.5px; }
+.term .t-eq { font-size:14.5px; color:var(--ink-faint); margin-left:6px; }
+.term .t-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; line-height:1.6; }
+.term.hl { border-color:var(--fam-line); background:var(--fam-soft); }
+.term.hl .t-name { color:var(--fam-deep); }
+.term .t-key {
+  display:inline-block; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  margin-left:6px; padding:0 8px; border:1px solid var(--fam-line);
+  border-radius:999px; background:var(--g0);
+}
+
+/* 抽屉分组（原生 details，无 JS 也能开合） */
+.drawer { margin:14px 0; }
+details.dr {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  overflow:hidden; margin-bottom:10px; box-shadow:var(--sh-1);
+}
+details.dr summary {
+  cursor:pointer; padding:12px 16px; font-weight:700; color:var(--ink);
+  list-style:none; display:flex; align-items:baseline; gap:10px; font-size:15.5px;
+}
+details.dr summary::-webkit-details-marker { display:none; }
+details.dr summary::before {
+  content:"＋"; color:var(--fam); font-weight:700; flex:none;
+}
+details.dr[open] summary::before { content:"－"; }
+details.dr[open] summary {
+  border-bottom:1px solid var(--line); background:var(--fam-soft); color:var(--fam-deep);
+}
+details.dr .dr-body { padding:12px 16px 14px; }
+details.dr .dr-body p, details.dr .dr-body li { font-size:15px; color:var(--g8); }
+.dr-tag {
+  flex:none; font-size:14.5px; font-weight:700; color:var(--ink-faint);
+  border:1px solid var(--line); border-radius:999px; padding:0 10px; background:var(--g1);
+}
+
+/* 误区对照墙：直觉 vs 实情 */
+.myth {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  overflow:hidden; box-shadow:var(--sh-1); margin-bottom:10px;
+}
+.myth .m-ask {
+  padding:10px 14px 8px; font-weight:700; color:var(--ink); font-size:15.5px;
+}
+.myth .m-row { display:flex; border-top:1px dashed var(--line); }
+.myth .m-no, .myth .m-yes { flex:1 1 0; padding:9px 14px; font-size:14.5px; line-height:1.65; }
+.myth .m-no { background:var(--g2); color:var(--ink-soft); }
+.myth .m-yes { background:var(--fam-soft); color:var(--fam-deep); border-left:1px solid var(--line); }
+.myth .m-lab { display:block; font-weight:700; font-size:14.5px; margin-bottom:2px; }
+.myth .m-no .m-lab { color:var(--g6); }
+.myth .m-yes .m-lab { color:var(--fam-deep); }
+
+/* 公式条 */
+.formula {
+  background:var(--fam-soft); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:16px 18px; margin:16px 0; text-align:center;
+  font-size:16.5px; font-weight:700; color:var(--fam-deep);
+  font-variant-numeric:tabular-nums; line-height:1.9;
+}
+.formula .fx { display:block; font-size:15px; font-weight:400; color:var(--ink-soft); margin-top:6px; }
+.formula .guard { color:var(--fam); text-decoration:underline; text-underline-offset:4px; }
+
+/* 三角卡 */
+.trio { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .trio { grid-template-columns:1fr 1fr 1fr; } }
+.trio .card { padding:14px 16px; }
+.trio .card h3 { margin:0 0 6px; font-size:16px; color:var(--fam-deep); }
+.trio .card p { font-size:14.5px; margin:0; color:var(--ink-soft); }
+.trio .card.now { border-color:var(--fam-line); background:var(--fam-soft); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Agent自动化</span><span class="sep">›</span>
+    <span class="here">Agent工程规范</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Agent自动化 · 把 Agent 从「能演示」做到「能上线」</p>
+    <h1>Agent工程规范</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-04</span>
+      <span>下次复核 2026-12-04</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意任务合同举在手上——给AI看是提示词，给人看是验收表"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      模型负责动脑，程序负责刹车——别让一段文字干代码的活。
+    </blockquote>
+    <p>这是把 Agent 从「能演示」做到「能上线」的工程总纲：什么活该交给 Agent、怎么派活、怎么保证停得下来、怎么验收，四件事一套说清。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>这条补了什么：家族内三层分工</h2>
+    <div class="trio">
+      <div class="card">
+        <h3>循环工程 · Why</h3>
+        <p>为什么要把人从「盯着 AI」里拔出来，去设计循环</p>
+      </div>
+      <div class="card">
+        <h3>Context Loop搭建法 · How搭</h3>
+        <p>自己家的自进化系统怎么搭：三条件 + 六步骨架</p>
+      </div>
+      <div class="card now">
+        <h3>本条 · 规范层</h3>
+        <p>工程上怎么派活、怎么刹车、怎么验收——把单点词条串成一套</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>Agent 公式：六件套</h2>
+    <div class="formula">
+      Agent = 模型 + 目标 + 工具 + 记忆 + 运行循环 + <span class="guard">安全边界</span>
+      <span class="fx">大脑 + 知道啥叫干完 + 手脚 + 记性 + 干活节奏 + 围栏</span>
+    </div>
+    <div class="dict">
+      <div class="term"><span class="t-name">模型</span><span class="t-eq">大脑</span><p class="t-d">负责推理与决策</p></div>
+      <div class="term"><span class="t-name">目标</span><span class="t-eq">知道啥叫干完</span><p class="t-d">没有目标就没有「完成」</p></div>
+      <div class="term"><span class="t-name">工具</span><span class="t-eq">手脚</span><p class="t-d">搜索、数据库、API 等外部能力</p></div>
+      <div class="term"><span class="t-name">记忆</span><span class="t-eq">记性</span><p class="t-d">跨步骤、跨会话带上前情</p></div>
+      <div class="term"><span class="t-name">运行循环</span><span class="t-eq">干活节奏</span><p class="t-d">思考→行动→观察→再思考</p></div>
+      <div class="term hl"><span class="t-name">安全边界</span><span class="t-key">最常被漏</span><p class="t-d">直接决定能不能上线。没围栏的 Agent，像揣着钥匙、全靠猜决定下一步的临时工</p></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>先问四句，再决定要不要用 Agent ·核心</h2>
+    <div class="dict">
+      <div class="term"><span class="t-name">一问</span><p class="t-d">这活是不是要走好几步判断？</p></div>
+      <div class="term"><span class="t-name">二问</span><p class="t-d">中途拿到的新信息，会不会改变下一步？</p></div>
+      <div class="term"><span class="t-name">三问</span><p class="t-d">是不是得动用外部工具（搜索/数据库/API）？</p></div>
+      <div class="term hl"><span class="t-name">四问</span><span class="t-key">生死问</span><p class="t-d">结果能不能被检查？干错了能不能拦住或撤回？</p></div>
+    </div>
+    <p>前三条大多是「是」、第四条有办法，才值得做 Agent。第四条无解——自动化程度越高，风险越大。</p>
+    <div class="warn"><b>对照记住：</b>固定报表这种路线清楚、输入稳定的活，普通脚本更省钱更稳。Agent 不是高级，是另一种工具。</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>循环的灵魂是停得下来：三道闸</h2>
+    <p>演示里的循环是圆圈：思考→行动→观察→再思考。工程里必须加三道闸：</p>
+    <div class="dict">
+      <div class="term"><span class="t-name">步数上限</span><p class="t-d">防来回打转、不停换关键词重试</p></div>
+      <div class="term"><span class="t-name">时间上限</span><p class="t-d">防某步卡死，到点及时撤</p></div>
+      <div class="term"><span class="t-name">费用上限</span><p class="t-d">Token、搜索次数、API 费用封顶</p></div>
+    </div>
+    <blockquote>
+      停止不是失败。能在失控前刹车、把已完成的部分交给人，才是可用系统。
+      <span class="q-src">—— 与 <a href="../01-ai/Prompt三原则.html">Prompt三原则</a> 的 TERMINATION 同源：早点停 = 省钱 + 保命</span>
+    </blockquote>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>全文最值钱：任务合同 ·核心</h2>
+    <p>别只说「帮我研究一下」。先写一份合同，三段：</p>
+    <div class="drawer">
+      <details class="dr" open>
+        <summary>输入<span class="dr-tag">给什么</span></summary>
+        <div class="dr-body">
+          <ul>
+            <li>研究主题</li>
+            <li>目标读者</li>
+            <li>截止日期</li>
+          </ul>
+        </div>
+      </details>
+      <details class="dr">
+        <summary>输出<span class="dr-tag">要什么</span></summary>
+        <div class="dr-body">
+          <ul>
+            <li><span class="num">800-1200</span> 字简报</li>
+            <li><span class="num">5</span> 条结论</li>
+            <li>每条事实带可访问链接</li>
+          </ul>
+        </div>
+      </details>
+      <details class="dr">
+        <summary>停止条件<span class="dr-tag">何时收工</span></summary>
+        <div class="dr-body">
+          <ul>
+            <li>找到 <span class="num">3</span> 个独立来源</li>
+            <li>最多搜 <span class="num">12</span> 次</li>
+            <li>最长跑 <span class="num">8</span> 分钟</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <p>一人分饰三角：给 AI 看是<strong>提示词</strong>，给你看是<strong>验收表</strong>，给钱包看是<strong>预算表</strong>。</p>
+    <div class="warn"><b>最重要的推论：</b>结果不好，先查合同哪里写含糊了，别急着换模型。</div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>六大误区：直觉 vs 实情</h2>
+    <div class="myth">
+      <p class="m-ask">工具越多越强？</p>
+      <div class="m-row">
+        <div class="m-no"><span class="m-lab">直觉</span>工具箱越满能力越强</div>
+        <div class="m-yes"><span class="m-lab">实情</span>工具越多越挑花眼，按阶段加载比一次全塞强</div>
+      </div>
+    </div>
+    <div class="myth">
+      <p class="m-ask">提示词越长控制越准？</p>
+      <div class="m-row">
+        <div class="m-no"><span class="m-lab">直觉</span>规矩写得越多越听话</div>
+        <div class="m-yes"><span class="m-lab">实情</span>规则打架时长度只会放大混乱；权限和校验写进程序，别指望一段文字</div>
+      </div>
+    </div>
+    <div class="myth">
+      <p class="m-ask">多 Agent 天然胜过单 Agent？</p>
+      <div class="m-row">
+        <div class="m-no"><span class="m-lab">直觉</span>人多力量大</div>
+        <div class="m-yes"><span class="m-lab">实情</span>每多一层协作就多一层延迟、费用和信息损耗</div>
+      </div>
+    </div>
+    <div class="myth">
+      <p class="m-ask">RAG 能消灭幻觉？</p>
+      <div class="m-row">
+        <div class="m-no"><span class="m-lab">直觉</span>给了材料就不会胡说</div>
+        <div class="m-yes"><span class="m-lab">实情</span>RAG 只管找材料，找错切错照样胡说，引用核验不能省</div>
+      </div>
+    </div>
+    <div class="myth">
+      <p class="m-ask">能跑通一次就算成功？</p>
+      <div class="m-row">
+        <div class="m-no"><span class="m-lab">直觉</span>演示通过=能上线</div>
+        <div class="m-yes"><span class="m-lab">实情</span>演示都避开了登录失败、限流、脏数据</div>
+      </div>
+    </div>
+    <div class="myth">
+      <p class="m-ask">Agent 应该完全自主？</p>
+      <div class="m-row">
+        <div class="m-no"><span class="m-lab">直觉</span>越自主越先进</div>
+        <div class="m-yes"><span class="m-lab">实情</span>自主程度由风险决定：查资料自动、发邮件出草稿、转账必须人点头（= 桑老哥家红黄绿灯的翻版）</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥直用</h2>
+    <ul>
+      <li><strong>派活模板</strong>：给铁柱/爱马仕派任务时套任务合同三段——尤其「停止条件」和「输出格式」两段</li>
+      <li><strong>判断该不该自动化</strong>：四问里第四问（错了能不能拦/撤回）过不了就保持人工</li>
+      <li><strong>自主程度分级</strong>直接对齐红黄绿灯：绿 = 自动干、黄 = 干完汇报、红 = 等人点头</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>本条是工程总纲不是代码教程——落地时每个闸（步数/时间/费用）要按具体活定数值</li>
+      <li>「程序负责刹车」的前提是你有一个能执行程序的环境（Harness 层），纯聊天窗口里做不到</li>
+      <li>任务合同防的是「含糊」，防不了「目标本身定错」——目标对不对仍要人判断</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">Why 层：为什么要设计循环而不是盯 AI</span></a>
+      <a href="Context%20Loop搭建法.html"><span class="rel-t">Context Loop搭建法</span><span class="rel-d">How 搭层：自己家怎么搭自进化系统</span></a>
+      <a href="MCP-Skill-Hook三件套.html"><span class="rel-t">MCP-Skill-Hook三件套</span><span class="rel-d">安全边界的具体落地：手、脑、闸</span></a>
+      <a href="Agent组队机制.html"><span class="rel-t">Agent组队机制</span><span class="rel-d">单 Agent 管不住时的组队与协作</span></a>
+      <a href="../01-ai/可信完成.html"><span class="rel-t">可信完成</span><span class="rel-d">「干完」的验收四问</span></a>
+      <a href="../01-ai/Prompt三原则.html"><span class="rel-t">Prompt三原则</span><span class="rel-d">TERMINATION 停止条件 = 三闸的提示词版</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>govin.eth（G哥）《Agent 从入门到精通》（X @goan999999，2026-09-03，WaytoAGI 飞书转载 V0PFwTkDSiHEJukIODSc2aM5nPg）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Agent自动化家族 · Agent工程规范</p>
+    <p>词条源：concepts(概念库)/Agent与自动化/Agent工程规范.md（2026-09-04 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">家族内三层分工</a></li>
+    <li><a href="#s3">Agent 公式六件套</a></li>
+    <li><a href="#s4">先问四句 ·核心</a></li>
+    <li><a href="#s5">三道闸</a></li>
+    <li><a href="#s6">任务合同 ·核心</a></li>
+    <li><a href="#s7">六大误区</a></li>
+    <li><a href="#s8">桑老哥直用</a></li>
+    <li><a href="#s9">前提与局限</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

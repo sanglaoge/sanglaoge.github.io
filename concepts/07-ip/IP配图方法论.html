@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP配图方法论 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：个人IP · 媒体红（内容人的浓红，只做点缀） ---- */
+:root {
+  --fam:#be123c; --fam-deep:#881337; --fam-soft:#fff1f2; --fam-line:#fecdd3;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 配图流水线 SVG（颜色全走 class→var） */
+.flow-svg { width:100%; height:auto; margin:14px 0 6px; }
+.flow-svg .nd { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.4; }
+.flow-svg .tx { fill:var(--fam-deep); font-weight:700; }
+.flow-svg .tx-w { fill:var(--g0); font-weight:700; }
+.flow-svg .tx-s { fill:var(--g6); }
+.flow-svg .tx-d { fill:var(--g8); }
+.flow-svg .ln { stroke:var(--fam); stroke-width:1.6; fill:none; }
+.flow-svg .ln-r { stroke:var(--g5); stroke-width:1.4; fill:none; stroke-dasharray:5 4; }
+.flow-svg .mk { fill:var(--fam); }
+.flow-svg .mk-g { fill:var(--g5); }
+
+/* 定律卡墙 */
+.laws { display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:640px) { .laws { grid-template-columns:1fr 1fr; } }
+.law {
+  background:var(--g0); border:1px solid var(--line); border-left:3px solid var(--fam);
+  border-radius:var(--r-el); padding:11px 14px;
+}
+.law .l-t { font-weight:700; font-size:15.5px; color:var(--ink); }
+.law .l-t .l-no { color:var(--fam-deep); font-family:var(--font-head); margin-right:6px; }
+.law p { font-size:14.5px; color:var(--ink-soft); margin:4px 0 0; line-height:1.65; }
+
+/* 三轨分流卡 */
+.tracks { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:820px) { .tracks { grid-template-columns:1fr 1fr 1fr; } }
+.track {
+  background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam);
+  border-radius:var(--r-box); padding:14px 16px; box-shadow:var(--sh-1);
+}
+.track .tk-name { font-weight:700; font-size:16.5px; color:var(--fam-deep); margin-bottom:4px; }
+.track .tk-q { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.track .tk-how { font-size:15px; color:var(--g8); margin-bottom:6px; }
+.track .tk-eg { font-size:14.5px; color:var(--ink-soft); background:var(--fam-soft); border-radius:var(--r-el); padding:6px 10px; }
+
+/* 三步法条 */
+.steps3 { display:flex; gap:0; margin:16px 0; flex-direction:column; }
+@media (min-width:768px) { .steps3 { flex-direction:row; } }
+.step {
+  flex:1 1 0; background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:13px 16px; position:relative; margin-bottom:10px;
+}
+@media (min-width:768px) {
+  .step { margin-bottom:0; margin-right:26px; }
+  .step:last-child { margin-right:0; }
+  .step:not(:last-child)::after {
+    content:"›"; position:absolute; right:-19px; top:50%; transform:translateY(-58%);
+    font-size:26px; color:var(--fam); font-weight:700;
+  }
+}
+.step .sp-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:14.5px; margin-right:8px;
+}
+.step .sp-t { font-weight:700; font-size:16px; color:var(--ink); }
+.step p { font-size:14.5px; color:var(--ink-soft); margin:6px 0 0; line-height:1.65; }
+
+/* 作者卡（四家） */
+.masters { display:grid; grid-template-columns:1fr; gap:12px; }
+@media (min-width:768px) { .masters { grid-template-columns:1fr 1fr; } }
+.master { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 18px; }
+.master .m-head { display:flex; align-items:baseline; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.master .m-name { font-weight:700; font-size:16px; color:var(--fam-deep); }
+.master .m-tag { font-size:14.5px; color:var(--ink-faint); }
+.master ul, .master ol { margin-bottom:0; }
+.master li { font-size:15px; color:var(--g8); }
+
+/* 工具卡 */
+.tool-card {
+  background:var(--g0); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:16px 20px; margin:16px 0;
+}
+.tool-card .t-name { font-weight:700; font-size:17px; color:var(--fam-deep); }
+.tool-card .t-sub { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.tool-card ul { margin-bottom:0; }
+
+/* 警示条（琥珀，非家族色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">个人IP</span><span class="sep">›</span>
+    <span class="here">IP配图方法论</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">个人IP · 图随文走的系统方法</p>
+    <h1>IP配图方法论</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+      <span class="num">验证 unverified · 置信 low</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意配图就是把说不清的意思悄悄画出来"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>用固定 IP 角色给文章自动配图——<strong>不是一张张画，是设计一套"读→判→分→画→查→返工"的循环</strong>，让角色每张长得一样、每张都有存在理由。</p>
+    <div class="warn"><b>草稿·待验证：</b>verified: false——半成品概念，复习时请留意。已沉淀（2026-06-28 更新），来源为 6 位开源作者交叉验证：小互 IP Studio + illo（tmchow）+ 小黑（helloianneo）+ 宝玉（JimLiu）+ 卷卷（dososo）+ 橙线（orange2ai）。</div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>配图流水线：一个循环跑完 ·核心</h2>
+    <svg class="flow-svg" viewBox="0 0 680 250" role="img" aria-label="IP配图流水线：读全文、判断哪段配、三轨分流、按定律画、自查验收；不合格返工回画图环节">
+      <defs>
+        <marker id="fa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+        </marker>
+        <marker id="fg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mk-g"/>
+        </marker>
+      </defs>
+      <g>
+        <rect class="nd" x="8" y="60" width="92" height="52" rx="10"/>
+        <text class="tx" x="54" y="82" text-anchor="middle" font-size="15">① 读</text>
+        <text class="tx-s" x="54" y="101" text-anchor="middle" font-size="11.5">读全文</text>
+        <rect class="nd" x="132" y="60" width="92" height="52" rx="10"/>
+        <text class="tx" x="178" y="82" text-anchor="middle" font-size="15">② 判</text>
+        <text class="tx-s" x="178" y="101" text-anchor="middle" font-size="11.5">哪段要配</text>
+        <rect class="nd" x="256" y="60" width="92" height="52" rx="10"/>
+        <text class="tx" x="302" y="82" text-anchor="middle" font-size="15">③ 分</text>
+        <text class="tx-s" x="302" y="101" text-anchor="middle" font-size="11.5">三轨分流</text>
+        <rect class="nd" x="380" y="60" width="92" height="52" rx="10"/>
+        <text class="tx" x="426" y="82" text-anchor="middle" font-size="15">④ 画</text>
+        <text class="tx-s" x="426" y="101" text-anchor="middle" font-size="11.5">按定律画</text>
+        <rect class="nd" x="504" y="60" width="92" height="52" rx="10"/>
+        <text class="tx" x="550" y="82" text-anchor="middle" font-size="15">⑤ 查</text>
+        <text class="tx-s" x="550" y="101" text-anchor="middle" font-size="11.5">自查验收</text>
+        <line class="ln" x1="100" y1="86" x2="126" y2="86" marker-end="url(#fa)"/>
+        <line class="ln" x1="224" y1="86" x2="250" y2="86" marker-end="url(#fa)"/>
+        <line class="ln" x1="348" y1="86" x2="374" y2="86" marker-end="url(#fa)"/>
+        <line class="ln" x1="472" y1="86" x2="498" y2="86" marker-end="url(#fa)"/>
+      </g>
+      <path class="ln" d="M596,86 C640,86 648,180 560,196 L440,196 C432,196 426,190 426,182 L426,118" marker-end="url(#fa)"/>
+      <text class="tx-d" x="530" y="216" text-anchor="middle" font-size="12.5">⑥ 返工：不合格重画（合格才出循环）</text>
+      <text class="tx-s" x="54" y="46" font-size="12">丢一篇文章说"配图"，循环自己转</text>
+    </svg>
+    <p><strong>"判"环节的尺子</strong>（配图判断逻辑）：判断看的是<strong>读者会不会卡住</strong>，不是"我自己觉得讲清楚没"。该配的别漏（难懂原理、绕结构），不该配的别凑（文字已说明白），每段都过一遍，连"不配"都要写理由。</p>
+    <p>这条流水线正是<a href="../01-ai/循环工程.html">循环工程</a>的真实落地案例——读、判、分、画、查、返工，一个自己纠偏的闭环。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>七大共识定律（配图的"宪法"）</h2>
+    <p>5 位互不相识的独立项目作者，核心观点高度重合：</p>
+    <div class="laws">
+      <div class="law"><p class="l-t"><span class="l-no">1</span>角色必须干活</p><p>去掉角色画面还成立 = 失败。角色要卡在机器里、拉线、搬运，不能站旁边微笑。</p></div>
+      <div class="law"><p class="l-t"><span class="l-no">2</span>一图一想法</p><p>一张图只讲一个核心判断、一个隐喻、一个动作，不做说明书。</p></div>
+      <div class="law"><p class="l-t"><span class="l-no">3</span>隐喻优于符号</p><p>"被消息山压住的小人" 好于 "消息过多"。抽象概念先变成物理动作。</p></div>
+      <div class="law"><p class="l-t"><span class="l-no">4</span>大量留白</p><p>纯白背景、主体占 40-60%、至少 35% 空白。禁复杂背景、渐变、阴影。</p></div>
+      <div class="law"><p class="l-t"><span class="l-no">5</span>反PPT反图表</p><p>禁左上角写类型标题、禁整齐网格箭头、禁正式流程图感。</p></div>
+      <div class="law"><p class="l-t"><span class="l-no">6</span>质量标准前置</p><p>先定义"什么算好"再画，不是画完看感觉。</p></div>
+      <div class="law"><p class="l-t"><span class="l-no">7</span>风格一致 &gt; 每张不同</p><p>一篇文章锁一个招牌风，第一张通过的图成为"风格锚点"。</p></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>三轨分流：配图不是一种图</h2>
+    <p>一篇全画成"一个角色+一个道具"，看三张就腻。先分类再动笔：</p>
+    <div class="tracks">
+      <div class="track">
+        <p class="tk-name">情绪图</p>
+        <p class="tk-q">配什么：需要共鸣的内容</p>
+        <p class="tk-how">角色演一个处境，不干摆愁脸</p>
+        <p class="tk-eg">例：被 AI 替代——屏幕接管了活，椅子空了</p>
+      </div>
+      <div class="track">
+        <p class="tk-name">示意图</p>
+        <p class="tk-q">配什么：讲不清的流程、结构</p>
+        <p class="tk-how">角色钻进结构当干活的人，不是解说员</p>
+        <p class="tk-eg">例：小互钻进上下文窗口摇压缩机</p>
+      </div>
+      <div class="track">
+        <p class="tk-name">四格漫画</p>
+        <p class="tk-q">配什么：有起承转合的内容</p>
+        <p class="tk-how">同一角色四个表情，故事自己讲完</p>
+        <p class="tk-eg">例：听说AI能干活→翻车→诶会了→真香</p>
+      </div>
+    </div>
+    <p>关键区别：<strong>角色是流程的一部分，不是解说员。</strong></p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>IP 设计三定律 + 锚点图</h2>
+    <p>为什么"线条小狗""蛋黄哥"能火？<strong>赢在态度不在精致。</strong></p>
+    <ol>
+      <li><strong>弱人设/反差 &gt; 强造型</strong>——基础形状（圆/方/三角）就够，越复杂 AI 越难复现一致</li>
+      <li><strong>角色是"情绪代名词"</strong>——让人看到就想说"这就是我"</li>
+      <li><strong>特色在姿态和态度里</strong>，不在静态奇观里</li>
+    </ol>
+    <p><strong>锚点图 + 招牌特征</strong>：保证同一个角色每次画出来是同一张脸——锚点图（标准照）+ 招牌特征（一眼认出的标志，如红框眼镜）+ 颜色只点一处。口诀：形状越简单越稳、脸定死、给个招牌、颜色只点一处。</p>
+    <blockquote>验收标准：把角色从图里抠掉，图还看得懂 = 它只是张贴纸。<strong>少了它，这张图就不成立。</strong></blockquote>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>小黑三步法</h2>
+    <div class="steps3">
+      <div class="step">
+        <span class="sp-no">1</span><span class="sp-t">挑锚点</span>
+        <p>只挑认知转折点（核心判断、混乱到有序、前后对比），一篇 4-8 张，够了。</p>
+      </div>
+      <div class="step">
+        <span class="sp-no">2</span><span class="sp-t">编隐喻</span>
+        <p>抽象变物理动作（卡住/漏掉/变重/回流）；系统变低科技物件（坏机器/纸箱/水管/怪表盘）；角色承担动作。<strong>"重新发明"原则</strong>：同类主题也必须换新物件。</p>
+      </div>
+      <div class="step">
+        <span class="sp-no">3</span><span class="sp-t">反PPT</span>
+        <p>8 种结构（流程/系统/对比/状态/隐喻/分层/地图/分镜），但禁左上角写类型标题、禁整齐网格。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>四家精华</h2>
+    <div class="masters">
+      <div class="master">
+        <p class="m-head"><span class="m-name">宝玉</span><span class="m-tag">文字渲染铁律</span></p>
+        <ol>
+          <li><strong>错字改提示词重生，绝不代码涂改</strong>——涂改会留字体不匹配、抗锯齿不一致痕迹</li>
+          <li>色值不入图——hex 和颜色名只是渲染指引，不能出现在图片上</li>
+          <li>参考图必须配文字描述——光传 ref 不够，AI 会忽略</li>
+          <li>身份保持——别写冗长外貌描述（模型会合成新人），用简短锁定："使用参考图中的同一个人"</li>
+        </ol>
+      </div>
+      <div class="master">
+        <p class="m-head"><span class="m-name">卷卷</span><span class="m-tag">平行世界与颜色语义</span></p>
+        <ul>
+          <li><strong>平行世界</strong>：每篇文章创造独立纸面世界（整理桌/路径地图/修理铺/天气房），世界不是装饰，是内容的视觉隐喻</li>
+          <li><strong>颜色 = 语义</strong>：红=纠偏/风险、蓝=路径/证据、绿=成长、橙=当前动作，每张只用 2-4 个强调色</li>
+          <li><strong>线条语言</strong>：铅笔线=解释、虚线=决策、圆圈=聚焦、流动线=情感；至少 4 个维度变化才算新图</li>
+        </ul>
+      </div>
+      <div class="master">
+        <p class="m-head"><span class="m-name">橙线</span><span class="m-tag">极简场景</span></p>
+        <ul>
+          <li><strong>人极小物极大</strong>：双重锁定尺度——prompt 里对人说 tiny、对物说 enormous（AI 会自动放大人物）</li>
+          <li><strong>抽卡式工作流</strong>：并行生成所有候选，全部展示给人挑，方向对不够好就锐化 prompt 重生。<strong>人类品味是质量关卡，不信任 AI 预筛选</strong></li>
+          <li>"需要解释的隐喻就是失败的隐喻"——动作场景 &gt; 抽象符号</li>
+        </ul>
+      </div>
+      <div class="master">
+        <p class="m-head"><span class="m-name">illo</span><span class="m-tag">方法论是常量，角色是参数（Trevin Chow）</span></p>
+        <ul>
+          <li><strong>常量</strong>（不变）：构图纪律、质量标准、prompt 模板、来源路由</li>
+          <li><strong>参数</strong>（可换）：角色包、画风（16 种：riso/blueprint/woodcut/pixel/clay/chalk 等）、配色</li>
+          <li>两种 Register 分工：<strong>编辑场景</strong>（被捕捉的时刻，禁箭头图解）vs <strong>解释图表</strong>（手绘风格结构图，仍是"画"）</li>
+          <li>"把想法变成动作"：不画"发货太慢"，画吉祥物在转一台滴着包裹的压机</li>
+          <li>角色完整性三原则：遮挡不穿透身体、肢体数量正确、工具拿在手里不贴身上</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>工具：小互 IP Studio</h2>
+    <div class="tool-card">
+      <p class="t-name">小互 IP Studio（开源 Agent Skill，MIT）</p>
+      <p class="t-sub">github.com/xiaohuailabs/xiaohu-ip-studio · <a class="ext" href="https://github.com/xiaohuailabs/xiaohu-ip-studio" target="_blank" rel="noopener noreferrer">仓库地址</a></p>
+      <ul>
+        <li><strong>能力</strong>：丢文章说"配图"→自动读全文→判断哪段配→三轨分类→画→自查返工</li>
+        <li><strong>依赖</strong>：python3 标准库，零第三方包</li>
+        <li><strong>生图方式</strong>：图像 API（GPT-image-2）/ Codex 自带（免费限 1K）/ 只出提示词不生图（零成本）</li>
+        <li><strong>项目灵感</strong>：小黑（骨架）、宝玉（文字渲染）、卷卷（叙事统一）、illo（顶层哲学）、橙线（极简场景）</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">配图流程是循环工程的真实落地案例</span></a>
+      <a href="../07-ip/AI角色设定集.html"><span class="rel-t">AI角色设定集</span><span class="rel-d">角色文档约束行为输出，锚点图是配图场景的特化版</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">小互 IP Studio 本身就是一个 Agent Skill</span></a>
+      <a href="../08-ecomm/GEO生成式引擎优化.html"><span class="rel-t">GEO生成式引擎优化</span><span class="rel-d">IP 配图是内容种草的视觉载体</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥实践总结（草稿）· 已沉淀，更新时间 2026-06-28</li>
+      <li>小互 IP Studio（github.com/xiaohuailabs/xiaohu-ip-studio）</li>
+      <li>illo（tmchow）、小黑（helloianneo）、宝玉（JimLiu）、卷卷（dososo）、橙线（orange2ai）——6 位开源作者交叉验证</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 个人IP家族 · IP配图方法论</p>
+    <p>词条源：concepts(概念库)/个人IP/IP配图方法论.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">配图流水线 ·核心</a></li>
+    <li><a href="#s3">七大共识定律</a></li>
+    <li><a href="#s4">三轨分流</a></li>
+    <li><a href="#s5">IP设计三定律+锚点图</a></li>
+    <li><a href="#s6">小黑三步法</a></li>
+    <li><a href="#s7">四家精华</a></li>
+    <li><a href="#s8">工具·小互 IP Studio</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

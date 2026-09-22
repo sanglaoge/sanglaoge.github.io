@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEO生成式引擎优化 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：电商设计 · 明快橙（判断路线·引用打分） ---- */
+:root {
+  --fam:#c2410c; --fam-deep:#7c2d12; --fam-soft:#fff7ed; --fam-line:#fed7aa;
+}
+/* ---- 页面专属：判断路线布局 ---- */
+
+/* 衬线金句 */
+.punch {
+  font-family:var(--font-head); font-size:clamp(20px,3.4vw,28px); font-weight:700;
+  line-height:1.65; color:var(--g9); border-left:4px solid var(--fam);
+  padding:4px 0 4px 18px; margin:18px 0;
+}
+.punch .hl-w { color:var(--fam-deep); }
+
+/* SVG 路线图 */
+.routescroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:16px 0; }
+.route { min-width:640px; width:100%; height:auto; display:block; }
+.svg-line { stroke:var(--g4); stroke-width:2; fill:none; }
+.svg-line-new { stroke:var(--fam); stroke-width:2.5; fill:none; }
+.svg-node-old { fill:var(--g2); stroke:var(--g5); stroke-width:1.5; }
+.svg-node-new { fill:var(--fam); stroke:var(--fam); stroke-width:1.5; }
+.svg-txt { fill:var(--g7); font-size:14.5px; font-family:var(--font-body); }
+.svg-txt-new { fill:var(--fam-deep); font-size:14.5px; font-weight:700; font-family:var(--font-body); }
+.svg-cap { fill:var(--ink-faint); font-size:14.5px; font-family:var(--font-body); }
+.svg-brace { stroke:var(--fam); stroke-width:1.5; fill:none; }
+
+/* 三层卡（被看到/被选择/被吸收） */
+.lvl3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .lvl3 { grid-template-columns:repeat(3,1fr); } }
+.lvl { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 16px; }
+.lvl .lv-n { font-size:13px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em; }
+.lvl .lv-t { font-weight:700; font-size:16px; color:var(--ink); margin-top:2px; }
+.lvl .lv-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; }
+.lvl.new { border-color:var(--fam-line); background:var(--fam-soft); }
+.lvl.new .lv-n { color:var(--fam-deep); }
+.lvl .lv-b { display:inline-block; margin-top:6px; font-size:13px; border-radius:999px; padding:0 10px; font-weight:600; }
+.lvl.old .lv-b { background:var(--g2); color:var(--g7); border:1px solid var(--g4); }
+.lvl.new .lv-b { background:var(--g0); color:var(--fam-deep); border:1px solid var(--fam-line); }
+
+/* 权重打分卡 */
+.wbar { background:var(--g2); border-radius:999px; height:8px; width:100%; max-width:220px; margin-top:5px; overflow:hidden; }
+.wbar span { display:block; height:100%; background:var(--fam); border-radius:999px; }
+.tbl th.c, .tbl td.c { text-align:center; white-space:nowrap; }
+.chip-w { display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:0 10px; }
+.chip-hi { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.chip-mid { background:var(--g2); color:var(--g7); border:1px solid var(--g4); }
+
+/* 写法对照 */
+.duo { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .duo { grid-template-columns:1fr 1fr; } }
+.duo .du-c { border-radius:var(--r-el); padding:12px 16px; font-size:15px; }
+.duo .bad { background:var(--g2); border:1px solid var(--g4); color:var(--g7); }
+.duo .good { background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--g8); }
+.duo .du-t { font-size:13px; font-weight:700; margin-bottom:4px; }
+.duo .bad .du-t { color:var(--g6); }
+.duo .good .du-t { color:var(--fam-deep); }
+
+/* 数据锚点 */
+.facts { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:16px 0; }
+.fact { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 14px 10px; }
+.fact .fv { font-size:23px; font-weight:700; color:var(--fam); line-height:1.2; font-variant-numeric:tabular-nums; }
+.fact .fk { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+
+/* 验收三层（打分卡） */
+.accept { counter-reset:ac; }
+.acc { display:grid; grid-template-columns:88px 1fr; gap:0; border:1px solid var(--line); border-radius:var(--r-el); overflow:hidden; margin-bottom:10px; counter-increment:ac; }
+@media (max-width:639px) { .acc { grid-template-columns:1fr; } }
+.acc .ac-l { background:var(--fam-soft); color:var(--fam-deep); padding:12px 14px; font-weight:700; font-size:15.5px; font-family:var(--font-head); }
+.acc .ac-r { padding:12px 16px; background:var(--g0); font-size:14.5px; color:var(--g8); }
+.acc .ac-q { font-weight:700; color:var(--g9); font-size:15px; }
+.tri-q { text-align:center; }
+.tri-q b { color:var(--fam-deep); }
+
+/* 误区列表 */
+.myth { list-style:none; padding-left:0; }
+.myth li { padding:7px 0 7px 26px; position:relative; border-bottom:1px solid var(--line); color:var(--g8); font-size:15.5px; }
+.myth li:last-child { border-bottom:none; }
+.myth li::before { content:"×"; position:absolute; left:4px; top:6px; color:var(--fam); font-weight:700; }
+.myth li b { color:var(--g9); }
+
+/* Entity 四问 */
+.e4 { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:16px 0; }
+.eq { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:10px 14px; }
+.eq .eq-t { font-weight:700; font-size:15px; color:var(--ink); }
+.eq .eq-d { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+.eq.key { border-color:var(--fam-line); background:var(--fam-soft); }
+.eq.key .eq-t { color:var(--fam-deep); }
+
+/* 三词体检 */
+.tri3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin:16px 0; }
+.t3 { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:10px 14px; text-align:center; }
+.t3 .t3-t { font-weight:700; font-size:16px; color:var(--fam-deep); }
+.t3 .t3-d { font-size:14.5px; color:var(--g8); margin-top:2px; }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">电商设计</span><span class="sep">›</span>
+    <span class="here">GEO生成式引擎优化</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">电商设计 · 让 AI 引用你的内容工程</p>
+    <h1>GEO 生成式引擎优化</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-06-28</span>
+      <span>下次复核 2026-09-07</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意被 AI 引用推荐等于被举牌点名"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p class="punch">GEO = 让你的内容被 AI 引用和推荐——不是发更多文章，而是让内容变成 AI 能放心使用的<span class="hl-w">证据</span>。</p>
+    <blockquote>最常见的误区：「多发文章 AI 就会引用我」——错。批量发稿只解决「被看到」，不解决「被吸收」。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三个层次：从被看到到被吸收</h2>
+    <div class="lvl3">
+      <div class="lvl old"><div class="lv-n">层次一 · 传统 SEO 时代就有</div><div class="lv-t">被看到（索引）</div><div class="lv-d">页面进入 AI 候选池</div><span class="lv-b">旧战场</span></div>
+      <div class="lvl new"><div class="lv-n">层次二 · 新战场</div><div class="lv-t">被选择（重排）</div><div class="lv-d">AI 认为你比其他来源更有用</div><span class="lv-b">新战场</span></div>
+      <div class="lvl new"><div class="lv-n">层次三 · 新战场</div><div class="lv-t">被吸收/归因（装配+引用）</div><div class="lv-d">你的事实进入答案，品牌没被张冠李戴</div><span class="lv-b">新战场</span></div>
+    </div>
+    <p>同一个问题，AI 可能列出十几个参考来源，但真正被答案吸收的只有两三篇——有的链接只是出现在来源列表里，正文完全没用到。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>AI 回答的 8 个环节（路线图）</h2>
+    <div class="routescroll">
+      <svg class="route" viewBox="0 0 680 170" role="img" aria-label="AI 回答八环节流程：记忆、索引、查询、检索是 SEO 时代旧战场；重排、装配、引用是 GEO 新战场；最后是治理">
+        <line class="svg-line" x1="30" y1="52" x2="330" y2="52"/>
+        <line class="svg-line-new" x1="330" y1="52" x2="575" y2="52"/>
+        <line class="svg-line" x1="575" y1="52" x2="648" y2="52"/>
+        <circle class="svg-node-old" cx="46" cy="52" r="16"/>
+        <circle class="svg-node-old" cx="128" cy="52" r="16"/>
+        <circle class="svg-node-old" cx="210" cy="52" r="16"/>
+        <circle class="svg-node-old" cx="292" cy="52" r="16"/>
+        <circle class="svg-node-new" cx="376" cy="52" r="17"/>
+        <circle class="svg-node-new" cx="460" cy="52" r="17"/>
+        <circle class="svg-node-new" cx="544" cy="52" r="17"/>
+        <circle class="svg-node-old" cx="630" cy="52" r="16"/>
+        <text class="svg-txt" x="46" y="92" text-anchor="middle">记忆</text>
+        <text class="svg-txt" x="128" y="92" text-anchor="middle">索引</text>
+        <text class="svg-txt" x="210" y="92" text-anchor="middle">查询</text>
+        <text class="svg-txt" x="292" y="92" text-anchor="middle">检索</text>
+        <text class="svg-txt-new" x="376" y="92" text-anchor="middle">重排</text>
+        <text class="svg-txt-new" x="460" y="92" text-anchor="middle">装配</text>
+        <text class="svg-txt-new" x="544" y="92" text-anchor="middle">引用</text>
+        <text class="svg-txt" x="630" y="92" text-anchor="middle">治理</text>
+        <text class="svg-cap" x="170" y="26" text-anchor="middle">SEO 时代就在做</text>
+        <path class="svg-brace" d="M 355 108 C 355 122, 370 130, 376 130 L 544 130 C 550 130, 565 122, 565 108"/>
+        <text class="svg-txt-new" x="460" y="152" text-anchor="middle">GEO 新战场（最该盯的三环）</text>
+      </svg>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>AI 引用六要素（打分卡）</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>要素</th><th class="c">权重</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>相关性</strong><div class="wbar"><span style="width:30%"></span></div></td><td class="c num">30%</td><td>语义匹配，不是关键词堆砌</td></tr>
+        <tr><td><strong>权威性</strong></td><td class="c"><span class="chip-w chip-hi">高</span></td><td>来源可信度（专家、权威机构）</td></tr>
+        <tr><td><strong>时效性</strong></td><td class="c"><span class="chip-w chip-hi">高</span></td><td>内容够新</td></tr>
+        <tr><td><strong>可抽取</strong></td><td class="c"><span class="chip-w chip-hi">高</span></td><td>AI 能轻松读懂（结构化、有明确数据）</td></tr>
+        <tr><td><strong>一致性</strong></td><td class="c"><span class="chip-w chip-mid">中</span></td><td>多处信息一致</td></tr>
+        <tr><td><strong>安全性</strong></td><td class="c"><span class="chip-w chip-mid">中</span></td><td>内容安全合规</td></tr>
+      </tbody>
+    </table></div>
+    <div class="diagnosis" style="border-left:4px solid var(--fam); background:var(--fam-soft); border-radius:0 var(--r-el) var(--r-el) 0; padding:12px 18px; margin:16px 0; font-size:15.5px;">
+      <strong>证据引用层权重最高（43%）</strong>：文章里有权威原文引用、统计数据、可信来源的，被 AI 引用概率最高。有数据有出处 = AI 眼中的硬通货。（李相宇 GEO 第二讲）
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>AI 眼中的「内容质量」</h2>
+    <p>人的质量 = 观点犀利、故事打动人；AI 的质量 = <strong>有对象、有范围、有步骤、有边界</strong>（可判断、可抽取、可验证、可组合）。</p>
+    <div class="duo">
+      <div class="du-c bad"><div class="du-t">AI 没法用</div>「我们是领先的解决方案」——没有可抽取的事实</div>
+      <div class="du-c good"><div class="du-t">直接拿去回答 3 个问题</div>「适合月订单 1000-10000 单的 Shopify 店铺，部署 5 步：授权→知识库→FAQ→规则→试运行。适用物流/退货/售前，复杂客诉需人工复核」</div>
+    </div>
+    <h3>单篇 GEO 内容的 7 个模块</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>模块</th><th>做什么</th><th>为什么 AI 需要</th></tr></thead>
+      <tbody>
+        <tr><td>标题</td><td>对应真实用户问题</td><td>AI 按问题检索，不按吸睛标题</td></tr>
+        <tr><td>定义块</td><td>开头快速给出适用范围</td><td>AI 不喜欢猜</td></tr>
+        <tr><td>证据块</td><td>80-150 字答案级段落</td><td>可被 AI 直接拿走用</td></tr>
+        <tr><td>结构块</td><td>H2/H3/列表/表格/FAQ/步骤</td><td>机器理解的接口</td></tr>
+        <tr><td>实体块</td><td>品牌名/产品名/时间一致</td><td>避免 AI 混淆</td></tr>
+        <tr><td>风险块</td><td>适用/不适用/限制条件</td><td>边界让内容更可信</td></tr>
+        <tr><td>引用块</td><td>来源、更新时间</td><td>归因准确</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>21 万条样本给出的硬数字</h2>
+    <div class="facts">
+      <div class="fact num"><div class="fv">6.3 倍</div><div class="fk">平台+社区类域名仅占 4.68%，却贡献 29% 引用量（效率是均值 6.3 倍）</div></div>
+      <div class="fact num"><div class="fv">70%</div><div class="fk">高引用标题含 2026 年份；只写「最新/近期」的引用率不足 10%</div></div>
+      <div class="fact num"><div class="fv">31-50 字</div><div class="fk">高引用标题长度：年份+品类+地域+动作词+关键维度</div></div>
+    </div>
+    <p>最高效标题组合：<strong>年份+榜单、年份+推荐选购</strong>。开头 300 字最关键——别写情绪化引入，直接给「回答什么问题、适合谁、判断标准」。高引用特征词：年份、榜单、排行、推荐、选购、指南、步骤、对比、评测、口碑。</p>
+    <h3>各 AI 平台信源偏好</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>AI 平台</th><th>偏好信源</th></tr></thead>
+      <tbody>
+        <tr><td>豆包</td><td>抖音（接近 28%）、今日头条</td></tr>
+        <tr><td>腾讯元宝</td><td>公众号、腾讯新闻（腾讯系）</td></tr>
+        <tr><td>通义千问</td><td>UC、阿里生态</td></tr>
+        <tr><td>DeepSeek</td><td>门户、媒体、第三方（无自家生态）</td></tr>
+        <tr><td>百度 AI</td><td>百度自家（文库、知道、百科、百家号）</td></tr>
+      </tbody>
+    </table></div>
+    <p>原因：各家优先用自己更容易获取、更低成本、更可控的内容。六步投放：选目标 AI → 列问题库 → 采集引用 → 反推信源策略 → 适配各版 → 监测归因补投。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>内容工程 8 模块 + 查询扩散金矿</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th class="c">#</th><th>模块</th><th>核心任务</th></tr></thead>
+      <tbody>
+        <tr><td class="c num">1</td><td>问题地图+提示策略</td><td>收集 100-300 个真实问题，按意图/角色/场景分组</td></tr>
+        <tr><td class="c num">2</td><td>知识资产库</td><td>品牌事实、案例、数据口径——知识库薄 = 内容只能泛泛而谈</td></tr>
+        <tr><td class="c num">3</td><td>结构与证据</td><td>切成「知识原子」：每个原子有主张+证据+来源+时间+适用范围</td></tr>
+        <tr><td class="c num">4</td><td>任务化生产</td><td>每篇内容是明确任务：目标提示→目标答案→证据→结构→边界→测试</td></tr>
+        <tr><td class="c num">5</td><td>内容管理</td><td>草稿→审核→版本→发布→更新</td></tr>
+        <tr><td class="c num">6</td><td>质量门禁</td><td>发布前过评分卡：结构/证据/风险/表达/可发布性</td></tr>
+        <tr><td class="c num">7</td><td>权威网络分发</td><td>官网+第三方媒体+社区，同一事实多源一致</td></tr>
+        <tr><td class="c num">8</td><td>观测与归因</td><td>多平台、多提示、多时间段连续观测</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>提示词只是工具，知识库才是地基。</strong></p>
+    <h3>Fan-out：一个 Query 扩散成 8-12 个子查询</h3>
+    <p>AI 先改写主词（千人千面），再把主意图拆成 8-12 个子查询并发搜。free/pricing/features 是 AI 扩散词价值一般；<strong>「行业+理想客户画像（ICP）」词是金矿</strong>——既被 AI 爬，又卡在付费客户决策路径。挖法：让 ChatGPT/Claude 模拟 AI Search 列扩散子查询 → ICP 筛金矿 → 写极度垂直的结构化内容 → 分发到 AI 喜欢的信源（Reddit/G2）放大。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>项目验收：三层框架与三连问</h2>
+    <div class="accept">
+      <div class="acc"><div class="ac-l">被看见</div><div class="ac-r"><span class="ac-q">有没有进答案？</span><br>提及率、平均提及排名、Top-N 比例、商品/门店卡片可见度</div></div>
+      <div class="acc"><div class="ac-l">被说对</div><div class="ac-r"><span class="ac-q">AI 怎么描述你？</span><br>情感倾向分布、品牌信息准确度、核心信息命中率、内容引用率与媒体收录率</div></div>
+      <div class="acc"><div class="ac-l">变成生意</div><div class="ac-r"><span class="ac-q">投入变没变收入？</span><br>交易卡片转化、独立线索、官网三步链（爬虫→引用→回流）</div></div>
+    </div>
+    <p class="punch tri-q" style="border-left:none; padding-left:0; text-align:center;">排第几？说了什么？带来什么？</p>
+    <p style="text-align:center; margin-top:-10px;">三问都能拿出数据、追回证据，项目才算验收过关。两个易骗点：<strong>平均排名会骗人</strong>（稳定第 3 不等于一半第 1 一半第 5，要看 Top-N 分布）；<strong>发布量不等于引用率</strong>（发 50 篇被引 3 篇，按媒体收录率调预算）。</p>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>动手前的判断：Entity 四问与格局</h2>
+    <h3>做 GEO 第一件事不是找词，是定义 Entity（网站的身份证）</h3>
+    <div class="e4">
+      <div class="eq"><div class="eq-t">我是谁</div><div class="eq-d">一句话说清网站是干什么的</div></div>
+      <div class="eq"><div class="eq-t">我提供什么</div><div class="eq-d">产品与服务边界</div></div>
+      <div class="eq"><div class="eq-t">我服务谁</div><div class="eq-d">目标人群画像</div></div>
+      <div class="eq key"><div class="eq-t">我不覆盖什么</div><div class="eq-d">最易漏的一问：看似相关实则模糊的方向，搜索量再高也不碰</div></div>
+    </div>
+    <p>Entity=书名，Topical Map=大纲，内容=正文——书名起歪了，写得再多也是废纸。</p>
+    <h3>当前格局（别 all in）</h3>
+    <ul class="myth">
+      <li><b>误区一</b>「GEO 流量已经很大了」——SEO 仍占流量大头约 42%，GEO 合计约 0.29%；AI 概览覆盖 20%+ 关键词，排名第一点击量降 34.5%。趋势明确但在早期，提前布局别押注</li>
+      <li><b>误区二</b>「SEO 做好了 GEO 自然就有」——需要额外品牌建设+内容种草</li>
+      <li><b>误区三</b>「GEO 和 SEO 做一样的事」——外链优先级变了，答案型内容不同（维基百科专属词条与权威媒体最高，社区讨论次之，普通外链价值下降）</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>官网施工三词 + 桑老哥直用</h2>
+    <div class="tri3">
+      <div class="t3"><div class="t3-t">可见</div><div class="t3-d">爬虫能抓，关键内容别藏图片/脚本</div></div>
+      <div class="t3"><div class="t3-t">可信</div><div class="t3-d">事实、证据、来源可核验</div></div>
+      <div class="t3"><div class="t3-t">可引用</div><div class="t3-d">对真实问题给清楚完整易摘取的答案</div></div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">独立站 / 亚马逊 Listing</h3>
+      <p>前 2000 字给答案、FAQ/结构化数据、权威外链、实体一致。Listing 走商品页 GEO：标题层级清晰、五点描述结构化（每点=一个证据块）、A+ 内容带定义和适用范围——AI 回答「500 元以内通勤耳机」时需要的是参数、对比、适用人群、售后。</p>
+    </div>
+    <div class="card hl">
+      <h3 style="margin-top:0;">个人 IP（桑老哥直用）</h3>
+      <p>sanglaoge.github.io 按三词体检：共学笔记写成「针对真实问题的清楚答案」+来源可核验+结构机器可读——别人问 AI「桑老哥共学笔记」能引用到原文。品牌名、产品名、案例名全平台一致，第三方信源互证。GEO 优化的是概率不是确定结果：30 个高价值提示 × 4 个引擎 × 5 次重复 = 600 条观测，看时间序列变化。</p>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Tokenmaxxing.html"><span class="rel-t">Tokenmaxxing</span><span class="rel-d">交叉验证在「装配」环节最有效：多来源让 AI 更放心</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">对 AI「能抽取」的内容质量标准，和 GEO 的「证据密度」同源</span></a>
+      <a href="../01-ai/锯齿智能.html"><span class="rel-t">锯齿智能</span><span class="rel-d">AI 能力锯齿 → GEO 结果也锯齿，需要概率思维+重复测量</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">知识显式化后切成可引用的「知识原子」，与知识资产库互补</span></a>
+      <a href="../02-think/信号与噪音过滤器.html"><span class="rel-t">信号与噪音过滤器</span><span class="rel-d">GEO 技巧是信号还是噪音？这套方法论过了「基础单元能活几年」的测试</span></a>
+    </div>
+    <p style="margin-top:10px;"><span style="color:var(--ink-faint)">Customer World Model</span>（Pedro Franceschi 2026-06：让外部 AI 引用你 vs 让自己的 AI 理解客户，两者互补；原词条 2026-09-20 删，思想并入本条）</p>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>子木 SEO/GEO 文章（入门）+《GEO 流量密码：Fan-out Rank》（2026-07-27）+《GEO 排名因子之一：Entity 和主题权重》（2026-09-07）</li>
+      <li>姚金刚《GEO 内容工程》公开课三讲（WaytoAGI 2026-06-27 起；第三讲 21 万条 AI 引用数据，2026-07-26）+ 第四次公开课《官网正在成为 GEO 主阵地》（2026-08，2026-09-18 审计并入）</li>
+      <li>李相宇 GEO 内容工程第二讲（六要素权重+工程思维，WaytoAGI 2026-06-27）</li>
+      <li>拔刀刘《GEO 项目怎么验收好》（2026-09-03，验收三层框架）</li>
+      <li>工具：GEOFlow 开源 github.com/yaojingang/GEOFlow</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 电商设计家族 · GEO生成式引擎优化</p>
+    <p>词条源：concepts(概念库)/电商设计/GEO生成式引擎优化.md（2026-06-28 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话</a></li>
+    <li><a href="#s2">三个层次</a></li>
+    <li><a href="#s3">8 环节路线图</a></li>
+    <li><a href="#s4">六要素打分卡</a></li>
+    <li><a href="#s5">AI 眼中的质量</a></li>
+    <li><a href="#s6">21 万条硬数字</a></li>
+    <li><a href="#s7">8 模块+金矿</a></li>
+    <li><a href="#s8">验收三连问 ·核心</a></li>
+    <li><a href="#s9">Entity 四问·格局</a></li>
+    <li><a href="#s10">官网施工·直用</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

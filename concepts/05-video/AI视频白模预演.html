@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频白模预演 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（克制·影像质感） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 衬线金句 */
+blockquote.bq p {
+  font-family:var(--font-head); font-size:18.5px; line-height:1.75; color:var(--ink);
+}
+
+/* 治什么病：三步递进 */
+.dis3 { display:grid; grid-template-columns:1fr; gap:0; margin:16px 0; }
+@media (min-width:768px) { .dis3 { grid-template-columns:1fr 34px 1fr 34px 1fr; align-items:stretch; } }
+.dis3 .card h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.dis3 .card p { font-size:15px; margin:0; }
+.d-arr { display:flex; align-items:center; justify-content:center; color:var(--g4); font-size:20px; font-weight:700; padding:4px 0; }
+@media (min-width:768px) { .d-arr { padding:0; } }
+.dis3 .card.fix { border-color:var(--fam-line); background:var(--fam-soft); }
+
+/* 两步工作流 SVG */
+.flow-wrap { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 10px 6px; margin:16px 0; }
+.flow-wrap svg { width:100%; height:auto; display:block; }
+.fw-stage { fill:var(--g0); stroke:var(--fam); stroke-width:1.6; }
+.fw-stage2 { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.6; }
+.fw-chip { fill:var(--g2); stroke:var(--g4); stroke-width:1.2; }
+.fw-t { fill:var(--ink); font-weight:700; }
+.fw-s { fill:var(--ink-soft); }
+.fw-f { fill:var(--ink-faint); }
+.fw-arr { stroke:var(--g6); stroke-width:1.8; fill:none; }
+.fw-mk { fill:var(--g6); }
+.fw-back { stroke:var(--g5); stroke-width:1.4; fill:none; stroke-dasharray:5 4; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 原型-交付分工卡 */
+.duo { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .duo { grid-template-columns:1fr 1fr; } }
+.duo .card h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.duo .card p { font-size:15px; }
+.duo .stat { font-size:24px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.3; }
+.duo .stat small { font-size:14.5px; font-weight:400; color:var(--ink-faint); display:block; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI视频白模预演</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频家族 · 开机前的排练工序</p>
+    <h1>AI视频白模预演</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-09</span>
+      <span>下次复核 2026-12-09</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探墙张望，示意正式开机前先在白模里预演一遍"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote class="bq">
+      <p>生成正式视频前，先在 Blender 里用灰模把走位和机位排好——把确定的部分钉死，再交给视频模型出片。让模型少猜一点，就少抽几轮卡。</p>
+    </blockquote>
+    <p>像拍电视剧先走位排练：演员站哪、摄影机架哪、怎么推，都在正式开机前定好。白模预演就是把这套「排练」搬进 AI 视频工作流。原案例出自 GPT-6 Astra 演示：创作者用 AI 操控 Blender 搭白模，再交给 Seedance 2.5 出正式片。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>治什么病：AI 视频抽卡</h2>
+    <div class="dis3">
+      <div class="card">
+        <h3>痛点</h3>
+        <p>画面挺美，但人物没走到该去的位置、镜头没跟上；改提示词重来，又抽一次</p>
+      </div>
+      <div class="d-arr" aria-hidden="true">→</div>
+      <div class="card">
+        <h3>根因</h3>
+        <p>视频模型每次都在「猜」走位、构图、运镜——猜的变量越多，越不稳</p>
+      </div>
+      <div class="d-arr" aria-hidden="true">→</div>
+      <div class="card fix">
+        <h3>解法</h3>
+        <p>把你能确定的变量（人站哪、镜头架哪、怎么推）提前固定，模型只剩「猜」画面质感</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>工作流两步 ·核心</h2>
+    <div class="flow-wrap">
+      <svg viewBox="0 0 680 308" role="img" aria-label="白模预演两步流程：第一步Blender灰模排走位定机位，交接钉死的安排，第二步Seedance按钉死安排出正式画面，底部回报是变量少、抽卡轮数少、省钱省时间">
+        <defs>
+          <marker id="fa1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="fw-mk"/>
+          </marker>
+        </defs>
+        <g>
+          <rect class="fw-stage" x="22" y="38" width="252" height="186" rx="12"/>
+          <text class="fw-t" x="148" y="68" text-anchor="middle" font-size="15.5">第一步 · 白模预演</text>
+          <text class="fw-f" x="148" y="88" text-anchor="middle" font-size="13">Blender 搭简化三维空间（灰模）</text>
+          <g class="fw-s" font-size="13.5">
+            <text x="52" y="118">· 放好人物位置</text>
+            <text x="52" y="143">· 排走位</text>
+            <text x="52" y="168">· 定机位运镜</text>
+            <text x="52" y="193">· 灰模里先过一遍，确认衔接都对</text>
+          </g>
+        </g>
+        <g>
+          <rect class="fw-chip" x="304" y="106" width="76" height="52" rx="26"/>
+          <text class="fw-t" x="342" y="128" text-anchor="middle" font-size="13.5">钉死的</text>
+          <text class="fw-t" x="342" y="146" text-anchor="middle" font-size="13.5">走位+机位</text>
+        </g>
+        <g>
+          <rect class="fw-stage2" x="410" y="38" width="248" height="186" rx="12"/>
+          <text class="fw-t" x="534" y="68" text-anchor="middle" font-size="15.5">第二步 · 正式出片</text>
+          <text class="fw-f" x="534" y="88" text-anchor="middle" font-size="13">交给 Seedance 生成正式画面</text>
+          <g class="fw-s" font-size="13.5">
+            <text x="440" y="118">· 按钉死的走位机位生成</text>
+            <text x="440" y="143">· 模型只剩猜画面质感</text>
+            <text x="440" y="168">· 无效重试大幅减少</text>
+            <text x="440" y="193">· 与抽卡策略叠加着用</text>
+          </g>
+        </g>
+        <path class="fw-arr" d="M278 130 L300 130" marker-end="url(#fa1)"/>
+        <path class="fw-arr" d="M384 130 L406 130" marker-end="url(#fa1)"/>
+        <path class="fw-back" d="M534 228 C 534 276, 148 276, 148 230" marker-end="url(#fa1)"/>
+        <text class="fw-f" x="341" y="270" text-anchor="middle" font-size="13.5">变量少 → 猜得少 → 少抽几轮 → 省时间省算力</text>
+      </svg>
+    </div>
+    <p>白模 = Blender 的 Solid 灰模模式（见 <a href="../08-ecomm/Blender入门五概念.html">Blender入门五概念</a>），飞快，不求好看只求位置对。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>原理一句话</h2>
+    <blockquote class="bq">
+      <p>把能确定的部分先固定下来，让视频模型少猜一点。</p>
+    </blockquote>
+    <p>前面多一道预演，后面少花几轮无效重试的时间和钱。本质是给视频模型「减负」：它擅长猜质感，不擅长猜调度——调度你来做主，质感交给它。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>成本清醒（重要）</h2>
+    <div class="warn">
+      <b>演示能跑通 ≠ 日常省钱省事。</b>该案例出自 GPT-6 Astra（AI 操控电脑）演示——同批案例里通关 Portal 烧了 <span class="num">571</span> 美元 + <span class="num">23</span> 小时，演示视频都是挑过剪过的。
+    </div>
+    <p>白模预演本身的价值不依赖 AI 操控：<strong>人自己在 Blender 里摆白模，同样的省钱逻辑成立</strong>——更可控，适合桑老哥现状。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>原型-交付分工（2026-09-21 补一笔）</h2>
+    <p>宝玉 3D 桃花源记案例的第二重印证：<strong>造原型的和做交付的是两道工序</strong>——</p>
+    <div class="duo">
+      <div class="card">
+        <h3>原型：Astra 造世界</h3>
+        <p class="stat">5.6<small>MB（音频 Base64 塞网页）</small></p>
+        <p>管「把想清楚的钉死」，先把东西做出来跑通。</p>
+      </div>
+      <div class="card">
+        <h3>交付：Codex 做工程收尾</h3>
+        <p class="stat">777<small>KB（资源外置瘦回）</small></p>
+        <p>管工程化：外置资源、压缩体积，变成能交付的成品。</p>
+      </div>
+    </div>
+    <p>同逻辑：白模/预演管「把想清楚的钉死」，正式出片管「质感」。别指望一个工具从想法直达交付品（详见 <a href="../01-ai/提示词工程.html">提示词工程</a> 的验收单式提示词小节）。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>适用边界</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>场景</th><th>适不适合</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td>走位和运镜要求明确的片子：产品视频、剧情镜头、多角色场景</td><td><strong>适用</strong></td><td>有东西可排，排完就是确定性</td></tr>
+        <tr><td>纯氛围空镜</td><td>不适用</td><td>没什么走位机位可排，直接抽卡更快</td></tr>
+        <tr><td>一次性短视频</td><td>不适用</td><td>预演成本 &gt; 抽卡成本，不划算</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">同族省钱路线：白模管「少抽」，抽卡策略管「抽得省」</span></a>
+      <a href="../05-video/AI视频清晰度最优解.html"><span class="rel-t">AI视频清晰度最优解</span><span class="rel-d">720p 抽卡 + Topaz 放大：同一逻辑，把贵的一步留到最后</span></a>
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">白模解决不了的画面质感仍靠提示词</span></a>
+      <a href="../05-video/动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">白模预演本质是走位动作的预排，六层法是它的内容标准</span></a>
+      <a href="../08-ecomm/Blender入门五概念.html"><span class="rel-t">Blender入门五概念</span><span class="rel-d">白模 = Solid 灰模 + 相机视角的组合应用</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>夕小瑶科技说《1天通关游戏，1周造城：GPT-6 Astra 这7个玩法太上头》（2026-09-08，WaytoAGI 飞书转载）</li>
+      <li>宝玉《我用 GPT 6 Astra 做了一个 3D 版的〈桃花源记〉》（公众号 2026-09-20，WaytoAGI 转载 P64MdbuuKoApVvxviqXcL9OTnft；2026-09-21 补原型-交付分工一笔）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI视频白模预演</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI视频白模预演.md（2026-09-09 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">治什么病</a></li>
+    <li><a href="#s3">工作流两步 ·核心</a></li>
+    <li><a href="#s4">原理一句话</a></li>
+    <li><a href="#s5">成本清醒</a></li>
+    <li><a href="#s6">原型-交付分工</a></li>
+    <li><a href="#s7">适用边界</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

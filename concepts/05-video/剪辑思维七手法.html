@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剪辑思维七手法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：词典网格 ---- */
+
+/* 分组标题 */
+.grp-t {
+  font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  letter-spacing:.06em; margin:20px 0 10px; display:flex; align-items:center; gap:10px;
+}
+.grp-t::after { content:""; flex:1; height:1px; background:var(--fam-line); }
+
+/* 手法卡墙 */
+.dict { display:grid; grid-template-columns:1fr; gap:12px; }
+@media (min-width:680px) { .dict { grid-template-columns:1fr 1fr; } }
+.dc {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:14px 16px; box-shadow:var(--sh-1);
+}
+.dc-head { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:4px; }
+.dc-no { font-size:14.5px; font-weight:700; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+.dc-name { font-family:var(--font-head); font-weight:700; font-size:18.5px; color:var(--ink); }
+.dc-for { font-size:14.5px; color:var(--fam-deep); font-weight:600; margin-left:auto; }
+.dc-case { font-size:14.5px; color:var(--ink-faint); margin-bottom:6px; }
+.dc-use { font-size:15px; color:var(--g8); line-height:1.75; margin:0; }
+.dc.hl { border-color:var(--fam); }
+.dc-badge {
+  display:inline-block; font-size:14.5px; font-weight:700;
+  padding:0 9px; border-radius:999px; margin-left:6px;
+}
+.dc-badge.best { background:var(--fam); color:#ffffff; }
+.dc-badge.warn { background:var(--g2); color:var(--ink-soft); border:1px solid var(--line); }
+
+/* 四铁律 */
+.rules { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:680px) { .rules { grid-template-columns:1fr 1fr; } }
+.rule { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 14px; }
+.r-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#ffffff; font-weight:700; font-size:15px; margin-right:8px;
+}
+.r-t { font-weight:700; }
+.rule p { font-size:14.5px; color:var(--g8); margin:6px 0 0; line-height:1.7; }
+
+/* 两个最值钱要点 */
+.big2 { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:768px) { .big2 { grid-template-columns:1fr 1fr; } }
+.big2 .card { border-left:4px solid var(--fam); }
+.big2 .card h3 { margin:0 0 8px; font-size:16.5px; color:var(--fam-deep); }
+.big2 .card p { font-size:14.5px; line-height:1.75; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">剪辑思维七手法</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 镜头之间怎么切</p>
+    <h1>剪辑思维七手法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-02</span>
+      <span>下次复核 2026-12-02</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂住嘴，示意那一刀为什么切在这里是说不出口的隐性手艺"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      工具只是手，思维才是脑——7 个手法各管一个情绪目的。
+      <span class="q-src">—— 科蚪《AI视频入门——剪辑思维-转场-拉片提升审美》</span>
+    </blockquote>
+    <p>AI 时代"生成"不值钱了，<strong>"知道为什么在这里切一刀"才是本事</strong>。七个手法是七把不同用途的刀：先想清楚这一刀要什么情绪效果，再选刀，最后才轮到生成和剪辑。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>七手法词典 ·核心</h2>
+    <p>按用途分三组，每张卡配经典拉片案例 + AI 视频里的用法：</p>
+
+    <p class="grp-t">A 对话与反应</p>
+    <div class="dict">
+      <div class="dc">
+        <div class="dc-head"><span class="dc-no">01</span><span class="dc-name">正反打</span><span class="dc-for">对话标准剪法</span></div>
+        <p class="dc-case">经典：《大话西游》</p>
+        <p class="dc-use">角色 A/B 分别生成说话镜头，说完瞬间或话中切反应。</p>
+      </div>
+      <div class="dc">
+        <div class="dc-head"><span class="dc-no">07</span><span class="dc-name">反应镜头</span><span class="dc-for">戏剧张力</span></div>
+        <p class="dc-case">经典：正反打进阶</p>
+        <p class="dc-use">不一定谁说话拍谁——<strong>拍听者的反应更有戏</strong>。</p>
+      </div>
+    </div>
+
+    <p class="grp-t">B 时间与悬念</p>
+    <div class="dict">
+      <div class="dc">
+        <div class="dc-head"><span class="dc-no">02</span><span class="dc-name">交叉剪辑</span><span class="dc-for">紧张感悬念</span></div>
+        <p class="dc-case">经典：《盗梦空间》4 层梦境</p>
+        <p class="dc-use">最多两条故事线——短剧观众别拔门槛。</p>
+      </div>
+      <div class="dc">
+        <div class="dc-head"><span class="dc-no">03</span><span class="dc-name">跳切</span><span class="dc-for">压缩时间</span><span class="dc-badge warn">少用</span></div>
+        <p class="dc-case">经典：《精疲力尽》开山鼻祖</p>
+        <p class="dc-use">太接地气、商业性差；既然用 AI，就做精良。</p>
+      </div>
+      <div class="dc">
+        <div class="dc-head"><span class="dc-no">06</span><span class="dc-name">闪回</span><span class="dc-for">前因反转</span></div>
+        <p class="dc-case">经典：《美国往事》声音+相似构图+色调</p>
+        <p class="dc-use">重生复仇必备；闪回画面要做视觉区分（滤镜/特效）。</p>
+      </div>
+    </div>
+
+    <p class="grp-t">C 转场与氛围</p>
+    <div class="dict">
+      <div class="dc hl">
+        <div class="dc-head"><span class="dc-no">04</span><span class="dc-name">空镜头</span><span class="dc-for">氛围+救场</span><span class="dc-badge best">万能救场</span></div>
+        <p class="dc-case">经典：《闪灵》走廊血迹</p>
+        <p class="dc-use">衔接穿帮就插空镜，顺带拉质感——AI 视频特有刚需，详见下节。</p>
+      </div>
+      <div class="dc hl">
+        <div class="dc-head"><span class="dc-no">05</span><span class="dc-name">匹配剪辑</span><span class="dc-for">丝滑转场</span><span class="dc-badge best">AI 最擅长</span></div>
+        <p class="dc-case">经典：《2001太空漫游》骨头→太空站</p>
+        <p class="dc-use">前段结尾与后段开头设计相似构图/动势（合案卷→拍桌），生成时就要规划。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>AI 漫剧节奏四铁律（竖屏平台专用）</h2>
+    <div class="rules">
+      <div class="rule"><span class="r-no">1</span><span class="r-t">前 3 秒定生死</span><p>直接上冲突/悬念/视觉冲击，第一镜就是拍飞/坠落/狠台词。</p></div>
+      <div class="rule"><span class="r-no">2</span><span class="r-t">单镜头 ≤5 秒</span><p>竖屏漫剧镜头 <span class="num">2-4</span> 秒，超了就切（反应/空镜/换角度）。</p></div>
+      <div class="rule"><span class="r-no">3</span><span class="r-t">情绪过山车</span><p>高潮→缓冲→更大高潮；不要全程高能，也不要全程平。</p></div>
+      <div class="rule"><span class="r-no">4</span><span class="r-t">结尾必须留钩子</span><p>神秘背影/反派冷笑/法器裂开，逼观众追下一集。</p></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>两个 AI 专属要点 ·核心</h2>
+    <p>全文最值钱的两条——都指向同一件事：<strong>剪辑思维要前置到生成阶段</strong>。</p>
+    <div class="big2">
+      <div class="card">
+        <h3>空镜救场，AI 视频特有刚需</h3>
+        <p>传统拍摄素材干净、不常需要救场；AI 素材有瑕疵率，<strong>空镜就是补丁</strong>：衔接不自然、动作穿帮、同场景同景别、情绪突变——中间插一个空镜全解决。</p>
+        <p>进阶：空镜场景在后文有出现更好（既是空镜，又是战斗前的宁静）。</p>
+      </div>
+      <div class="card">
+        <h3>匹配剪辑靠生成时设计</h3>
+        <p>不是剪辑时碰运气，是 Seedance 生成两段时刻意让首尾相似——<strong>提示词阶段就要规划好转场</strong>，前段结尾留什么动作/构图，给后段当接口。</p>
+        <p>例：前段结尾"合案卷"、后段开头"拍桌"——相似动势接住，转场丝滑。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>桑老哥直用</h2>
+    <ul>
+      <li><strong>生成阶段就规划剪辑</strong>：写提示词时想好"这段结尾什么动作/构图"，给下一段留匹配接口（与 <a href="../05-video/视频生成提示词.html">视频生成提示词</a> 的七层结构叠加用）</li>
+      <li><strong>剪辑阶段三件套</strong>：空镜救场 → 匹配转场 → <span class="num">5</span> 秒切一刀（与 <a href="../05-video/AI视频运镜速查.html">AI视频运镜速查</a> 的推拉跟随互补：<strong>运镜管镜头内，本词条管镜头间</strong>）</li>
+      <li><strong>学习法：拉片</strong>——挑经典片段逐镜头问"为什么在这里切"，练审美比看教程快（呼应 <a href="../06-learn/AI学习七步回路.html">AI学习七步回路</a> 的干中学）</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>七手法是速查词典，不是剧本生成器——先定情绪目的，再挑手法，顺序反了就是堆技巧</li>
+      <li>四铁律针对竖屏平台漫剧/短剧；长视频、横屏广告的节奏标准不同，别硬套</li>
+      <li>"少用跳切"是商业性判断（太接地气），不是技法禁令——艺术片语境另说</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">七层结构里预埋剪辑接口</span></a>
+      <a href="../05-video/AI视频运镜速查.html"><span class="rel-t">AI视频运镜速查</span><span class="rel-d">运镜管镜头内，七手法管镜头间</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">素材瑕疵率的另一头：抽卡</span></a>
+      <a href="../05-video/AI角色演技提示词.html"><span class="rel-t">AI角色演技提示词</span><span class="rel-d">反应镜头里的演技怎么生成</span></a>
+      <a href="../05-video/动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">镜头之内动作怎么写</span></a>
+      <a href="../06-learn/AI学习七步回路.html"><span class="rel-t">AI学习七步回路</span><span class="rel-d">拉片练审美的回路底座</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>科蚪《AI视频入门——剪辑思维-转场-拉片提升审美》（公众号"科蚪" 2026-08-31）</li>
+      <li>系列课前篇：《景别、正反打》；WaytoAGI 飞书转载（BSQUwrvyMi87ejkbw4Hc4jwnnOe）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · 剪辑思维七手法</p>
+    <p>词条源：concepts(概念库)/AI视频制作/剪辑思维七手法.md（2026-09-02 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">七手法词典 ·核心</a></li>
+    <li><a href="#s3">漫剧节奏四铁律</a></li>
+    <li><a href="#s4">两个 AI 专属要点</a></li>
+    <li><a href="#s5">桑老哥直用</a></li>
+    <li><a href="#s6">前提与局限</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

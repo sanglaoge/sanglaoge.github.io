@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI工程技能地图 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 四大顶层条 */
+.top4 { display:flex; gap:0; margin:16px 0 4px; overflow-x:auto; }
+.top4 .t {
+  flex:1 1 0; min-width:150px; padding:11px 13px 9px;
+  border-left:1px solid var(--line); background:var(--g0);
+}
+.top4 .t:first-child { border-left:none; }
+.top4 .t .tt-no { font-size:14.5px; font-weight:700; color:var(--ink-faint); }
+.top4 .t .tt-name { font-weight:700; font-size:15px; color:var(--ink); margin:1px 0; }
+.top4 .t .tt-des { font-size:14.5px; color:var(--ink-faint); line-height:1.5; }
+.top4 .t.now { background:var(--fam-soft); }
+.top4 .t.now .tt-name { color:var(--fam-deep); }
+.top4 .t .tt-mark {
+  display:inline-block; margin-top:5px; font-size:14.5px; font-weight:700;
+  color:var(--fam-deep); background:var(--g0); border:1px solid var(--fam-line);
+  border-radius:999px; padding:0 9px;
+}
+.top4-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:12px; }
+
+/* 自动售货机 vs 聪明员工 */
+.vs2 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:640px) { .vs2 { grid-template-columns:1fr 1fr; } }
+.vs2 .v { border-radius:var(--r-el); padding:13px 16px; font-size:15px; line-height:1.75; }
+.vs2 .v-old { background:var(--g2); border:1px solid var(--line); color:var(--ink-soft); }
+.vs2 .v-new { background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--g8); }
+.vs2 .v b { display:block; margin-bottom:4px; font-size:15.5px; }
+.vs2 .v-old b { color:var(--g7); }
+.vs2 .v-new b { color:var(--fam-deep); }
+
+/* 六大子技能卡墙 */
+.skill-grid { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:640px) { .skill-grid { grid-template-columns:1fr 1fr; } }
+@media (min-width:1024px) { .skill-grid { grid-template-columns:1fr 1fr 1fr; } }
+.sk-card {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:15px 17px; box-shadow:var(--sh-1);
+}
+.sk-card.key { border-color:var(--fam-line); background:var(--fam-soft); }
+.sk-head { display:flex; align-items:baseline; gap:9px; margin-bottom:6px; flex-wrap:wrap; }
+.sk-no { font-weight:700; color:var(--fam-deep); font-size:15px; }
+.sk-name { font-weight:700; font-size:16px; color:var(--ink); }
+.sk-met {
+  margin-left:auto; font-size:14.5px; color:var(--fam-deep); font-weight:700;
+  border:1px solid var(--fam-line); background:var(--g0); border-radius:999px; padding:0 10px; white-space:nowrap;
+}
+.sk-card p { font-size:14.5px; color:var(--ink-soft); line-height:1.7; margin-bottom:0; }
+.sk-keymark {
+  display:inline-block; margin-top:8px; font-size:14.5px; font-weight:700;
+  color:#92400e; background:#fffbeb; border:1px solid #fde68a; border-radius:999px; padding:0 10px;
+}
+
+/* 评估驱动细节卡 */
+.eval-box {
+  background:var(--g0); border:1.5px dashed var(--fam-line); border-radius:var(--r-box);
+  padding:16px 18px; margin:16px 0;
+}
+.eval-box .e-t { font-weight:700; color:var(--fam-deep); margin-bottom:8px; font-size:16px; }
+.eval-box ul { font-size:15px; color:var(--g8); margin-bottom:0; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">AI工程技能地图</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 个人技能地图</p>
+    <h1>AI工程技能地图</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-24</span>
+      <span>下次复核 2026-11-24</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒墙张望全景，示意展开一张要看全的技能地图"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      吴恩达团队扒了大量招聘信息+专家访谈画出的"AI 工程师要会什么"地图，四大顶层技能，本篇展开第一块（六大子技能）。
+    </blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：四大顶层</h2>
+    <p>2026-08-22 吴恩达在 X 发系列文，把 AI 工程能力分成四大顶层技能。地图依据是<strong>职位发布分析+结构化专家访谈+调查反馈</strong>，不是拍脑袋。</p>
+    <div class="top4" aria-label="四大顶层技能">
+      <div class="t now"><span class="tt-no num">①</span><div class="tt-name">构建和部署 AI 应用</div><p class="tt-des">六大子技能</p><span class="tt-mark">本篇展开</span></div>
+      <div class="t"><span class="tt-no num">②</span><div class="tt-name">软件工程基础</div><p class="tt-des">已并入开发手册轻记一</p></div>
+      <div class="t"><span class="tt-no num">③</span><div class="tt-name">使用编码智能体</div><p class="tt-des">已并入开发手册轻记二</p></div>
+      <div class="t"><span class="tt-no num">④</span><div class="tt-name">塑造构建流程</div><p class="tt-des">中文全解读覆盖</p></div>
+    </div>
+    <p class="top4-cap">后三块的展开去向：②③已分别并入 <a href="../01-ai/AI原生开发手册.html">AI原生开发手册</a> 轻记两节；2026-09-12 中文全解读（WaytoAGI 转载）覆盖四顶层全部内容，上下文管理细节见 <a href="../01-ai/上下文工程.html">上下文工程</a>。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>核心认知：AI 软件 不等于 传统软件</h2>
+    <div class="vs2" aria-label="自动售货机与聪明员工对照">
+      <div class="v v-old"><b>传统软件像自动售货机</b>投币按键，每次结果一样。</div>
+      <div class="v v-new"><b>AI 软件像雇了个聪明员工</b>大部分时候干得不错，但偶尔自作主张搞砸，且你提前猜不到哪次。</div>
+    </div>
+    <p>所以做 AI 系统 = <strong>迭代过程</strong>（做一版 → 检查 → 决定下一步），没法预先画好全部图纸。<strong>熟练决定下一步做什么，才能基于不可靠的 AI 组件造出可靠系统</strong>——这是整张地图的地基。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>六大子技能卡墙（·核心，开餐厅比喻）</h2>
+    <div class="skill-grid">
+      <div class="sk-card">
+        <div class="sk-head"><span class="sk-no num">1</span><span class="sk-name">LLM 基础</span><span class="sk-met">懂食材</span></div>
+        <p>知道模型怎么吃字吐字、何时靠得住何时翻车；选模型/微调/自托管的判断底座。</p>
+      </div>
+      <div class="sk-card">
+        <div class="sk-head"><span class="sk-no num">2</span><span class="sk-name">用数据为模型打基础</span><span class="sk-met">备菜</span></div>
+        <p>喂对上下文：RAG、向量/知识图谱/语义层选型、文档转换、数据管道保鲜。</p>
+      </div>
+      <div class="sk-card">
+        <div class="sk-head"><span class="sk-no num">3</span><span class="sk-name">构建智能体系统</span><span class="sk-met">后厨流程</span></div>
+        <p>Agent 架构选型、工具（MCP/CLI/沙盒）、记忆、上下文管理、多智能体编排、防护措施与治理。</p>
+      </div>
+      <div class="sk-card key">
+        <div class="sk-head"><span class="sk-no num">4</span><span class="sk-name">评估驱动开发</span><span class="sk-met">试菜</span></div>
+        <p>有纪律的评估/错误分析循环，把精力砸在被验证有效的方向。</p>
+        <span class="sk-keymark">吴恩达：区分高手的最重要特质</span>
+      </div>
+      <div class="sk-card">
+        <div class="sk-head"><span class="sk-no num">5</span><span class="sk-name">生产环境运营</span><span class="sk-met">开业盯品质</span></div>
+        <p>可观测性、漂移检测、安全事件响应、回归测试、成本延迟优化（蒸馏/微调/简化工作流）。</p>
+      </div>
+      <div class="sk-card">
+        <div class="sk-head"><span class="sk-no num">6</span><span class="sk-name">机器学习基础</span><span class="sk-met">营养学</span></div>
+        <p>监督/强化学习原理、偏差方差、错误分析——底层原理，懂了更好。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>评估驱动的细节（第 4 项展开）</h2>
+    <div class="eval-box">
+      <p class="e-t">评估循环怎么转</p>
+      <ul>
+        <li>看系统轨迹和输出 → 探索性数据分析 → 结合产品业务洞察决定衡量什么</li>
+        <li>评估选项菜单：确定性（代码）评估 / LLM 当裁判 / 人工参与</li>
+        <li>还要<strong>"评估你的评估"</strong>，持续改进评估本身</li>
+        <li>效果：进展系统化而不是随机化</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>第 3 项你天天在用实物：<strong>铁柱就是智能体系统</strong>（MCP=工具，memory=记忆，compact=上下文管理，subagent=多智能体）。</li>
+      <li>第 4 项你已有体感：说"跳过/存下来"、纠正铁柱 = 在当裁判；专业团队只是把裁判动作变成固定流程。</li>
+      <li><strong>六项不用都学</strong>，有第 3、4 项的认知就够日常用。</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>与概念库的映射</h2>
+    <p>本地图六大子技能与库内主线概念互为印证，与 <a href="../01-ai/AI概念导航图.html">AI概念导航图</a>（白皮书 7 层）是两套坐标一个方向：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>地图子技能</th><th>库内对应主线</th></tr></thead>
+      <tbody>
+        <tr><td>LLM 基础</td><td><a href="../01-ai/Tokenmaxxing.html">Tokenmaxxing</a></td></tr>
+        <tr><td>用数据为模型打基础</td><td><a href="../01-ai/RAG检索增强生成.html">RAG检索增强生成</a></td></tr>
+        <tr><td>构建智能体系统</td><td><a href="../01-ai/Agent（智能体）.html">Agent（智能体）</a> + <a href="../01-ai/Harness.html">Harness</a></td></tr>
+        <tr><td>评估驱动开发</td><td><a href="../01-ai/目标契约与五个闸门.html">目标契约与五个闸门</a></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>边界</h2>
+    <ul>
+      <li>这是<strong>职业工程师的完整地图</strong>，桑老哥定位是"聪明使用者"，不是全面学习清单。</li>
+      <li>四大顶层已出全（2026-09-12 中文全解读），其中软件工程基础与编码智能体两块已分别并入 AI原生开发手册 轻记两节。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/AI概念导航图.html"><span class="rel-t">AI概念导航图</span><span class="rel-d">两套坐标一个方向：7 层定位 vs 6 技能练级</span></a>
+      <a href="../01-ai/AI原生开发手册.html"><span class="rel-t">AI原生开发手册</span><span class="rel-d">组织流程地图，②③顶层展开并入其轻记</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">子技能 3 的核心对象</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">聪明使用者的边界方法论</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">子技能 3 的上下文管理细节</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">评估驱动开发的家用版</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Andrew Ng《AI Engineering Skills Map: Building and Deploying AI Applications》（X @AndrewYNg，2026-08-22，WaytoAGI 飞书转载，lark-cli 抓取，2026-08-24）</li>
+      <li>四大顶层中文全解读（WaytoAGI 转载，2026-09-12）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AI工程技能地图</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AI工程技能地图.md（2026-08-24 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉·四大顶层</a></li>
+    <li><a href="#s3">AI软件不等于传统软件</a></li>
+    <li><a href="#s4">六大子技能 ·核心</a></li>
+    <li><a href="#s5">评估驱动细节</a></li>
+    <li><a href="#s6">桑老哥适用</a></li>
+    <li><a href="#s7">与概念库的映射</a></li>
+    <li><a href="#s8">边界</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

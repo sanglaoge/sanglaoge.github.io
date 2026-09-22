@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>需求弹性 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root {
+  --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0;
+}
+/* ---- 页面专属：对比布局（弹性高 vs 弹性低 双栏 + 两把尺子合流图） ---- */
+
+.main-col > section { margin-bottom:56px; }
+.entry-head blockquote, .creed { font-family:var(--font-head); }
+.creed {
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:26px 8px 6px; max-width:36em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 对比双栏 */
+.duel { display:grid; grid-template-columns:1fr; gap:14px; margin:20px 0; }
+@media (min-width:768px) { .duel { grid-template-columns:1fr 1fr; } }
+.duel-col { border-radius:var(--r-box); padding:18px 20px 14px; }
+.duel-up { background:#f0fdf4; border:1.5px solid #bbf7d0; }
+.duel-down { background:var(--fam-soft); border:1.5px solid var(--fam-line); }
+.duel-col .dl-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; padding:1px 12px;
+  border-radius:999px; margin-bottom:10px; background:var(--g0);
+}
+.duel-up .dl-tag { color:#166534; border:1px solid #bbf7d0; }
+.duel-down .dl-tag { color:var(--fam-deep); border:1px solid var(--fam-line); }
+.duel-col .dl-t { font-family:var(--font-head); font-size:19px; font-weight:700; color:var(--ink); margin-bottom:8px; }
+.duel-col .dl-num { font-family:var(--font-head); font-size:30px; font-weight:700; color:var(--ink); line-height:1.3; }
+.duel-up .dl-num { color:#166534; }
+.duel-down .dl-num { color:var(--fam-deep); }
+.duel-col .dl-f { font-size:15px; color:var(--g8); margin:6px 0 10px; }
+.duel-col .dl-e { font-size:14.5px; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:8px; margin:0; }
+.duel-col .dl-e b { color:var(--ink); }
+
+/* 两把尺子合流图 */
+.route { margin:26px 0 10px; }
+.route svg { width:100%; height:auto; display:block; }
+.route .mk { fill:var(--fam); }
+.route .ln { fill:none; stroke:var(--fam); stroke-width:2; }
+.route .rbox { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.route .rbox-hl { fill:var(--fam); stroke:var(--fam); }
+.route .tx { fill:var(--fam-deep); }
+.route .tx-w { fill:#ffffff; }
+.route .tx-s { fill:var(--ink-faint); }
+.route-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">需求弹性</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · 两把尺子之一（市场边）</p>
+    <h1>需求弹性</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-05</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扶墙张望，示意观察市场对降价的真实反应"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">不是看 AI 能不能做你的任务，而是看<span class="mark">便宜之后市场要多买多少</span>。便宜 100 倍，用户会多买 100 倍吗？</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>一句话定义</h2>
+    <p><strong>需求弹性</strong>（Demand Elasticity，Richard Socher 借用的非严格经济学类比）：某个能力 / 服务被 AI 压到极低价格后，市场需求会不会跟着暴涨。<strong>涨 = 岗位扩大，不涨 = 岗位萎缩</strong>。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>两类命运对照 ·核心</h2>
+    <div class="duel">
+      <div class="duel-col duel-up">
+        <span class="dl-tag">弹性高 · 岗位扩大</span>
+        <p class="dl-t">便宜越多，买越多</p>
+        <p class="dl-num num">100 倍 → 100 倍+</p>
+        <p class="dl-f">判断公式：便宜 100 倍，需求涨 100 倍以上——量随价跌而暴涨。</p>
+        <p class="dl-e">例子：<b>软件开发、内容生产</b></p>
+      </div>
+      <div class="duel-col duel-down">
+        <span class="dl-tag">弹性低 · 岗位萎缩</span>
+        <p class="dl-t">便宜了，也没人多买</p>
+        <p class="dl-num num">100 倍 → 不跟</p>
+        <p class="dl-f">判断公式：便宜 100 倍，需求不跟——省下的钱不会变成更多订单。</p>
+        <p class="dl-e">例子：<b>商业插画、基础翻译</b></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>和损失函数配合：两把尺子一起用</h2>
+    <p>它把"AI 会不会替代我"变成一道可计算的题：<a href="../02-think/损失函数思维.html">损失函数思维</a>判断技术端能不能替代（能写标准答案吗），需求弹性判断市场端会不会扩大（便宜了有人多买吗）。</p>
+    <div class="route">
+      <svg viewBox="0 0 680 230" role="img" aria-label="两把尺子合流图：损失函数思维量技术端、需求弹性量市场端，合起来看清一个岗位的命运">
+        <defs>
+          <marker id="ra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <rect x="30" y="28" width="240" height="76" rx="14" class="rbox"/>
+        <text x="150" y="58" text-anchor="middle" font-size="16" font-weight="700" class="tx">损失函数思维</text>
+        <text x="150" y="84" text-anchor="middle" font-size="14" class="tx-s">技术端：能写出标准答案吗？</text>
+        <rect x="410" y="28" width="240" height="76" rx="14" class="rbox"/>
+        <text x="530" y="58" text-anchor="middle" font-size="16" font-weight="700" class="tx">需求弹性</text>
+        <text x="530" y="84" text-anchor="middle" font-size="14" class="tx-s">市场端：便宜了有人多买吗？</text>
+        <path d="M150,104 C150,152 250,152 300,164" class="ln" marker-end="url(#ra)"/>
+        <path d="M530,104 C530,152 430,152 380,164" class="ln" marker-end="url(#ra)"/>
+        <rect x="205" y="168" width="270" height="52" rx="26" class="rbox-hl"/>
+        <text x="340" y="200" text-anchor="middle" font-size="16" font-weight="700" class="tx-w">看清一个岗位的命运</text>
+      </svg>
+      <p class="route-cap">技术端看"能不能被替代"，市场端看"会不会扩大"——两把尺子一起用才看得清</p>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>二元分类对混合型岗位（如跨境电商设计师）不够用——要拆任务看，不能一刀切</li>
+      <li>弹性本身会随市场变化：今天没弹性的，明天可能有</li>
+      <li>Socher 视角偏科技创业者，传统行业需要重新校准</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/损失函数思维.html"><span class="rel-t">损失函数思维</span><span class="rel-d">损失函数判断技术边，需求弹性判断市场边，两把尺子一起用</span></a>
+      <a href="../02-think/难的分类学.html"><span class="rel-t">难的分类学</span><span class="rel-d">需求弹性给"难不难得"加了量化判断工具</span></a>
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">先用需求弹性判断什么值得用 Agent 放大，再去指挥</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">先判断什么值得放大，再用分工原则决定谁做</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Richard Socher《Rethink Your Career in the Age of AI》（2026-07，X / 博客）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · 需求弹性</p>
+    <p>词条源：concepts(概念库)/思维模型/需求弹性.md（2026-07-05 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">一句话定义</a></li>
+    <li><a href="#s3">两类命运对照 ·核心</a></li>
+    <li><a href="#s4">两把尺子一起用</a></li>
+    <li><a href="#s5">前提与局限</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

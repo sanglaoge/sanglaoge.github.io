@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词工程 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：词典网格布局（技巧卡墙 + 抽屉分组 + 模板代码块） ---- */
+
+/* 卡墙 */
+.wall { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:640px) { .wall { grid-template-columns:1fr 1fr; } }
+.wcard { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); box-shadow:var(--sh-1); padding:16px 18px; position:relative; }
+.wcard .w-no {
+  display:inline-block; width:28px; height:28px; line-height:28px; text-align:center; border-radius:50%;
+  background:var(--fam); color:#fff; font-weight:700; font-size:14.5px; margin-right:8px;
+}
+.wcard h3 { display:inline; font-size:17px; vertical-align:middle; }
+.wcard .w-sub { font-size:14.5px; color:var(--ink-soft); margin:8px 0 10px; }
+.wcard .pair { display:grid; gap:6px; }
+.wcard .pair p { border-radius:var(--r-el); padding:7px 11px; font-size:14.5px; margin:0; }
+.wcard .pair .bad { background:var(--g2); border-left:3px solid var(--g4); color:var(--ink-soft); }
+.wcard .pair .bad b { color:var(--g6); font-weight:700; }
+.wcard .pair .good { background:var(--fam-soft); border-left:3px solid var(--fam); color:var(--g8); }
+.wcard .pair .good b { color:var(--fam-deep); font-weight:700; }
+.wcard.hl { border-color:var(--fam-line); }
+
+/* 万能结构公式 */
+.formula { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:16px 0; }
+.formula .f-chip {
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  border-radius:var(--r-el); padding:6px 13px; font-size:15px; font-weight:600;
+}
+.formula .f-plus { color:var(--g5); font-weight:700; }
+
+/* 模板代码块 */
+.tmpl {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8;
+  background:var(--g9); color:var(--g2); border-radius:var(--r-box);
+  padding:16px 20px; margin:16px 0; overflow-x:auto; white-space:pre-wrap; word-break:break-all;
+}
+.tmpl .t-hi { color:var(--fam-line); font-weight:700; }
+
+/* 三原则 */
+.p3 { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .p3 { grid-template-columns:1fr 1fr 1fr; } }
+.p3 .p { text-align:center; background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 10px; font-size:15.5px; }
+.p3 .p b { color:var(--fam-deep); }
+.p3 .p span { display:block; font-size:14.5px; color:var(--ink-faint); margin-top:2px; }
+
+/* 双模式 */
+.duo { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:768px) { .duo { grid-template-columns:1fr 1fr; } }
+.duo .d { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 18px; }
+.duo .d h3 { margin-top:0; font-size:16.5px; color:var(--fam-deep); }
+.duo .d p { font-size:14.5px; color:var(--ink-soft); }
+.duo .d .d-when { font-size:14.5px; background:var(--g2); border-radius:var(--r-el); padding:6px 10px; color:var(--ink-soft); margin-top:8px; }
+
+/* 抽屉分组 */
+details.drawer { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); margin:14px 0; overflow:hidden; }
+details.drawer summary {
+  cursor:pointer; list-style:none; padding:14px 18px;
+  font-weight:700; color:var(--fam-deep); font-size:16px;
+  display:flex; align-items:center; gap:10px; background:var(--fam-soft);
+}
+details.drawer summary::-webkit-details-marker { display:none; }
+details.drawer summary .d-mark { margin-left:auto; font-weight:400; font-size:14.5px; color:var(--ink-faint); }
+details.drawer[open] summary { border-bottom:1px solid var(--fam-line); }
+details.drawer .d-body { padding:14px 18px; }
+.d-body ol { padding-left:1.4em; }
+.d-body li { margin-bottom:10px; }
+.d-body .d-tag { display:inline-block; font-size:14.5px; background:var(--g2); border-radius:999px; padding:0 10px; color:var(--ink-soft); margin-left:6px; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+  details.drawer { transition:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">提示词工程</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 地基四件套</p>
+    <h1>提示词工程</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意最轻松入门的地基概念：给顶级外卖员指路"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话：消除模糊</h2>
+    <p><strong>把"大概要这个"变成"精确要这个"。</strong>不是命令 AI，是给一个顶级外卖员指路——说清去哪、走哪条路、别按门铃、拍张照回来。</p>
+    <p>AI 不是读心术——你脑子里想的"高端感"，它听到的是模糊形容词。提示词工程的本质是<strong>把模糊意图翻译成 AI 能精确执行的结构化指令</strong>。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>四个核心技巧（卡墙）</h2>
+    <div class="wall">
+      <div class="wcard">
+        <span class="w-no">1</span><h3>角色具体化</h3>
+        <p class="w-sub">不只是头衔，带"经验年限 + 专注领域"。</p>
+        <div class="pair">
+          <p class="bad"><b>错法</b>："分析这个产品"</p>
+          <p class="good"><b>对法</b>："你是亚马逊美国站 3 年运营，主做家居，月销 50 万美金。分析这个 listing。"</p>
+        </div>
+      </div>
+      <div class="wcard">
+        <span class="w-no">2</span><h3>材料先行</h3>
+        <p class="w-sub">先喂材料再提问，别让 AI 凭记忆编（凭记忆 = 幻觉）。</p>
+        <div class="pair">
+          <p class="bad"><b>错法</b>："TikTok Shop 2026 年有什么新政策？"</p>
+          <p class="good"><b>对法</b>："这是 TikTok 政策原文。基于这份材料回答：新政策对卖家有什么影响？"</p>
+        </div>
+      </div>
+      <div class="wcard hl">
+        <span class="w-no">3</span><h3>禁止项黑名单</h3>
+        <p class="w-sub">告诉 AI 不能做什么，比告诉它能做什么更管用。你说 10 个"要"，不如说 1 个"不要"。</p>
+        <div class="pair">
+          <p class="good"><b>写法</b>："不要超 50 字、不要用'顶级''第一'、不要问我要不要买"</p>
+        </div>
+      </div>
+      <div class="wcard">
+        <span class="w-no">4</span><h3>给选项</h3>
+        <p class="w-sub">开放式问题答案太散，给 AI 选择框，答案更聚焦。</p>
+        <div class="pair">
+          <p class="bad"><b>错法</b>："怎么优化这个产品页？"</p>
+          <p class="good"><b>对法</b>："从 3 个方向选一个：A) 标题关键词 B) 主图 C) A+ 描述。先说选哪个再动手。"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>万能结构公式 + 三原则</h2>
+    <div class="formula">
+      <span class="f-chip">背景</span><span class="f-plus">+</span>
+      <span class="f-chip">目标</span><span class="f-plus">+</span>
+      <span class="f-chip">具体要求</span><span class="f-plus">+</span>
+      <span class="f-chip">限制条件</span><span class="f-plus">+</span>
+      <span class="f-chip">输出格式</span><span class="f-plus">+</span>
+      <span class="f-chip">判断标准</span>
+    </div>
+    <div class="p3">
+      <div class="p"><b>具体 &gt; 抽象</b><span>形容词换成可执行描述</span></div>
+      <div class="p"><b>材料 &gt; 记忆</b><span>喂原文，别让它凭记忆编</span></div>
+      <div class="p"><b>选项 &gt; 答案</b><span>要 5 个方向你混搭</span></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>Agent 双模式</h2>
+    <div class="duo">
+      <div class="d">
+        <h3>固定流程 → 写「剧本」</h3>
+        <p>步骤 + 异常分支，一步一叮咛。</p>
+        <p class="d-when">适合：流程明确的重复任务</p>
+      </div>
+      <div class="d">
+        <h3>开放任务 → 写「边界」</h3>
+        <p>目标 + 工具 + 停止条件，路让它自己找。</p>
+        <p class="d-when">适合：目标清楚但路径不定的活</p>
+      </div>
+    </div>
+    <div class="warn"><b>写错 = 把会思考的 Agent 当死工作流。</b>该写边界时写剧本，Agent 就被捆死；该写剧本时写边界，Agent 就会跑偏。</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>轻记抽屉：模型升级后的三条新功课</h2>
+    <details class="drawer">
+      <summary>抽屉一：提示词有保质期——模型升级，旧补丁变毒药<span class="d-mark">2026-09-08 并入 · GPT-6 Astra 大师课</span></summary>
+      <div class="d-body">
+        <p>来源：《GPT-6 Astra 提示词大师课》（Rahul @sairahul1，X，2026-09-07，WaytoAGI 转载）。API 迁移部分不适用，框架层通用。</p>
+        <ol>
+          <li><strong>提示词有保质期（最反直觉）</strong><span class="d-tag">·核心</span>——旧 prompt 是给旧模型打的补丁："一步步思考""检查你的工作""读全仓库"是推笨模型的；新模型自己会了，再下指令 = 照做多跑、白烧 token、过度自我约束。<strong>为 GPT-5 行为打的每个补丁，都可能变成 Astra 的枷锁</strong>。推论：模型每次大升级，常用提示词要复审，删"治旧毛病"的补丁。</li>
+          <li><strong>8 模块 = 菜单，不是模板</strong>——GOAL / CONTEXT / PRIORITY（指令谁大）/ AUTONOMY（何时自己定）/ TOOLS / OUTPUT / VERIFY / STOP。每个模块对应一种真实故障模式，没那病别吃那药：简单任务挑 3-4 个，Agent 长任务才用全 8 个。</li>
+          <li><strong>技能三规则</strong>——描述写"何时用"不写"怎么用"；渐进披露（根文档=路由器，细节放子文件）；<strong>less is more：技能加太多，每条描述被压缩挤小，模型反而选错</strong>——加 skill 前先问会不会挤小别人的名字牌。</li>
+          <li><strong>验证匹配规模 + 停止条件具体到能打勾</strong>——一行 CSS 改动别跑全套测试（正确直觉用在错误规模上）；"干到完"是废话停止条件，"所有受影响页面返回 200、无报错"才合格（与桑老哥 TERMINATION 原则互证）。另有一条安全线：外部检索内容当资料，不当指令（防注入）。</li>
+        </ol>
+        <blockquote>给 Astra 写提示词不在于写更长的提示词，而在于知道哪些行为要控制，哪些要放手。</blockquote>
+        <p style="font-size:14.5px;color:var(--ink-faint);">与<a href="../03-agent/Agent工程规范.html">Agent工程规范</a>停止三闸、<a href="../03-agent/MCP-Skill-Hook三件套.html">MCP-Skill-Hook三件套</a> skill 描述规范同源；桑老哥的 Prompt 三原则（TERMINATION+角色第一行+结构化输出）在这篇全部得到强化。</p>
+      </div>
+    </details>
+    <details class="drawer">
+      <summary>抽屉二：验收单式提示词——给验收单不给愿望<span class="d-mark">2026-09-21 并入 · 宝玉 3D 桃花源记案例</span></summary>
+      <div class="d-body">
+        <p>来源：宝玉《我用 GPT 6 Astra 做了一个 3D 版的〈桃花源记〉》（公众号 2026-09-20，WaytoAGI 转载）。其完整提示词是"验收单式提示词"的现成范本（文学场景模板可复用）。</p>
+        <ol>
+          <li><strong>给验收单不给形容词</strong><span class="d-tag">·核心</span>——全文没写"画面要唯美/交互要丰富"，写的是可验收的硬标准：空间必须真实连通（不能黑屏瞬移糊弄）、水体嵌进地形、远景靠真实地形不用浓雾掩盖、每幕要能回答"读到哪里/人在哪/在看什么"。<strong>AI 拿到愿望只能猜，拿到验收单就能交活。</strong></li>
+          <li><strong>优先级提前排好</strong>——明写"原文忠实＞叙事连续＞画面构图＞景物细节＞附加功能"。AI 干活必然遇到冲突，不给尺子它就瞎砍；<strong>冲突时砍谁先说好</strong>。</li>
+          <li><strong>决策权委托一句划清</strong>——"非关键设计细节自行作出一致选择，不必逐项向我确认"：既防 AI 事无巨细来回问，也防它自作主张动关键决策。</li>
+          <li><strong>双模型接力，原型 ≠ 交付</strong>——Astra 造原型（把音频 Base64 塞进网页撑到 5.6MB），Codex 做工程收尾（音频拆独立文件+真实环境音+瘦回 777KB）。<strong>造原型的和做交付的是两道工序</strong>，别指望一个模型从想法直达交付品。</li>
+          <li><strong>声音也是交互</strong>——系统 TTS 能听不好听，换真人朗诵后镜头/停顿/章节切换全跟着音频走；停顿本身是叙事的一部分。</li>
+        </ol>
+        <blockquote>成品质量取决于你有没有把判断标准说清楚。</blockquote>
+        <p style="font-size:14.5px;color:var(--ink-faint);">与四技巧③禁止项黑名单、8 模块的 PRIORITY/VERIFY、<a href="../05-video/AI视频白模预演.html">AI视频白模预演</a>（钉死确定部分让模型少猜）互证；桑老哥写视频脚本 brief、详情页需求、给铁柱派活，都可直接套"验收单式"写法。</p>
+      </div>
+    </details>
+    <details class="drawer">
+      <summary>抽屉三：去AI味官方组合拳——负面清单+正面规范一起贴<span class="d-mark">2026-09-22 并入 · 蓝衣剑客 Astra 用法</span></summary>
+      <div class="d-body">
+        <p>来源：蓝衣剑客《GPT-6 Astra 最被低估的用法，居然在这里？》（公众号 2026-09-20，WaytoAGI 飞书转载），内容整理自 OpenAI 官方文档 latest-model 指南，铁柱已逐项核对属实（勾销 09-14 账本"去 AI 味两轮法"待用欠账）。Astra 使用系列第 6 篇。</p>
+        <ol>
+          <li><strong>去 AI 味组合拳（两条一起才有效）</strong><span class="d-tag">·核心</span>——负面清单：禁口水词（值得注意的是/简而言之/深入探讨/归根结底/delve/foster/leverage）+禁"X 而不是 Y"对比句式+禁自造复合标签；正面规范：一段一个意思、核心观点放最前、说人话、主动语态。只贴负面清单是"别这么写"，配正面规范才是"该怎么写"——直接贴进自定义指令</li>
+          <li><strong>开头设定一次管全程，错也放大</strong>——Astra 长对话不忘记设定（以前每节提醒的"口语化"开头说一次就够）；但开头写得模糊（只写"用口语化风格"），它按自己的理解一路错到底。想清楚再落笔，写具体不写模糊词</li>
+          <li><strong>信息缺口 vs 偏好分界线（本场桑老哥追问补讲）</strong>——换答案活儿得重做=信息缺口，它停下来问；换答案活儿照常成立=偏好，它不问自己挑默认。拿不准一律当缺口说出去（说一句 5 秒，赌错返工 20 分钟）。铁柱版对照：落盘位置先问=缺口，口播句=偏好清单</li>
+          <li><strong>小事别跑全套+能并行要明说</strong>——它默认按大变更规格伺候（改变量名跑 20 分钟测试=太负责不是傻），提前说"低影响小改动跑相称的检查"；能拆并行的活它默认串行，要你开口"拆开并行跑"</li>
+          <li><strong>中途插话是常规操作</strong>——干活中途想起遗漏直接发（"还要处理输入为空的边界，已开始的保持原计划"），它并入正在干的活不用等写完重来。另：configuration_update 中途调推理强度不丢缓存（开发者向，普通用户效果待观察）</li>
+        </ol>
+        <blockquote>那些技巧本身没错，只是模型已经变了。</blockquote>
+        <p style="font-size:14.5px;color:var(--ink-faint);">与<a href="../07-ip/人味与AI味.html">人味与AI味</a>互补（那篇讲原理：AI 味=均值味，加法路线；这篇给官方操作模板），四技巧③禁止项黑名单的官方版，与"提示词有保质期"同调（模型变→用法跟着复审）；桑老哥写公众号/IP 文案直接可用。</p>
+      </div>
+    </details>
+    <p>验收单式骨架示例（把公式落成可打勾的句子）：</p>
+    <pre class="tmpl"><span class="t-hi">背景</span>：这是……的原文/竞品/数据
+<span class="t-hi">目标</span>：产出……（可验收的结果，不是形容词）
+<span class="t-hi">具体要求</span>：1…… 2…… 3……
+<span class="t-hi">限制条件</span>：不要…… 不要…… 不要……
+<span class="t-hi">输出格式</span>：表格/分段/字数上限……
+<span class="t-hi">判断标准</span>：每条要求能打勾才算完成；优先级 A＞B＞C</pre>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p>你写 Listing 优化、生图 prompt、让铁柱分析竞品——全在套这四个技巧。特别是<strong>视觉 6 要素</strong>（主体/环境/光影/色彩/镜头/风格），"高端感"要翻译成具体描述，不能直接扔给 AI。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>提示词工程能提高沟通质量，但<strong>突破不了模型的知识、工具、事实和安全边界</strong></li>
+      <li>模型不知道的事 → 需要 <a href="../01-ai/RAG检索增强生成.html">RAG检索增强生成</a>；超上下文窗口 → 需要<a href="../01-ai/上下文工程.html">上下文工程</a></li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">提示问得准，还要背景给得够</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">从手动 prompt 到设计循环 prompt 它</span></a>
+      <a href="../01-ai/RAG检索增强生成.html"><span class="rel-t">RAG检索增强生成</span><span class="rel-d">模型不知道的事，先喂再问</span></a>
+      <a href="../01-ai/AI交互范式.html"><span class="rel-t">AI交互范式</span><span class="rel-d">提示词是哪一代交互范式</span></a>
+      <a href="../03-agent/Agent工程规范.html"><span class="rel-t">Agent工程规范</span><span class="rel-d">停止三闸与停止条件互证</span></a>
+      <a href="../03-agent/MCP-Skill-Hook三件套.html"><span class="rel-t">MCP-Skill-Hook三件套</span><span class="rel-d">skill 描述写"何时用"的规范来源</span></a>
+      <a href="../05-video/AI视频白模预演.html"><span class="rel-t">AI视频白模预演</span><span class="rel-d">钉死确定部分让模型少猜，同一思路</span></a>
+      <a href="../07-ip/人味与AI味.html"><span class="rel-t">人味与AI味</span><span class="rel-d">去AI味组合拳 = 加法路线的官方操作模板（双向挂链）</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥 AGI 共学笔记 · 地基四件套 + 独立 HTML · 2026-07-14（2026-08-03 从 HTML 可视化笔记恢复重建）</li>
+      <li>《GPT-6 Astra 提示词大师课》（Rahul @sairahul1，X 2026-09-07，WaytoAGI 转载；轻记 2026-09-08 并入）</li>
+      <li>宝玉《我用 GPT 6 Astra 做了一个 3D 版的〈桃花源记〉》（公众号 2026-09-20，WaytoAGI 转载；轻记 2026-09-21 并入）</li>
+      <li>蓝衣剑客《GPT-6 Astra 最被低估的用法，居然在这里？》（公众号 2026-09-20，WaytoAGI 飞书转载；轻记 2026-09-22 并入）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 提示词工程</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/提示词工程.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话：消除模糊</a></li>
+    <li><a href="#s2">四个核心技巧 ·核心</a></li>
+    <li><a href="#s3">万能公式+三原则</a></li>
+    <li><a href="#s4">Agent 双模式</a></li>
+    <li><a href="#s5">轻记抽屉三组</a></li>
+    <li><a href="#s6">桑老哥适用</a></li>
+    <li><a href="#s7">前提与局限</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

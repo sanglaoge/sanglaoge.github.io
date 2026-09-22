@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技能内化 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Skill工程 · 工具灰（车间感·冷静克制） ---- */
+:root {
+  --fam:#475569; --fam-deep:#1e293b; --fam-soft:#f1f5f9; --fam-line:#cbd5e1;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 两级跳：被动→主动 */
+.jump2 { display:grid; grid-template-columns:1fr; gap:10px; margin:18px 0; }
+@media (min-width:640px) { .jump2 { grid-template-columns:1fr 40px 1fr; align-items:center; } }
+.jp { border-radius:var(--r-box); padding:16px 18px; }
+.jp .jp-tag { font-size:14.5px; font-weight:700; letter-spacing:.06em; margin-bottom:6px; }
+.jp .jp-t { font-size:18px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+.jp p { font-size:15px; line-height:1.7; }
+.jp.low { background:var(--g2); border:1px dashed var(--g4); }
+.jp.low .jp-tag { color:var(--ink-faint); }
+.jp.low p { color:var(--ink-soft); }
+.jp.high { background:var(--fam-soft); border:1.5px solid var(--fam-line); }
+.jp.high .jp-tag { color:var(--fam-deep); }
+.jp.high p { color:var(--g8); }
+.jp-arrow { display:flex; align-items:center; justify-content:center; color:var(--fam); font-size:22px; font-weight:700; }
+
+/* 五级台阶（桌面逐级抬升，手机纵排缩进） */
+.ladder-cap { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.ladder { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0 8px; }
+@media (min-width:768px) {
+  .ladder { grid-template-columns:repeat(5,1fr); gap:8px; align-items:end; }
+}
+.rung {
+  position:relative; background:var(--g0); border:1px solid var(--line);
+  border-bottom:3px solid var(--fam-line); border-radius:var(--r-el) var(--r-el) 0 0;
+  padding:14px 14px 12px; margin-left:0;
+}
+.rung .r-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+  margin-bottom:8px;
+}
+.rung .r-t { font-weight:700; font-size:15.5px; color:var(--ink); line-height:1.4; margin-bottom:5px; }
+.rung .r-d { font-size:14.5px; color:var(--ink-faint); line-height:1.55; }
+.rung.top { background:var(--fam-soft); border-color:var(--fam-line); border-bottom-color:var(--fam); }
+.rung.top .r-t { color:var(--fam-deep); }
+.rung.top::after {
+  content:"产出"; position:absolute; top:-11px; right:8px;
+  background:var(--fam); color:#fff; font-size:14.5px; font-weight:700;
+  padding:1px 9px; border-radius:999px;
+}
+@media (min-width:768px) {
+  .rung.r1 { min-height:128px; } .rung.r2 { min-height:150px; }
+  .rung.r3 { min-height:172px; } .rung.r4 { min-height:194px; }
+  .rung.r5 { min-height:216px; }
+}
+@media (max-width:767px) {
+  .rung.r2 { margin-left:14px; } .rung.r3 { margin-left:28px; }
+  .rung.r4 { margin-left:42px; } .rung.r5 { margin-left:56px; }
+}
+
+/* 燃料小循环 */
+.loop-chips { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:12px 0; }
+.lc {
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  border-radius:999px; padding:3px 13px; font-size:14.5px; font-weight:600;
+}
+.la { color:var(--ink-faint); font-weight:700; }
+
+/* 去重改道提示 */
+.reroute {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:18px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.reroute b { color:var(--fam-deep); }
+
+/* 灰链行 */
+.grayline { font-size:14.5px; color:var(--ink-faint); margin-top:12px; line-height:1.7; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Skill工程</span><span class="sep">›</span>
+    <span class="here">技能内化</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Skill工程 · 把经验变成 AI 能复用的资产</p>
+    <h1>技能内化</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头张望，示意 Agent 主动学习新经验的入口"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>把专家经验（文章、文档、SOP）喂给 Agent，让它<strong>自动学习并打包成 Skill</strong>。这是从「被动执行」到「主动学习」的关键能力。</p>
+    <p>以前教 AI 用一个技能：你写好说明书它照做，说明书写多细它做多细。技能内化反过来：你只给原料（别人写的文章、团队的 SOP），它自己读懂、自己打包、自己装上。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>两级跳：被动执行 到 主动学习</h2>
+    <div class="jump2">
+      <div class="jp low">
+        <p class="jp-tag">低一级 · 被动执行</p>
+        <p class="jp-t">你说一步，它做一步</p>
+        <p>指令是消耗品：这轮教了，下轮忘；换个任务，重新教。经验始终得人扛。</p>
+      </div>
+      <div class="jp-arrow" aria-hidden="true">→</div>
+      <div class="jp high">
+        <p class="jp-tag">高一级 · 主动学习（关键）</p>
+        <p class="jp-t">喂文档，它自己学会</p>
+        <p>Agent 读经验文档，提炼流程，生成 Skill 文件，装上就能用——学习这步也从人手里交出去了。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>内化流程：五级台阶</h2>
+    <p class="ladder-cap">一级比一级接近「能用的 Skill」——台阶走到头，经验才算装进系统。</p>
+    <div class="ladder" aria-label="内化流程五级台阶">
+      <div class="rung r1"><span class="r-no">1</span><div class="r-t">专家经验文档</div><p class="r-d">文章、SOP、飞书文档——凡是沉淀过经验的纸</p></div>
+      <div class="rung r2"><span class="r-no">2</span><div class="r-t">Agent 阅读理解</div><p class="r-d">browser-use 打开链接通读，不用人先摘要</p></div>
+      <div class="rung r3"><span class="r-no">3</span><div class="r-t">提炼核心流程</div><p class="r-d">从叙事里抠出步骤、输入、输出、判断</p></div>
+      <div class="rung r4"><span class="r-no">4</span><div class="r-t">生成 Skill 文件</div><p class="r-d">自动打包成可安装的技能文件</p></div>
+      <div class="rung r5 top"><span class="r-no">5</span><div class="r-t">安装测试</div><p class="r-d">装上跑真实任务，验过才算学会</p></div>
+    </div>
+    <p>第 5 级最容易省——生成不等于学会，<strong>没在真实任务里验过的 Skill 是半成品</strong>。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>实际案例</h2>
+    <div class="rel-grid">
+      <div class="card"><p><strong>读微信文章学 Listing</strong>：用 browser-use 读取微信文章，学习亚马逊 Listing 优化流程，转化为内部技能。</p></div>
+      <div class="card"><p><strong>SOP 喂给小音虾</strong>：运营团队的 SOP 文档喂给小音虾，让它自动转成 Skill。</p></div>
+    </div>
+    <p>两个案例共同点：原料都是<strong>现成的文档</strong>，没有人再写一遍「给 AI 的说明书」——内化这步由 Agent 自己完成。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>核心价值：人最终会变成 AI 的燃料</h2>
+    <ul>
+      <li><strong>最核心的能力</strong>：从被动执行到主动学习</li>
+      <li>人最终会变成 AI 的燃料——飞书群聊沉淀知识，转成 Skills，循环越来越强</li>
+      <li>不需要等技术人员开发，运营自己就能「教」小音虾新技能</li>
+    </ul>
+    <div class="loop-chips" aria-label="燃料循环">
+      <span class="lc">群里聊出来的经验</span><span class="la">→</span>
+      <span class="lc">沉淀成文档</span><span class="la">→</span>
+      <span class="lc">内化成 Skill</span><span class="la">→</span>
+      <span class="lc">Agent 变强</span><span class="la">→</span>
+      <span class="lc">沉淀更多</span>
+    </div>
+    <p>这个循环每转一圈，团队经验就往系统里搬一块——人不再是执行者，是喂料口。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>抽取手法已并条（2026-09-20 去重改道）</h2>
+    <div class="reroute">
+      <b>内化最难的一步，是从专家脑子里抽隐性判断。</b>FDE 四手法（影随/关键决策/追术语边界/诱饵初稿）+ 决策树 SOP + 贪吃蛇薄切片交付 + 个人版 tacit 五追问，已统一维护在 <a href="../04-skill/隐性知识抽取.html">隐性知识抽取</a>（9 手法全景），本词条不再重录。
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>把团队积累的运营经验文档化，然后喂给小音虾变成 Skill</li>
+      <li>第 3 课（Listing 优化）的指令模板，就是技能内化的雏形</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">内化产物要按「先确认边界再写/改根因不堆补丁」工程化</span></a>
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">内化后的 Skill 靠真实问题迭代，失败沉淀成回归场景才算活下来</span></a>
+      <a href="../04-skill/隐性知识抽取.html"><span class="rel-t">隐性知识抽取</span><span class="rel-d">从人脑抽隐性判断标准的 9 手法全景（统一维护地）</span></a>
+    </div>
+    <p class="grayline">相关（暂无页面）：<span style="color:var(--ink-faint)">SOP转Skill三层升级</span>（工程化方法论）· <span style="color:var(--ink-faint)">五维提问框架</span>（内化中梳理 SOP 的工具）· <span style="color:var(--ink-faint)">群聊知识沉淀</span>（自动化的技能内化来源）</p>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>饼干哥哥AGI《90%跨境电商工作流被OpenClaw替代》（2026-08-03 建条收录）</li>
+      <li>2026-09-20 去重改道：抽取手法一节并入隐性知识抽取（9 手法全景）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Skill工程家族 · 技能内化</p>
+    <p>词条源：concepts(概念库)/Skill工程/技能内化.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">两级跳 ·核心</a></li>
+    <li><a href="#s3">内化五级台阶</a></li>
+    <li><a href="#s4">实际案例</a></li>
+    <li><a href="#s5">核心价值</a></li>
+    <li><a href="#s6">抽取手法并条</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

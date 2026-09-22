@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent自进化 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（系统·克制·可信） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：判断路线（衬线金句 + SVG 路线图 + 打分卡） ---- */
+
+/* 衬线金句 */
+.motto {
+  font-family:var(--font-head); font-size:clamp(18px,3vw,22px); line-height:1.8;
+  color:var(--ink); padding:18px 22px; margin:16px 0;
+  background:var(--fam-soft); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-box) var(--r-box) 0;
+}
+.motto b { color:var(--fam-deep); }
+
+/* 路线图 SVG 配色（class → var，hex 不出场） */
+.route { margin:16px 0 6px; }
+.route svg { width:100%; height:auto; }
+.svg-flow { stroke:var(--fam); stroke-width:2; fill:none; }
+.svg-dash { stroke:var(--fam-line); stroke-width:1.6; fill:none; stroke-dasharray:5 4; }
+.svg-box { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.5; }
+.svg-start { fill:var(--g0); stroke:var(--ink-faint); stroke-width:1.5; }
+.svg-end { fill:var(--fam); stroke:var(--fam-deep); stroke-width:1.5; }
+.svg-t { fill:var(--fam-deep); font-weight:700; }
+.svg-s { fill:var(--ink-soft); }
+.svg-n { fill:#ffffff; font-weight:700; }
+.svg-faint { fill:var(--ink-faint); }
+.svg-m { fill:var(--fam); }
+.route-cap { font-size:14px; color:var(--ink-faint); margin-bottom:12px; }
+
+/* 打分卡：三问 */
+.scorecard { border:1px solid var(--fam-line); border-radius:var(--r-box); overflow:hidden; margin:16px 0; background:var(--g0); box-shadow:var(--sh-1); }
+.sc-head { padding:10px 16px; background:var(--fam-soft); color:var(--fam-deep); font-weight:700; font-size:15.5px; }
+.sc-row { display:grid; grid-template-columns:34px 1fr; gap:12px; padding:13px 16px; border-top:1px solid var(--line); align-items:start; }
+.sc-no {
+  width:27px; height:27px; border:2px solid var(--fam); border-radius:7px;
+  color:var(--fam-deep); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:15px;
+  background:var(--g0); font-variant-numeric:tabular-nums;
+}
+.sc-q { font-weight:700; color:var(--ink); font-size:15.5px; }
+.sc-a { font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+
+/* 裁判/运动员 */
+.ref { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .ref { grid-template-columns:1fr 1fr; } }
+.ref .rc { border-radius:var(--r-el); padding:12px 14px; font-size:15px; }
+.ref .rc.ath { background:var(--g0); border:1px solid var(--line); }
+.ref .rc.jud { background:var(--fam-soft); border:1.5px solid var(--fam-line); }
+.ref .rc b { display:block; margin-bottom:4px; color:var(--ink); }
+.ref .rc.jud b { color:var(--fam-deep); }
+.ref .rc p { margin:0; color:var(--g8); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">Agent自进化</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 循环家族 · 转起来之后怎么变好</p>
+    <h1>Agent自进化</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-24</span>
+      <span>下次复核 2026-11-24</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意分数上涨背后藏着说不清的假象"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <div class="motto">Agent 改了自己 <b>≠</b> 变强；没见过的任务也变好才算变强；分数上涨要<b>先排除四种假象</b>再高兴。</div>
+    <p>Agent 用干活攒下的经验反过来修改自己（改提示词、改记忆、改技能、甚至改参数），让它下次干得更好。听起来很美，但「改了」和「变强了」中间隔着三道验证——这篇的贡献就是把这三道验证和其中的坑讲清楚。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三层判定：什么才叫自进化</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>层</th><th>判定</th><th>健身比喻</th></tr></thead>
+      <tbody>
+        <tr><td class="n">① 自进化事件</td><td>经验被写回（存进 memory / 生成 skill），跨任务还在用</td><td>记了训练笔记</td></tr>
+        <tr><td class="n">② 有效自进化</td><td>没见过的同类任务也变好了</td><td>陌生考试也提分</td></tr>
+        <tr><td class="n">③ 可靠自进化</td><td>没把原来会的能力搞坏，出了问题能撤销回滚</td><td>体检没毛病，随时能停药</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>关键分界</strong>：任务内的反思（干完一件事总结两句）只是信号——没有写回、下次不在，就什么都不是。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>最毒的坑：分数上涨 ≠ 能力上涨 ·核心</h2>
+    <p>一次测试变好了，先别庆祝，<strong>四种替代解释逐个排除</strong>：</p>
+    <div class="route">
+      <svg viewBox="0 0 680 252" role="img" aria-label="排除四假象路线图：分数上涨后依次排除多抽卡、背考题、讨好评分员、人工接管，四关全过才算真涨">
+        <defs>
+          <marker id="am" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="svg-m"/>
+          </marker>
+        </defs>
+        <text x="14" y="24" class="svg-faint" font-size="13">看到分数上涨，先过四道排除关：</text>
+        <rect x="14" y="52" width="106" height="44" rx="9" class="svg-start"/>
+        <text x="67" y="72" text-anchor="middle" font-size="13.5" class="svg-t">分数</text>
+        <text x="67" y="88" text-anchor="middle" font-size="13.5" class="svg-t">上涨了</text>
+        <line x1="120" y1="74" x2="146" y2="74" class="svg-flow" marker-end="url(#am)"/>
+        <rect x="150" y="42" width="108" height="64" rx="9" class="svg-box"/>
+        <text x="204" y="62" text-anchor="middle" font-size="13.5" class="svg-t">多抽了几次卡</text>
+        <text x="204" y="80" text-anchor="middle" font-size="11.5" class="svg-s">Pass@K</text>
+        <text x="204" y="96" text-anchor="middle" font-size="11.5" class="svg-s">采样涨分</text>
+        <line x1="258" y1="74" x2="284" y2="74" class="svg-flow" marker-end="url(#am)"/>
+        <rect x="288" y="42" width="108" height="64" rx="9" class="svg-box"/>
+        <text x="342" y="62" text-anchor="middle" font-size="13.5" class="svg-t">背下了考题</text>
+        <text x="342" y="80" text-anchor="middle" font-size="11.5" class="svg-s">Benchmark</text>
+        <text x="342" y="96" text-anchor="middle" font-size="11.5" class="svg-s">过拟合</text>
+        <line x1="396" y1="74" x2="422" y2="74" class="svg-flow" marker-end="url(#am)"/>
+        <rect x="426" y="42" width="108" height="64" rx="9" class="svg-box"/>
+        <text x="480" y="62" text-anchor="middle" font-size="13.5" class="svg-t">讨好评分员</text>
+        <text x="480" y="80" text-anchor="middle" font-size="11.5" class="svg-s">Reward</text>
+        <text x="480" y="96" text-anchor="middle" font-size="11.5" class="svg-s">Hacking</text>
+        <line x1="534" y1="74" x2="560" y2="74" class="svg-flow" marker-end="url(#am)"/>
+        <rect x="564" y="42" width="104" height="64" rx="9" class="svg-box"/>
+        <text x="616" y="62" text-anchor="middle" font-size="13.5" class="svg-t">环境帮忙</text>
+        <text x="616" y="80" text-anchor="middle" font-size="11.5" class="svg-s">人工接管</text>
+        <text x="616" y="96" text-anchor="middle" font-size="11.5" class="svg-s">人兜的底</text>
+        <path d="M340 106 L340 156" class="svg-dash" marker-end="url(#am)"/>
+        <text x="352" y="134" font-size="12.5" class="svg-faint">四关全过</text>
+        <rect x="226" y="160" width="228" height="52" rx="12" class="svg-end"/>
+        <text x="340" y="182" text-anchor="middle" font-size="15" class="svg-n">剩下的才算真涨</text>
+        <text x="340" y="200" text-anchor="middle" font-size="11.5" class="svg-n">迁移增益：陌生任务也变好</text>
+        <text x="14" y="240" font-size="12.5" class="svg-faint">命中任何一个 = 假象；排除完这四种，剩下的才算能力上涨。</text>
+      </svg>
+    </div>
+    <ul>
+      <li><strong>多抽了几次卡</strong>——抽 10 次选最好那张，不等于画功变强（Pass@K，采样涨分）。桑老哥做 AI 视频天天遇：抽 3 次卡选最好是「选出来的」，不是能力。</li>
+      <li><strong>背下了考题</strong>——只对这套测试有效，换套题就露馅（Benchmark 过拟合）。</li>
+      <li><strong>讨好评分员</strong>——钻评分规则漏洞刷高分（Reward Hacking，详见 <a href="../01-ai/图谱工程.html">图谱工程</a> 自改进循环的「作弊三招」）。</li>
+      <li><strong>环境帮忙/人工接管</strong>——看起来它做成了，其实是人兜的底。</li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>一句话带走：三问打分卡</h2>
+    <div class="scorecard">
+      <div class="sc-head">看到 Agent「越用越聪明」，先问三句</div>
+      <div class="sc-row"><span class="sc-no">1</span><div><div class="sc-q">写回了吗？</div><div class="sc-a">经验存进 memory / skill，跨任务还在用——没写回就只是任务内反思</div></div></div>
+      <div class="sc-row"><span class="sc-no">2</span><div><div class="sc-q">陌生任务也变好了吗？</div><div class="sc-a">held-out 验证：没见过的同类题也提分，才是迁移增益</div></div></div>
+      <div class="sc-row"><span class="sc-no">3</span><div><div class="sc-q">谁批的准？</div><div class="sc-a">评估、批准、撤销的权力必须在独立手里——不能自己给自己打分</div></div></div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>能改自己哪些部位：从外到内</h2>
+    <p>模型升级不是唯一路径，Agent 身上每层都能改：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>层</th><th>比喻</th><th>铁柱的实物</th></tr></thead>
+      <tbody>
+        <tr><td>Prompt</td><td>改便签</td><td>单次对话里的指令</td></tr>
+        <tr><td>Context</td><td>桌上摊什么资料</td><td>塞进上下文的文件</td></tr>
+        <tr><td>Memory</td><td>改笔记本</td><td>桑老哥说「记住这个」→ 写 memory</td></tr>
+        <tr><td>Tool / Skill</td><td>改工具箱</td><td>「存成 skill」→ Skill 层</td></tr>
+        <tr><td>Workflow</td><td>改流程图</td><td>编排 / subagent 流程</td></tr>
+        <tr><td>Harness</td><td>改车间调度规则</td><td>改 CLAUDE.md / hooks</td></tr>
+        <tr><td>模型参数</td><td>改大脑本身</td><td>换模型、微调</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>原则一句话：最小够用</strong>——出问题先找根因在哪层，用最小、最浅、最容易撤回的那层去修。事实缺了补 Context，接口错了修 Skill，流程乱了改 Workflow。别动不动就指望「模型再聪明一点」。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>裁判和运动员必须分开（控制面分离）</h2>
+    <div class="ref">
+      <div class="rc ath"><b>运动员（生成）</b><p>Agent 可以提议任何修改：改提示词、改记忆、改技能——提议权全给它。</p></div>
+      <div class="rc jud"><b>裁判（评估·批准·撤销）</b><p>必须握在独立手里。既当运动员又当裁判，它完全可以把评分标准改得让自己永远满分。</p></div>
+    </div>
+    <p>这是 <a href="../01-ai/出稿评审分离法.html">出稿评审分离法</a> 的工程版，也和 <a href="../01-ai/图谱工程.html">图谱工程</a> 自改进循环的命根子规则同源：<strong>别让提出方案的人移动标准线</strong>。</p>
+    <div class="warn"><b>在铁柱这儿的落地：</b>桑老哥就是独立裁判——铁柱说「做完了」不算数，你看结果点头才算。</div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>小白说法 ↔ 专业术语</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>小白说法</th><th>专业术语</th></tr></thead>
+      <tbody>
+        <tr><td>改自己身上某个部位</td><td>更新对象（Prompt/Memory/Skill/Harness/参数，合称脚手架 Σ）</td></tr>
+        <tr><td>没见过的题也做对了</td><td>迁移增益（Held-out test 验证）</td></tr>
+        <tr><td>多抽几次卡挑最好的</td><td>Pass@K（采样次数带来的涨分）</td></tr>
+        <tr><td>钻评分漏洞刷高分</td><td>Reward Hacking（奖励投机）</td></tr>
+        <tr><td>提议的和批准的分开</td><td>控制面分离（生成/评估/发布三权分立）</td></tr>
+        <tr><td>用最小改动修根因</td><td>最小够用更新原则（minimal-sufficient update）</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>轻记：Warp 自我进化 Agent（2026-08-31 并入）</h2>
+    <p>来源：宝玉解读 Claude 官方博客《How Warp builds self-improving agents on Claude》（2026-08-29）。核心机制：<strong>别让 Agent 自己进化自己——双 Skill 结构吃人类反馈</strong>（一个干活 Skill + 一个「改 Skill 的 Skill」定期收集人类工程师评论并更新前者）。反馈零摩擦：人在正常工作里随手评论 = 标注，收集/更新全自动。这正是「人标注 → AI 改进」的分工——桑老哥纠正铁柱 → 更新词条，就是它的手动版。</p>
+    <h3>六条实践</h3>
+    <ol>
+      <li>写原则不写死规则（写给聪明人）</li>
+      <li>解释为什么（能推理能举一反三）</li>
+      <li>反馈零摩擦</li>
+      <li>Skill 精简 + 渐进式披露（引用资源不塞满上下文）</li>
+      <li>反馈质量 &gt; 数量（资深详细反馈远胜点赞数）</li>
+      <li>「改进 Skill 的 Skill」可复用到其他 Skill</li>
+    </ol>
+    <div class="warn"><b>防线：</b>永远不让 Agent 盲目吃反馈——限制反馈权重 + 人审核。有标准答案的领域才全自动（宝玉反编译 skill 越进化越强）；没标准的靠专家（他写作 skill 自我进化负优化，越改越糟）。</div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>自进化改的主要是 <a href="../01-ai/Harness.html">Harness</a> 这套脚手架，不是模型本身——别把宝押在「模型变聪明」上</li>
+      <li>评估环境本身也是被攻击面：高分先查沙箱，再谈成绩（假满分陷阱）</li>
+      <li>没写回、没跨任务验证、没独立批准的「越用越好」，一律先当假象处理</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>桑老哥 = 独立裁判：铁柱自评不算数，看结果点头才算——控制面分离已在用</li>
+      <li>「桑老哥纠正铁柱 → 更新词条/CLAUDE.md」= 手动版 Learning Loop；存 memory / 存 skill = 写回</li>
+      <li><a href="../04-skill/技能进化.html">技能进化</a> 是 Skill 层案例：60 分上线收失败案例，迭代到 90 分</li>
+      <li>Learning Loop 完整闭合：<a href="../01-ai/循环工程.html">循环工程</a> 保存现场→提炼问题→定义验收→选层→候选→独立验证→发布→观察→撤回或巩固；<a href="../01-ai/目标契约与五个闸门.html">目标契约与五个闸门</a> 是「定义验收」的日常版</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">自进化改的主战场：脚手架不是模型</span></a>
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">Skill 层自进化的具体案例</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">Learning Loop 怎么闭合</span></a>
+      <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">自改进循环·验证器与作弊三招</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">控制面分离的人机协作版</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">验收标准先行</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">谁在进化：Agent 本体定义</span></a>
+    </div>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Fighter《Agent 自进化：从经验到可验证的能力增长》（2026-08-21 公众号，WaytoAGI 飞书转载，基于 14 篇论文综述）</li>
+      <li>宝玉解读 Claude 官方博客《How Warp builds self-improving agents on Claude》（2026-08-29，2026-08-31 并入）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Agent自进化</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Agent自进化.md（2026-08-24 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">三层判定</a></li>
+    <li><a href="#s3">排除四假象 ·核心</a></li>
+    <li><a href="#s4">三问打分卡</a></li>
+    <li><a href="#s5">能改哪些部位</a></li>
+    <li><a href="#s6">控制面分离</a></li>
+    <li><a href="#s7">小白↔术语</a></li>
+    <li><a href="#s8">Warp 轻记</a></li>
+    <li><a href="#s9">前提与局限</a></li>
+    <li><a href="#s10">桑老哥适用</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

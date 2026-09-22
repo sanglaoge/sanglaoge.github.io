@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>锯齿智能 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：叙事布局（锯齿曲线主图 + 时间线 + 故事卡） ---- */
+
+/* SVG 配色全走 class→var */
+.svg-g { width:100%; height:auto; display:block; }
+.sg-line { stroke:var(--fam); stroke-width:2.6; fill:none; stroke-linejoin:round; stroke-linecap:round; }
+.sg-base { stroke:var(--g5); stroke-width:1.6; fill:none; stroke-dasharray:7 6; }
+.sg-grid { stroke:var(--g3); stroke-width:1; fill:none; }
+.sg-dot { fill:var(--fam); }
+.sg-peak { fill:var(--fam-deep); font-weight:700; }
+.sg-val { fill:var(--g7); font-weight:700; }
+.sg-txt { fill:var(--fam-deep); font-weight:700; }
+.sg-ink { fill:var(--g8); }
+.sg-faint { fill:var(--g6); }
+.sg-baseline-txt { fill:var(--g6); }
+
+/* 时间线 */
+.tl { list-style:none; margin:18px 0; padding-left:26px; position:relative; }
+.tl::before { content:""; position:absolute; left:7px; top:6px; bottom:6px; width:2px; background:var(--fam-line); }
+.tl li { position:relative; margin-bottom:18px; }
+.tl li::before {
+  content:""; position:absolute; left:-24px; top:7px; width:12px; height:12px; border-radius:50%;
+  background:var(--g0); border:3px solid var(--fam);
+}
+.tl .tl-when { font-size:14.5px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums; }
+.tl .tl-what { font-size:15.5px; color:var(--g8); margin:2px 0; }
+.tl .tl-note { font-size:14.5px; color:var(--ink-faint); }
+.tl li.now::before { background:var(--fam); }
+
+/* 故事卡（两个认知错误） */
+.story2 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .story2 { grid-template-columns:1fr 1fr; } }
+.story2 .st { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); box-shadow:var(--sh-1); padding:16px 18px; }
+.story2 .st .st-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center; border-radius:50%;
+  background:var(--fam-soft); color:var(--fam-deep); border:1.5px solid var(--fam); font-weight:700; font-size:14.5px; margin-right:8px;
+}
+.story2 .st h3 { display:inline; font-size:16.5px; vertical-align:middle; }
+.story2 .st p { font-size:14.5px; color:var(--ink-soft); margin:10px 0 0; }
+.story2 .st .st-end { color:var(--g8); border-top:1px dashed var(--line); padding-top:8px; margin-top:10px; }
+
+/* 怎么用四条 */
+.use4 { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .use4 { grid-template-columns:1fr 1fr; } }
+.use4 .u { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:11px 15px; }
+.use4 .u b { color:var(--fam-deep); display:block; margin-bottom:2px; }
+.use4 .u p { font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">锯齿智能</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 能力认知</p>
+    <h1>锯齿智能（Jagged Intelligence）</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-11</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探墙张望，示意对AI能力的高低边界要逐个任务试探"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p><strong>AI 的能力是锯齿状的</strong>——某些任务超人类（写诗、总结），某些看似简单的任务反而失败（小孩都会的）。不像人类智能那样均匀。</p>
+    <svg class="svg-g" viewBox="0 0 680 250" role="img" aria-label="锯齿能力曲线：写诗、总结、翻译、模式识别等任务远高于人类基线，数数、简单计算、事实核对、逻辑推理等任务低于基线，高低交错呈锯齿状">
+      <line x1="30" y1="130" x2="650" y2="130" class="sg-base"/>
+      <text x="622" y="122" font-size="11.5" class="sg-baseline-txt">人类水平</text>
+      <line x1="30" y1="50" x2="650" y2="50" class="sg-grid"/>
+      <line x1="30" y1="210" x2="650" y2="210" class="sg-grid"/>
+      <text x="34" y="44" font-size="11.5" class="sg-faint">超人类</text>
+      <text x="34" y="228" font-size="11.5" class="sg-faint">反而不行</text>
+      <polyline points="60,205 110,55 160,215 210,50 260,210 310,60 360,205 410,55 460,215 510,50 560,210 610,60 640,140" class="sg-line"/>
+      <circle cx="110" cy="55" r="5" class="sg-dot"/><text x="110" y="38" text-anchor="middle" font-size="12.5" class="sg-peak">写诗</text>
+      <circle cx="210" cy="50" r="5" class="sg-dot"/><text x="210" y="33" text-anchor="middle" font-size="12.5" class="sg-peak">总结</text>
+      <circle cx="310" cy="60" r="5" class="sg-dot"/><text x="310" y="43" text-anchor="middle" font-size="12.5" class="sg-peak">翻译</text>
+      <circle cx="410" cy="55" r="5" class="sg-dot"/><text x="410" y="38" text-anchor="middle" font-size="12.5" class="sg-peak">模式识别</text>
+      <circle cx="510" cy="50" r="5" class="sg-dot"/><text x="510" y="33" text-anchor="middle" font-size="12.5" class="sg-peak">写文案</text>
+      <circle cx="60" cy="205" r="5" class="sg-dot"/><text x="60" y="232" text-anchor="middle" font-size="12.5" class="sg-val">数数</text>
+      <circle cx="160" cy="215" r="5" class="sg-dot"/><text x="160" y="242" text-anchor="middle" font-size="12.5" class="sg-val">简单计算</text>
+      <circle cx="260" cy="210" r="5" class="sg-dot"/><text x="260" y="237" text-anchor="middle" font-size="12.5" class="sg-val">事实核对</text>
+      <circle cx="360" cy="205" r="5" class="sg-dot"/><text x="360" y="232" text-anchor="middle" font-size="12.5" class="sg-val">逻辑推理</text>
+      <circle cx="460" cy="215" r="5" class="sg-dot"/><text x="460" y="242" text-anchor="middle" font-size="12.5" class="sg-val">计数任务</text>
+      <circle cx="560" cy="210" r="5" class="sg-dot"/><text x="560" y="237" text-anchor="middle" font-size="12.5" class="sg-val">字谜类</text>
+    </svg>
+    <p style="font-size:14.5px;color:var(--ink-faint);">示意图：高低交错才是常态，能力不能从一个任务推断到另一个任务。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉（时间线）</h2>
+    <ul class="tl">
+      <li>
+        <span class="tl-when">2023</span>
+        <p class="tl-what">Ethan Mollick（Wharton 教授）等人在 BCG/哈佛咨询业研究中提出"Jagged Frontier"</p>
+        <p class="tl-note">论文《The Shape of AI》——相关概念源头</p>
+      </li>
+      <li>
+        <span class="tl-when">2024-07</span>
+        <p class="tl-what">Andrej Karpathy 在 X 提出"Jagged Intelligence"</p>
+        <p class="tl-note">术语提出者（推文 status/1816531576228053133）</p>
+      </li>
+      <li>
+        <span class="tl-when">2024</span>
+        <p class="tl-what">Mollick 专著《Co-Intelligence: Living and Working with AI》详述 Jagged Frontier</p>
+        <p class="tl-note">两者描述同一现象：AI 能力不规则分布</p>
+      </li>
+      <li class="now">
+        <span class="tl-when">至今</span>
+        <p class="tl-what">模型换代快，锯齿形状持续变化，要不断重测</p>
+      </li>
+    </ul>
+    <p>核心洞察：AI 不是"半个普通人"也不是"超人"，而是<strong>"某些维度超凡、某些维度弱智"的锯齿</strong>。理解这种不均匀，是有效用 AI 的前提。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>为什么重要：两个认知错误（故事卡）</h2>
+    <div class="story2">
+      <div class="st">
+        <span class="st-no">1</span><h3>看它超凡就全信</h3>
+        <p>看 AI 在某事上超凡（比如写诗），就信任它做所有事 → 被它在简单事上的失败坑。</p>
+        <p class="st-end">结果：阴沟里翻船，栽在"小孩都会"的任务上。</p>
+      </div>
+      <div class="st">
+        <span class="st-no">2</span><h3>看它犯傻就全否</h3>
+        <p>看 AI 在某事上犯傻（比如数数），就否定它所有能力 → 错过它在复杂事上的价值。</p>
+        <p class="st-end">结果：因小失大，白白放过超人类的那段锯齿。</p>
+      </div>
+    </div>
+    <div class="warn"><b>锯齿智能告诉你（·核心）：</b>AI 的能力不能从一个任务推断到另一个任务，必须逐个任务测。</div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>怎么用这个概念</h2>
+    <div class="use4">
+      <div class="u"><b>1 · 别假设泛化</b><p>AI 在 A 任务做得好，不代表 B 任务也好——B 要单独测</p></div>
+      <div class="u"><b>2 · 找锯齿的高点</b><p>让 AI 做它擅长的事（生成 / 总结 / 翻译 / 模式识别）</p></div>
+      <div class="u"><b>3 · 防锯齿的低点</b><p>简单计算 / 计数 / 逻辑推理 / 事实核对，交叉验证或自己来</p></div>
+      <div class="u"><b>4 · 持续更新</b><p>模型换代快，今天的锯齿形状和下个月不一样</p></div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>对你的落地</h2>
+    <p>你<a href="../02-think/损失函数思维.html">损失函数思维</a>学过"AI 搞定所有能写出损失函数的事"——那是从"能否标准化"角度。锯齿智能是从"能力分布"角度补充：<strong>即使能标准化的任务，AI 也可能忽强忽弱。</strong></p>
+    <p>你<a href="../02-think/难的分类学.html">难的分类学</a>说"难在卖是护城河，AI 能加速的不是壁垒"——锯齿智能补充：AI 能加速的部分，也要看是不是它的锯齿高点。</p>
+    <blockquote>实测优先：选品 / 运营里，让 AI 做的每个新任务，先小成本测一下它在不在锯齿高点，再决定信任度。</blockquote>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>边界</h2>
+    <ul>
+      <li>锯齿形状因模型而异（DeepSeek 和 Claude 的锯齿不一样），也因版本变化</li>
+      <li>不能用一次测试永久定性——模型升级后要重测</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/损失函数思维.html"><span class="rel-t">损失函数思维</span><span class="rel-d">能否标准化是一个角度，能力分布是补充角度</span></a>
+      <a href="../02-think/难的分类学.html"><span class="rel-t">难的分类学</span><span class="rel-d">AI 能加速的部分，也要看是不是锯齿高点</span></a>
+      <a href="../01-ai/AI概念导航图.html"><span class="rel-t">AI概念导航图</span><span class="rel-d">本条补上了导航图的能力认知缺口</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">锯齿低点用工程护栏兜底</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Andrej Karpathy X post《Jagged Intelligence》(2024-07, status/1816531576228053133)——术语提出者</li>
+      <li>Ethan Mollick 等《The Shape of AI》(2023)——Jagged Frontier 相关概念源头</li>
+      <li><a href="https://www.gsb.stanford.edu/insights/co-intelligence-ai-masterclass-ethan-mollick" target="_blank" rel="noopener noreferrer">Stanford GSB: Co-Intelligence Masterclass with Ethan Mollick</a>——Jagged Frontier 相关概念</li>
+      <li><a href="https://knowledge.wharton.upenn.edu/article/co-intelligence-how-to-live-and-work-with-ai/" target="_blank" rel="noopener noreferrer">Wharton Knowledge: Co-Intelligence</a>——Jagged Frontier 相关概念</li>
+      <li>Ethan Mollick《Co-Intelligence: Living and Working with AI》（2024 专著）——Jagged Frontier 相关概念详述</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 锯齿智能</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/锯齿智能.md（2026-08-11 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉·时间线</a></li>
+    <li><a href="#s3">两个认知错误 ·核心</a></li>
+    <li><a href="#s4">怎么用</a></li>
+    <li><a href="#s5">对你的落地</a></li>
+    <li><a href="#s6">边界</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

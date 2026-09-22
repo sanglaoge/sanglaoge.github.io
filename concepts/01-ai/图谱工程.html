@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图谱工程 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：流程布局（图谱版：节点图 + 缺陷表 + 成本阶梯） ---- */
+
+/* SVG 配色全走 class→var */
+.svg-g { width:100%; height:auto; display:block; }
+.sg-fill { fill:var(--fam); }
+.sg-stroke { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.6; }
+.sg-state { fill:var(--fam-line); stroke:var(--fam); stroke-width:1.4; stroke-dasharray:5 4; }
+.sg-flow { stroke:var(--fam); stroke-width:1.8; fill:none; }
+.sg-dash { stroke:var(--fam-line); stroke-width:1.6; fill:none; stroke-dasharray:5 4; }
+.sg-ring { stroke:var(--fam-line); stroke-width:2; fill:none; stroke-dasharray:6 5; }
+.sg-txt { fill:var(--fam-deep); font-weight:700; }
+.sg-ink { fill:var(--g8); }
+.sg-faint { fill:var(--g6); }
+
+/* 三要素比方条 */
+.meta3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .meta3 { grid-template-columns:1fr 1fr 1fr; } }
+.meta3 .m { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:10px 14px; }
+.meta3 .m b { color:var(--fam-deep); }
+.meta3 .m span { display:block; font-size:14.5px; color:var(--ink-faint); }
+
+/* 三问尺子 */
+.ruler3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .ruler3 { grid-template-columns:1fr 1fr 1fr; } }
+.ruler3 .r { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:0 0 var(--r-el) var(--r-el); padding:14px 16px; }
+.ruler3 .r .r-en { font-size:14.5px; font-weight:700; color:var(--fam-deep); letter-spacing:.06em; }
+.ruler3 .r h3 { margin:4px 0 8px; font-size:16.5px; }
+.ruler3 .r p { font-size:14.5px; color:var(--ink-soft); margin-bottom:6px; }
+
+/* token 成本条 */
+.cost { display:grid; gap:10px; margin:16px 0; }
+.cost .c-row { display:grid; grid-template-columns:120px 1fr 56px; align-items:center; gap:12px; }
+.cost .c-label { font-size:14.5px; color:var(--ink-soft); }
+.cost .c-track { background:var(--g2); border-radius:6px; height:16px; overflow:hidden; }
+.cost .c-bar { display:block; height:100%; background:var(--fam-line); border-radius:6px; }
+.cost .c-bar.hot { background:var(--fam); }
+.cost .c-num { font-weight:700; color:var(--ink); text-align:right; font-variant-numeric:tabular-nums; }
+
+/* 警示条（沿用样张语义色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 三句能直接用 */
+.use3 { margin:14px 0; display:grid; gap:10px; counter-reset:u3; }
+.use3 .u { background:var(--g0); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:12px 16px; position:relative; padding-left:52px; }
+.use3 .u::before {
+  counter-increment:u3; content:counter(u3);
+  position:absolute; left:14px; top:12px; width:26px; height:26px; line-height:26px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+}
+.use3 .u b { color:var(--fam-deep); }
+
+/* Verifier 三打法 */
+.ver3 { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .ver3 { grid-template-columns:1fr 1fr 1fr; } }
+.ver3 .v { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:12px 14px; }
+.ver3 .v b { color:var(--fam-deep); display:block; margin-bottom:4px; }
+.ver3 .v p { font-size:14.5px; color:var(--ink-soft); }
+
+/* 信号清单 */
+.sig { display:grid; grid-template-columns:1fr; gap:8px; margin:12px 0; }
+@media (min-width:640px) { .sig { grid-template-columns:1fr 1fr; } }
+.sig li { list-style:none; background:var(--g0); border:1px dashed var(--line); border-radius:var(--r-el); padding:8px 14px; font-size:15px; color:var(--g8); }
+
+/* 灰色未建词条 */
+.rel-grid .rel-off {
+  display:block; background:var(--g2); border:1px dashed var(--g4);
+  border-radius:var(--r-el); padding:10px 14px; font-size:15px; color:var(--ink-faint);
+}
+.rel-grid .rel-off .rel-t { color:var(--g6); font-weight:600; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">图谱工程</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 循环家族 · Loop 的下一站</p>
+    <h1>图谱工程</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-07</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探墙张望，示意从单循环望向多循环协同的下一站入口"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>当一个循环不够用，协调本身就成了工程问题。</blockquote>
+    <p>图谱工程 = <strong>协调多个 AI 循环的那一层</strong>。三要素：节点（干活单元）+ 边（路由规则）+ 状态（共享对象）。单 AI 循环本质是"边指回自身"的单节点图谱——图谱不取代循环，是管多个循环怎么配合的。</p>
+    <div class="meta3">
+      <div class="m"><b>节点 = 岗位</b><span>切配 / 炒菜 / 打荷，一个岗位干一类活</span></div>
+      <div class="m"><b>边 = 出菜流程</b><span>谁做完交给谁，路由规则写死在流程里</span></div>
+      <div class="m"><b>状态 = 点菜单</b><span>所有人共看的那张单子，共享对象</span></div>
+    </div>
+    <p>后厨比方：单 AI 循环 = 只有一人的苍蝇馆子；图谱 = 多岗位协调的大厨房。</p>
+    <svg class="svg-g" viewBox="0 0 680 240" role="img" aria-label="单节点自环与多节点图谱的对照图：左边单循环边指回自身，右边三个岗位节点加共享状态">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="sg-fill"/>
+        </marker>
+      </defs>
+      <circle cx="90" cy="100" r="36" class="sg-stroke"/>
+      <text x="90" y="106" text-anchor="middle" font-size="14" class="sg-txt">AI</text>
+      <path d="M62,78 C38,28 142,28 118,78" class="sg-flow" marker-end="url(#ar1)"/>
+      <text x="90" y="163" text-anchor="middle" font-size="13" class="sg-txt">单 AI 循环</text>
+      <text x="90" y="183" text-anchor="middle" font-size="11.5" class="sg-faint">边指回自身 · 苍蝇馆子</text>
+      <line x1="152" y1="100" x2="218" y2="100" class="sg-flow" marker-end="url(#ar1)"/>
+      <text x="185" y="86" text-anchor="middle" font-size="11.5" class="sg-faint">一个循环不够用</text>
+      <g>
+        <circle cx="300" cy="80" r="30" class="sg-stroke"/>
+        <text x="300" y="86" text-anchor="middle" font-size="13" class="sg-txt">切配</text>
+        <circle cx="440" cy="80" r="30" class="sg-stroke"/>
+        <text x="440" y="86" text-anchor="middle" font-size="13" class="sg-txt">炒菜</text>
+        <circle cx="580" cy="80" r="30" class="sg-stroke"/>
+        <text x="580" y="86" text-anchor="middle" font-size="13" class="sg-txt">出餐</text>
+        <line x1="332" y1="80" x2="406" y2="80" class="sg-flow" marker-end="url(#ar1)"/>
+        <line x1="472" y1="80" x2="546" y2="80" class="sg-flow" marker-end="url(#ar1)"/>
+        <rect x="350" y="150" width="220" height="42" rx="9" class="sg-state"/>
+        <text x="460" y="176" text-anchor="middle" font-size="13" class="sg-txt">共享状态 · 点菜单</text>
+        <line x1="300" y1="112" x2="386" y2="150" class="sg-dash"/>
+        <line x1="440" y1="112" x2="460" y2="150" class="sg-dash"/>
+        <line x1="580" y1="112" x2="534" y2="150" class="sg-dash"/>
+      </g>
+      <text x="460" y="222" text-anchor="middle" font-size="12" class="sg-faint">图谱 = 大厨房：节点=岗位 · 边=流程 · 状态=点菜单</text>
+    </svg>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>图谱不是新东西</h2>
+    <p>2026-07 有人喊"循环工程已死，图谱登场"。拆穿：LangGraph 2024-01 就给了同样模型（节点+边+共享状态），微软 AutoGen、Google ADK 2.0 都在用。<strong>新的是名字，不是技术。</strong>这行改名勤，别被新词唬住。</p>
+    <ul>
+      <li>LangGraph（2024-01）：节点 + 边 + 共享状态的同样模型</li>
+      <li>微软 AutoGen、Google ADK 2.0：都在用同一套思路</li>
+      <li>2026-07 Peter Steinberger 一句"还在聊 loops 吗，是不是该聊 graphs 了"引爆热词</li>
+    </ul>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>Loop 为什么必须让位：五个结构性缺陷 + 目标失明</h2>
+    <p>ReAct 单循环（2022）扛三年生产压力，暴露五个不是 bug、是"循环形状"必然结果的问题：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>缺陷</th><th>现象</th></tr></thead>
+      <tbody>
+        <tr><td>上下文腐烂</td><td>每轮思考/工具结果全塞同一窗口，第 1 轮 2k→第 10 轮 18k token，原始目标被淹没，模型对着自己输出反复分析</td></tr>
+        <tr><td>错误级联</td><td>出错后靠模型在同一条推理链里跳出，极难；换参数再试再错，烧上万 token 答案仍错</td></tr>
+        <tr><td>工具过载</td><td>单智能体挂 15-20 个工具，选择准确率骤降，功能相近的工具常选错</td></tr>
+        <tr><td>缺乏控制粒度</td><td>不能暂停子任务等审批、不能给不同步骤配不同模型、不能中段独立质检，循环全有或全无</td></tr>
+        <tr><td>可观测性差</td><td>只知它想了啥调了啥，不知它为啥在此分支、哪步决定导致最终错</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>更隐蔽的是目标失明（·核心）：</b>古德哈特定律——指标被用力优化后就不再测量它本来的东西。真实案例：AI 客服优化"工单解决率"，五个月曲线上涨，续费数据一来发现客户流失率翻倍——AI 学会的"解决"是快速关对话、劝阻追问、把被放弃问题也标已解决。循环完美运行、数字一路上涨，而这个"成功"正是失败的机制。定指标就是给 AI 装"眼睛"，指标错它完美地做错事（呼应<a href="../01-ai/AI确认偏误.html">AI确认偏误</a>：不要谄媚）。</div>
+    <p>五缺陷 + 目标失明的共同点：根子不在循环内部，在<strong>多个环节的关系</strong>上。单循环做大做强解决不了——需要的是图。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>三层含义：三问尺子（消除热词混乱）</h2>
+    <p>"Graph Engineering"含义极度发散——有人指知识图谱，有人指 Agent 编排，有人指"以关系为中心"的工程视角。Larkspur 给三个问题当尺子，立刻定位对方说哪层：</p>
+    <div class="ruler3">
+      <div class="r">
+        <span class="r-en">Scope</span>
+        <h3>作用范围</h3>
+        <p>Work Graph（这一次任务怎么完成=项目执行计划，短命）vs Org Graph（系统长期有哪些能力责任=公司组织架构图，长命）。<strong>两图不是大小关系，是语义不同。</strong></p>
+      </div>
+      <div class="r">
+        <span class="r-en">Plane</span>
+        <h3>系统平面</h3>
+        <p>Control 指挥 / Execution 执行 / Evaluation 验收 / Adaptation 调整 / Governance 治理。一个图常只覆盖其中几层。</p>
+      </div>
+      <div class="r">
+        <span class="r-en">Dynamism</span>
+        <h3>动态程度</h3>
+        <p>静态图 / 运行时动态生成 / 自适应改写拓扑。</p>
+      </div>
+    </div>
+    <p>下次看到"Graph Engineering"，问这三个问题，就不会被带着跑。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>最重要结论：图谱大多时候是过度设计</h2>
+    <p>Anthropic 的 token 数字（每多一个节点成本继续放大）：</p>
+    <div class="cost">
+      <div class="c-row"><span class="c-label">一次普通聊天</span><span class="c-track"><span class="c-bar" style="width:8%"></span></span><span class="c-num">1 倍</span></div>
+      <div class="c-row"><span class="c-label">单 AI 循环</span><span class="c-track"><span class="c-bar" style="width:30%"></span></span><span class="c-num">4 倍</span></div>
+      <div class="c-row"><span class="c-label">多 AI 图谱</span><span class="c-track"><span class="c-bar hot" style="width:100%"></span></span><span class="c-num">15 倍</span></div>
+    </div>
+    <p>两条铁律合一：</p>
+    <ul>
+      <li><strong>先 Loop 再 Graph</strong>：图的最小原子是一个完整的 Loop（动作→结果→检查→决定），不是 Agent。一个稳定循环都做不好，连十个不稳定循环成图 = 分布式失败。（Akshay + Larkspur 一致结论）</li>
+      <li><strong>会判断"不用图"比"会画图"更高级</strong>：不是所有协作都该建模成图。CodexLoom 案例故意只做 Org Graph 那一半（长期身份+记忆+治理），把动态工作流编排留给 Agent 自己——清晰的产品边界，不是缺陷。</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>治理红线：工作图快变、角色图慢变</h2>
+    <p>图允许"任务怎么拆、怎么合"现场灵活调整（工作图，可快变）。但"谁有权改数据库、谁能绕过审批"这类长期权限（角色图），绝不能让模型现场发挥——必须慢变、可审计。否则搭出来的不是智能系统，是一场随时会爆的生产事故。</p>
+    <p>→ 对应桑老哥的红黄绿灯：临时任务流程可以快调，权限红线（删文件/推代码/花钱）永远红灯等点头。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>三句能直接用</h2>
+    <div class="use3">
+      <div class="u"><b>别为了图而图</b>：一个清晰的循环能搞定的，就别整复杂。先画一张能在餐巾纸上说清的小图（Anthropic 第一原则）。</div>
+      <div class="u"><b>图的价值来自确定性，不是智能体数量</b>：让模型去判断，让代码去兜底，再配一双独立、专门挑刺的眼睛。</div>
+      <div class="u"><b>图必须接地气，有现实锚点</b>：测试真跑过、钱真到账、用户真留下，不然搭得再精密也是一台更有组织的幻觉工厂。</div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>四个难点</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>难点</th><th>要点</th></tr></thead>
+      <tbody>
+        <tr><td>一、别把每步拆成节点</td><td><strong>餐巾纸测试</strong>：图画不到一张餐巾纸上 = 太复杂。两节点合并没损失，一开始就不该分开</td></tr>
+        <tr><td>二、共享状态要可控</td><td>给状态定类型模式，明确每个节点能写哪些字段，节点间设检查点。否则"节点二随意写入，到节点五变成被认真对待的事实"</td></tr>
+        <tr><td>三、路由交给合适的人</td><td>可预测的路由交给确定性代码，只有真需要语义判断才交给模型（Google ADK 2.0 原则）</td></tr>
+        <tr><td>四、别让智能体集体附和</td><td>二十个同款 AI 读同一份错材料 ≠ 二十份独立判断，叫"有组织胡言乱语"。审阅要换不同模型 + 新鲜上下文 + 外部证据</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>最容易被忽略：Verifier 才是真瓶颈</h2>
+    <p>Worker（干活的）和 Verifier（验收的）<strong>绝不能共享上下文</strong>。质检员不能归生产部门管——否则质检标准只会越来越松。</p>
+    <p>大多数节点不该是 LLM：确定性任务（算时长、查 JSON、判预算）交给代码，模糊判断才交给模型。就像公司里出纳按规则数钱、质检按清单打勾，这些确定性环节用代码比用大模型可靠。</p>
+    <h3>Verifier 三种打法（挑刺强度按事情轻重分级）</h3>
+    <div class="ver3">
+      <div class="v"><b>对抗式</b><p>派多个怀疑者分头驳同一结论，多数没驳倒才算站得住</p></div>
+      <div class="v"><b>多视角</b><p>正确性 / 安全性 / 可复现，各查各的</p></div>
+      <div class="v"><b>评委制</b><p>多方案并行打分选优，再吸收亚军里的好东西</p></div>
+    </div>
+    <blockquote>金句：让模型的判断力落在节点上，让代码的可靠性落在边上。<span class="q-src">最硬的确定性来自代码和现实</span></blockquote>
+    <p>格式校验、跑测试、去重、排序、算预算交给普通代码（让模型判 JSON 合不合法既不稳又费钱）。警告：如果图里所有节点都在互相引用模型生成的结论、没一个真的碰现实，那只是一台更精致的自嗨机器——真正锚点是"测试真跑过、钱真到账、用户真留下"，"更好"由人来定。</p>
+    <p><strong>为什么"只能验出口"又添一证（2026-09-14）：</strong>Astra 这代模型思维链不可见——过程根本看不了，出口验收（契约+验证器+钩子）从"最佳实践"升级成"唯一的门"。参见<a href="../01-ai/目标契约与五个闸门.html">目标契约与五个闸门</a> §9。</p>
+    <div class="card hl">
+      <h3>论文周报二印证速记（2026-09-14，DAIR.AI 周报 9.7-9.13）</h3>
+      <p>①谷歌 Procedural Graphs（程序图）——知识图谱存"是什么"、程序图存"下一步做什么/什么条件下做"；图的增删改只在验证性能不降时提交、被拒编辑留档防重复提——图谱工程家族新成员 + 咱验证器思路的学术版。②DeepMind 100 智能体群体作弊实验——智能体钻评估系统漏洞伪造数学证明并经共享渠道扩散、另一组智能体审计吹哨、作者提分级制裁治理规则——"验证器怎么不被 AI 偷走标准线"的活案例。</p>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>自改进循环：验证器怎么不被 AI 偷走标准线（7 条规则）</h2>
+    <blockquote>自改进循环能自动化几乎一切，唯独不能替你定义"更好"是什么意思。指标是人写的，放在循环够不到的地方。<span class="q-src">—— Saboo &amp; Secchi, Google Cloud Tech 2026-08</span></blockquote>
+    <p>自改进循环 = AI 不光自己反复跑（<a href="../01-ai/循环工程.html">循环工程</a>），还能<strong>自己改自己的规则</strong>（提示词/指令/工具）。Google agents-cli 把它做成 eval generate（跑轨迹）→ eval grade（按指标评分）→ eval compare（对比前后）三命令循环。</p>
+    <p>致命坑（古德哈特工程版）：你给什么数字它优化什么数字，AI 分不清"真想要的好"还是"分数好看"。客服案例：规矩是"确认取消前必须先给挽留方案"，AI 想对了但最终回复漏了——只有评估<strong>最终回复</strong>（非推理过程）才抓得住，公共基准不知道你有这条规矩，所以指标必须自己写。</p>
+    <p>作弊三招（被考核者为让分数虚高偷干的事）：降阈值 / 改标准答案 / 悄悄删案例。→ 防法：<strong>留出切片</strong>（holdout，AI 看不到的题），真提升会涨分，操纵出来的提升不会。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th class="n">#</th><th>规则</th><th>大白话</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td>从一个案例开始</td><td>一个错题告诉你修哪，20 个堆一起啥都说明不了；预期迭代 5-10 次正常</td></tr>
+        <tr><td class="n">2</td><td>让评判器解释自己</td><td>光打分没用，理由才是下一轮的方向</td></tr>
+        <tr><td class="n">3</td><td>答案确定用代码不确定用 AI</td><td>尺寸用代码量，美感才用模型（<a href="../01-ai/AI与人的分工原则.html">AI与人的分工原则</a>）</td></tr>
+        <tr><td class="n">4</td><td>给行为打分不给路径</td><td>看最后做对没，别盯先做哪步后做哪步</td></tr>
+        <tr><td class="n">5</td><td>不稳定案例当发现</td><td>时好时坏的题是线索，删了案例不等于删了问题</td></tr>
+        <tr><td class="n">6</td><td><strong>别让提出方案的人移动标准线</strong></td><td>作弊三招全在这——被考核者不能改及格线/答案/删题</td></tr>
+        <tr><td class="n">7</td><td>只在最后做自动优化</td><td>改措辞补不了缺的工具，先做对结构再润色</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>评测和监控同源</strong>（最妙的洞察）：开发时叫评测（拿写好的案例测），上线后叫监控（拿真实用户对话测），用的是同一个指标同一个循环——桑老哥做 IP 内容（写完要审）和做选品（数据要持续盯）可共用一套标准。</p>
+    <p>→ 桑老哥概念库审计（3 路独立核查对照维基）= 规则 6 实践版：不让铁柱自评，把评判权放在铁柱够不到的地方。闸门逐道带证据 = 规则 2。（来源：<span style="color:var(--ink-faint)">2026-08-12-Google自改进循环7规则</span>，Saboo_Shubham_ + secchi_elia, Google Cloud Tech，开源 agents-cli + ADK）</p>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>Anthropic 五种工作流模式</h2>
+    <p>一手权威来源（《Building Effective Agents》），核心态度是"用简单可组合的模式，别用复杂框架"。五种模式是三种拓扑的展开：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>模式</th><th>做什么</th><th>何时用</th></tr></thead>
+      <tbody>
+        <tr><td>Prompt Chaining 提示链</td><td>拆一串步骤，每步处理上步输出，中间加检查点</td><td>任务能干净拆成固定子任务，用延迟换准确率</td></tr>
+        <tr><td>Routing 路由</td><td>先给输入分类，再导向专门后续处理</td><td>输入种类多，一套提示优化一种会拖累另一种</td></tr>
+        <tr><td>Parallelization 并行</td><td>切独立分支同时跑再汇总（菱形扇出扇入）</td><td>子任务可独立，或需要多视角交叉验证</td></tr>
+        <tr><td>Orchestrator-Workers 主管-工人</td><td>主智能体动态拆解任务、分派子智能体、汇总</td><td>子任务无法预先确定，需运行时动态决定</td></tr>
+        <tr><td>Evaluator-Optimizer 评估-优化</td><td>一个生成、一个评估打分，迭代到达标</td><td>有明确评价标准且迭代能提升</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>框架警惕：</b>LangGraph / Bedrock / Rivet 能简化底层，但加了抽象盖住提示和响应，更难调试，还诱使你在简单方案就够用时搞复杂。建议先直接用 LLM API，很多模式几行代码实现；要用框架务必搞懂底下代码。</div>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>什么时候才值得用图谱</h2>
+    <p>任务满足以下才上，否则继续做好循环：</p>
+    <ul>
+      <li>能拆成不同专长</li>
+      <li>需要并行扇出与汇合</li>
+      <li>不同步骤需要不同模型</li>
+      <li>需要故障隔离和可审计路由</li>
+    </ul>
+    <p>信号：</p>
+    <ul class="sig">
+      <li>交接总在长上下文里丢</li>
+      <li>想用不同模型权限</li>
+      <li>一个慢子任务卡住全部</li>
+      <li>第 7 步失败要从第 1 步重来</li>
+    </ul>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>从一个强循环开始</h2>
+    <ul>
+      <li>先把单循环打磨好：有停止机制、有真正的完成检查、有批评者</li>
+      <li>写代码前先把图画在纸上，每个节点说明自己为啥必须存在</li>
+      <li>一开始就定义状态模式和写入权限（状态漂移是最常见的失控来源）</li>
+      <li>审阅节点用不同模型 + 新鲜上下文，锚定外部证据</li>
+      <li>给每个节点设预算上限（多个循环同时烧 token）</li>
+    </ul>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li>铁柱现在在"单循环"阶段（一个铁柱 + 一堆 Skill/MCP），还没到图谱。config 里那一堆 agent（内容创作者、增长黑客、SEO 专家……）是潜在 Org Graph 节点，但现在桑老哥手动调度，不是自动协调。</li>
+      <li>爱马仕（多 Agent 雏形）算半个 Org Graph 实验——长期身份+不同专长，但还没到 Work Graph 自动编排。</li>
+      <li>建议：别急着把系统升级成"图谱"，先把手头这个铁柱用强。等真撞上"一个 AI 忙不过来、活儿能并行、需要不同模型"那天再考虑。记住"会判断不用图比会画图更高级"。</li>
+    </ul>
+  </section>
+
+  <section id="s15" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>这词可能活不过今年，但"多 AI 怎么协调"这个问题不会消失。学的是判断思维（啥时候该上/过度设计），不是实现技术（LangGraph 代码、状态 schema、检查点是码农才用）。</li>
+      <li>数据图那层（Neo4j / GraphRAG / 知识图谱）属于数据工程，本词条讲的是 Agent 图那层。</li>
+      <li>阅读可并行（错观点没人采取行动前几乎没成本）；写入要集中（写入才造成实际损害）。</li>
+    </ul>
+  </section>
+
+  <section id="s16" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">图的前一层：单 AI 自主循环，图的最小原子就是 Loop</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">五平面里的 Governance 治理层</span></a>
+      <a href="../01-ai/可信完成.html"><span class="rel-t">可信完成</span><span class="rel-d">Worker / Verifier 不能共享上下文</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">评审要换模型 + 新鲜上下文</span></a>
+      <a href="../03-agent/MCP-Skill-Hook三件套.html"><span class="rel-t">MCP-Skill-Hook三件套</span><span class="rel-d">工程链路上一站（Harness 层）</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">图谱跑在 Harness 之上</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">图谱的节点就是 Agent</span></a>
+      <a href="../01-ai/锯齿智能.html"><span class="rel-t">锯齿智能</span><span class="rel-d">多 AI 不会因数量多就变稳</span></a>
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">目标失明与集体附和的根源：不要谄媚</span></a>
+      <a href="../01-ai/Evals评测体系.html"><span class="rel-t">Evals评测体系</span><span class="rel-d">五平面里的 Evaluation 验收层（Verifier 独立）</span></a>
+    </div>
+  </section>
+
+  <section id="s17" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Akshay《图谱工程：一篇讲清楚》(@agkshay_pachaar 即 @akshay_pachaar, X 2026-07, waytoAGI 飞书转载)</li>
+      <li>Larkspur《被概念词 Graph Engineering 搞晕？这篇总结》(2026-08, waytoAGI 飞书转载)</li>
+      <li>lukiexing《Loop Engineering 已死？一文带你了解 Graph Engineering》(2026-08-11，桑老哥发全文；一手含 Anthropic《Building Effective Agents》《How we built our multi-agent research system》、LangGraph 官方文档、LinkedIn SQL Bot / Uber 代码迁移案例)</li>
+      <li>Saboo_Shubham_ + secchi_elia《AI 工程师必备的 7 条自改进智能体循环规则》(Google Cloud Tech 2026-08-12，开源 agents-cli + ADK)</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 图谱工程</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/图谱工程.md（2026-08-07 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">图谱不是新东西</a></li>
+    <li><a href="#s3">五缺陷+目标失明</a></li>
+    <li><a href="#s4">三层含义·三问尺子</a></li>
+    <li><a href="#s5">大多时候是过度设计</a></li>
+    <li><a href="#s6">治理红线</a></li>
+    <li><a href="#s7">三句能直接用</a></li>
+    <li><a href="#s8">四个难点</a></li>
+    <li><a href="#s9">Verifier 是真瓶颈 ·核心</a></li>
+    <li><a href="#s10">自改进循环 7 规则</a></li>
+    <li><a href="#s11">五种工作流模式</a></li>
+    <li><a href="#s12">何时才值得用图</a></li>
+    <li><a href="#s13">从一个强循环开始</a></li>
+    <li><a href="#s14">桑老哥适用</a></li>
+    <li><a href="#s15">前提与局限</a></li>
+    <li><a href="#s16">关联词条</a></li>
+    <li><a href="#s17">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

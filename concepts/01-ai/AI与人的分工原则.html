@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI与人的分工原则 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：对比布局 ---- */
+
+/* 左右对照面板 */
+.vs { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .vs { grid-template-columns:1fr 1fr; } }
+.vs .panel { border-radius:var(--r-box); padding:16px 18px; border:1px solid var(--line); background:var(--g0); box-shadow:var(--sh-1); }
+.vs .panel.a { border-color:var(--fam-line); background:var(--fam-soft); }
+.vs .p-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; padding:2px 12px;
+  border-radius:999px; margin-bottom:10px;
+}
+.vs .panel.a .p-tag { background:var(--fam); color:#fff; }
+.vs .panel.b .p-tag { background:var(--g8); color:#fff; }
+.vs .p-t { font-weight:700; color:var(--ink); margin-bottom:6px; font-size:16.5px; }
+.vs ul { margin:0; padding-left:1.2em; font-size:15px; color:var(--g8); }
+.vs ul li { margin-bottom:6px; }
+.vs .p-note { font-size:14.5px; color:var(--ink-faint); margin-top:8px; }
+.vs-mid { text-align:center; font-weight:700; color:var(--fam-deep); font-size:15px; margin:6px 0; }
+@media (min-width:768px) { .vs-mid { display:none; } }
+
+/* 金句卡 */
+.motto {
+  background:var(--g0); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:18px 20px; margin:18px 0; text-align:center;
+}
+.motto .m-t { font-family:var(--font-head); font-size:clamp(17px,2.6vw,20px); font-weight:700; color:var(--fam-deep); line-height:1.7; }
+.motto .m-s { font-size:14.5px; color:var(--ink-faint); margin-top:6px; }
+
+/* 轻记三卡 */
+.note3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:900px) { .note3 { grid-template-columns:1fr 1fr 1fr; } }
+.note3 .n-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.note3 .n-t { font-weight:700; color:var(--fam-deep); font-size:15.5px; margin-bottom:6px; }
+.note3 .n-src { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.note3 ul { margin:0; padding-left:1.2em; font-size:14.5px; color:var(--g8); }
+.note3 ul li { margin-bottom:5px; line-height:1.65; }
+
+/* 编号行 */
+.step-list { counter-reset:step; list-style:none; padding-left:0; }
+.step-list li { counter-increment:step; position:relative; padding-left:38px; margin-bottom:10px; color:var(--g8); }
+.step-list li::before {
+  content:counter(step); position:absolute; left:0; top:2px;
+  width:24px; height:24px; line-height:24px; text-align:center; border-radius:50%;
+  background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+}
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">AI与人的分工原则</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 人机边界方法论</p>
+    <h1>AI与人的分工原则</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-04-12</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举起牌子，示意把人和AI的分工边界宣告出来"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      确定性的事交给数据类工具，需要思考的事交给 AI，有真实成本不可逆的事人拍板授权。搞清楚边界，AI 才是帮手不是替代品。
+    </blockquote>
+    <p>AI 不是万能的，也不是无能的。关键是搞清楚"什么该交给 AI、什么必须自己来"。这个边界因人而异，取决于你的专业领域。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>通用分工模型（·核心）</h2>
+    <p>2026-08-14 桑老哥重构，与 <a href="../01-ai/Agent（智能体）.html">Agent（智能体）</a> 工具分级对齐：</p>
+    <div class="vs" aria-label="AI自主执行与人拍板授权左右对照">
+      <div class="panel a">
+        <span class="p-tag">AI 执行 · 自主调用</span>
+        <p class="p-t">确定性的 + 思考类的</p>
+        <ul>
+          <li><strong>确定性/数据类</strong>：查、读、搜（检索/读取/搜索）</li>
+          <li><strong>思考类</strong>：总结、归纳、思考、推荐、方案生成——AI 的核心价值</li>
+        </ul>
+        <p class="p-note">按固定规则就能干的活（模板/SOP/格式转换）也由 AI 参与执行，它属于"确定性"不是"不需要 AI"——旧版"免费工具"概念已废弃（2026-08-14）。</p>
+      </div>
+      <div class="panel b">
+        <span class="p-tag">人确认后执行</span>
+        <p class="p-t">行动类的</p>
+        <ul>
+          <li><strong>发、改、删、付款</strong>——有真实成本</li>
+          <li><strong>不可逆、可能超出授权</strong>的操作</li>
+        </ul>
+        <p class="p-note">判据：有真实成本、不可逆、可能超出授权 → 人拍板；其余 → AI 自主。</p>
+      </div>
+    </div>
+    <p class="vs-mid">判据一句话：真实成本 + 不可逆 + 超授权 → 人拍板</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>跨境电商设计师的具体边界</h2>
+    <div class="vs" aria-label="该交给AI与必须自己把关对照">
+      <div class="panel a">
+        <span class="p-tag">该交给 AI</span>
+        <ul>
+          <li>批量生成产品图初稿</li>
+          <li>竞品数据分析</li>
+          <li>listing 文案初稿</li>
+          <li>关键词收集</li>
+        </ul>
+      </div>
+      <div class="panel b">
+        <span class="p-tag">必须自己把关</span>
+        <ul>
+          <li>选哪张图最能转化</li>
+          <li>哪个品类值得投入</li>
+          <li>品牌调性和卖点方向</li>
+          <li>最终选词和出价策略</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>CAIO：一人创业者也是自己的 CAIO</h2>
+    <p>Pedro Franceschi（Brex CEO，2026-06）：AI 带来的变化不是工程团队的局部优化，它碰产品、销售、财务、客服、组织设计。<strong>一人创业者就是自己的 CEO，所以也应该是自己的 CAIO（Chief AI Officer）。</strong>（来源：<span style="color:var(--ink-faint)">2026-06-14-Brex-CEO-AI重写公司</span>）</p>
+    <h3>"为 LLM 工作"框架：人的价值在三件事</h3>
+    <ol class="step-list">
+      <li><strong>判断做什么不做什么</strong>——Taste 决定方向</li>
+      <li><strong>把稀缺上下文灌进去</strong>——人 = 上下文搬运工</li>
+      <li><strong>把现场信号带回来</strong>——模型看不到的现实世界</li>
+    </ol>
+    <p><strong>只要上下文和内存还有边界，人就有位置。</strong></p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>从 IC 到 Agent Manager</h2>
+    <p>"最好的开发者已经在并行运行很多不同的 Agent。"——Airtable CEO Howie Liu。分工原则的进化版：人不是"亲手执行的人"，而是"拆任务给 Agent 小队、早上检查结果的人"。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>身份</th><th>人在做什么</th><th>类比</th></tr></thead>
+      <tbody>
+        <tr><td>IC 时代</td><td>亲手写代码/做设计</td><td>工人</td></tr>
+        <tr><td>Manager 时代</td><td>拆任务给团队、检查结果</td><td>经理</td></tr>
+        <tr><td><strong>Agent 时代</strong></td><td><strong>拆任务给 Agent 小队、保留最后拍板权</strong></td><td><strong>CEO</strong></td></tr>
+      </tbody>
+    </table></div>
+    <p>AI 前 1% 用户的共同点：先变成<strong>问题猎人</strong>（列出反复拖延/复制/等待的环节），再变成工具使用者（挑低风险的先试 → 给上下文 → 校准结果）。"找出你想解决的问题，大概占了 80% 的战斗。"判断 Agent 价值的标准不是"能不能写文案"，而是<strong>能不能跨工具跑完一整段流程</strong>（拿到数据 → 调用工具 → 生成结果 → 闭环反馈）。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>Reward Engineering：分工的执行层</h2>
+    <p>分工原则说了"人做决策"，但没说<strong>怎么把决策传给 Agent</strong>。<a href="../01-ai/奖励工程RewardEngineering.html">奖励工程RewardEngineering</a> 填补这个空白：定目标（要什么结果）+ 设负向约束（绝对不要什么）+ 定验收标准（怎么判断对不对）。来源：<span style="color:var(--ink-faint)">2026-07-05-RichardSocher重新思考职业生涯</span>。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>传统指令</th><th>Reward Engineering 版</th></tr></thead>
+      <tbody>
+        <tr><td>"帮我做竞品分析"</td><td>"找出转化率最高的前 3 种视觉模式，禁止用形容词标签，带截图举证"</td></tr>
+        <tr><td>"帮我写 Listing"</td><td>"符合 A10 算法布局，禁止堆砌关键词，最终文案要可读"</td></tr>
+        <tr><td>"帮我选品"</td><td>"毛利率&gt;30%+竞争度&lt;阈值，禁止季节性品类，附 3 个月趋势数据"</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>Agent 版细化：确定交规则，不确定交 AI</h2>
+    <p>熊猫Jay（2026-07）的更精准版本：<strong>确定的事交给规则（代码/模板/SOP），不确定的事交给 AI；AI 负责判断，工程负责兜底。</strong></p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>你的"规则"（确定性的替代品）</th><th>举例</th></tr></thead>
+      <tbody>
+        <tr><td>模板</td><td>listing 模板、邮件模板、周报模板</td></tr>
+        <tr><td>SOP/清单</td><td>选品清单、上架流程、质检标准</td></tr>
+        <tr><td>固定规则</td><td>关键词埋法、主图尺寸标准</td></tr>
+        <tr><td>铁柱的固定 skill</td><td>共学四步法、listing 优化流程</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>判断一个系统是不是 Agent</strong>，不看它接没接 AI，而看"下一步干啥是不是交给模型判断"——写死的就是工作流，AI 自己判断的才是 Agent。Google 自改进循环「规则 3：凡是答案确定的地方都用代码，不确定的才用评判器」同源，详见 <a href="../01-ai/图谱工程.html">图谱工程</a>「自改进循环 7 条规则」。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>学习/教育场景：分工细化到步骤</h2>
+    <p>快刀青衣走访美国 5 所大学（CMU/NYU/USC/UCLA/ACCD，2026-08）的观察：从「要不要封禁 AI」的恐慌，转向「<strong>这一步交给 AI 还是亲手做</strong>」的务实——分工颗粒度从"什么任务"细化到"任务的哪一步"。（来源：<span style="color:var(--ink-faint)">2026-08-11-硅谷观察-AI恐慌退潮</span>）</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>角度</th><th>实证</th><th>对你的落地</th></tr></thead>
+      <tbody>
+        <tr><td>分工到步骤，不一刀切</td><td>CMU 同导师两门课：C 语言禁 AI（练手搓基本功）、Agent 课教 AI（练用 AI 干活）——规则相反，因想清每门课练什么</td><td>共学：学概念亲手啃、整理笔记交 AI</td></tr>
+        <tr><td>验过程不验成品</td><td>NYU 商学院学生项目漂亮但讲不出决策，加 20 分钟 AI 口试——成品便宜了，「怎么得出答案」贵了</td><td>概念库审计：每条要能讲清楚，不能光抄</td></tr>
+        <tr><td>人主导能判断</td><td>ACCD 一边 3D 打印机一边黑白胶片暗房——新工具不赶走老手艺</td><td>AI 替代你的手不替代你的脑，审美是你的暗房</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>反面清单：分工被打破的四种方式</h2>
+    <p>《全球AI创造力发展报告2026-AI教育专项》（WEC 世界教育者大会，2026-08-21）第四章的四大风险，本质都是分工原则被打破：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>风险</th><th>啥意思</th><th>违反了哪条</th></tr></thead>
+      <tbody>
+        <tr><td>认知外包</td><td>啥都问 AI 自己不动脑，批判思维退化</td><td>思考类全交，结论不过自己的脑子</td></tr>
+        <tr><td>真假难辨</td><td>AI 生成内容分不清真假</td><td>放弃了人的验证责任</td></tr>
+        <tr><td>算法偏见</td><td>AI 从历史数据学来偏见还放大，且披着"客观算法"外衣更难被质疑（2020 英国高考算法给公立学校学生降分被迫撤回；亚马逊招聘 AI 给女性简历降分）。桑老哥类比：大厨手受伤出菜多抡一下勺，徒弟把这动作当菜谱学走——数据只记录行为不记录原因</td><td>把"判断"外包给了带偏见的机器</td></tr>
+        <tr><td>情感依赖</td><td>跟 AI 产生感情依赖</td><td>把"人"的责任交给了不会负责的一方</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>AI 越强，人越要保留思考、判断、责任这三样。人的稀缺价值最后集中在——提问、判断、创造、共情、责任。<span class="q-src">—— 桑老哥收录金句</span></blockquote>
+    <p>对分工模型的补强："思考类"要加一条边界——<strong>思考可以借 AI 的力，但思考的结论必须过自己的脑子</strong>。同报告斯坦福案例与"验过程不验成品"互证：不查作业是不是 AI 写的，改口头问答、当场讲解，验"真懂还是假懂"。</p>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>90/10 定律：责任在人</h2>
+    <blockquote>"即使 AI 完成了 90% 的工作，剩下的 10% 往往是最困难、最需要人类智慧的部分。"<span class="q-src">——《代码的掌控者》，磊叔徐小磊（<span style="color:var(--ink-faint)">2026-08-21-代码的掌控者-提示词工程手册</span>）</span></blockquote>
+    <p>分工原则的量化表述：AI 把"执行"变得极便宜，人的价值浓缩在两件事——<strong>判断</strong>（验收好坏的审美和业务眼光）+ <strong>担责</strong>（"AI 可以优化算法，但无法承担产品失败的最终责任"）。执行那 <span class="num">90%</span> 很快人人都会，判断和担责那 <span class="num">10%</span> 才是稀缺的——所以别卷"会用 AI"，卷"会验收 AI"。与 YC《如何找 to C 点子》"对结果负责不是交付产物"（同日所学）双信源互证。落到桑老哥场景：审美判断和跨境业务理解就是那 10%。</p>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>记住一句话 + 提问的价值</h2>
+    <div class="motto">
+      <p class="m-t">AI 是效率倍增器，不是替代品。你用 AI 省下来的时间，应该用来做 AI 做不了的事。</p>
+    </div>
+    <p>提问的价值（2026-08-14 桑老哥修正版）：旧版金句「AI 让答案越来越便宜，反而让『你是怎么得出答案的』变得越来越贵」修正为更可操作的版本——<strong>答案变易得，提问变重要。提出好问题才能得到质量高的答案，模糊的问题只能得到均值或错误答案。</strong>答案人人拿得到，谁提的问题好，谁就赢。提问能力是能练的（见 <a href="../06-learn/提问的智慧.html">提问的智慧</a> 四要素：目标+上下文+已做尝试+最小复现）。</p>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>三条轻记（2026-08/09 并入）</h2>
+    <div class="note3">
+      <div class="n-card">
+        <p class="n-t">吴恩达：AI 最大的机遇不在你想象的地方</p>
+        <p class="n-src">Silicon Valley Girl 播客，2026-08-31 并入</p>
+        <ul>
+          <li><strong>产品管理瓶颈</strong>：构建成本暴跌后，瓶颈从"会做"转向"决定做什么"</li>
+          <li><strong>学习警告</strong>：AI 交作业不等于学会（自曝六个月后脑中空白只能重问）；赶进度让 AI 代做，练本事让 AI 提问/给反馈/暴露错误</li>
+          <li><strong>上下文护城河</strong>：判断力来自模型拿不到的上下文；把接触现实也外包 = 只能接受 AI 的平均答案</li>
+        </ul>
+      </div>
+      <div class="n-card">
+        <p class="n-t">OpenAI Tara：AI 能力已经过剩</p>
+        <p class="n-src">Lenny's Podcast，2026-08-31 并入</p>
+        <ul>
+          <li><strong>掌舵不划船</strong>：人定成功标准、盯中间结果、偏航纠方向</li>
+          <li><strong>写作两分法</strong>：汇报型送 AI；思考型（战略判断/有争议的主张）从提纲到定稿永远自己写</li>
+          <li><strong>不能只验收最后一页</strong>：涉判断的留证据链人工复核（=<a href="../01-ai/出稿评审分离法.html">出稿评审分离法</a>同构）</li>
+        </ul>
+      </div>
+      <div class="n-card">
+        <p class="n-t">卡兹克：时代断层——执行贬值，判断力升值</p>
+        <p class="n-src">2026-09-07 并入，GPT-6 Astra Computer Use 引出的观察</p>
+        <ul>
+          <li><strong>执行与判断解耦</strong>：过去绑死（会 Blender 就是懂 3D），现在执行层贬值、判断层升值</li>
+          <li><strong>GUI 成为 Agent 时代的通用 API</strong>：AI 直接学会用软件本身</li>
+          <li><strong>吊诡悖论</strong>：判断力偏偏是从执行里磨出来的——结果可以压缩，人的成长压缩不了（与吴恩达"AI 交作业不等于学会"同构互证）</li>
+        </ul>
+      </div>
+    </div>
+    <blockquote>AI 可以帮你把五年压成五分钟，但结果可以压缩，人的成长可以一起压缩吗？<span class="q-src">—— 卡兹克</span></blockquote>
+    <p>落到桑老哥场景：对设计师不是焦虑文是背书文——十年电商设计执行早就长成了"什么图能带来点击率、什么配色符合品类调性"的判断力，正是解耦后最值钱的那层。日常"AI 干活、人拍板"就是文章说的未来形态。</p>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>边界因人而异，取决于你的专业领域——别人的分工表只能参考，不能照抄</li>
+      <li>旧版"免费工具"概念已废弃（2026-08-14）：确定性活也是 AI 参与执行，不是"不需要 AI"</li>
+      <li>分工不是一刀切：颗粒度要细到"任务的哪一步"（学概念亲手啃、整理笔记交 AI）</li>
+    </ul>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../08-ecomm/AI对跨境电商设计师的价值边界.html"><span class="rel-t">AI对跨境电商设计师的价值边界</span><span class="rel-d">分工原则在跨境电商领域的应用</span></a>
+      <a href="../02-think/人才公式（Taste×Agency）.html"><span class="rel-t">人才公式（Taste×Agency）</span><span class="rel-d">Taste 是"人做决策"的能力基础</span></a>
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">"人做决策"的执行层技术</span></a>
+      <a href="../02-think/需求弹性.html"><span class="rel-t">需求弹性</span><span class="rel-d">先判断什么值得放大，再分工</span></a>
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">Agent 版细化：确定交规则，不确定交 AI</span></a>
+      <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">验证器思路是"验过程不验成品"的工程版</span></a>
+      <a href="../06-learn/提问的智慧.html"><span class="rel-t">提问的智慧</span><span class="rel-d">人侧核心能力的练法</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">"会验收 AI"的落地一招</span></a>
+    </div>
+  </section>
+
+  <section id="s15" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥共学总结（2026-04-12 建条）</li>
+      <li>快刀青衣《硅谷观察日记｜AI恐慌退潮》（2026-08，走访 NYU/CMU/USC/UCLA/ACCD）</li>
+      <li>《全球AI创造力发展报告2026-AI教育专项》（WEC 世界教育者大会，2026-08）</li>
+      <li>《代码的掌控者：AI提示词工程权威指南》（磊叔徐小磊，2025-05，2026-08-21 存）</li>
+      <li>Pedro Franceschi（Brex CEO）CAIO 观点（2026-06）</li>
+      <li>Howie Liu（Airtable CEO）谈 AI 前 1% 用户（2026-06-24 共学）</li>
+      <li>熊猫Jay《Agent实战方法论》（2026-07-07 学习账本轻记）</li>
+      <li>Richard Socher 职业生涯重思（2026-07-05 共学）</li>
+      <li>吴恩达访谈（Silicon Valley Girl 播客，WaytoAGI 转载，2026-08-31 并入）</li>
+      <li>OpenAI 产品负责人 Tara 访谈（Lenny's Podcast，WaytoAGI 转载，2026-08-31 并入）</li>
+      <li>卡兹克《因为GPT-6 Astra的爆火，我好像看见了时代的断层》（2026-09-07 并入）</li>
+      <li>文档处理分流（词条 2026-09-20 删，思想归此）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AI与人的分工原则</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AI与人的分工原则.md（2026-04-12 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">通用分工模型 ·核心</a></li>
+    <li><a href="#s3">设计师具体边界</a></li>
+    <li><a href="#s4">CAIO</a></li>
+    <li><a href="#s5">从 IC 到 Agent Manager</a></li>
+    <li><a href="#s6">Reward Engineering</a></li>
+    <li><a href="#s7">确定交规则 不确定交AI</a></li>
+    <li><a href="#s8">分工细化到步骤</a></li>
+    <li><a href="#s9">反面清单</a></li>
+    <li><a href="#s10">90/10 定律</a></li>
+    <li><a href="#s11">记住一句话</a></li>
+    <li><a href="#s12">三条轻记</a></li>
+    <li><a href="#s13">前提与局限</a></li>
+    <li><a href="#s14">关联词条</a></li>
+    <li><a href="#s15">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

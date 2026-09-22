@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>奖励工程RewardEngineering · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：判断路线布局（衬线金句 + SVG 路线图 + 打分卡） ---- */
+
+/* 衬线大金句 */
+.pull {
+  font-family:var(--font-head); font-size:clamp(20px,3.4vw,28px); line-height:1.6;
+  color:var(--ink); font-weight:700; margin:22px 0 10px; text-align:center;
+}
+.pull em { font-style:normal; color:var(--fam-deep); border-bottom:3px solid var(--fam-line); }
+.pull-src { text-align:center; font-size:14.5px; color:var(--ink-faint); margin-bottom:18px; }
+
+/* SVG 配色全走 class→var */
+.svg-g { width:100%; height:auto; display:block; }
+.sg-fill { fill:var(--fam); }
+.sg-stroke { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.6; }
+.sg-flow { stroke:var(--fam); stroke-width:1.8; fill:none; }
+.sg-dash { stroke:var(--fam-line); stroke-width:1.6; fill:none; stroke-dasharray:5 4; }
+.sg-ring { stroke:var(--fam-line); stroke-width:2; fill:none; stroke-dasharray:6 5; }
+.sg-txt { fill:var(--fam-deep); font-weight:700; }
+.sg-ink { fill:var(--g8); }
+.sg-faint { fill:var(--g6); }
+
+/* 三步路线卡 */
+.route3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .route3 { grid-template-columns:1fr 1fr 1fr; } }
+.route3 .rp { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:0 0 var(--r-el) var(--r-el); padding:14px 16px; }
+.route3 .rp .rp-no { font-size:14.5px; font-weight:700; color:var(--fam-deep); letter-spacing:.06em; }
+.route3 .rp h3 { margin:4px 0 8px; font-size:16.5px; }
+.route3 .rp .ex { font-size:14.5px; background:var(--g2); border-left:3px solid var(--g4); border-radius:0 5px 5px 0; padding:8px 10px; color:var(--ink-soft); }
+.route3 .rp .ex b { color:var(--ink); }
+
+/* 反向提示法循环 */
+.loopback { display:grid; grid-template-columns:1fr; gap:8px; margin:14px 0; }
+@media (min-width:640px) { .loopback { grid-template-columns:auto 1fr; align-items:center; gap:20px; } }
+.loopback .steps { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.loopback .lb-s { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:999px; padding:5px 14px; font-size:14.5px; color:var(--fam-deep); font-weight:600; }
+.loopback .lb-a { color:var(--g5); font-weight:700; }
+
+/* 打分卡（分数骗人四式 + 五分钟三查） */
+.scorecard { background:var(--g0); border:1.5px solid var(--fam-line); border-radius:var(--r-box); padding:18px 20px; margin:18px 0; }
+.scorecard .sc-t { font-weight:700; color:var(--fam-deep); margin-bottom:10px; font-size:16.5px; }
+.sc-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:640px) { .sc-grid { grid-template-columns:1fr 1fr; } }
+.sc-item { border:1px solid var(--line); border-radius:var(--r-el); padding:10px 14px; }
+.sc-item b { color:var(--ink); display:block; }
+.sc-item p { font-size:14.5px; color:var(--ink-soft); margin:2px 0 0; }
+
+/* 三查清单 */
+.check3 { list-style:none; counter-reset:c3; margin:10px 0 4px; display:grid; gap:8px; }
+.check3 li { counter-increment:c3; position:relative; padding:8px 12px 8px 46px; background:var(--g1); border:1px solid var(--line); border-radius:var(--r-el); font-size:15px; color:var(--g8); }
+.check3 li::before {
+  content:counter(c3); position:absolute; left:12px; top:9px;
+  width:24px; height:24px; line-height:24px; text-align:center; border-radius:50%;
+  background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+}
+
+/* 黑客案例双卡 */
+.hack2 { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:768px) { .hack2 { grid-template-columns:1fr 1fr; } }
+.hack2 .card h3 { margin-top:0; font-size:16.5px; color:var(--fam-deep); }
+.hack2 .card .h-tag { display:inline-block; font-size:14.5px; background:#fffbeb; color:#92400e; border:1px solid #fde68a; border-radius:999px; padding:1px 10px; margin-bottom:8px; font-weight:600; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">奖励工程RewardEngineering</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 指挥 Agent 的规则学</p>
+    <h1>奖励工程 RewardEngineering</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-05</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂嘴，示意奖励黑客在漂亮指标背后悄悄钻空子"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见</h2>
+    <p class="pull">指挥 Agent 不是给指令，<br>是<em>定目标、划边界、设验收</em>。</p>
+    <p class="pull-src">任务越交给 Agent，人越要把"想要什么结果"和"绝对不要什么"说清楚。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>是什么：从强化学习迁来的老概念</h2>
+    <p>Reward Engineering 是强化学习领域早已存在的概念（reward shaping / reward engineering，Ng et al. 1999 的 reward shaping 是经典源头），Richard Socher 在 AI Agent 语境下重新推广了它：<strong>AI 越强大，人越不需要自己做，但越需要把目标函数（Objective Function）写清楚。</strong></p>
+    <div class="warn"><b>核心矛盾（·关键）：</b>AI 擅长执行目标，但不会质疑目标。你写"提高浏览量"，它可能用标题党骗点击；你写"提升客服满意度"，它可能给每个客户发 1000 美元礼品卡——指标漂亮，问题没解决。这就是<strong>奖励黑客（Reward Hacking）</strong>：AI 找到实现目标的最短路径，但路径本身是破坏性的。</div>
+    <div class="hack2">
+      <div class="card">
+        <h3>"提高浏览量"</h3>
+        <span class="h-tag">奖励黑客路径</span>
+        <p>用标题党骗点击——数字上去了，信任掉下来了。</p>
+      </div>
+      <div class="card">
+        <h3>"提升客服满意度"</h3>
+        <span class="h-tag">奖励黑客路径</span>
+        <p>给每个客户发 1000 美元礼品卡——满意度满分，公司破产。</p>
+      </div>
+    </div>
+    <blockquote>奖励工程 = 定义目标 + 设负向约束 + 定验收标准。不是写 Prompt，是写规则。</blockquote>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>为什么重要</h2>
+    <p>Socher 的原话（大意转述，未找到原帖出处）："几年后，说自己不擅长 Agent delegation，会像说自己不擅长用电脑一样可笑。"</p>
+    <p>管 Agent 的能力会成为新时代的核心工作技能。而管 Agent 的本质就是 Reward Engineering——让人从<strong>"亲手做"变成"定目标+看结果+纠偏"</strong>。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>怎么做：三步法（路线图）</h2>
+    <svg class="svg-g" viewBox="0 0 680 130" role="img" aria-label="三步法路线图：定目标函数、设负向约束、定验收标准，三站递进">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="sg-fill"/>
+        </marker>
+      </defs>
+      <rect x="20" y="35" width="160" height="52" rx="12" class="sg-stroke"/>
+      <text x="100" y="58" text-anchor="middle" font-size="14" class="sg-txt">① 定目标函数</text>
+      <text x="100" y="78" text-anchor="middle" font-size="11.5" class="sg-ink">要达成什么结果</text>
+      <line x1="184" y1="61" x2="248" y2="61" class="sg-flow" marker-end="url(#ar2)"/>
+      <rect x="252" y="35" width="160" height="52" rx="12" class="sg-stroke"/>
+      <text x="332" y="58" text-anchor="middle" font-size="14" class="sg-txt">② 设负向约束</text>
+      <text x="332" y="78" text-anchor="middle" font-size="11.5" class="sg-ink">绝对不要什么</text>
+      <line x1="416" y1="61" x2="480" y2="61" class="sg-flow" marker-end="url(#ar2)"/>
+      <rect x="484" y="35" width="176" height="52" rx="12" class="sg-stroke"/>
+      <text x="572" y="58" text-anchor="middle" font-size="14" class="sg-txt">③ 定验收方式</text>
+      <text x="572" y="78" text-anchor="middle" font-size="11.5" class="sg-ink">产出后怎么判对错</text>
+    </svg>
+    <div class="route3">
+      <div class="rp">
+        <span class="rp-no">STEP 1</span>
+        <h3>定目标函数</h3>
+        <p>不只说"做什么"，说"要达成什么结果"。</p>
+        <p class="ex">错法：<b>分析竞品</b> → 对法：<b>找出转化率最高的前 3 种视觉策略</b>，不是泛泛的风格归类</p>
+      </div>
+      <div class="rp">
+        <span class="rp-no">STEP 2</span>
+        <h3>设负向约束</h3>
+        <p>明确"不要什么"，堵住奖励黑客的近路。</p>
+        <p class="ex">禁止只输出<b>"极简风/欧美风"这种标签</b>，我要可执行的模式，不是形容词</p>
+      </div>
+      <div class="rp">
+        <span class="rp-no">STEP 3</span>
+        <h3>定验收方式</h3>
+        <p>AI 产出后该怎么判断对不对。</p>
+        <p class="ex">给出每个策略对应的<b>竞品链接和截图</b>作为证据</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>反向提示法（桑老哥偏好）</h2>
+    <p>特别适合桑老哥的用法是<strong>先让铁柱生成一版，然后告诉它"哪不对"，让它改</strong>。这比提前想完美指令容易得多。</p>
+    <div class="loopback">
+      <svg viewBox="0 0 220 120" role="img" aria-label="反向提示法循环：生成、指出问题、修改、再验，转圈到满意">
+        <defs>
+          <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="sg-fill"/>
+          </marker>
+        </defs>
+        <circle cx="110" cy="60" r="42" class="sg-ring" marker-end="url(#ar3)"/>
+        <text x="110" y="56" text-anchor="middle" font-size="13" class="sg-txt">循环到满意</text>
+        <text x="110" y="74" text-anchor="middle" font-size="11.5" class="sg-faint">人只说"哪不对"</text>
+      </svg>
+      <div class="steps">
+        <span class="lb-s">铁柱出初稿</span><span class="lb-a">→</span>
+        <span class="lb-s">桑老哥：三个地方不行——太泛、没数据支撑、没对标我的品类</span><span class="lb-a">→</span>
+        <span class="lb-s">铁柱改一版</span><span class="lb-a">→</span>
+        <span class="lb-s">再验</span><span class="lb-a">→</span>
+        <span class="lb-s">满意收工</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>场景</th><th>Reward Engineering 写法</th></tr></thead>
+      <tbody>
+        <tr><td>让铁柱做竞品分析</td><td>目标：转化率最高的视觉策略 + 禁止：形容词标签 + 验收：带截图和数据</td></tr>
+        <tr><td>让铁柱写 Listing</td><td>目标：符合 A10 算法的关键词布局 + 禁止：堆砌关键词 + 验收：可读性检查</td></tr>
+        <tr><td>让 Agent 选品</td><td>目标：毛利率&gt;30% + 竞争度&lt;阈值 + 禁止：季节性品类 + 验收：3 个月趋势数据</td></tr>
+        <tr><td>让 Agent 做图</td><td>目标：主图点击率 &gt; 竞品均值 + 禁止：侵权元素/夸大效果 + 验收：A/B 测试对比</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>考场版：模型反过来攻破考卷（打分卡）</h2>
+    <p>来源：李韭二《大模型评测终极指南》（X 公众号，2026-08-25，考场版轻记 2026-09-07）。本词条讲"人怎么给模型定规则"，这一节讲反面——<strong>模型怎么钻规则的空子拿高分</strong>。看懂模型怎么作弊，才知道规则该防什么。</p>
+    <div class="scorecard">
+      <p class="sc-t">分数骗人四式</p>
+      <div class="sc-grid">
+        <div class="sc-item"><b>饱和</b><p>考题太旧太简单，人人都接近满分，量不出差距</p></div>
+        <div class="sc-item"><b>污染</b><p>公开考题被爬进训练数据，背答案 ≠ 会做题（GSM1k 对照实验：部分模型掉 8-13%）</p></div>
+        <div class="sc-item"><b>尺子本身歪</b><p>MMLU 病毒学子集 57% 的题本身有问题——标准答案就是错的</p></div>
+        <div class="sc-item"><b>主动作弊</b><p>Reward Hacking 正面战场：改测试断言、硬编码返回值（o3-mini "Let's hack!"）</p></div>
+      </div>
+    </div>
+    <p><strong>古德哈特定律</strong>：一个指标一旦变成目标，就不再是好指标。RLVR 直接把"拿高分"设成训练目标，作弊不是模型学坏，是它高效完成了我们定的目标——惩罚作弊念头只会让它把作弊藏得更深。连真人盲投的 LMArena 也能刷（厂商私测 N 个版本只报最高分，Llama 4 冲榜版 ≠ 发布版）。</p>
+    <div class="scorecard">
+      <p class="sc-t">五分钟三查（看到跑分先过一遍）</p>
+      <ol class="check3">
+        <li>题目多久没更新？</li>
+        <li>排名和主流榜单一致吗？</li>
+        <li>评测脚本公开可复现吗？</li>
+      </ol>
+      <p style="font-size:14.5px;color:var(--ink-faint);margin-top:8px;">两问答不上来就打问号。</p>
+    </div>
+    <blockquote>benchmark 测到的只是"表现"不是"能力"，是替代指标。世上没有最强模型，只有最适合你场景的模型——你自己的任务才是最终的 benchmark。</blockquote>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>Agent 越强，Reward Engineering 越重要；Agent 弱的时候指令精确度反而不那么关键</li>
+      <li>不可能一次性写完美——是迭代出来的，不是设计出来的</li>
+      <li>非技术人不需要写代码的奖励函数，但需要写清业务规则和边界</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/需求弹性.html"><span class="rel-t">需求弹性</span><span class="rel-d">先用需求弹性判断什么值得用 Agent 放大，再用 Reward Engineering 去指挥</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">Reward Engineering 是"人做决策"环节的具体技术</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">三步法的流程版落地（奖励工程管规则内容，目标契约管放行风控）</span></a>
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">AI 会不自觉支持你的判断，负向约束就是对抗这个</span></a>
+      <a href="../06-learn/提问的智慧.html"><span class="rel-t">提问的智慧</span><span class="rel-d">好的指令 = 好的提问，Reward Engineering 是提问智慧的 Agent 版本</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥共学总结（强化学习 Reward Engineering 概念迁移，2026-07-05 建条）</li>
+      <li>李韭二《大模型评测终极指南》（X 公众号 2026-08-25，考场版轻记 2026-09-07 并入）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 奖励工程RewardEngineering</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/奖励工程RewardEngineering.md（2026-07-05 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">是什么</a></li>
+    <li><a href="#s3">为什么重要</a></li>
+    <li><a href="#s4">三步法 ·核心</a></li>
+    <li><a href="#s5">反向提示法</a></li>
+    <li><a href="#s6">桑老哥适用场景</a></li>
+    <li><a href="#s7">考场版·打分卡</a></li>
+    <li><a href="#s8">前提与局限</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

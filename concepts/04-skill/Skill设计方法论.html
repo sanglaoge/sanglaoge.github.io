@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill设计方法论 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Skill工程 · 工具灰（工程感·克制·结构优先） ---- */
+:root {
+  --fam:#475569; --fam-deep:#1e293b; --fam-soft:#f1f5f9; --fam-line:#cbd5e1;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 三级台阶：桌面端逐级抬升 */
+.stairs { display:grid; grid-template-columns:1fr; gap:16px; margin:22px 0 6px; }
+@media (min-width:768px) {
+  .stairs { grid-template-columns:1fr 1fr 1fr; align-items:end; gap:14px; }
+  .stairs .stair-1 { margin-top:72px; }
+  .stairs .stair-2 { margin-top:36px; }
+  .stairs .stair-3 { margin-top:0; }
+}
+.stair {
+  background:var(--g0); border:1px solid var(--line); border-top:4px solid var(--fam-line);
+  border-radius:0 0 var(--r-box) var(--r-box); box-shadow:var(--sh-1);
+  padding:18px 18px 16px; position:relative;
+}
+.stairs .stair-2 { border-top-color:var(--fam); }
+.stairs .stair-3 { border-top-color:var(--fam-deep); background:var(--fam-soft); }
+.stair .st-no {
+  font-family:var(--font-head); font-size:30px; font-weight:700; color:var(--fam);
+  line-height:1; font-variant-numeric:tabular-nums;
+}
+.stairs .stair-3 .st-no { color:var(--fam-deep); }
+.stair .st-t { font-weight:700; font-size:17px; color:var(--ink); margin:8px 0 6px; }
+.stair .st-d { font-size:14.5px; color:var(--g7); line-height:1.65; }
+.stair .st-key {
+  display:inline-block; margin-top:10px; font-size:14.5px; font-weight:700;
+  color:var(--fam-deep); background:var(--g0); border:1px solid var(--fam-line);
+  border-radius:999px; padding:1px 12px;
+}
+.stairs-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin:10px 0; }
+
+/* 台阶基线 */
+.stair-ground { border-top:2px solid var(--line); margin:0 0 18px; }
+
+/* 数字锚点条 */
+.anchors { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px 0; }
+.an {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 12px 10px; text-align:center;
+}
+.an .av { font-size:24px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.3; }
+.an .ak { font-size:14.5px; color:var(--ink-faint); }
+
+/* 灰字文件路径 */
+.grayref { color:var(--ink-faint); }
+
+/* 判断提示 */
+.imp {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:18px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.imp b { color:var(--fam-deep); }
+.imp .imp-t { display:block; font-weight:700; color:var(--fam-deep); margin-bottom:4px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Skill工程</span><span class="sep">›</span>
+    <span class="here">Skill设计方法论</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Skill工程 · 设计总纲：三根支柱</p>
+    <h1>Skill设计方法论</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-18</span>
+      <span>下次复核 2026-12-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意把设计总纲的三根支柱钉成焦点"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>核心洞见（总纲）</h2>
+    <blockquote>Skill 设计的总纲：<strong>触发要准</strong>（prompt-only 不执行就是最高体现）、<strong>结构要拆</strong>（复杂先拆后合）、<strong>进化要留</strong>（重复错误改规则不改结果）。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三根支柱 · 逐级抬升</h2>
+    <div class="stairs">
+      <div class="stair stair-1">
+        <div class="st-no">支柱一</div>
+        <p class="st-t">触发精准</p>
+        <p class="st-d">Skill 多了以后，命不命中的语义边界比写什么更重要。prompt-only 不执行的闸门，是触发精准度的最高体现。</p>
+        <span class="st-key">详见 · 目标契约与五个闸门</span>
+      </div>
+      <div class="stair stair-2">
+        <div class="st-no">支柱二</div>
+        <p class="st-t">结构拆合</p>
+        <p class="st-d">复杂 Skill 先拆后合，走五阶段；合并太早是第一大坑——模块还没站稳就焊死，改一处崩全身。</p>
+        <span class="st-key">黄叔 Skill 系列</span>
+      </div>
+      <div class="stair stair-3">
+        <div class="st-no">支柱三</div>
+        <p class="st-t">持续进化</p>
+        <p class="st-d">技能内化负责把经验显式化，技能进化负责把重复错误写回规则——同一个错误只允许犯一次。</p>
+        <span class="st-key">详见 · 技能内化 / 技能进化</span>
+      </div>
+    </div>
+    <div class="stair-ground"></div>
+    <p class="stairs-cap">一级管「叫得应」，二级管「拆得开」，三级管「越用越准」——爬到顶才算一个成熟的 Skill</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>铁柱家的实践锚点</h2>
+    <p>总纲不是空话，家里已经跑出了数字：</p>
+    <div class="anchors">
+      <div class="an"><div class="av">26</div><p class="ak">全局 skill</p></div>
+      <div class="an"><div class="av">61</div><p class="ak">项目级 skill</p></div>
+      <div class="an"><div class="av">38/38</div><p class="ak">教学测评收官</p></div>
+    </div>
+    <ul>
+      <li>全局 26 + 项目级 61 个 skill 的分布与共用模式：<span class="grayref">桑老哥私人助理/config/三agent驾驭手册.md</span></li>
+      <li>教学测评 38/38 收官：<span class="grayref">桑老哥私人助理/config/当前全局skill记录.md</span></li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>写 skill 前先问一问</h2>
+    <div class="imp">
+      <span class="imp-t">这个能力该是全局还是项目级？</span>
+      <b>高频跨项目 → 全局</b>（每个会话都交描述税，所以必须真的到处用）；<b>专用 → 项目级</b>（跟着项目走，不污染别家）。想清楚再落笔，比写完再搬家便宜得多。
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>总纲是合成方法论（source_type: synthesized · validation: practiced），三支柱之间的优先级依任务而定，不是硬顺序。</li>
+      <li>「合并太早是第一大坑」来自黄叔系列经验，量化阈值没有——拆到几块算够，靠试跑判断。</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">Skill 的技术形态与写法九条</span></a>
+      <a href="../04-skill/技能内化.html"><span class="rel-t">技能内化</span><span class="rel-d">支柱三之一：经验显式化</span></a>
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">支柱三之二：错误写回规则</span></a>
+      <a href="../02-think/约束先行.html"><span class="rel-t">约束先行</span><span class="rel-d">触发边界的思维源头</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">支柱一的实战案例（GoalPro）</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>黄叔 Skill 系列（复杂 Skill 先拆后合等，reviewed 2026-04-19）</li>
+      <li>GoalPro 实战（目标契约与五个闸门 §prompt-only 案例，reviewed）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Skill工程家族 · Skill设计方法论</p>
+    <p>词条源：concepts(概念库)/Skill工程/Skill设计方法论.md（2026-09-18 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">三根支柱 ·核心</a></li>
+    <li><a href="#s3">铁柱家实践锚点</a></li>
+    <li><a href="#s4">写前先问</a></li>
+    <li><a href="#s5">前提与局限</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

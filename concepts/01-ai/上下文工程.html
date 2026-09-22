@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上下文工程 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（冷静·可靠·结构性） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+
+/* ---- 页面专属：流程布局（机制图 + 案例卡 + 门厅） ---- */
+.heroq {
+  font-family:var(--font-head); font-size:clamp(20px,3.4vw,28px);
+  line-height:1.65; color:var(--ink); font-weight:700;
+}
+.heroq em { font-style:normal; color:var(--fam-deep); }
+
+/* 家族门厅卡 */
+.lobby {
+  background:var(--g0); border:1.5px dashed var(--fam-line);
+  border-radius:var(--r-box); padding:16px 18px; margin:18px 0;
+}
+.lobby .lb-t { font-weight:700; color:var(--fam-deep); margin-bottom:8px; font-size:16px; display:flex; align-items:center; gap:7px; }
+.lobby .lb-t svg { flex:none; }
+.lobby table { width:100%; border-collapse:collapse; font-size:15px; }
+.lobby td { padding:6px 8px 6px 0; vertical-align:top; color:var(--g8); }
+.lobby td.h { white-space:nowrap; font-weight:600; color:var(--ink); }
+.lobby a { color:var(--fam-deep); }
+
+/* 衰减曲线图 */
+.rotfig { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; align-items:center; }
+@media (min-width:900px) { .rotfig { grid-template-columns:1.7fr 1fr; } }
+.rotfig svg { width:100%; height:auto; }
+.rotfig .r-card { background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam); border-radius:var(--r-el); padding:11px 14px; font-size:15px; margin-bottom:10px; }
+.rotfig .r-card b { color:var(--fam-deep); }
+
+/* 公式条 */
+.formula {
+  background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-box);
+  padding:14px 18px; margin:16px 0; text-align:center;
+  font-size:clamp(16px,2.6vw,20px); font-weight:700; color:var(--fam-deep);
+  font-variant-numeric:tabular-nums;
+}
+.formula small { display:block; margin-top:4px; font-size:14.5px; font-weight:400; color:var(--ink-soft); }
+
+/* 卡片网格 */
+.cgrid { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:700px) { .cgrid { grid-template-columns:1fr 1fr; } }
+.cgrid .cg { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:14px 16px; box-shadow:var(--sh-1); }
+.cgrid .cg h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.cgrid .cg p { font-size:15px; margin:0 0 6px; }
+.cgrid .cg p:last-child { margin-bottom:0; }
+
+/* 三层存放堆叠 */
+.stack3 { display:grid; gap:8px; margin:16px 0; }
+.stack3 .sk {
+  border-radius:var(--r-el); padding:10px 16px; font-size:15px;
+  background:var(--g0); border:1px solid var(--line);
+}
+.stack3 .sk b { color:var(--fam-deep); }
+.stack3 .sk.top { background:var(--fam-soft); border-color:var(--fam-line); }
+.stack3 .sk small { display:block; font-size:14.5px; color:var(--ink-faint); }
+
+/* 账单占比条 */
+.bill { margin:14px 0; }
+.bill .b-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+.bill .b-lab { flex:0 0 128px; font-size:14.5px; color:var(--ink-soft); text-align:right; }
+.bill .b-bar { height:16px; border-radius:4px; background:var(--fam); }
+.bill .b-val { font-size:14.5px; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+
+/* 警示条（琥珀，与样张一致） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* SVG 用色一律 class→var */
+.c-fam{fill:var(--fam);} .c-deep{fill:var(--fam-deep);} .c-soft{fill:var(--fam-soft);}
+.c-ink{fill:var(--g8);} .c-faint{fill:var(--g6);} .c-w{fill:#ffffff;} .c-line{fill:var(--fam-line);}
+.s-fam{stroke:var(--fam);} .s-line{stroke:var(--fam-line);} .s-deep{stroke:var(--fam-deep);} .s-dash{stroke:var(--g4);} .s-ink{stroke:var(--g6);}
+.nof{fill:none;}
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">上下文工程</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 上下文家族门厅（管总）</p>
+    <h1>上下文工程</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-18</span>
+      <span>下次复核 2026-12-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探出头张望，示意上下文家族门厅从本条进门"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p class="heroq">管好 AI「眼前能看到什么」的功夫。不是塞越多越好，是<em>对的时间给对的信息</em>。</p>
+    <div class="lobby">
+      <p class="lb-t"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>上下文家族门厅（一家四户，从本条进）</p>
+      <table>
+        <tr><td class="h">本条·管总</td><td>伞条目：机制 / 成本 / 工具加载都在这</td></tr>
+        <tr><td class="h"><a href="../01-ai/上下文组织原则.html">上下文组织原则</a></td><td>一次给的东西<strong>怎么摆</strong>（5 抽屉/首尾效应）</td></tr>
+        <tr><td class="h"><a href="../01-ai/上下文注入方法.html">上下文注入方法</a></td><td>规则<strong>怎么长期送达</strong>（7 层漏斗：CLAUDE.md/Skill/Hook）</td></tr>
+        <tr><td class="h"><a href="../01-ai/Tokenmaxxing.html">Tokenmaxxing</a></td><td><strong>钱</strong>怎么省（反面教材/纠偏词条）</td></tr>
+      </table>
+    </div>
+    <p>按症状进门：规则老不生效→注入；中间内容被忽略→组织；账单贵→Tokenmaxxing；说不清→从本条读起。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：Context Rot（上下文腐烂）</h2>
+    <p>AI 的「注意力窗口」像一张<strong>小书桌</strong>——大小固定，新信息进来，旧的就被挤下去。这带来一条铁律：<strong>对话越长，AI 越笨。不是 bug，是物理规律。</strong></p>
+    <div class="cgrid">
+      <div class="cg"><h3>三个原因</h3><p>① 注意力摊薄——每个 token 都要跟窗口里所有 token 算关系，多了注意力就稀疏；② 训练偏差——训练数据大多是短对话，长文天生不擅长；③ 旧垃圾污染——失败的 debug 路径留在上下文里，AI 会反复踩同一个坑。</p></div>
+      <div class="cg"><h3>找钥匙比方</h3><p>就像请人找钥匙，你跟他说「去过厨房、客厅、卧室、车库……」他脑子被塞满，反而更难想起钥匙在哪。</p></div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>核心公式：思考空间</h2>
+    <div class="formula">思考空间 ＝ 上下文窗口上限 − 已用内容<small>你塞的信息越多，AI 能「想」的空间越少——跟人完全一样</small></div>
+    <div class="rotfig">
+      <svg viewBox="0 0 680 300" role="img" aria-label="上下文质量衰减曲线：窗口用到五成后质量开始下滑，五到七成是主动压缩区">
+        <line x1="60" y1="260" x2="650" y2="260" class="s-ink" stroke-width="1.5"/>
+        <line x1="60" y1="260" x2="60" y2="30" class="s-ink" stroke-width="1.5"/>
+        <text x="355" y="290" text-anchor="middle" font-size="14" class="c-faint">窗口已用（%）</text>
+        <text x="30" y="150" font-size="14" class="c-faint" transform="rotate(-90 30 150)">回答质量</text>
+        <g font-size="14" class="c-faint">
+          <text x="52" y="278">0</text><text x="342" y="278">50</text><text x="636" y="278">100</text>
+        </g>
+        <rect x="350" y="30" width="203" height="230" class="c-soft" opacity="0.7"/>
+        <text x="452" y="52" text-anchor="middle" font-size="14" font-weight="700" class="c-deep">50-70%：主动 /compact 区</text>
+        <line x1="350" y1="30" x2="350" y2="260" class="s-fam" stroke-width="1.8" stroke-dasharray="6 5"/>
+        <path d="M60,80 C 180,74 280,78 350,98 C 430,128 540,205 648,242" class="nof s-fam" stroke-width="3" fill="none"/>
+        <circle cx="350" cy="98" r="6" class="c-fam"/>
+        <text x="200" y="70" font-size="14.5" font-weight="700" class="c-deep">前 50%：质量平台期</text>
+        <text x="560" y="180" font-size="14.5" font-weight="700" class="c-deep">腐烂段：越塞越笨</text>
+        <text x="452" y="72" text-anchor="middle" font-size="13" class="c-faint"></text>
+      </svg>
+      <div>
+        <div class="r-card"><b>反直觉阈值</b>：上下文用到 <span class="num">50%</span> 之后质量就开始掉——别等满了再处理。</div>
+        <div class="r-card"><b>出处注记</b>：50% 是个人体感/经验值，非权威数据点（Chroma Research 论文未给出此阈值）。</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>Session 管理五把刀</h2>
+    <p>每次 AI 回完话，5 个操作可选：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>操作</th><th>干啥</th><th>什么时候用</th></tr></thead>
+      <tbody>
+        <tr><td>Continue</td><td>接着说</td><td>上下文干净，继续干同一个活</td></tr>
+        <tr><td>Rewind（双击 ESC）</td><td>时光倒流</td><td>AI 走错路了，干净重来，<strong>别纠正它</strong></td></tr>
+        <tr><td>/clear</td><td>清空重来</td><td>换任务了，你亲自写简报带过去</td></tr>
+        <tr><td>/compact</td><td>让 AI 压缩</td><td>同一任务但 session 长了，<strong>必加 hint</strong></td></tr>
+        <tr><td>Subagent</td><td>派分身</td><td>大量脏活只要结论，不弄脏主 session</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>Rewind &gt; 纠正：别跟 AI 说「这样不行换个路子」，直接双击 ESC 回到走错之前。失败的路径不留在上下文里。</blockquote>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>Claude 5 时代：少写规则，多给判断标准</h2>
+    <p>Claude Code 砍掉了 80% 系统提示词，评测没变差。旧模型靠护栏，新模型靠判断。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>旧做法</th><th>新做法</th></tr></thead>
+      <tbody>
+        <tr><td>给规则（禁止清单）</td><td>给判断标准（啥情况下咋干）</td></tr>
+        <tr><td>给一堆例子让它猜</td><td>设计清楚的工具接口</td></tr>
+        <tr><td>所有信息开场全塞</td><td>渐进披露，需要时再加载</td></tr>
+        <tr><td>重复强调同一件事</td><td>工具描述简单清楚</td></tr>
+      </tbody>
+    </table></div>
+    <p>不适用边界：高风险硬禁止（不要删文件、不要推代码）继续用「不要 X」。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>七类构成与五大反模式</h2>
+    <p><strong>七类构成</strong>（「给什么」的完整清单）：系统指令＋用户提示＋状态历史＋长期记忆＋检索信息＋工具定义＋结构化输出。</p>
+    <p><strong>总配方一条</strong>：最优上下文 ＝ 最小 Token × 最高信噪比。</p>
+    <p><strong>五大反模式</strong>（踩了就变笨）：①堆信息求安全 ②工具越多越好 ③系统提示越细越好 ④不清理工具旧结果 ⑤指望大窗口一劳永逸——大窗口只是推迟问题，不是解决问题。</p>
+    <p><strong>ReAct 四陷阱与破解</strong>：工具返回膨胀→截断摘要；规则漂移→关键规则放开头结尾；错误污染→失败路径及时清出；思考冗余→压思考预算。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>工具加载三方案：MCP / Skill / CLI</h2>
+    <p>三个方案都在回答同一问题：怎么让上下文干净、强相关。</p>
+    <div class="cgrid">
+      <div class="cg"><h3>MCP＝全量加载</h3><p>装上就常驻——实测有新开对话啥没干，工具定义先吃掉 20% 窗口。但高频触发＋工具精简的 Server 依然好用，别判死刑。</p></div>
+      <div class="cg"><h3>Skill＝渐进式披露三层</h3><p>一句描述→SKILL.md→references 按需加载。描述要写「什么时候用我」而非功能概述（职责重叠会误触发）。两维度迭代：触发稳不稳＋输出好不好。</p></div>
+      <div class="cg"><h3>CLI＝AI 的母语</h3><p>训练数据里 shell 用例海量，--help 自带说明书，天然渐进披露。三条铁律：①用标准范式别发明新协议 ②每个命令/子命令必须有 --help ③支持 JSON 输出——AI 用 jq 管道串接工具，中间数据在管道里流转、不进上下文。</p></div>
+      <div class="cg"><h3>组合拳</h3><p>CLI 管「能做什么」，Skill 管「什么时候用、怎么用好」，MCP 留给高频精简场景。别争论谁取代谁——都是「管理上下文」这一个问题的不同补丁。</p></div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>长任务记忆三层存放＋会忘</h2>
+    <p>长任务不能只靠对话窗口硬撑，信息分层放：</p>
+    <div class="stack3">
+      <div class="sk top"><b>当前对话</b><small>眼下要用的内容</small></div>
+      <div class="sk"><b>持续运行的环境</b>（Python 状态）<small>数据和变量——写程序处理内存里的数据，只把结果带回对话，省掉反复读原始材料</small></div>
+      <div class="sk"><b>文件</b><small>长期记忆、技能、提示词，按需取用不占窗口</small></div>
+    </div>
+    <blockquote>铁律：让模型能找到并处理信息 &gt; 要求它当场记住全部。</blockquote>
+    <p>另一半是<strong>会忘</strong>：变量、子任务、记忆文件越攒越多，清理要纳入框架（更新过时的、删无用的、整理经验）。只会记不会忘，系统照样被撑死。</p>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>底层机制与成本：为什么要省</h2>
+    <h3>两层记忆结构</h3>
+    <p>权重＝长期记忆（训练烧进去的，稳定改不了）｜上下文窗口＝短期草稿纸（会话结束就消失，有限、贵、可管理）。推论：AI「记不住你」是正常的，跨会话连续性全靠外部文件落盘。</p>
+    <h3>KV Cache——前缀缓存的经济学</h3>
+    <ul>
+      <li>前面算过的内容可缓存复用，<strong>命中价只要原价的 1/10 到 1/50</strong></li>
+      <li>缓存认「前缀」——从第一个字起一字都不能变：改开头＝后面全作废，改结尾＝只破尾部。所以<strong>静态内容（系统指令/CLAUDE.md）放前面，动态对话放后面</strong></li>
+      <li>缓存有保质期（几分钟到一小时），省钱主要省在同一会话内——任务干完再关，比频繁重开划算</li>
+      <li>Q/K/V 一句话：Q＝一次性提问条不缓存，K/V＝反复被查的索引卡和内容笔记才缓存</li>
+    </ul>
+    <h3>注意力是聚光灯（实测佐证）</h3>
+    <p>把正确答案埋在一堆资料中间，正确率 <span class="num">35%-45%</span>，低于完全不给资料的约 <span class="num">56%</span>——<strong>喂错比不喂更糟</strong>。「大多数 Agent 的失败已不是模型失败，而是上下文失败」（Philipp Schmid）。</p>
+    <h3>Claude Code 的账单（X 光片）</h3>
+    <p>约 <span class="num">25K</span> token 开机费，构成如下：</p>
+    <div class="bill">
+      <div class="b-row"><span class="b-lab">工具定义</span><span class="b-bar" style="width:40%"></span><span class="b-val num">40%</span></div>
+      <div class="b-row"><span class="b-lab">官方主指令</span><span class="b-bar" style="width:20%"></span><span class="b-val num">20%</span></div>
+      <div class="b-row"><span class="b-lab">项目 CLAUDE.md</span><span class="b-bar" style="width:16%"></span><span class="b-val num">16%</span></div>
+      <div class="b-row"><span class="b-lab">memory</span><span class="b-bar" style="width:12%"></span><span class="b-val num">12%</span></div>
+    </div>
+    <p><strong>六个 Token 杀手</strong>：①膨胀的 CLAUDE.md ②贪多挂 MCP（光挂载就能吃掉约 20% 窗口）③滥堆 Skill ④失控的工具输出 ⑤拖沓的历史包袱 ⑥失控的 Thinking tokens。</p>
+    <p><strong>五级防御从轻到重</strong>：文件落盘 → Snip 裁剪 → Micro Compact（留近摘远）→ 工具结果折叠 → Full Compact（九维摘要开新会话；会话摘要＝短期记忆的「遗言」，Codex 同款四要素：进度/决策/待办/关键数据）。</p>
+    <p><strong>桑老哥已在做的</strong>：CLAUDE.md 80 行红线、skill 精简、抓文章用切片＝防杀手②③①；干完一票 commit＋关会话＝防历史包袱＋吃满缓存。边界：25K/占比等数字来自作者逆向分析，量级参考非官方。</p>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>三秒自检</h2>
+    <ol>
+      <li>前面这堆上下文，还和我接下来要做的事相关吗？→ 不相关就 /clear</li>
+      <li>我要的是中间过程，还是只要结论？→ 只要结论就派 Subagent</li>
+      <li>有没有一条路应该回去重走，而不是往前继续？→ 有就 Rewind</li>
+    </ol>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>你用铁柱聊天时，对话越长越容易出问题——这就是 Context Rot</li>
+      <li>50% 窗口就该主动 /compact，别等满了</li>
+      <li>大量脏活（搜资料、批量处理）派 Subagent，别弄脏主对话</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>上下文窗口是物理限制，不是模型不行</li>
+      <li>中间最易丢：开头结尾记得牢，中间的最容易被忽略</li>
+      <li>高风险硬禁止（不要删文件）仍然用「不要 X」</li>
+    </ul>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/上下文组织原则.html"><span class="rel-t">上下文组织原则</span><span class="rel-d">家族：一次给的东西怎么摆</span></a>
+      <a href="../01-ai/上下文注入方法.html"><span class="rel-t">上下文注入方法</span><span class="rel-d">家族：规则怎么长期送达</span></a>
+      <a href="../01-ai/AI记忆系统三层架构.html"><span class="rel-t">AI记忆系统三层架构</span><span class="rel-d">跨会话记忆怎么放</span></a>
+      <a href="../01-ai/Tokenmaxxing.html"><span class="rel-t">Tokenmaxxing</span><span class="rel-d">家族：钱怎么省（反面教材）</span></a>
+      <a href="../01-ai/提示词工程.html"><span class="rel-t">提示词工程</span><span class="rel-d">上游：怎么问才答得好</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">下游：上下文喂好的循环自己跑</span></a>
+    </div>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥 AGI 共学笔记 · 地基四件套 · 2026-07-14</li>
+      <li>Claude 5 上下文工程变化（2026.7）</li>
+      <li>腾讯技术工程 Context Engineering 长文（2026-09-14 发布，2026-09-15 讲解并入，摘要见 reviewed(已审文章)/核心概念/2026-09-15-腾讯ContextEngineering长文.md）</li>
+      <li>Shen《MCP vs Skill vs CLI：AI Agent 上下文管理的本质与实践》（shens.blog 2026-03-19，<a class="ext" href="https://shens.blog/posts/202603/mcp-skill-cli/" target="_blank" rel="noopener noreferrer">shens.blog</a>，2026-09-17 并入「工具加载三方案」节）</li>
+      <li>YC Paper Club《Why The Harness Matters More Than The Model》（2026-09 播客，<a class="ext" href="https://waytoagi.feishu.cn/wiki/Oi2RwbRuciQri4kfHbMcMNbenFd" target="_blank" rel="noopener noreferrer">WaytoAGI 转载</a>，2026-09-18 并入「长任务记忆三层存放＋会忘」节）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 上下文工程</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/上下文工程.md（2026-09-18 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话＋家族门厅</a></li>
+    <li><a href="#s2">Context Rot</a></li>
+    <li><a href="#s3">核心公式 ·核心</a></li>
+    <li><a href="#s4">五把刀</a></li>
+    <li><a href="#s5">Claude 5 时代</a></li>
+    <li><a href="#s6">七类构成五反模式</a></li>
+    <li><a href="#s7">MCP/Skill/CLI</a></li>
+    <li><a href="#s8">三层存放＋会忘</a></li>
+    <li><a href="#s9">机制与成本</a></li>
+    <li><a href="#s10">三秒自检</a></li>
+    <li><a href="#s11">桑老哥适用</a></li>
+    <li><a href="#s12">前提与局限</a></li>
+    <li><a href="#s13">关联词条</a></li>
+    <li><a href="#s14">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

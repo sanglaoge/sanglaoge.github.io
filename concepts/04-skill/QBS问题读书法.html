@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QBS问题读书法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Skill工程 · 工具灰（工程感·克制·结构优先） ---- */
+:root {
+  --fam:#475569; --fam-deep:#1e293b; --fam-soft:#f1f5f9; --fam-line:#cbd5e1;
+}
+/* ---- 页面专属：判断路线布局 ---- */
+
+/* 哲思金句：衬线 */
+.main-col > section { margin-bottom:48px; }
+.creed {
+  font-family:var(--font-head);
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:22px 8px 4px; max-width:36em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 判断路线图 */
+.route { margin:26px 0 10px; }
+.route svg { width:100%; height:auto; display:block; }
+.route .mk { fill:var(--fam); }
+.route .ln { fill:none; stroke:var(--fam); stroke-width:2.2; }
+.route .ed { fill:none; stroke:var(--fam-line); stroke-width:1.8; stroke-dasharray:6 5; }
+.route .bx { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.route .bx-deep { fill:var(--fam-deep); stroke:var(--fam-deep); stroke-width:1.8; }
+.route .bx-alt { fill:var(--g0); stroke:var(--fam-line); stroke-width:1.6; }
+.route .tx { fill:var(--fam-deep); font-weight:700; }
+.route .tx-w { fill:#ffffff; font-weight:700; }
+.route .tx-s { fill:var(--ink-faint); }
+.route .tx-alt { fill:var(--ink-soft); }
+.route-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 三步卡 */
+.steps3 { counter-reset:st; display:grid; grid-template-columns:1fr; gap:16px; margin:22px 0; }
+@media (min-width:768px) { .steps3 { grid-template-columns:1fr 1fr 1fr; } }
+.step {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:18px 18px 14px; counter-increment:st; position:relative;
+}
+.step::before {
+  content:counter(st); position:absolute; top:-13px; left:16px;
+  width:26px; height:26px; line-height:26px; text-align:center;
+  background:var(--fam); color:#fff; border-radius:50%; font-weight:700; font-size:14.5px;
+}
+.step .st-t { font-weight:700; color:var(--ink); margin:6px 0 6px; }
+.step .st-e { font-size:14.5px; color:var(--fam-deep); background:var(--fam-soft);
+  border:1px solid var(--fam-line); border-radius:var(--r-el); padding:6px 10px; margin-top:10px; line-height:1.6; }
+
+/* 模板代码块 */
+pre.tmpl {
+  background:var(--g2); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:14px 16px;
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.85;
+  overflow-x:auto; white-space:pre-wrap; color:var(--g8); margin:14px 0;
+}
+
+/* 案例三卡 */
+.case3 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .case3 { grid-template-columns:1fr 1fr 1fr; } }
+.case3 .card h3 { margin:0 0 8px; font-size:16.5px; color:var(--fam-deep); }
+.case3 .case-stat { font-size:28px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.25; }
+.case3 .case-stat small { font-size:14.5px; font-weight:400; color:var(--ink-faint); display:block; }
+
+/* 选路打分卡 */
+.verdict { margin:18px 0; }
+.verdict .v-row {
+  display:flex; align-items:flex-start; gap:12px; flex-wrap:wrap;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 16px; margin-bottom:8px;
+}
+.verdict .v-q { flex:1 1 220px; font-size:15.5px; color:var(--g8); }
+.verdict .v-a { flex:none; font-size:14.5px; font-weight:700; white-space:nowrap; padding:2px 12px; border-radius:999px; margin-top:2px; }
+.v-go { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.v-alt { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+.v-no { background:var(--g2); color:var(--ink-soft); border:1px solid var(--line); }
+
+/* 边界提示 */
+.drift {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:18px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.drift b { color:var(--fam-deep); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Skill工程</span><span class="sep">›</span>
+    <span class="here">QBS问题读书法</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Skill工程 · 专业知识从哪来（书这条线）</p>
+    <h1>QBS问题读书法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-20</span>
+      <span>下次复核 2026-12-20</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒着墙头向里张望，示意进陌生领域先找到入口"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">遇到陌生领域的硬骨头，别跟 AI 干聊——<span class="mark">让它去找一本能解决它的书，完整读，把方法炼成能直接用的 skill</span>。Question → Book → Skill。</p>
+    <p>QBS 是一条「知识来源换轨」的路：自己只懂皮毛时，跟 AI 干聊几轮只能得到浅层输出；书籍是几十年功力的压缩包，几轮对话替代不了。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>判断路线图：知识不够用了，走哪条</h2>
+    <div class="route">
+      <svg viewBox="0 0 680 208" role="img" aria-label="QBS 判断路线图：卡住的问题出发，手边有专家走隐性知识抽取，没有专家走 QBS 三步——找书、读书、炼成 skill">
+        <defs>
+          <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <path class="ed" d="M92 96 L92 44 L246 44" marker-end="url(#ar1)"/>
+        <rect class="bx-alt" x="250" y="18" width="300" height="52" rx="10"/>
+        <text class="tx-alt" x="400" y="40" text-anchor="middle" font-size="15" font-weight="700">手边有专家可挖</text>
+        <text class="tx-s" x="400" y="60" text-anchor="middle" font-size="14.5">走隐性知识抽取（影随 / 关键决策法）</text>
+
+        <rect class="bx" x="16" y="96" width="156" height="58" rx="10"/>
+        <text class="tx" x="94" y="120" text-anchor="middle" font-size="16">Question</text>
+        <text class="tx-s" x="94" y="140" text-anchor="middle" font-size="14.5">卡住的具体问题</text>
+
+        <path class="ln" d="M176 125 L246 125" marker-end="url(#ar1)"/>
+        <rect class="bx" x="250" y="96" width="170" height="58" rx="10"/>
+        <text class="tx" x="335" y="120" text-anchor="middle" font-size="16">Book</text>
+        <text class="tx-s" x="335" y="140" text-anchor="middle" font-size="14.5">找书 · 完整读相关章节</text>
+
+        <path class="ln" d="M424 125 L490 125" marker-end="url(#ar1)"/>
+        <rect class="bx-deep" x="494" y="96" width="170" height="58" rx="10"/>
+        <text class="tx-w" x="579" y="120" text-anchor="middle" font-size="16">Skill</text>
+        <text class="tx-w" x="579" y="140" text-anchor="middle" font-size="14.5">炼成直接可用的步骤</text>
+
+        <text class="tx-s" x="94" y="178" text-anchor="middle" font-size="14.5">注意力被切成碎片</text>
+        <text class="tx-s" x="335" y="178" text-anchor="middle" font-size="14.5">几十年功力的压缩包</text>
+        <text class="tx-s" x="579" y="178" text-anchor="middle" font-size="14.5">拿新任务试跑验证</text>
+      </svg>
+    </div>
+    <p class="route-cap">上路是替代方案，下路（深色终点）才是本条的三步主线</p>
+
+    <div class="steps3">
+      <div class="step">
+        <p class="st-t">Question</p>
+        <p>有个卡住的具体问题。原作者的例子：Codex 后台挂七八个任务+飞书消息，一天产出十几个结果，但记不住完成了什么。</p>
+      </div>
+      <div class="step">
+        <p class="st-t">Book</p>
+        <p>让 GPT-6 找一本能解决它的书，<strong>完整读相关章节</strong>。实测选中 Jake Knapp《Make Time》（Google 十年老将写的）。</p>
+      </div>
+      <div class="step">
+        <p class="st-t">Skill</p>
+        <p>把书里的方法提炼成直接可用的操作步骤，再用一个新的实际任务试跑，证明这套规则能用。</p>
+        <p class="st-e">三步的产物不是笔记，是一个装得进工具箱的 skill</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>来龙去脉：为啥不聊了，让 AI 去读书</h2>
+    <p>GPT-6 / Fable 5.1 时代，大部分 skill 可以直接聊出来；但留下来的硬骨头 skill 需要专业知识二次优化——自己只懂皮毛时，跟 AI 干聊几轮只能得到浅层输出。卡尔的解法是换知识来源：<strong>不聊了，让 AI 去读书</strong>。</p>
+    <blockquote>这些都是我光是跟 gpt6 对话几轮做出来的 skill 没有的知识点。
+      <span class="q-src">—— 卡尔，公众号「卡尔的AI沃茨」</span>
+    </blockquote>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>Prompt 原文（五条要求，可直接抄）</h2>
+    <pre class="tmpl">我现在有一个问题：[具体问题]。
+帮我找一本能解决这个问题的书，完整读相关章节，
+然后把书里的方法提炼成直接用的 skill。要求：
+1. 告诉我你找到了哪本书，为什么选它；
+2. 说清楚你实际读了哪些章节；
+3. 把方法变成具体的操作步骤，不要只给理论；
+4. 用一个新的实际场景试跑一遍，证明这套规则能用；
+5. 如果没找到书或者读不到正文，直接告诉我，不要硬编。</pre>
+    <div class="drift"><b>两条防作弊设计：</b>第 2 条防「声称读了」，第 5 条防幻觉硬编——两条合起来是「读书过程可审计」。第 5 条可以整句移植进咱的抓取/闸门类 prompt：读不到就诚实失败，不许编。</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>副产品：问题驱动读书法</h2>
+    <p>带着特具体的疑问读书（比如「Infinity Pools 这个概念怎么从他们自己做的产品里长出来的」），知道答案在哪一章，从能解决问题的一页开始读——作者靠这个读完了当年第一本书。人读书也一样适用。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>实测案例：Make Time 时间管理</h2>
+    <p>痛点：多任务并行、消息不断，一天下来记不住完成了什么。书里真正被炼进 skill 的三个知识点：</p>
+    <div class="case3">
+      <div class="card">
+        <h3>Time Craters（时间陨石坑）</h3>
+        <p class="case-stat">5 小时<small>一天悄悄流失（刷 20 次面板）</small></p>
+        <p>以为「看一眼」只花 5 秒，切回状态要 15-20 分钟；一天刷 20 次=丢 5 小时——陨石砸出 30 倍体积的坑。</p>
+      </div>
+      <div class="card">
+        <h3>忙碌花车 + 无底洞</h3>
+        <p class="case-stat">2 股力<small>把你的一天拖走</small></p>
+        <p>Busy Bandwagon：日程被被动填满；Infinity Pools：累了就扎进永远刷不完的短视频/邮件，再被拽回花车。</p>
+      </div>
+      <div class="card">
+        <h3>Highlight（每日亮点）</h3>
+        <p class="case-stat">60-90 分钟<small>保护时段</small></p>
+        <p>每天早上选一件「晚上想到会庆幸做了」的事，给它不被打搅的整块时间。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>选路打分卡：skill 的专业知识从哪来</h2>
+    <p>本条与隐性知识抽取回答同一个问题，来源互补——一个挖专家的脑子，一个挖书：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th></th><th>隐性知识抽取</th><th>QBS 问题读书法</th></tr></thead>
+      <tbody>
+        <tr><td>知识来源</td><td>专家的脑子（影随/关键决策法）</td><td>书（几十年功力的压缩包）</td></tr>
+        <tr><td>适用场景</td><td>手边有专家可挖</td><td>自己不是专家、手边也没专家</td></tr>
+        <tr><td>共同点</td><td colspan="2">都要求「来源可审计」——抽取要追问术语边界，QBS 要 AI 交代读了哪几章</td></tr>
+      </tbody>
+    </table></div>
+    <div class="verdict">
+      <div class="v-row"><p class="v-q">手边有能挖的专家吗？</p><span class="v-a v-alt">有 → 隐性知识抽取</span></div>
+      <div class="v-row"><p class="v-q">没有专家，但问题卡住了？</p><span class="v-a v-go">走 QBS · 让 AI 读书</span></div>
+      <div class="v-row"><p class="v-q">这个领域已经有成熟 SOP 吗？</p><span class="v-a v-no">有 → 直接抄 SOP 更快</span></div>
+      <div class="v-row"><p class="v-q">书没有电子版、正文抓不到？</p><span class="v-a v-no">触发第 5 条 · 诚实失败</span></div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li><strong>进陌生领域最直接的场景</strong>：选品线进新品类，让 AI 读该品类的经典书，直接产出带操作步骤的 skill——比几轮对话的浅层输出厚实。</li>
+      <li>第 5 条「读不到正文直接说，不要硬编」可直接移植进咱的抓取/闸门类 prompt。</li>
+      <li>Make Time 的时间陨石坑对多任务共学流直接对症：盯一次铁柱后台=切回状态 15 分钟，<strong>批量收结果比随时刷强</strong>。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>作者单方陈述，「GPT-6 完整读书」的实际覆盖度未附运行记录（但开源仓库可验证产出）。</li>
+      <li>依赖模型能真读到书全文——书没有电子版或正文抓不到时，会触发第 5 条诚实失败。</li>
+      <li>偏方法论冷启动；领域内已有成熟 SOP 时直接抄 SOP 更快。</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../04-skill/隐性知识抽取.html"><span class="rel-t">隐性知识抽取</span><span class="rel-d">配对词条：专家脑子这条线</span></a>
+      <a href="../04-skill/Skill设计方法论.html"><span class="rel-t">Skill设计方法论</span><span class="rel-d">炼出来之后怎么设计成 skill</span></a>
+      <a href="../04-skill/技能内化.html"><span class="rel-t">技能内化</span><span class="rel-d">方法变成自己手感的一步</span></a>
+      <a href="../06-learn/AI学习七步回路.html"><span class="rel-t">AI学习七步回路</span><span class="rel-d">学习侧的闭环骨架</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>卡尔《分享一个帮我快速把陌生领域方法论做成skill的新技巧》（公众号「卡尔的AI沃茨」2026-09-19，WaytoAGI 转载；2026-09-20 并入本条）</li>
+      <li>开源仓库 <a href="https://github.com/LearnPrompt/qbs" target="_blank" rel="noopener noreferrer">github.com/LearnPrompt/qbs</a>（含 make-time / the-debugging-book / shape-up 三个实例 skill，已核存在）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Skill工程家族 · QBS问题读书法</p>
+    <p>词条源：concepts(概念库)/Skill工程/QBS问题读书法.md（2026-09-20 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">判断路线图 ·核心</a></li>
+    <li><a href="#s3">来龙去脉</a></li>
+    <li><a href="#s4">Prompt 原文</a></li>
+    <li><a href="#s5">副产品·问题驱动读书</a></li>
+    <li><a href="#s6">实测案例 Make Time</a></li>
+    <li><a href="#s7">选路打分卡</a></li>
+    <li><a href="#s8">桑老哥适用</a></li>
+    <li><a href="#s9">前提与局限</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

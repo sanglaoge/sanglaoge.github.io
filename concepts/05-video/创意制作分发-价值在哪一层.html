@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>创意制作分发-价值在哪一层 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：对比布局 ---- */
+
+/* 三层价值链 SVG（色全走 var） */
+.chain-svg { width:100%; height:auto; margin:4px 0 2px; }
+.sv-t { fill:var(--ink); font-weight:700; }
+.sv-hi { fill:var(--fam-deep); font-weight:700; }
+.sv-s { fill:var(--ink-soft); }
+.sv-f { fill:var(--ink-faint); }
+.sv-box { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.6; }
+.sv-box-mid { fill:var(--g0); stroke:var(--g4); stroke-width:1.4; stroke-dasharray:5 4; }
+.sv-line { stroke:var(--fam); stroke-width:2; fill:none; }
+.sv-dash { stroke:var(--g4); stroke-width:1.4; fill:none; }
+.mk { fill:var(--fam); }
+
+/* 三层详解卡 */
+.layers3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:840px) { .layers3 { grid-template-columns:1fr 1fr 1fr; } }
+.layers3 .card h3 { margin:0 0 4px; font-size:16.5px; color:var(--fam-deep); }
+.layers3 .lr { display:block; font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.layers3 .card p { font-size:14.5px; line-height:1.75; }
+
+/* 破幻觉：幻觉 vs 现场事实 */
+.vs-row { display:grid; grid-template-columns:1fr; gap:8px; margin:12px 0; }
+@media (min-width:768px) { .vs-row { grid-template-columns:1fr 36px 1fr; align-items:stretch; } }
+.vs-cell { border-radius:var(--r-el); padding:12px 15px; font-size:15px; line-height:1.75; }
+.vs-myth { background:var(--g2); border:1px dashed var(--g4); color:var(--ink-soft); }
+.vs-true { background:var(--g0); border:1.5px solid var(--fam); color:var(--g8); }
+.vs-tag { display:block; font-size:14.5px; font-weight:700; margin-bottom:4px; }
+.vs-myth .vs-tag { color:var(--ink-faint); }
+.vs-true .vs-tag { color:var(--fam-deep); }
+.vs-mid { display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-weight:700; font-size:15px; }
+
+/* 制作层内部三层 */
+.sub3 { display:flex; flex-wrap:wrap; gap:8px; align-items:stretch; margin:14px 0; }
+.sub-step { flex:1 1 150px; background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:10px 13px; }
+.sub-step .ss-no { font-size:14.5px; font-weight:700; color:var(--ink-faint); }
+.sub-step .ss-t { font-weight:700; font-size:15.5px; margin:2px 0; }
+.sub-step p { font-size:14.5px; color:var(--g8); line-height:1.65; margin:0; }
+.sub-step.now { border-color:var(--fam); background:var(--fam-soft); }
+.sub-arrow { align-self:center; color:var(--ink-faint); font-weight:700; }
+
+/* 四种商业模式 */
+.biz { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:700px) { .biz { grid-template-columns:1fr 1fr; } }
+.biz .card h3 { margin:0 0 8px; font-size:16.5px; }
+.biz .biz-tag { display:inline-block; font-size:14.5px; font-weight:700; color:var(--fam-deep); background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:999px; padding:0 10px; margin-bottom:8px; }
+.biz .card p { font-size:14.5px; line-height:1.75; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">创意制作分发-价值在哪一层</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 价值链与生意判断</p>
+    <h1>创意-制作-分发：价值在哪一层</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+      <span>2026-09-20 桑老哥裁定转正</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举起牌子，示意把焦点钉在价值所在的那一层"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话本质</h2>
+    <blockquote>
+      做出来，只是让价值有了载体；被看见，才让价值真正发生。
+      <span class="q-src">—— 一句话记住整条词条</span>
+    </blockquote>
+    <p>视频的价值不在"做出来"（制作），在"被看见"（分发+消费）。<strong>做出来只是半成品，被看见才算完成。</strong></p>
+    <p>来源是一次创业复盘：前 Medeo AI 视频效果工程师 Ran627（Rag）离职两年的踩坑反思——AI 视频工具的产品市场匹配（PMF）不在制作层。归档 2026-07-14。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>三层模型 ·核心</h2>
+    <p>视频/内容生意拆三层，<strong>议价权在两端，中间最容易被卷</strong>：</p>
+    <svg class="chain-svg" viewBox="0 0 680 224" role="img" aria-label="三层价值链：创意层与分发层议价权高、制作层议价权低最容易被卷，价值从创意流向制作再流向分发">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path class="mk" d="M0,0 L10,5 L0,10 z"/>
+        </marker>
+      </defs>
+      <text class="sv-hi" x="102" y="30" text-anchor="middle" font-size="13.5">议价权·高</text>
+      <line class="sv-line" x1="30" y1="42" x2="174" y2="42"/>
+      <text class="sv-f" x="340" y="30" text-anchor="middle" font-size="13.5">议价权·低</text>
+      <line class="sv-dash" x1="268" y1="42" x2="412" y2="42"/>
+      <text class="sv-hi" x="578" y="30" text-anchor="middle" font-size="13.5">议价权·高</text>
+      <line class="sv-line" x1="508" y1="42" x2="650" y2="42"/>
+      <rect class="sv-box" x="10" y="60" width="184" height="118" rx="10"/>
+      <text class="sv-t" x="102" y="95" text-anchor="middle" font-size="17">创意层</text>
+      <text class="sv-s" x="102" y="116" text-anchor="middle" font-size="12.5">拍什么 · 为什么拍</text>
+      <text class="sv-f" x="102" y="139" text-anchor="middle" font-size="11.5">IP · 版权 · 脚本 · 选题</text>
+      <text class="sv-f" x="102" y="156" text-anchor="middle" font-size="11.5">选品角度 · 导演资源</text>
+      <rect class="sv-box-mid" x="248" y="84" width="184" height="70" rx="10"/>
+      <text class="sv-t" x="340" y="112" text-anchor="middle" font-size="17">制作层</text>
+      <text class="sv-s" x="340" y="131" text-anchor="middle" font-size="12.5">怎么做出来</text>
+      <text class="sv-f" x="340" y="147" text-anchor="middle" font-size="11.5">修图 · 剪辑 · 生成 · 自动化</text>
+      <rect class="sv-box" x="486" y="60" width="184" height="118" rx="10"/>
+      <text class="sv-t" x="578" y="95" text-anchor="middle" font-size="17">分发层</text>
+      <text class="sv-s" x="578" y="116" text-anchor="middle" font-size="12.5">有没有人看 · 钱怎么回来</text>
+      <text class="sv-f" x="578" y="139" text-anchor="middle" font-size="11.5">账号 · 投流 · 平台 · 结算</text>
+      <text class="sv-f" x="578" y="156" text-anchor="middle" font-size="11.5">广告主预算</text>
+      <line class="sv-line" x1="198" y1="119" x2="243" y2="119" marker-end="url(#ar1)"/>
+      <line class="sv-line" x1="436" y1="119" x2="481" y2="119" marker-end="url(#ar1)"/>
+      <text class="sv-s" x="102" y="206" text-anchor="middle" font-size="13">决定为什么成立</text>
+      <text class="sv-s" x="340" y="206" text-anchor="middle" font-size="13">决定如何落地</text>
+      <text class="sv-s" x="578" y="206" text-anchor="middle" font-size="13">决定变成生意</text>
+    </svg>
+    <div class="layers3">
+      <div class="card">
+        <h3>1 创意层</h3>
+        <span class="lr">决定拍什么、为什么拍</span>
+        <p>含：IP、版权、脚本、选题、选品角度、品牌策略、导演资源。最难复制，最值钱——脚本质量决定约 <span class="num">51%</span> 的爆款率（待核实：原文未注来源）。</p>
+        <p>创意可枚举（故事原型有限），但<strong>网感/品味难复制</strong>——得人每天刷 2 小时以上视频才能练出直觉。创意公司的价值：把"偶然命中"变成"更高的胜率"。</p>
+      </div>
+      <div class="card">
+        <h3>2 制作层</h3>
+        <span class="lr">决定怎么把东西做出来</span>
+        <p>含：修图、剪视频、生成、自动化、工作流。最容易被 AI 改造，也最容易卷成低毛利——<strong>越像制造业，毛利越薄</strong>。</p>
+        <p>纯制作方 = 给模型层打工：没有 IP、没有分发权，议价天然窄。内部又分三层价值（见下节）。</p>
+      </div>
+      <div class="card">
+        <h3>3 分发层</h3>
+        <span class="lr">决定有没有人看、钱怎么回来</span>
+        <p>含：账号、投流、平台、结算、广告主预算。<strong>掌握注意力入口和现金回流。</strong></p>
+        <p>没这层，前两层都是自嗨——你以为在做视频革命，其实只是在增加供给。</p>
+      </div>
+    </div>
+    <blockquote>记住一句：<strong>创意决定为什么成立，制作决定如何落地，分发决定有没有机会变成生意。</strong></blockquote>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>破幻觉：AI 的真实位置</h2>
+    <div class="vs-row">
+      <div class="vs-cell vs-myth">
+        <span class="vs-tag">幻觉</span>
+        AI 能生成视频 = AI 会做视频生意
+      </div>
+      <div class="vs-mid" aria-hidden="true">对比</div>
+      <div class="vs-cell vs-true">
+        <span class="vs-tag">现实</span>
+        AI 视频目前是<strong>瞎子导演</strong>：手一直在动（能生成），眼睛不在（不会判断好坏、不会自己返工）。没有评价就没有闭环，自动化只是把错误生产得更快
+      </div>
+    </div>
+    <div class="vs-row">
+      <div class="vs-cell vs-myth">
+        <span class="vs-tag">幻觉</span>
+        提升制作效率 = 提高议价权
+      </div>
+      <div class="vs-mid" aria-hidden="true">对比</div>
+      <div class="vs-cell vs-true">
+        <span class="vs-tag">现实</span>
+        AI 目前只改变了制作成本。成本下降不等于你能留下利润——节省的空间会被采购方、平台方、价格竞争吸走
+      </div>
+    </div>
+    <div class="vs-row">
+      <div class="vs-cell vs-myth">
+        <span class="vs-tag">幻觉</span>
+        "只要把视频做出来，后面会自然发生"
+      </div>
+      <div class="vs-mid" aria-hidden="true">对比</div>
+      <div class="vs-cell vs-true">
+        <span class="vs-tag">现实</span>
+        后面（分发与回款）才是决定生死的部分。商业成不成立，得靠创意和分发把价值想清楚
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>制作层内部：三层价值</h2>
+    <p>制作层工具不是铁板一块，又分三层——前两层已经成熟且商业模式差（卖 token 溢价），第三层战争还没开始：</p>
+    <div class="sub3">
+      <div class="sub-step">
+        <span class="ss-no">3-1</span>
+        <p class="ss-t">模型聚合</p>
+        <p>把各家模型接进来，已成熟，商业模式差</p>
+      </div>
+      <span class="sub-arrow" aria-hidden="true">→</span>
+      <div class="sub-step">
+        <span class="ss-no">3-2</span>
+        <p class="ss-t">好用的 UI</p>
+        <p>把生成体验做顺手，也已成熟，同样是卖 token 溢价</p>
+      </div>
+      <span class="sub-arrow" aria-hidden="true">→</span>
+      <div class="sub-step now">
+        <span class="ss-no">3-3</span>
+        <p class="ss-t">智慧</p>
+        <p>评价能力 + 业务闭环——战争还没开始的一层（关键）</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>四种可能的商业模式</h2>
+    <div class="biz">
+      <div class="card">
+        <span class="biz-tag">创意 × 制作</span>
+        <h3>掌握源头，快速产出</h3>
+        <p>掌握 IP/版权/脚本，用制作工具快速产出。靠版权、项目费、创意服务费赚钱，不只卖 token。</p>
+      </div>
+      <div class="card">
+        <span class="biz-tag">制作 × 分发</span>
+        <h3>制作变流量生意</h3>
+        <p>有制作能力 + 账号矩阵/投流/发行。制作变成流量生意的一部分，不是成本中心。</p>
+      </div>
+      <div class="card">
+        <span class="biz-tag">三端打通</span>
+        <h3>最完整也最重</h3>
+        <p>创作者来赚钱，公司靠分发/交易/广告/抽成活。护城河最强。</p>
+      </div>
+      <div class="card">
+        <span class="biz-tag">创意 × 分发 · 弱化制作</span>
+        <h3>双边市场</h3>
+        <p>平台连广告主和创作者，赚双边市场的钱。制作外包给"无名导演"。AI marketing 里最容易先跑出来。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥落点</h2>
+    <p>手上四条线，正好散落在三层里：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>线</th><th>落在哪层</th><th>怎么对待</th></tr></thead>
+      <tbody>
+        <tr><td>选品（核心）</td><td>创意层</td><td>决定卖什么，最该重投入</td></tr>
+        <tr><td>运营学习</td><td>分发层</td><td>怎么被看见、怎么投流回款</td></tr>
+        <tr><td>设计师岗</td><td>制作层</td><td>用 AI 提效就够，别当主战场</td></tr>
+        <tr><td>个人 IP</td><td>跨层</td><td>做出来不算完，被看见才算</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>判断任何内容/项目时问一句：<strong>我站在哪一层？如果只在制作层，怎么避免被低毛利吞掉？</strong></blockquote>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>避坑提醒</h2>
+    <ul>
+      <li>做出来不等于完成——本地导出、渲染成功、躺硬盘里都只是半成品</li>
+      <li>别把"生产能力"误认成"议价权"：<strong>生产能力是入场券，不是奖牌</strong></li>
+      <li>"只要把视频做出来，后面会自然发生"——这是幻觉，后面才是决定生死的部分</li>
+      <li>认知的坑没法消灭，只能缩短踩坑时间。听懂和知行合一，是两个层次</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>硬数字待核实：脚本质量决定约 <span class="num">51%</span> 爆款率，原文未注来源（2026-09-20 转正裁定时已标注）</li>
+      <li>"网感/品味难复制"的前提是真投入：每天刷 2 小时以上视频；能枚举故事原型不等于能枚举爆款</li>
+      <li>视角来自前从业者离职两年反思，是创业复盘不是学术结论；三层划分与四种模式是作者的主观框架，套用时先问适不适合自己的场景</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../08-ecomm/AI对跨境电商设计师的价值边界.html"><span class="rel-t">AI对跨境电商设计师的价值边界</span><span class="rel-d">设计师岗在制作层的自处之道</span></a>
+      <a href="../07-ip/IP冷启动-先攒硬货再借势.html"><span class="rel-t">IP冷启动-先攒硬货再借势</span><span class="rel-d">被看见才算完成：IP 侧的分发答案</span></a>
+      <a href="../07-ip/一人公司内容获客循环.html"><span class="rel-t">一人公司内容获客循环</span><span class="rel-d">分发层怎么转成生意</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">网感/品味为什么难复制</span></a>
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">制作层工具用到精的实操</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">制作层的良率问题</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Ran627（Rag，前 Medeo AI视频效果工程师）《AI视频工具PMF不在制作，创业两年踩坑认知》（微信公众号 2026-07-13；归档 2026-07-14）</li>
+      <li>飞书转载：waytoagi.feishu.cn/wiki/OM8cwRQuCiSHMAkvbFsc6Alrnmg（<a class="ext" href="https://waytoagi.feishu.cn/wiki/OM8cwRQuCiSHMAkvbFsc6Alrnmg" target="_blank" rel="noopener noreferrer">WaytoAGI 飞书</a>）</li>
+      <li>2026-09-20 桑老哥裁定转正：框架自洽，硬数字已标待核实</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · 创意制作分发-价值在哪一层</p>
+    <p>词条源：concepts(概念库)/AI视频制作/创意制作分发-价值在哪一层.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话本质</a></li>
+    <li><a href="#s2">三层模型 ·核心</a></li>
+    <li><a href="#s3">破幻觉：AI 的真实位置</a></li>
+    <li><a href="#s4">制作层内部三层</a></li>
+    <li><a href="#s5">四种商业模式</a></li>
+    <li><a href="#s6">桑老哥落点</a></li>
+    <li><a href="#s7">避坑提醒</a></li>
+    <li><a href="#s8">前提与局限</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

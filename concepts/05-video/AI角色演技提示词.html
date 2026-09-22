@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI角色演技提示词 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（克制·影像质感） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：对比布局 ---- */
+
+/* 衬线金句 */
+blockquote.bq p {
+  font-family:var(--font-head); font-size:18.5px; line-height:1.75; color:var(--ink);
+}
+
+/* 误区 vs 正解 双栏 */
+.duel { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .duel { grid-template-columns:1fr 44px 1fr; align-items:stretch; } }
+.duel .side2 { border-radius:var(--r-box); padding:16px 18px; }
+.duel .side2 h3 { margin:0 0 10px; font-size:16.5px; }
+.duel .bad { background:var(--g2); border:1px solid var(--line); }
+.duel .bad h3 { color:var(--ink-faint); }
+.duel .good { background:var(--fam-soft); border:1.5px solid var(--fam-line); }
+.duel .good h3 { color:var(--fam-deep); }
+.duel .eg {
+  font-family:var(--font-head); font-size:16px; line-height:1.8; color:var(--g8);
+  padding:10px 12px; background:var(--g0); border:1px solid var(--line);
+  border-radius:var(--r-el); margin-bottom:10px;
+}
+.duel .why { font-size:14.5px; color:var(--ink-faint); margin:0; }
+.duel .vs {
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:15px; color:var(--ink-faint);
+}
+/* 正解侧的节拍时间轴 */
+.beats { list-style:none; padding:0; margin:0 0 10px; }
+.beats li {
+  position:relative; padding:5px 0 5px 86px; font-size:15px; color:var(--g8);
+  border-bottom:1px dashed var(--line);
+}
+.beats li:last-child { border-bottom:none; }
+.beats .bt {
+  position:absolute; left:0; top:5px; width:76px; font-weight:700; font-size:14.5px;
+  color:var(--fam-deep); font-variant-numeric:tabular-nums;
+}
+
+/* 其余四条技巧 */
+.t4 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:640px) { .t4 { grid-template-columns:1fr 1fr; } }
+.t4 .card h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.t4 .card p, .t4 .card li { font-size:15px; }
+.t4 .card ul { margin-bottom:0; }
+.t4 .tk-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700;
+  font-size:14.5px; margin-right:8px; font-variant-numeric:tabular-nums;
+}
+
+/* 公式链 */
+.chips { display:flex; flex-wrap:wrap; gap:8px 0; align-items:center; margin:14px 0; }
+.chips .chip {
+  background:var(--g0); border:1px solid var(--fam-line); border-radius:999px;
+  padding:3px 13px; font-size:15px; color:var(--g8); white-space:nowrap;
+}
+.chips .plus { color:var(--ink-faint); font-weight:700; padding:0 7px; font-size:15px; }
+.chips-note { font-size:14.5px; color:var(--ink-faint); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI角色演技提示词</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频家族 · 角色表演层</p>
+    <h1>AI角色演技提示词</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-28</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂嘴，示意忍住情绪比直接崩溃更打动人"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>AI 角色演得假，问题在提示词<strong>只写了情绪结果（悲伤/愤怒），没写「怎么演」</strong>。演技提示词把情绪拆成动作节拍 + 面部微相 + 身体反应 + 生理细节 + 镜头配合，让角色像真人一样一层层漏出情绪。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>核心心法</h2>
+    <blockquote class="bq">
+      <p>忍比崩更打动人——把哭/笑放到最后，前面全靠目送、吞咽、握紧、压肩膀来「忍」。</p>
+      <span class="q-src">—— 尹小歪《AI角色演技怎么救》</span>
+    </blockquote>
+    <p>忍的过程比直接崩溃更真实。真人也不是一秒切换情绪的，是憋着的每一秒让观众信了。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>误区 vs 正解 ·核心</h2>
+    <p>同一场分手戏，两种写法，AI 收到的信息完全不同：</p>
+    <div class="duel">
+      <div class="side2 bad">
+        <h3>误区 · 只写情绪结果</h3>
+        <p class="eg">「她听到分手后很悲伤，强忍眼泪，崩溃大哭」</p>
+        <p class="why">AI 收到的只有结论，没有「怎么演」——只能套路化挤表情，一眼假。</p>
+      </div>
+      <div class="vs" aria-hidden="true">对比</div>
+      <div class="side2 good">
+        <h3>正解 · 拆成动作节拍 + 秒数</h3>
+        <ul class="beats">
+          <li><span class="bt">0-3 秒</span>保持表情</li>
+          <li><span class="bt">3-6 秒</span>眨眼停止、嘴唇抿紧、喉头滚动</li>
+          <li><span class="bt">6-10 秒</span>握杯指节泛白、肩膀先压后颤</li>
+          <li><span class="bt">最后</span>才落泪</li>
+        </ul>
+        <p class="why">情绪有了时间轴和动作，AI 逐秒执行——角色像一层层漏出悲伤。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>其余四条技巧</h2>
+    <div class="t4">
+      <div class="card">
+        <h3><span class="tk-no">2</span>面部拆到具体部位</h3>
+        <p>眼睛/眼睑/眉间/嘴唇/面颊/鼻翼/喉部——哪个先动、往哪动、多大。<strong>一个节拍选 2-4 个部位</strong>，全动反而演过头。</p>
+      </div>
+      <div class="card">
+        <h3><span class="tk-no">3</span>头部和身体接住表情</h3>
+        <p>脸 + 身体一起演。挨巴掌后保持侧脸一秒、手指先蜷再松、肩膀沉下、慢慢转头。常用：头部停顿/肩膀痉挛/手指蜷缩/膝盖失力/身体前倾。</p>
+      </div>
+      <div class="card">
+        <h3><span class="tk-no">4</span>加真实的生理和皮肤变化</h3>
+        <p>别像磨皮塑料。加：起皮唇纹、眼白毛细血管、泪液表面张力、鼻翼扩张、咬肌线条、膈肌痉挛、指节泛白。</p>
+        <ul>
+          <li>忍泪 → 眼睑 + 唇纹 + 泪液</li>
+          <li>愤怒 → 鼻翼 + 牙关 + 咬肌</li>
+          <li>恐惧 → 瞳孔 + 呼吸 + 膈肌</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="tk-no">5</span>景深和焦点放大表演</h3>
+        <p>镜头决定观众盯谁。前景虚化、后景跟焦锁定主角眼睛、配角走过形成散景遮挡、缓慢推进。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>演技提示词公式</h2>
+    <div class="chips" role="img" aria-label="演技提示词公式：情绪触发加动作节拍加眼神变化加面部微相加头部动作加肢体动作加生理反应加皮肤质感加景深构图加跟焦运镜">
+      <span class="chip">情绪触发</span><span class="plus">+</span>
+      <span class="chip">动作节拍</span><span class="plus">+</span>
+      <span class="chip">眼神变化</span><span class="plus">+</span>
+      <span class="chip">面部微相</span><span class="plus">+</span>
+      <span class="chip">头部动作</span><span class="plus">+</span>
+      <span class="chip">肢体动作</span><span class="plus">+</span>
+      <span class="chip">生理反应</span><span class="plus">+</span>
+      <span class="chip">皮肤质感</span><span class="plus">+</span>
+      <span class="chip">景深构图</span><span class="plus">+</span>
+      <span class="chip">跟焦运镜</span>
+    </div>
+    <p class="chips-note">台词/音效/音乐有需要再加，用来触发或烘托情绪。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>四情绪速查</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>情绪</th><th>关键动作</th></tr></thead>
+      <tbody>
+        <tr><td><strong>喜</strong></td><td>嘴角颧肌上提、下眼睑收紧、眉间肩颈放松、身体前倾</td></tr>
+        <tr><td><strong>怒</strong></td><td>目光锁定、下睑绷紧、鼻翼扩张、咬肌显出、手攥紧</td></tr>
+        <tr><td><strong>哀</strong></td><td>瞳孔失焦、嘴角僵、喉头滚动、肩膀先压后颤、最后落泪</td></tr>
+        <tr><td><strong>惧</strong></td><td>瞳孔移向危险、上睑抬高、呼吸变浅、膈肌痉挛、后退防御</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>只适用于「有人物情绪」的视频（剧情向广告 / IP 短剧 / 角色动画）。纯产品展示（电热毯特写）用不上</li>
+      <li>每个节拍挑 2-4 个细节就够，堆满反而演过头</li>
+      <li>不是固定模板，是<strong>动作素材库</strong>——按场景挑组合</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li>剧情向电商广告：买家失望/惊喜/满意的情绪线</li>
+      <li>IP 短剧 / 角色动画：人物有情绪起伏的</li>
+      <li>配合 <a href="../05-video/视频生成提示词.html">视频生成提示词</a> 七层结构用：七层管整体，本条专攻角色表演层</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">七层结构（主体/动作/环境/运镜/光影/物理/负向），本条深化「动作」层</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">2-3 秒一段，抽 3 次选最好的</span></a>
+      <a href="../05-video/AI视频运镜速查.html"><span class="rel-t">AI视频运镜速查</span><span class="rel-d">技巧 5 的景深跟焦，运镜词在这页查</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>尹小歪《AI角色演技怎么救？5条好用的提示词技巧》（WaytoAGI 视频板块版主，2026-07-27）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI角色演技提示词</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI角色演技提示词.md（2026-07-28 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">核心心法</a></li>
+    <li><a href="#s3">误区 vs 正解 ·核心</a></li>
+    <li><a href="#s4">其余四条技巧</a></li>
+    <li><a href="#s5">演技提示词公式</a></li>
+    <li><a href="#s6">四情绪速查</a></li>
+    <li><a href="#s7">前提与局限</a></li>
+    <li><a href="#s8">桑老哥适用场景</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公众号写作系统 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：个人IP · 媒体红（内容人的浓红，只做点缀） ---- */
+:root {
+  --fam:#be123c; --fam-deep:#881337; --fam-soft:#fff1f2; --fam-line:#fecdd3;
+}
+/* ---- 页面专属：判断路线（衬线金句 + SVG 路线图 + 打分卡） ---- */
+
+/* 衬线金句：权重公式 */
+.bigquote {
+  font-family:var(--font-head); font-weight:700;
+  font-size:clamp(22px,4.2vw,34px); line-height:1.5; color:var(--ink);
+  padding:20px 24px; margin:18px 0;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  box-shadow:var(--sh-1); text-align:center;
+}
+.bigquote .bq-hl { color:var(--fam-deep); }
+.bigquote .bq-sub {
+  display:block; font-family:var(--font-body); font-weight:400;
+  font-size:15px; color:var(--ink-faint); margin-top:10px;
+}
+
+/* 权重条（公式可视化：三段横条） */
+.wbar { display:flex; height:44px; border-radius:var(--r-el); overflow:hidden; margin:16px 0; font-variant-numeric:tabular-nums; }
+.wbar .w { display:flex; align-items:center; justify-content:center; gap:6px; font-weight:700; font-size:15px; }
+.wbar .w1 { width:50%; background:var(--fam); color:#fff; }
+.wbar .w2 { width:30%; background:var(--fam-soft); color:var(--fam-deep); border-top:1px solid var(--fam-line); border-bottom:1px solid var(--fam-line); }
+.wbar .w3 { width:20%; background:var(--g2); color:var(--ink-soft); }
+
+/* 打分卡 */
+.scorecard {
+  background:var(--g0); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:16px 20px; margin:16px 0;
+}
+.scorecard .sc-t { font-weight:700; font-size:16px; color:var(--fam-deep); margin-bottom:10px; }
+.scorecard ul { margin-bottom:0; }
+.scorecard li { font-size:15.5px; color:var(--g8); }
+
+/* 路线图 SVG（颜色全走 class→var） */
+.route-svg { width:100%; height:auto; margin:14px 0 4px; }
+.route-svg .nd { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.4; }
+.route-svg .nd-gate { fill:var(--fam); }
+.route-svg .tx { fill:var(--fam-deep); font-weight:700; }
+.route-svg .tx-w { fill:var(--g0); font-weight:700; }
+.route-svg .tx-s { fill:var(--g6); }
+.route-svg .tx-d { fill:var(--g8); }
+.route-svg .ln { stroke:var(--fam); stroke-width:1.6; fill:none; }
+.route-svg .ln-dash { stroke:var(--g5); stroke-width:1.4; fill:none; stroke-dasharray:5 4; }
+.route-svg .mk { fill:var(--fam); }
+.route-svg .mk-g { fill:var(--g5); }
+
+/* 完形填空示意 */
+.skeleton {
+  background:var(--g9); border-radius:var(--r-box); padding:16px 20px; margin:16px 0;
+  overflow-x:auto;
+}
+.skeleton pre {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.9;
+  color:var(--g2); white-space:pre-wrap;
+}
+.skeleton .x { color:var(--fam-line); font-weight:700; }
+
+/* 平台两卡（小对照，非主布局） */
+.rooms { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:768px) { .rooms { grid-template-columns:1fr 1fr; } }
+.room { border:1px solid var(--line); border-radius:var(--r-box); background:var(--g0); padding:13px 16px; }
+.room .r-t { font-weight:700; font-size:16px; color:var(--ink); margin-bottom:4px; }
+.room .r-t small { font-size:14.5px; color:var(--ink-faint); font-weight:400; margin-left:6px; }
+.room p { font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+/* 直用清单 */
+.use { list-style:none; padding-left:0; }
+.use li { padding:10px 0 10px 30px; position:relative; border-bottom:1px dashed var(--line); font-size:15.5px; color:var(--g8); }
+.use li::before { content:"›"; position:absolute; left:8px; top:8px; color:var(--fam); font-weight:700; font-size:18px; }
+.use li:last-child { border-bottom:none; }
+
+/* 警示条（琥珀，非家族色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">个人IP</span><span class="sep">›</span>
+    <span class="here">公众号写作系统</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">个人IP · 深度图文的生产线</p>
+    <h1>公众号写作系统</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-31</span>
+      <span>下次复核 2026-11-30</span>
+      <span class="num">验证 true · 置信 high</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举起牌子，示意把精力权重公示出来：五成选题三成标题封面两成文笔"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>三年 <span class="num">400</span> 篇的作者把写作全流程做成 <span class="num">10</span> 个开源 Skill——核心公式：</p>
+    <div class="bigquote">
+      <span class="bq-hl">50% 选题</span> + <span class="bq-hl">30% 标题封面</span> + <span class="bq-hl">20% 文笔</span>
+      <span class="bq-sub">大部分人把八成精力花错在文笔上</span>
+    </div>
+    <div class="wbar" aria-label="精力权重条：选题五成，标题封面三成，文笔两成">
+      <div class="w w1">50% 选题</div>
+      <div class="w w2">30% 标题封面</div>
+      <div class="w w3">20% 文笔</div>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>打分卡：爆款权重公式（先分对精力） ·核心</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>权重</th><th>环节</th><th>常见错误</th></tr></thead>
+      <tbody>
+        <tr><td class="n"><strong>50%</strong></td><td>选题</td><td>随手拍脑袋</td></tr>
+        <tr><td class="n"><strong>30%</strong></td><td>标题+封面</td><td>定稿后才随便起</td></tr>
+        <tr><td class="n"><strong>20%</strong></td><td>把话捋顺</td><td>反复打磨（精力都耗在这）</td></tr>
+      </tbody>
+    </table></div>
+    <div class="scorecard">
+      <p class="sc-t">动笔前自测（桑老哥版）</p>
+      <ul>
+        <li>选题想透了吗？——想不透就别动笔，这是五成权重</li>
+        <li>标题封面留够 30% 时间了吗？——不是定稿后顺手起</li>
+        <li>文笔只占两成精力了吗？——别在"把话捋顺"上无限打磨</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>一篇稿子的路线图</h2>
+    <svg class="route-svg" viewBox="0 0 680 310" role="img" aria-label="公众号一篇稿子的生产路线：先过权重公式，选题想透，口述骨架打xxx，AI填肉自己改，标题封面留足时间，草稿躺两天再发，发布后一鱼多吃">
+      <defs>
+        <marker id="ra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+        </marker>
+        <marker id="rg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="mk-g"/>
+        </marker>
+      </defs>
+      <g>
+        <rect class="nd nd-gate" x="24" y="26" width="176" height="54" rx="10"/>
+        <text class="tx-w" x="112" y="49" text-anchor="middle" font-size="14.5">① 过权重公式</text>
+        <text class="tx-w" x="112" y="69" text-anchor="middle" font-size="11.5">动笔前自测三问</text>
+        <rect class="nd" x="252" y="26" width="176" height="54" rx="10"/>
+        <text class="tx" x="340" y="49" text-anchor="middle" font-size="14.5">② 选题想透</text>
+        <text class="tx-s" x="340" y="69" text-anchor="middle" font-size="11.5">占 50% 权重</text>
+        <rect class="nd" x="480" y="26" width="176" height="54" rx="10"/>
+        <text class="tx" x="568" y="49" text-anchor="middle" font-size="14.5">③ 口述骨架</text>
+        <text class="tx-s" x="568" y="69" text-anchor="middle" font-size="11.5">卡壳处打 xxx</text>
+        <line class="ln" x1="200" y1="53" x2="246" y2="53" marker-end="url(#ra)"/>
+        <line class="ln" x1="428" y1="53" x2="474" y2="53" marker-end="url(#ra)"/>
+      </g>
+      <g>
+        <rect class="nd" x="480" y="150" width="176" height="54" rx="10"/>
+        <text class="tx" x="568" y="173" text-anchor="middle" font-size="14.5">④ AI 填肉</text>
+        <text class="tx-s" x="568" y="193" text-anchor="middle" font-size="11.5">填完自己改</text>
+        <rect class="nd" x="252" y="150" width="176" height="54" rx="10"/>
+        <text class="tx" x="340" y="173" text-anchor="middle" font-size="14.5">⑤ 标题+封面</text>
+        <text class="tx-s" x="340" y="193" text-anchor="middle" font-size="11.5">留够 30% 时间</text>
+        <rect class="nd" x="24" y="150" width="176" height="54" rx="10"/>
+        <text class="tx" x="112" y="173" text-anchor="middle" font-size="14.5">⑥ 草稿躺两天</text>
+        <text class="tx-s" x="112" y="193" text-anchor="middle" font-size="11.5">手机上重读再发</text>
+        <line class="ln" x1="568" y1="80" x2="568" y2="144" marker-end="url(#ra)"/>
+        <line class="ln" x1="474" y1="177" x2="428" y2="177" marker-end="url(#ra)"/>
+        <line class="ln" x1="246" y1="177" x2="200" y2="177" marker-end="url(#ra)"/>
+      </g>
+      <path class="ln-dash" d="M112,204 L112,258 L470,258" marker-end="url(#rg)"/>
+      <rect class="nd" x="474" y="232" width="182" height="52" rx="10"/>
+      <text class="tx" x="565" y="254" text-anchor="middle" font-size="14.5">发布后 · 一鱼多吃</text>
+      <text class="tx-s" x="565" y="274" text-anchor="middle" font-size="11.5">录屏转视频发多平台</text>
+      <text class="tx-d" x="290" y="248" font-size="12">发布</text>
+    </svg>
+    <p>路线是死的，权重是活的：每篇动笔前先回到 <a href="#s2">打分卡</a> 过一遍，再上路。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>人定骨架，AI 填肉</h2>
+    <p>"完形填空式"写法：一口气把文章骨架念出来（语音即可），卡壳处打 xxx 保思路惯性（一停就断）→ AI 填 xxx → 自己改。</p>
+    <div class="skeleton" aria-label="完形填空式写作示意">
+<pre>今天讲 XXX 为什么是你最容易忽略的生产力外挂
+  开头：我第一次踩这个坑是 <span class="x">xxx</span>，当时损失了 <span class="x">xxx</span>
+  第一点：<span class="x">xxx</span>
+  第二点：<span class="x">xxx</span>（这里我有个反例：<span class="x">xxx</span>）
+  结尾：一句话带走 <span class="x">xxx</span></pre>
+    </div>
+    <p><strong>观点、结构、起承转合必须是人的，AI 只负责把没说完的话说完。</strong>灵感捕获与内容生产是两个独立动作：灵感用语音随手记关键词（情绪波动时最准），写作时再展开。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>10 个 Skill 流水线</h2>
+    <p>本质：把"我三年 400 篇怎么做的"写成 skill 说明书 = <strong>隐性知识显性化</strong>。开源仓库 <a class="ext" href="https://github.com/SpaceZephyr/creator-buddy" target="_blank" rel="noopener noreferrer">github.com/SpaceZephyr/creator-buddy</a>：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>环节</th><th>Skill</th><th>干什么</th></tr></thead>
+      <tbody>
+        <tr><td>定位</td><td>gzh-positioning</td><td>账号定位</td></tr>
+        <tr><td>爆款分析</td><td>baokuan-article-analysis</td><td>按赛道抓数据</td></tr>
+        <tr><td>每日爆款</td><td>gzh-explosive-content-detector</td><td>低粉高阅读 = 最真实参考</td></tr>
+        <tr><td>长文</td><td>gzh-longform-writer</td><td>先问素材形态再路由写法</td></tr>
+        <tr><td>短文</td><td>gzh-short-post</td><td>自带去AI腔自检</td></tr>
+        <tr><td>标题</td><td>baokuan-title-generator</td><td>批量生成+逐个评分标风险</td></tr>
+        <tr><td>封面</td><td>space-gzh-cover</td><td>2.35:1+分享安全区校验，防标题被裁</td></tr>
+        <tr><td>图表</td><td>space-chart-image</td><td>十类图</td></tr>
+        <tr><td>逻辑图</td><td>space-text-logic-diagram</td><td>文字转逻辑图</td></tr>
+        <tr><td>排版</td><td>space-wechat-layout</td><td>公众号排版</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>两个反直觉习惯 + 平台认知</h2>
+    <ul>
+      <li><strong>草稿躺两天</strong>：刚写完看不出问题，隔一天在手机上重读，别扭处全冒出来</li>
+      <li><strong>一鱼多吃</strong>：发布后录屏成视频（人脸+文章同框，剪映加字幕）发 B 站、小红书，同步知乎等平台——一套内容多次用</li>
+    </ul>
+    <div class="rooms">
+      <div class="room">
+        <p class="r-t">小红书 / 抖音<small>广场</small></p>
+        <p>火一阵人人看见，靠推荐。</p>
+      </div>
+      <div class="room">
+        <p class="r-t">公众号<small>自己的房间</small></p>
+        <p>坐下来读：深度关系+商单价高+原创版权保护。</p>
+      </div>
+    </div>
+    <p><strong>文字是一切内容的源头</strong>，写好了再转图文视频。公众号推荐机制现在对新人友好化（选题准连爆两篇也能起号），但仍难靠单篇暴涨，稳扎稳打更新。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥直用</h2>
+    <ul class="use">
+      <li>每篇公众号动笔前先过权重公式：选题想透了吗？标题封面留够 30% 时间了吗？</li>
+      <li>写作用完形填空式：口述骨架打 xxx → 铁柱填肉 → 自己改；完稿让 AI 按"活人思考、节奏起伏、信息增益、对话感"四条挑毛病再改（= <a href="../01-ai/出稿评审分离法.html">出稿评审分离法</a>）</li>
+      <li>10 个 skill 开源可装：按老规矩点名（候选：爆款标题、去AI腔短文），铁柱先验货再装</li>
+    </ul>
+    <div class="warn"><b>守人味：</b>AI 只填 xxx 不换骨——骨架、观点、起承转合是人的；短文 skill 的"去AI腔自检"与<a href="../07-ip/人味与AI味.html">人味与AI味</a>同一条线：具体、判断、在场。</div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../07-ip/一人公司内容获客循环.html"><span class="rel-t">一人公司内容获客循环</span><span class="rel-d">写作系统的下游：内容怎么变成生意</span></a>
+      <a href="../07-ip/人味与AI味.html"><span class="rel-t">人味与AI味</span><span class="rel-d">去AI腔自检的理论底座：加法路线三件套</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">完稿四条挑毛病的原型：AI 评审，人定稿</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">10 个 skill = 隐性知识显性化的实体</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>空格丶《10 个 Skill 搭建日更爆文的公众号写作系统》（公众号"空格的键盘"，3万粉/三年400+篇原创，2026-08-27；skill 开源 github.com/SpaceZephyr/creator-buddy；WaytoAGI 飞书转载）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 个人IP家族 · 公众号写作系统</p>
+    <p>词条源：concepts(概念库)/个人IP/公众号写作系统.md（2026-08-31 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">权重公式打分卡 ·核心</a></li>
+    <li><a href="#s3">一篇稿子的路线图</a></li>
+    <li><a href="#s4">人定骨架AI填肉</a></li>
+    <li><a href="#s5">10 个 Skill 流水线</a></li>
+    <li><a href="#s6">反直觉习惯+平台认知</a></li>
+    <li><a href="#s7">桑老哥直用</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

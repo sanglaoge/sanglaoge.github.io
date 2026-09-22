@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGI五级楼梯 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：阶梯布局 ---- */
+
+.st-wip { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+.st-draft { background:#f5f5f4; color:#57534e; border:1px solid #e7e5e4; }
+
+/* 台阶卡：逐级抬升（桌面端逐级右移，手机端平铺） */
+.stairs { display:flex; flex-direction:column; gap:12px; margin:20px 0; }
+.stair {
+  display:flex; gap:16px; align-items:flex-start;
+  background:var(--g0); border:1px solid var(--line);
+  border-radius:var(--r-el); padding:14px 18px; position:relative;
+  box-shadow:var(--sh-1);
+}
+.stair .st-no {
+  flex:none; width:52px; height:52px; line-height:52px; text-align:center;
+  border-radius:12px; background:var(--fam-soft); color:var(--fam-deep);
+  border:1px solid var(--fam-line); font-weight:700; font-size:17px;
+}
+.stair.now { border-color:var(--fam-line); background:var(--fam-soft); }
+.stair.now .st-no { background:var(--fam); color:#fff; border-color:var(--fam); }
+.stair .st-body { flex:1; min-width:0; }
+.stair .st-top { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.stair .st-name { font-weight:700; font-size:17px; color:var(--ink); }
+.stair .st-what { font-size:15.5px; color:var(--g8); margin-top:4px; }
+.stair .st-meta { font-size:14.5px; color:var(--ink-faint); margin-top:4px; line-height:1.6; }
+.stair.now::after {
+  content:"你在这一级"; position:absolute; top:-11px; right:12px;
+  background:var(--fam); color:#fff; font-size:14.5px; font-weight:700;
+  padding:1px 10px; border-radius:999px;
+}
+@media (min-width:768px) {
+  .stair.l2 { margin-left:7%; }
+  .stair.l3 { margin-left:14%; }
+  .stair.l4 { margin-left:21%; }
+  .stair.l5 { margin-left:28%; }
+}
+.stair-cap { font-size:14.5px; color:var(--ink-faint); }
+
+/* 用法三卡 */
+.use3 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:640px) { .use3 { grid-template-columns:1fr 1fr 1fr; } }
+.use3 .u-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.use3 .u-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700;
+  font-size:14.5px; margin-right:8px;
+}
+.use3 .u-t { font-weight:700; color:var(--ink); }
+.use3 p { font-size:14.5px; color:var(--ink-soft); margin-top:6px; line-height:1.65; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">AGI五级楼梯</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 地基全景</p>
+    <h1>AGI五级楼梯</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒着墙头向上张望，示意顺着楼梯看AI的下一级在哪里"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      AGI 不是某天突然"奇点爆炸"，是一级级爬台阶——思维链 → 智能体 → 持续学习 → AI 自迭代 → 具身智能。记住这张图，AI 圈的新闻都能往上面贴。
+    </blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：梁文锋的爬楼路线</h2>
+    <p>这是梁文锋（DeepSeek）画的 AGI 实现路线。核心洞见：<strong>AGI 不是一夜降临，是爬楼梯。每爬一级，解决一个上一级干不了的难题。</strong></p>
+    <blockquote>AI 现在不缺品味和直觉，缺的是持续学习的能力。<span class="q-src">—— 梁文锋，4 小时投资人会议实录</span></blockquote>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>五级台阶（·核心）</h2>
+    <p class="stair-cap">从下往上爬，一级一级抬升；第 2 级是当下主战场：</p>
+    <div class="stairs" aria-label="AGI五级台阶，从L1到L5逐级抬升">
+      <div class="stair l1">
+        <div class="st-no num">L1</div>
+        <div class="st-body">
+          <div class="st-top"><span class="st-name">思维链 CoT</span><span class="st st-ok">已拿下</span></div>
+          <p class="st-what">先"想一想"再答，不直接蹦答案。</p>
+          <p class="st-meta">比喻：做数学题先列步骤再写答案。</p>
+        </div>
+      </div>
+      <div class="stair l2 now">
+        <div class="st-no num">L2</div>
+        <div class="st-body">
+          <div class="st-top"><span class="st-name">智能体 Agent</span><span class="st st-wip">当下主战场</span></div>
+          <p class="st-what">不光回答，还会动手干活——上网查、写代码、调工具。</p>
+          <p class="st-meta">比喻：思维链是"动嘴"，Agent 是"动手"。铁柱帮你读链接、存笔记，就是 Agent。</p>
+        </div>
+      </div>
+      <div class="stair l3">
+        <div class="st-no num">L3</div>
+        <div class="st-body">
+          <div class="st-top"><span class="st-name">持续学习</span><span class="st st-draft">没人拿下</span></div>
+          <p class="st-what">用一次会一点，越用越懂你——不用每次从头喂背景。</p>
+          <p class="st-meta">比喻：带新员工每次重新介绍（现在）→ 老员工一个眼神就懂（持续学习后）。</p>
+        </div>
+      </div>
+      <div class="stair l4">
+        <div class="st-no num">L4</div>
+        <div class="st-body">
+          <div class="st-top"><span class="st-name">AI 改进自己</span><span class="st st-draft">未来</span></div>
+          <p class="st-what">AI 帮 AI 写更好的模型、做更前沿的研究——智能加速智能。</p>
+          <p class="st-meta">比喻：滚雪球——人推，够大后自己滚，越滚越快。</p>
+        </div>
+      </div>
+      <div class="stair l5">
+        <div class="st-no num">L5</div>
+        <div class="st-body">
+          <div class="st-top"><span class="st-name">具身智能</span><span class="st st-draft">终点</span></div>
+          <p class="st-what">聪明大脑装进机器人身体，在物理世界干活。</p>
+          <p class="st-meta">比喻："对人来讲，需求不是电脑，是人力"——梁文锋。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>这张图怎么用</h2>
+    <div class="use3">
+      <div class="u-card"><span class="u-no num">1</span><span class="u-t">给新闻归级</span><p>看到任何 AI 消息，先问"这属于第几级"。多数停在第 2 级；真正改格局的是第 3 级以上。</p></div>
+      <div class="u-card"><span class="u-no num">2</span><span class="u-t">定位自己</span><p>你用铁柱卡在第 2 级——会动手，但每次得重新交代背景。</p></div>
+      <div class="u-card"><span class="u-no num">3</span><span class="u-t">判断真假进步</span><p>第 1-2 级打转的"新功能"多是包装；推上一级台阶的才是质变。</p></div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>你在 <strong>L2——Agent 层</strong>。铁柱能替你干活，但每次得重新交代背景（因为 L3 持续学习还没突破，这正是概念库、memory 在手动补位的原因）。</li>
+      <li>听到"新功能发布"，先用五级楼梯判断真假进步——别被第 1-2 级的包装带着跑。</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>这是梁文锋/DeepSeek 的路线判断，不是行业共识。OpenAI、Google 路线未必相同。</li>
+      <li>"五级"是铁柱从 52 条语录提炼的结构，分级与命名是整理表述。</li>
+      <li>每级之间不是干净切换，现实中多级同时推进。</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">L2 主战场的完整展开</span></a>
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">L2 往 L3 过渡的工程手段</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">L2 安全跑道的官方名字</span></a>
+      <a href="../01-ai/AI记忆系统三层架构.html"><span class="rel-t">AI记忆系统三层架构</span><span class="rel-d">给 L3 持续学习补位的土办法</span></a>
+      <a href="../01-ai/锯齿智能.html"><span class="rel-t">锯齿智能</span><span class="rel-d">为什么 L1-L2 的能力强弱不均</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>梁文锋 4 小时投资人会议实录（elsewhere 整理 52 条语录，2026-07）</li>
+      <li>桑老哥 AGI 共学笔记 · HTML 可视化笔记（概念库 2026-08-03 重建）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AGI五级楼梯</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AGI五级楼梯.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">五级台阶 ·核心</a></li>
+    <li><a href="#s4">这张图怎么用</a></li>
+    <li><a href="#s5">桑老哥适用</a></li>
+    <li><a href="#s6">前提与局限</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

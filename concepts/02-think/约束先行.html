@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>约束先行 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root {
+  --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0;
+}
+/* ---- 页面专属：判断路线布局（金句 + 穿透路线图 + 四件套） ---- */
+
+.main-col > section { margin-bottom:56px; }
+.entry-head blockquote, .creed { font-family:var(--font-head); }
+.creed {
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:26px 8px 6px; max-width:36em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 穿透路线图 */
+.route { margin:26px 0 10px; }
+.route svg { width:100%; height:auto; display:block; }
+.route .mk { fill:var(--fam); }
+.route .ln { stroke:var(--fam); stroke-width:2; }
+.route .lyr { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.route .ed { stroke:var(--fam-line); stroke-width:1.6; fill:none; }
+.route .tx { fill:var(--fam-deep); }
+.route .tx-s { fill:var(--ink-faint); }
+.route-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 关键数字 */
+.stat-row { display:flex; flex-wrap:wrap; gap:12px; margin:18px 0 6px; }
+.stat-chip {
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-el); padding:10px 18px; text-align:center; min-width:104px;
+}
+.stat-chip .n { display:block; font-family:var(--font-head); font-size:24px; font-weight:700; color:var(--fam-deep); line-height:1.3; }
+.stat-chip .l { display:block; font-size:14.5px; color:var(--ink-soft); }
+.stat-chip.wide { min-width:0; text-align:left; }
+.stat-chip.wide .l { line-height:1.6; }
+
+/* 两个核心原则 */
+.duo2 { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .duo2 { grid-template-columns:1fr 1fr; } }
+.duo { background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam); border-radius:var(--r-el); padding:14px 18px; }
+.duo .du-t { font-weight:700; color:var(--fam-deep); margin-bottom:4px; }
+.duo .du-d { font-size:15px; color:var(--g8); }
+
+/* 长任务四件套 */
+.kit4 { counter-reset:kt; display:grid; grid-template-columns:1fr; gap:16px; margin:22px 0; }
+@media (min-width:768px) { .kit4 { grid-template-columns:1fr 1fr; } }
+.kit {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:18px 18px 14px; counter-increment:kt; position:relative; box-shadow:var(--sh-1);
+}
+.kit::before {
+  content:counter(kt); position:absolute; top:-12px; left:16px; width:26px; height:26px;
+  line-height:26px; text-align:center; background:var(--fam); color:#fff;
+  border-radius:50%; font-weight:700; font-size:14.5px;
+}
+.kit .kt-t { font-weight:700; color:var(--ink); margin:4px 0 6px; }
+.kit p { font-size:15px; margin-bottom:0; }
+
+/* 底线提示 */
+.drift {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:18px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.drift b { color:var(--fam-deep); }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">约束先行</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · Agent 协作的规矩层</p>
+    <h1>约束先行</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扶墙张望，示意动手前先看清规矩再进场"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">用好 Agent，最重要的不是 Skills 和 Prompt 技巧，是在让 Agent 干任何事之前，先把规范从上往下定好——<span class="mark">没有规矩的地方，不动手</span>。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>四层穿透体系</h2>
+    <p>一句话解释：<strong>全局规矩 → 项目规矩 → 文件夹规矩</strong>，约束从上往下穿透，一层管一层。</p>
+    <div class="route">
+      <svg viewBox="0 0 680 340" role="img" aria-label="四层穿透体系图：全局CLAUDE.md 向下穿透到项目CLAUDE.md、规范文档、记忆文件，右侧标注每层的作用范围">
+        <defs>
+          <marker id="ra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <!-- 第 1 层 -->
+        <rect x="40" y="18" width="350" height="60" rx="12" class="lyr"/>
+        <text x="215" y="44" text-anchor="middle" font-size="16" font-weight="700" class="tx">全局 CLAUDE.md</text>
+        <text x="215" y="66" text-anchor="middle" font-size="13.5" class="tx-s">你是谁、做事原则</text>
+        <line x1="405" y1="48" x2="428" y2="48" class="ed"/>
+        <text x="436" y="53" font-size="14" class="tx-s">所有项目通用</text>
+        <line x1="215" y1="78" x2="215" y2="98" class="ln" marker-end="url(#ra)"/>
+        <!-- 第 2 层 -->
+        <rect x="40" y="102" width="350" height="60" rx="12" class="lyr"/>
+        <text x="215" y="128" text-anchor="middle" font-size="16" font-weight="700" class="tx">项目 CLAUDE.md</text>
+        <text x="215" y="150" text-anchor="middle" font-size="13.5" class="tx-s">这个项目怎么干</text>
+        <line x1="405" y1="132" x2="428" y2="132" class="ed"/>
+        <text x="436" y="137" font-size="14" class="tx-s">只进这个项目时加载</text>
+        <line x1="215" y1="162" x2="215" y2="182" class="ln" marker-end="url(#ra)"/>
+        <!-- 第 3 层 -->
+        <rect x="40" y="186" width="350" height="60" rx="12" class="lyr"/>
+        <text x="215" y="222" text-anchor="middle" font-size="16" font-weight="700" class="tx">规范文档 / 架构说明</text>
+        <line x1="405" y1="216" x2="428" y2="216" class="ed"/>
+        <text x="436" y="221" font-size="14" class="tx-s">具体操作流程</text>
+        <line x1="215" y1="246" x2="215" y2="266" class="ln" marker-end="url(#ra)"/>
+        <!-- 第 4 层 -->
+        <rect x="40" y="270" width="350" height="60" rx="12" class="lyr"/>
+        <text x="215" y="306" text-anchor="middle" font-size="16" font-weight="700" class="tx">记忆文件 / 对话记录</text>
+        <line x1="405" y1="300" x2="428" y2="300" class="ed"/>
+        <text x="436" y="305" font-size="14" class="tx-s">实际执行痕迹</text>
+      </svg>
+      <p class="route-cap">约束从上往下穿透，一层管一层——越往上越稳定，越往下越具体</p>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>关键数字</h2>
+    <div class="stat-row">
+      <div class="stat-chip"><span class="n num">80 行</span><span class="l">以内最好</span></div>
+      <div class="stat-chip"><span class="n num">200 行</span><span class="l">硬上限</span></div>
+      <div class="stat-chip wide"><span class="n" style="font-size:17px; padding-top:4px;">为什么</span><span class="l">CLAUDE.md 超过 80 行，Claude 开始遗漏内容</span></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>两个核心原则</h2>
+    <div class="duo2">
+      <div class="duo"><p class="du-t">没有规范的工作空间不动手</p><p class="du-d">新项目第一件事：先写 CLAUDE.md，再谈干活。</p></div>
+      <div class="duo"><p class="du-t">改规则也要走规则的路</p><p class="du-d">先改文档，再改实践——顺序反了，规矩就失效。</p></div>
+    </div>
+    <blockquote>约束先行 = 模拟经营游戏的路网规划。前期花一小时规划主干道，后面省无数小时返工。</blockquote>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>长任务四件套 ·核心</h2>
+    <p>下长任务（迁移 / 重构 / 批量改稿 / 资料整理）前，先把四样写进文件再放手：</p>
+    <div class="kit4">
+      <div class="kit"><p class="kt-t">规则书</p><p>先写清哪些照做、哪些重做、依赖啥；拿 3 个样本试航把坑炸出来（试错样本可扔）。</p></div>
+      <div class="kit"><p class="kt-t">裁判</p><p>什么算对先定，并用"故意改坏的版本"测一次——原版过、坏版也过 = 裁判失灵（"能运行"不等于行为一致，太松）。</p></div>
+      <div class="kit"><p class="kt-t">任务账本</p><p>下一步写进文件 / 队列，别只存聊天里——聊天会压缩、会话会换、人会忘。</p></div>
+      <div class="kit"><p class="kt-t">断点</p><p>靠文件接住，不靠人回忆；换个人只看文件就能说出"做完了啥 / 下一步啥 / 卡哪"才算合格。</p></div>
+    </div>
+    <div class="drift"><b>底线三句：</b>容易忘的交给文件，容易争的交给裁判，最后取舍留给人。重复出错改规则别改结果——经验写回长期规则，才算修到上游。<b>填不出完成标准，先别扩 Agent。</b>这是五要素"合格线"在长任务场景的完整落地版，对应 <a href="../01-ai/目标契约与五个闸门.html">目标契约与五个闸门</a> 的验收闸门。</div>
+    <p class="route-cap" style="text-align:left;">来源：老金《百万行背后 19 个坑》（2026-07）</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">约束加载与执行的骨架，规矩挂在骨架上跑</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">规矩沉淀成可复用资产，跨会话带走</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">规矩以什么方式、放在哪个位置进上下文</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">约束先行的执行前落地版：暂停闸门 = 高风险操作必须确认</span></a>
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">重复错误改规则不改结果，经验写回长期规则</span></a>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥实践总结</li>
+      <li>老金《百万行背后 19 个坑》（2026-07）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · 约束先行</p>
+    <p>词条源：concepts(概念库)/思维模型/约束先行.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">四层穿透体系</a></li>
+    <li><a href="#s3">关键数字</a></li>
+    <li><a href="#s4">两个核心原则</a></li>
+    <li><a href="#s5">长任务四件套 ·核心</a></li>
+    <li><a href="#s6">关联词条</a></li>
+    <li><a href="#s7">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

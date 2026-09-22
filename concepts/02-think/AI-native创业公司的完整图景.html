@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-native创业公司的完整图景 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root { --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0; }
+/* ---- 页面专属：叙事布局（四层纵深时间线 + 故事卡） ---- */
+
+.main-col > section { margin-bottom:52px; }
+.creed {
+  font-family:var(--font-head);
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:22px 8px 4px; max-width:38em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 四层堆叠总览图 */
+.stack { margin:20px 0 6px; }
+.stack .s-band {
+  display:flex; align-items:center; gap:14px;
+  border:1px solid var(--fam-line); border-left:6px solid var(--fam);
+  background:var(--g0); border-radius:var(--r-el);
+  padding:12px 18px; margin-bottom:8px;
+}
+.stack .s-band.base {
+  background:var(--fam-deep); border-color:var(--fam-deep); color:#ffffff;
+}
+.stack .s-no {
+  font-family:var(--font-head); font-weight:700; font-size:22px;
+  color:var(--fam); flex:none; width:2.6em; line-height:1.3;
+}
+.stack .s-band.base .s-no { color:#ffffff; }
+.stack .s-bd { flex:1; }
+.stack .s-t { font-weight:700; font-size:16.5px; }
+.stack .s-q { font-size:14.5px; color:var(--ink-soft); }
+.stack .s-band.base .s-q { color:var(--fam-soft); }
+.stack .s-role {
+  flex:none; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:999px; padding:2px 12px; white-space:nowrap;
+}
+.stack .s-band.base .s-role { background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.4); color:#ffffff; }
+.stack-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:10px; }
+
+/* 纵深时间线 */
+.tl { position:relative; padding-left:34px; margin-top:18px; }
+.tl::before {
+  content:""; position:absolute; left:9px; top:8px; bottom:8px;
+  width:2px; background:var(--fam-line);
+}
+.tl-node { position:relative; margin-bottom:18px; }
+.tl-node::before {
+  content:""; position:absolute; left:-31px; top:14px;
+  width:14px; height:14px; border-radius:50%;
+  background:var(--fam); border:3px solid var(--fam-soft);
+}
+.tl-node .tl-t {
+  font-family:var(--font-head); font-weight:700;
+  font-size:18.5px; color:var(--fam-deep); margin-bottom:8px;
+}
+.tl-node .tl-t small { font-size:14.5px; color:var(--ink-faint); font-weight:400; margin-left:8px; }
+
+/* 故事卡：实战落地 */
+.story {
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-box); padding:16px 20px; margin:16px 0;
+}
+.story .st-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  border-bottom:2px solid var(--fam); padding-bottom:2px; margin-bottom:8px;
+}
+.story p, .story li { font-size:15.5px; color:var(--g8); }
+.story .s-quote {
+  font-family:var(--font-head); font-size:16.5px; color:var(--g9);
+  border-left:3px solid var(--fam); padding:2px 0 2px 12px; margin:10px 0;
+}
+
+/* 机会窗口数据卡 */
+.stats { display:grid; grid-template-columns:1fr; gap:10px; margin:18px 0; }
+@media (min-width:640px) { .stats { grid-template-columns:1fr 1fr 1fr; } }
+.stat-card {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:14px 16px; text-align:center;
+}
+.stat-card .n {
+  font-family:var(--font-head); font-weight:700;
+  font-size:clamp(24px,4vw,32px); color:var(--fam);
+  font-variant-numeric:tabular-nums; line-height:1.3;
+}
+.stat-card .d { font-size:14.5px; color:var(--ink-soft); }
+
+/* 因果链 */
+.chain {
+  font-size:15.5px; color:var(--g8);
+  background:var(--g0); border:1px dashed var(--fam-line);
+  border-radius:var(--r-el); padding:10px 16px; margin:12px 0;
+  font-variant-numeric:tabular-nums;
+}
+.chain b { color:var(--fam-deep); }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">AI-native创业公司的完整图景</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · 创业系统全景图</p>
+    <h1>AI-native创业公司的完整图景</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-06-23</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象贴墙探头张望，示意站在AI-native创业的入口先把全景看清楚"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">AI-native 创业公司不是"装了 AI 的传统公司"，而是一个<span class="mark">四层叠加的系统</span>：方向由 Sam Altman Test 筛选，组织形态由 AI Loop 重塑，技术由循环工程驱动，第一步是隐性知识显式化。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>四层模型总览</h2>
+    <div class="stack">
+      <div class="s-band">
+        <span class="s-no">一层</span>
+        <span class="s-bd"><span class="s-t">做什么方向？——Sam Altman Test（AI-native 三法则）</span><br>
+        <span class="s-q">"模型更强时，你的服务是变强还是被商品化？"</span></span>
+        <span class="s-role">过滤器</span>
+      </div>
+      <div class="s-band">
+        <span class="s-no">二层</span>
+        <span class="s-bd"><span class="s-t">公司长什么样？——Tom Blomfield 的 AI Loop 五层架构</span><br>
+        <span class="s-q">传感器→规则→工具→质检→学习，业务自动闭环</span></span>
+        <span class="s-role">组织形态</span>
+      </div>
+      <div class="s-band">
+        <span class="s-no">三层</span>
+        <span class="s-bd"><span class="s-t">技术怎么实现？——循环工程</span><br>
+        <span class="s-q">触发器+隔离+上下文+工具+验证器+磁盘状态</span></span>
+        <span class="s-role">引擎</span>
+      </div>
+      <div class="s-band base">
+        <span class="s-no">四层</span>
+        <span class="s-bd"><span class="s-t">第一步干什么？——隐性知识显式化</span><br>
+        <span class="s-q">"没有被记录的业务，就没有发生在你的 AI 里"</span></span>
+        <span class="s-role">燃料</span>
+      </div>
+    </div>
+    <p class="stack-cap">四层自上而下是过滤→塑形→实现→供养；第四层的结果反向喂养第二、三层——没有它，Loop 没东西可转</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>第一层：做什么方向（Sam Altman Test）</h2>
+    <div class="tl">
+      <div class="tl-node">
+        <p class="tl-t">核心问题<small>模型越强，你越强还是被商品化？</small></p>
+        <p>三个法则回答创业公司的"做什么 / 不做什么 / 怎么赚钱"（详细框架见灰字条目 <span style="color:var(--ink-faint)">AI-native服务公司三法则</span>，未建页面）：</p>
+        <div class="tbl-scroll"><table class="tbl">
+          <thead><tr><th>法则</th><th>回答的问题</th><th>大白话</th></tr></thead>
+          <tbody>
+            <tr><td>Sam Altman Test</td><td>做什么</td><td>模型越强你越强，不是"也会用 AI"就安全</td></tr>
+            <tr><td>Early Demand Trap</td><td>不做什么</td><td>别过早签太多定制客户，否则变成"有 AI 的外包"</td></tr>
+            <tr><td>AI Operating Leverage</td><td>怎么赚钱</td><td>产品越建成本越低，不靠加人扩大产能</td></tr>
+          </tbody>
+        </table></div>
+        <p>这一层给你的是一个<strong>过滤器</strong>——拿一个新业务 idea 过来，三秒钟判断"这个方向值不值得做 AI-native"。不做什么，比做什么更重要。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>第二层：公司长什么样（AI Loop 五层架构）</h2>
+    <div class="tl">
+      <div class="tl-node">
+        <p class="tl-t">Tom Blomfield（YC General Partner）</p>
+        <blockquote>"烧 token，不要烧 headcount。中层管理结束了。"<span class="q-src">YC Batch Talk：How to Build a Self-Improving Company with AI</span></blockquote>
+        <p>把一个能自我闭环的业务循环拆成五层：</p>
+        <div class="tbl-scroll"><table class="tbl">
+          <thead><tr><th>层</th><th>名称</th><th>干什么</th><th>举例</th></tr></thead>
+          <tbody>
+            <tr><td class="n">1</td><td>传感器 Sensor</td><td>让系统看见输入</td><td>客户邮件、投诉工单、退订数据、产品埋点</td></tr>
+            <tr><td class="n">2</td><td>规则 Policy</td><td>定边界</td><td>哪些 AI 自动做、哪些须人批准、哪些必须记录</td></tr>
+            <tr><td class="n">3</td><td>工具 Tool</td><td>让 AI 能动手</td><td>查 DB、调 API、读日历、写代码</td></tr>
+            <tr><td class="n">4</td><td>质检 Quality Gate</td><td>把关</td><td>eval 检查、规则校验、安全过滤、高风险人工审核</td></tr>
+            <tr><td class="n">5</td><td>学习 Learning</td><td>失败写回</td><td>把失败案例喂回规则库，系统越跑越聪明</td></tr>
+          </tbody>
+        </table></div>
+        <p>三个关键洞察：</p>
+        <ul>
+          <li><strong>烧 token 不烧 headcount</strong>：YC 最新 Demo Day 公司，每人产出收入比 18 个月前高约 5 倍。扩张的瓶颈不是招不到人，是 token 用量（<a href="../01-ai/Tokenmaxxing.html">Tokenmaxxing</a> 的公司经营层面）</li>
+          <li><strong>中层管理终结</strong>：信息收集、状态同步、任务拆解这些"人肉传声筒"工作正被 AI Loop 接管；留下的不是"盯人"，是"设计系统边界"</li>
+          <li><strong>软件变轻，上下文变重</strong>：内部仪表盘变成可抛弃品（Codex 能 one-shot 生成），真正的资产是业务上下文和 skills（<a href="../01-ai/上下文工程.html">上下文工程</a>）</li>
+        </ul>
+        <div class="story">
+          <span class="st-tag">实战故事 · Laurel 的公司 OS 落地</span>
+          <p>Laurel CPO Jiaona Zhang（前 Airbnb / Dropbox / Webflow PM）用 Claude Code 把五层架构落地成"公司 OS"：公司 OS 不一定一开始就是 OS，它从第一个自动化的小工作流开始。</p>
+          <div class="tbl-scroll"><table class="tbl">
+            <thead><tr><th>Tom 的理论层</th><th>Laurel 的实战落地</th></tr></thead>
+            <tbody>
+              <tr><td>工作地图化</td><td>公司工作按职能拆成 GitHub 目录，每个文件夹是可被 Claude 调用的 skill</td></tr>
+              <tr><td>从小自动化开始</td><td>先解决一个天天重复的烦人动作（如 Slack 里反复问产品需求背景）</td></tr>
+              <tr><td>Playbook 拆成 skill</td><td>50 页 GTM playbook 把可重复部分拆成 agent，需要判断和客户关系的步骤留给人</td></tr>
+              <tr><td>入口在 Slack / 邮箱</td><td>摩擦会杀死习惯：销售在 Slack 接活，按钮就在 Slack</td></tr>
+              <tr><td>AI Ops 要全职</td><td>"每个人的责任"就是"没人的责任"，要配全职岗位写进 charter</td></tr>
+              <tr><td>Captain model</td><td>谁能解决最难部分谁 captain，不按职能分</td></tr>
+            </tbody>
+          </table></div>
+          <p class="s-quote">"很多时候，当你说它是每个人的责任，它最后就成了没有人的责任。"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>第三层：技术怎么实现（循环工程）</h2>
+    <div class="tl">
+      <div class="tl-node">
+        <p class="tl-t">核心逻辑<small>别手动写提示词，写一个会自动循环的程序</small></p>
+        <p>Tom 的五层 AI Loop 是<strong>业务架构</strong>，<a href="../01-ai/循环工程.html">循环工程</a>是<strong>工程实现</strong>，两者是上下游关系：</p>
+        <div class="tbl-scroll"><table class="tbl">
+          <thead><tr><th>Tom 的业务层</th><th>循环工程的工程实现</th></tr></thead>
+          <tbody>
+            <tr><td>传感器</td><td>触发器（webhook / 定时任务 / 文件变更）</td></tr>
+            <tr><td>规则</td><td>写下来的上下文（CLAUDE.md / Skills / Memory）</td></tr>
+            <tr><td>工具</td><td>接入工具（MCP / API / Skill）</td></tr>
+            <tr><td>质检</td><td>独立验证器（第二个 AI 检查，不能自己给自己打分）</td></tr>
+            <tr><td>学习</td><td>磁盘状态（记录进度、规则库更新）</td></tr>
+          </tbody>
+        </table></div>
+        <div class="chain"><b>成本认知翻转：</b>成本不是"哪个模型 × 多少 token"，而是"循环转了几圈"。便宜模型循环翻倍反而更贵——先收紧验证器，弱验证器是最贵的 bug。</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>第四层：第一步干什么（隐性知识显式化）</h2>
+    <div class="tl">
+      <div class="tl-node">
+        <p class="tl-t">核心行动<small>"如果没有被记录，就没有发生在你的智能里"——Tom Blomfield</small></p>
+        <div class="chain">没有记录 → 没有上下文 → AI 读不懂 → Loop 转不起来</div>
+        <p>理论基础见 <a href="../02-think/隐性知识.html">隐性知识</a>。公司级别的提取路径四步走：</p>
+        <div class="tbl-scroll"><table class="tbl">
+          <thead><tr><th>步骤</th><th>做什么</th><th>效果</th></tr></thead>
+          <tbody>
+            <tr><td class="n">1</td><td>记录一切：邮件、Slack、会议录音、客服记录全部入库</td><td>AI 有东西可以读</td></tr>
+            <tr><td class="n">2</td><td>结构化：diarize → 聚合 → 压缩 → 分类</td><td>把噪音变成可追踪的面包屑</td></tr>
+            <tr><td class="n">3</td><td>写成上下文：业务规则变成 Skills、规则文件、工具说明</td><td>AI 能执行，不只是查询</td></tr>
+            <tr><td class="n">4</td><td>接入 Loop：上下文+工具+质检+学习机制连起来</td><td>系统开始自我改进</td></tr>
+          </tbody>
+        </table></div>
+        <div class="story">
+          <span class="st-tag">实战故事 · YC 的活手册</span>
+          <p>Harj 用 3 个月约 2000 小时 office hour 录音，重新生成一份 150 页 YC 用户手册——旧手册写于 5-10 年前早已过时。新手册每月更新，公司知识变成"活的大脑"。个人层面用 tacit-mining 技能提取隐性判断，公司层面走上面四步；具体工具见 <a href="../04-skill/隐性知识抽取.html">隐性知识抽取</a>。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>机会窗口（2026-09-15 Stripe×Replit 对谈并入）</h2>
+    <p>Stripe 平台一手观察：AI 把"做出来"的门槛打掉了，难的部分换成获客与经营。</p>
+    <div class="stats">
+      <div class="stat-card"><p class="n">约2倍</p><p class="d">新企业创建速度（Stripe 平台观察）</p></div>
+      <div class="stat-card"><p class="n">8%→20%</p><p class="d">30 天内向首批客户收费的初创占比（2020 至今）</p></div>
+      <div class="stat-card"><p class="n">约减半</p><p class="d">达到收入里程碑所需时间</p></div>
+    </div>
+    <p>找机会两条线索（Patrick Collison）：一是<strong>软件没服务好的旧行业</strong>——一人做溜冰场管理软件奔数百万美元，教师工具 MagicSchool 几个月约 1000 万美元 ARR；二是"<strong>什么东西在年轻人中很流行，却不被看重</strong>"。</p>
+    <div class="chain"><b>清醒话：</b>价值不会自动全归模型公司——"价格和价值会流向稀缺的东西"，模型不稀缺，懂行+信任才稀缺；代码可复制，客户网络复制不走。"一个需求不够大到让全球平台下场，并不妨碍它成为一个人的真实生意。"桑老哥起手式：设计重复活 → 小工具 → 真实用户付费验证。</div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>build 越快，债务越快（实战验证）</h2>
+    <p>AI 加速 building，但没让维护成本消失。Muji（Seede AI co-founder）《AI 创业第一年复盘》的血泪账：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>领域</th><th>demo 阶段</th><th>产品阶段（真实债务）</th></tr></thead>
+      <tbody>
+        <tr><td>支付</td><td>微信支付跑通</td><td>付费墙、续费、退款、税务、渠道结算、异常补偿</td></tr>
+        <tr><td>数据</td><td>看到点击/注册/付费</td><td>转化率、流失原因、渠道对比、口径一致性</td></tr>
+        <tr><td>客服</td><td>创始人手动回复</td><td>文档、工单、错误日志、排查路径、30+ 群头</td></tr>
+        <tr><td>文档</td><td>写一篇 quickstart</td><td>功能更新跟不上、API 变了、AI 答案不准</td></tr>
+        <tr><td>埋点</td><td>接 GA 看大概</td><td>命名不统一、新老数据对不上、查询把 DB 搞崩</td></tr>
+      </tbody>
+    </table></div>
+    <div class="chain"><b>核心洞察：</b>AI coding 解决 one-time building，没解决 keep it running。护城河不在"生成更多东西"，而在"把生成的东西安全、稳定、长期地变成业务资产"。如果产品能力完全因为模型牛逼而牛逼，那就是模型的功劳。</div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>面向 AI 创业 / 技术团队；"业务上下文变重"的思路对个人同样通用</li>
+      <li>"中层管理终结"消失的是信息搬运层，决策判断仍需人（适用于 50 人+）</li>
+      <li>"记录一切"有隐私红线——客户、员工、情绪场景不能粗暴进数据湖</li>
+      <li>烧 token 的前提是业务可 AI 化：知识还在人脑里，Loop 就转不起来</li>
+      <li>四层是理想态，实际可从任一层切入，但长期需补齐才有护城河</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>桑老哥适用：四条业务线对号</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>业务线</th><th>四层模型怎么用</th></tr></thead>
+      <tbody>
+        <tr><td>选品</td><td>方向：AI 越强你的判断越独特？基础：选品标准用 tacit-mining 提取</td></tr>
+        <tr><td>运营学习</td><td>组织：运营 SOP 能不能 AI Loop？技术：写成 Skills 让 AI 跑循环</td></tr>
+        <tr><td>AI共学</td><td>你现在就在做第四层——把知识显式化、结构化、存成词条</td></tr>
+        <tr><td>个人IP</td><td>方向：AI 能模仿你的风格吗？如果能，信任关系才是壁垒</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">第三层"技术怎么实现"的详细框架</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">第四层"第一步干什么"的理论基础</span></a>
+      <a href="../01-ai/Tokenmaxxing.html"><span class="rel-t">Tokenmaxxing</span><span class="rel-d">"烧 token 不烧 headcount"的个人使用层面</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">"软件变轻，上下文变重"的详细方法论</span></a>
+      <a href="../04-skill/技能内化.html"><span class="rel-t">技能内化</span><span class="rel-d">把专家经验打包成 Skills 的实操路径</span></a>
+      <a href="../04-skill/隐性知识抽取.html"><span class="rel-t">隐性知识抽取</span><span class="rel-d">提取隐性知识的具体工具</span></a>
+    </div>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>AI-native 服务公司三法则（Sam Altman / YC 相关，2026-06 共学）</li>
+      <li>Tom Blomfield YC Batch Talk：How to Build a Self-Improving Company with AI</li>
+      <li>Jiaona Zhang（Laurel CPO）× Aakash Gupta：How to Build a Company OS in Claude Code（YouTube）</li>
+      <li>Stripe CEO Patrick Collison × Replit 创始人 Amjad Masad 对谈（2026-09-15 讲解并入）</li>
+      <li>Muji（Seede AI co-founder）《AI 创业第一年复盘》</li>
+      <li>整合自共学内容：<a href="../01-ai/循环工程.html">循环工程</a>、<a href="../02-think/隐性知识.html">隐性知识</a>、<a href="../01-ai/Tokenmaxxing.html">Tokenmaxxing</a>、<a href="../01-ai/上下文工程.html">上下文工程</a> 四篇</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · AI-native创业公司的完整图景</p>
+    <p>词条源：concepts(概念库)/思维模型/AI-native创业公司的完整图景.md（2026-06-23 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">四层模型总览</a></li>
+    <li><a href="#s3">第一层：方向</a></li>
+    <li><a href="#s4">第二层：组织</a></li>
+    <li><a href="#s5">第三层：技术</a></li>
+    <li><a href="#s6">第四层：基础</a></li>
+    <li><a href="#s7">机会窗口</a></li>
+    <li><a href="#s8">债务警报</a></li>
+    <li><a href="#s9">前提与局限</a></li>
+    <li><a href="#s10">桑老哥适用</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

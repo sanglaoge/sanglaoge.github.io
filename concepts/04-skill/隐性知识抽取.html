@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隐性知识抽取 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Skill工程 · 工具灰（车间感·冷静克制） ---- */
+:root {
+  --fam:#475569; --fam-deep:#1e293b; --fam-soft:#f1f5f9; --fam-line:#cbd5e1;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 抽取流水线 */
+.pipe { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:16px 0; }
+.pc {
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  border-radius:999px; padding:4px 14px; font-size:14.5px; font-weight:600;
+}
+.pc.src { background:var(--g0); border:1px dashed var(--g4); color:var(--ink-soft); font-weight:500; }
+.pa { color:var(--ink-faint); font-weight:700; }
+.pipe-cap { font-size:14.5px; color:var(--ink-faint); margin-top:4px; }
+
+/* FDE 四手法卡 */
+.m4 { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:640px) { .m4 { grid-template-columns:1fr 1fr; } }
+.m-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.m-card .m-no {
+  display:inline-block; width:24px; height:24px; line-height:24px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
+  margin-right:8px;
+}
+.m-card .m-t { font-weight:700; color:var(--ink); }
+.m-card p { font-size:15px; color:var(--g8); margin:8px 0 0; line-height:1.7; }
+.m-card.key { border-color:var(--fam-line); background:var(--fam-soft); }
+.m-card .m-key { font-size:14.5px; color:var(--fam-deep); font-weight:700; margin-left:6px; }
+
+/* 贪吃蛇节奏提示 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 决策单元 SVG（class 全走 var） */
+.du { margin:18px 0 6px; }
+.du svg { width:100%; height:auto; display:block; }
+.du .mk { fill:var(--fam); }
+.du .ln { stroke:var(--fam); stroke-width:2; }
+.du .dia { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.du .ex-b { fill:var(--fam); }
+.du .tx { fill:var(--fam-deep); }
+.du .tx-s { fill:var(--ink-faint); }
+.du .ex-t { fill:#ffffff; }
+.du .ex-d { fill:var(--fam-soft); }
+.du .dash { stroke-dasharray:5 4; }
+.du-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin:8px 0 10px; }
+
+/* 操作配置 */
+.ops { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:640px) { .ops { grid-template-columns:1fr 1fr; } }
+.op { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:11px 15px; font-size:15px; color:var(--g8); }
+.op b { color:var(--fam-deep); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Skill工程</span><span class="sep">›</span>
+    <span class="here">隐性知识抽取</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Skill工程 · 把经验变成 AI 能复用的资产</p>
+    <h1>隐性知识抽取</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意专家知道却说不清的隐性知识"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>把专家脑子里「知道但说不清」的判断标准，变成<strong>可写进 SOP / Skill 的显性规则</strong>。是技能内化、知识工程最上游的一步——<strong>抽不出原料，后面工程化再好也白搭</strong>。</p>
+    <p>本条是 9 手法全景：FDE 四式 + tacit 五追问 + 贪吃蛇薄切片交付（2026-09-20 审计合并后的统一维护地）。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>是什么 · 理论根</h2>
+    <p>理论根在 <a href="../02-think/隐性知识.html">隐性知识</a>：<strong>人知道的，比能说出口的多。</strong>逼专家写 SOP，他只会写「具体情况具体分析」这类正确废话。</p>
+    <p>分工原则：抽象是工程师/AI 的活，专家只负责两件事——「实操」和「判对错」。</p>
+    <div class="pipe" aria-label="抽取流水线">
+      <span class="pc src">专家脑中的隐性判断</span><span class="pa">→</span>
+      <span class="pc">FDE 四式 / tacit 五追问</span><span class="pa">→</span>
+      <span class="pc">决策树 SOP</span><span class="pa">→</span>
+      <span class="pc">写进 Skill 的 gotchas</span><span class="pa">→</span>
+      <span class="pc">薄切片滚动交付</span>
+    </div>
+    <p class="pipe-cap">整条流水线：从一个人脑子里，到系统里到处可用。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>为什么重要</h2>
+    <p>专家的价值全在<strong>分叉判断和例外</strong>，不在动作顺序——动作顺序文档里早有了。不抽就永远卡在一个人脑子里：他休假、离职，判断就消失；想做成 Skill 让 AI 复用，第一步就得先抽。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>怎么抽：FDE 四手法（Yangyi 2026-07）</h2>
+    <div class="m4">
+      <div class="m-card"><span class="m-no">1</span><span class="m-t">影随 + 出声思考</span><p>坐专家旁边看他真干活，要求边做边念。重点抓他<strong>停顿、皱眉、回头看别的数据</strong>的点（那是决策点），顺畅流过的部分不重要。</p></div>
+      <div class="m-card"><span class="m-no">2</span><span class="m-t">关键决策法</span><p>让专家回忆「上次那个差点出事的单子」，别问「一般怎么做」。<strong>人对具体事件的记忆精度，远高于流程归纳。</strong></p></div>
+      <div class="m-card key"><span class="m-no">3</span><span class="m-t">追术语边界</span><span class="m-key">关键</span><p>专家说「这客户不太行」→ 追「多不行？回款超几天？新老一样吗？」追到「客户类型×账期×历史违约」变成可判定规则。<strong>术语 = 压缩的判据，工程师的工作是解压缩。</strong></p></div>
+      <div class="m-card"><span class="m-no">4</span><span class="m-t">不完美初稿当诱饵</span><p>你先起草一版哪怕是错的给专家骂 → 他改 → 拿新 case 让 SOP 和他同跑，不一致处就是漏抽的隐规则。<strong>人批判远强于创造。</strong></p></div>
+    </div>
+    <div class="warn"><b>交付节奏（贪吃蛇不是瀑布）：</b>先交一个极窄的「薄切片」——先替专家干最烦的脏活买信任，每两周滚一块，别闷头做三个月再上线。（2026-09-20 自技能内化并入）</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>个人版工具：tacit-mining 五追问</h2>
+    <p>FDE 四式是企业驻场抽专家；手边没专家、挖自己时用 tacit-mining（已开源 <a class="ext" href="https://github.com/xiaohuailabs/tacit-mining" target="_blank" rel="noopener noreferrer">github.com/xiaohuailabs/tacit-mining</a>，已装 <code>~/.claude/skills/tacit-mining/</code>）。<strong>唯一原则同源：不问抽象标准只问具体行为</strong>——直接问「你怎么判断的」会触发事后合理化。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>追问</th><th>原理</th><th>举例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>关键事件锚定</strong></td><td>从真实案例切入</td><td>「你改那篇时删了什么？为什么？」</td></tr>
+        <tr><td><strong>对比逼近</strong></td><td>让你选，不让你描述</td><td>给两个标题让你选，从选择里提取规则</td></tr>
+        <tr><td><strong>反事实探测</strong></td><td>每次只变一个变量</td><td>「如果不是 Anthropic 发的，你还排第一吗？」</td></tr>
+        <tr><td><strong>Laddering 追问</strong></td><td>从表面往深层爬</td><td>「不行」→「哪里不行」→「太长」→ 底层价值观</td></tr>
+        <tr><td><strong>隐喻捕捉</strong></td><td>捕捉「感觉」「味道」等词</td><td>「你说 AI 味，形容一下它像什么？」</td></tr>
+      </tbody>
+    </table></div>
+    <div class="ops">
+      <div class="op"><b>主动模式</b>：说 <code>/tacit-mining</code> 或「挖隐性知识」启动</div>
+      <div class="op"><b>被动模式</b>：你说「不对 / 味道不对」时铁柱追问而非直接改</div>
+      <div class="op"><b>产物去向</b>：存 <code>memory/tacit/</code> 按域分类</div>
+      <div class="op"><b>索引</b>：<code>map.md</code> 做总索引</div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>SOP 的形态：写决策树，不写步骤流水</h2>
+    <p>每个知识点写成「触发 → 判据 → 动作 → 例外」的决策单元：</p>
+    <div class="du">
+      <svg viewBox="0 0 680 236" role="img" aria-label="决策单元图：触发、判据、动作三框相连，判据下分出例外分支，例外最值钱">
+        <g>
+          <rect class="dia" x="30" y="36" width="140" height="46" rx="10"/>
+          <text class="tx" x="100" y="65" text-anchor="middle" font-size="16" font-weight="700">触发</text>
+          <polygon class="mk" points="174,55 190,59 174,63"/>
+          <line class="ln" x1="170" y1="59" x2="174" y2="59"/>
+          <rect class="dia" x="192" y="36" width="140" height="46" rx="10"/>
+          <text class="tx" x="262" y="65" text-anchor="middle" font-size="16" font-weight="700">判据</text>
+          <polygon class="mk" points="336,55 352,59 336,63"/>
+          <rect class="dia" x="354" y="36" width="140" height="46" rx="10"/>
+          <text class="tx" x="424" y="65" text-anchor="middle" font-size="16" font-weight="700">动作</text>
+          <g font-size="14.5" text-anchor="middle">
+            <text class="tx-s" x="100" y="106">什么信号让专家</text>
+            <text class="tx-s" x="100" y="126">开始注意</text>
+            <text class="tx-s" x="262" y="106">拿哪几个变量判断</text>
+            <text class="tx-s" x="262" y="126">阈值多少</text>
+            <text class="tx-s" x="424" y="106">判断后做什么</text>
+          </g>
+          <line class="ln dash" x1="262" y1="82" x2="262" y2="150"/>
+          <rect class="ex-b" x="140" y="150" width="400" height="62" rx="10"/>
+          <text class="ex-t" x="340" y="176" text-anchor="middle" font-size="16" font-weight="700">例外 ·「但如果……就不这样」</text>
+          <text class="ex-d" x="340" y="199" text-anchor="middle" font-size="14.5">最值钱：占专家水平一半以上</text>
+        </g>
+      </svg>
+    </div>
+    <p class="du-cap">例外从「判据」分岔——判据说往右，例外说这几种情况往左。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>要素</th><th>抓什么</th></tr></thead>
+      <tbody>
+        <tr><td>触发</td><td>什么信号让专家开始注意</td></tr>
+        <tr><td>判据</td><td>拿哪几个变量判断、阈值多少</td></tr>
+        <tr><td>动作</td><td>判断后做什么</td></tr>
+        <tr><td><strong>例外</strong></td><td>「但如果……就不这样」——最值钱，占专家水平一半以上</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>没例外分支的 SOP = 把专家降维成新人。</blockquote>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li><strong>判对错权必须在专家手里</strong>：AI 能抽不能终审，否则把偏见和智慧一起学进去，沉淀出一套自信的错误</li>
+      <li><strong>别指望 100% 抽出</strong>：专家会战略性保留最关键的 20% 当护城河。对策：横向找 2-3 个专家交叉验证，降低对单一专家的依赖</li>
+      <li><strong>企业场景才需要「利益绑定」</strong>：驻场抽专家知识要动结构（重新定义角色/先干脏活买信任/奖金署名）；个人用 AI 抽自己的标准不需要这套政治</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>让铁柱抽你的选品/设计/运营判断标准时，用手法 1-4，<strong>别直接问「你怎么选的」</strong></li>
+      <li>追你每句「不太行」「不对味」的边界，解压成规则写进 Skill 的 gotchas</li>
+      <li>说 <code>/tacit-mining</code> 或「挖隐性知识」启动；被动模式 = 你说「不对」时铁柱追问而非直接改</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">理论基础：说不出来才是真知识</span></a>
+      <a href="../04-skill/技能内化.html"><span class="rel-t">技能内化</span><span class="rel-d">抽出的原料打包成 Skill</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">gotchas 是隐性知识的显式化载体</span></a>
+      <a href="../04-skill/QBS问题读书法.html"><span class="rel-t">QBS问题读书法</span><span class="rel-d">同问「专业知识从哪来」：本条挖专家脑子，QBS 让 AI 读书</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Yangyi FDE 企业落地方法论（2026-07）——四手法与决策树形态</li>
+      <li>tacit-mining 技能（<a href="https://github.com/xiaohuailabs/tacit-mining" target="_blank" rel="noopener noreferrer">github.com/xiaohuailabs/tacit-mining</a>）——个人版五追问</li>
+      <li>2026-09-20 审计合并：吸收 tacit-mining技能 词条（5 追问并入成 9 手法全景）+ 技能内化的贪吃蛇交付增量，FDE 段去重</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Skill工程家族 · 隐性知识抽取</p>
+    <p>词条源：concepts(概念库)/Skill工程/隐性知识抽取.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">是什么 · 理论根</a></li>
+    <li><a href="#s3">为什么重要</a></li>
+    <li><a href="#s4">FDE 四手法 ·核心</a></li>
+    <li><a href="#s5">tacit 五追问</a></li>
+    <li><a href="#s6">SOP 写决策树</a></li>
+    <li><a href="#s7">前提与局限</a></li>
+    <li><a href="#s8">桑老哥适用</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

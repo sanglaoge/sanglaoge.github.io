@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>损失函数思维 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root {
+  --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0;
+}
+/* ---- 页面专属：判断路线布局 ---- */
+
+/* 哲思留白：章节距拉大、金句衬线 */
+.main-col > section { margin-bottom:56px; }
+.entry-head blockquote, .creed {
+  font-family:var(--font-head);
+}
+.creed {
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:26px 8px 6px; max-width:36em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 判断路线图 */
+.route { margin:26px 0 10px; }
+.route svg { width:100%; height:auto; display:block; }
+.route .mk { fill:var(--fam); }
+.route .ln { stroke:var(--fam); stroke-width:2; }
+.route .dia { fill:var(--fam-soft); stroke:var(--fam); stroke-width:1.8; }
+.route .ed { stroke:var(--fam-line); stroke-width:1.6; }
+.route .box-r { fill:var(--fam-soft); stroke:var(--fam-line); stroke-width:1.6; }
+.route .tx { fill:var(--fam-deep); }
+.route .tx-s { fill:var(--ink-faint); }
+.route .drift-ln { fill:none; stroke:var(--fam-line); stroke-width:1.6; }
+.route-cap { font-size:14px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 三步法 */
+.steps3 { counter-reset:st; display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .steps3 { grid-template-columns:1fr 1fr 1fr; } }
+.step { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:16px 18px 14px; counter-increment:st; position:relative; }
+.step::before {
+  content:counter(st); position:absolute; top:-12px; left:16px;
+  width:26px; height:26px; line-height:26px; text-align:center;
+  background:var(--fam); color:#fff; border-radius:50%; font-weight:700; font-size:14.5px;
+}
+.step .st-t { font-weight:700; color:var(--ink); margin-bottom:6px; margin-top:4px; }
+
+/* 适用打分卡 */
+.verdict { margin:18px 0; }
+.verdict .v-row {
+  display:flex; align-items:flex-start; gap:12px;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 16px; margin-bottom:8px;
+}
+.verdict .v-q { flex:1; font-size:15.5px; color:var(--g8); }
+.verdict .v-a { flex:none; font-size:14px; font-weight:700; white-space:nowrap; padding:2px 12px; border-radius:999px; margin-top:2px; }
+.v-yes { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
+.v-half { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+.v-no { background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.verdict .v-d { flex:none; font-size:14.5px; color:var(--ink-soft); white-space:nowrap; margin-top:3px; }
+
+/* 边界漂移提示 */
+.drift {
+  border:1.5px dashed var(--fam-line); background:var(--fam-soft);
+  border-radius:var(--r-box); padding:14px 18px; margin:18px 0;
+  color:var(--g8); font-size:15.5px;
+}
+.drift b { color:var(--fam-deep); }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">损失函数思维</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · 两把尺子之一（技术边）</p>
+    <h1>损失函数思维</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-07-05</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意隐性知识说不出来、写不出损失函数"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">AI 在任何<span class="mark">"能写出损失函数"</span>的事上超过人类。判断一件事会不会被 AI 替代，就问你——<span class="mark">"能给这件事写出一套标准答案吗？"</span></p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>是什么</h2>
+    <p>这里是对 ML 损失函数的类比借用，不是严格数学定义。</p>
+    <p>Phil Chen（前 OpenAI / Google DeepMind / Scale AI 研究员）在 2026-07《Career advice in the age of AI》X 长帖提出的核心框架（原帖金句："AI models get better at anything you can write a loss function for, and school is mostly loss functions"）：AI 的强项是优化<strong>有明确定义、有标准答案、能打分</strong>的事。这些事本质上是"损失函数"——数学上可以被量化、被评分、被优化的目标。</p>
+    <p>学校里的大部分内容（考试、作业）都是损失函数。工作中的数据统计、格式检查、标准文案也属于损失函数。反过来，真正值钱的事——<strong>定义什么值得做、做出审美判断、建立信任</strong>——很难写出损失函数。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>为什么重要</h2>
+    <p>它把"AI 会不会替代我"这个模糊焦虑，变成一个精确的判断工具：<strong>"我能给这件事写出一套标准答案吗？"</strong>如果能，AI 可以做；如果不能，这是你的护城河。</p>
+    <p>比"需求弹性"更底层——需求弹性帮你判断市场端的变化，损失函数帮你判断技术端能不能替代。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>怎么用：三步法 + 判断路线</h2>
+    <div class="steps3">
+      <div class="step"><p class="st-t">拆任务</p><p>把你的日常工作拆成具体任务</p></div>
+      <div class="step"><p class="st-t">问自己</p><p>这个任务有标准答案吗？能打分吗？</p></div>
+      <div class="step"><p class="st-t">分层</p><p>能写出损失函数的丢给 AI；写不出的是你的核心价值</p></div>
+    </div>
+    <div class="route">
+      <svg viewBox="0 0 680 360" role="img" aria-label="判断路线图：任务先问能否写出标准答案，能则归 AI 执行，不能则是人的护城河">
+        <defs>
+          <marker id="ra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+        </defs>
+        <!-- 起点 -->
+        <rect x="270" y="10" width="140" height="42" rx="21" fill="#ffffff" class="ed"/>
+        <text x="340" y="36" text-anchor="middle" font-size="15.5" font-weight="700" fill="#1c1917">一件具体任务</text>
+        <!-- 主干 -->
+        <line x1="340" y1="52" x2="340" y2="86" class="ln" marker-end="url(#ra)"/>
+        <!-- 判断菱形 -->
+        <path d="M340 88 L470 148 L340 208 L210 148 Z" class="dia"/>
+        <text x="340" y="142" text-anchor="middle" font-size="15" font-weight="700" class="tx">有标准答案吗？</text>
+        <text x="340" y="166" text-anchor="middle" font-size="15" font-weight="700" class="tx">能打分吗？</text>
+        <!-- 能：左支 -->
+        <line x1="210" y1="148" x2="120" y2="148" class="ln"/>
+        <line x1="120" y1="148" x2="120" y2="238" class="ln" marker-end="url(#ra)"/>
+        <text x="165" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">能</text>
+        <rect x="30" y="240" width="180" height="86" rx="14" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.6"/>
+        <text x="120" y="268" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">丢给 AI</text>
+        <text x="120" y="292" text-anchor="middle" font-size="13" fill="#37516e">考试·作业·数据统计</text>
+        <text x="120" y="312" text-anchor="middle" font-size="13" fill="#37516e">格式检查·标准文案</text>
+        <!-- 不能：右支 -->
+        <line x1="470" y1="148" x2="560" y2="148" class="ln"/>
+        <line x1="560" y1="148" x2="560" y2="238" class="ln" marker-end="url(#ra)"/>
+        <text x="515" y="136" text-anchor="middle" font-size="14" font-weight="700" class="tx">不能</text>
+        <rect x="470" y="240" width="180" height="86" rx="14" class="box-r"/>
+        <text x="560" y="268" text-anchor="middle" font-size="16" font-weight="700" class="tx">你的护城河</text>
+        <text x="560" y="292" text-anchor="middle" font-size="13" class="tx-s">定义什么值得做</text>
+        <text x="560" y="312" text-anchor="middle" font-size="13" class="tx-s">审美判断·建立信任</text>
+        <!-- 边界漂移 -->
+        <path d="M215 236 C 300 300 400 300 468 236" class="drift-ln" stroke-dasharray="5 5" marker-end="url(#ra)"/>
+        <text x="340" y="330" text-anchor="middle" font-size="13" class="tx">边界在漂移：左边的事会越来越多</text>
+      </svg>
+      <p class="route-cap">能写出损失函数的归左（AI 执行），写不出的归右（人的核心价值）——边界随模型升级持续左移</p>
+    </div>
+    <blockquote>例子：电商主图设计。"图片尺寸对不对"能写出损失函数；"这张图能不能打动日本用户"写不出。</blockquote>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>不是所有能写出损失函数的事都会被替代——还要看谁会做、谁做得好</li>
+      <li>"写不出损失函数"不等于"不能判断好坏"——人可以凭直觉比较两张图哪张好</li>
+      <li>损失函数的边界在变化：几个月前写不出的，GPT Image 2 之后可能就写出来了</li>
+    </ul>
+    <div class="drift"><b>边界漂移要常扫：</b>每隔一段时间把右边的任务拿回来再问一遍"现在能打分了吗"——昨天写不出的，新模型一出可能就写出来了。尺子本身没变，变的是刻度。</div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>桑老哥适用：五项体检</h2>
+    <div class="verdict">
+      <div class="v-row"><p class="v-q">检查主图尺寸/格式合规</p><span class="v-a v-yes">能写</span><span class="v-d">AI 做</span></div>
+      <div class="v-row"><p class="v-q">写 Listing 关键词堆砌</p><span class="v-a v-yes">能写</span><span class="v-d">AI 做</span></div>
+      <div class="v-row"><p class="v-q">判断哪张主图转化率最高</p><span class="v-a v-half">部分能</span><span class="v-d">人定方向，AI 跑测试</span></div>
+      <div class="v-row"><p class="v-q">选品判断"这个品类值不值得进"</p><span class="v-a v-no">不能</span><span class="v-d"><strong>核心护城河</strong></span></div>
+      <div class="v-row"><p class="v-q">判断品牌调性/视觉策略</p><span class="v-a v-no">不能</span><span class="v-d"><strong>核心护城河</strong></span></div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/需求弹性.html"><span class="rel-t">需求弹性</span><span class="rel-d">损失函数判断技术边，需求弹性判断市场边，两把尺子一起用</span></a>
+      <a href="../02-think/难的分类学.html"><span class="rel-t">难的分类学</span><span class="rel-d">"AI 加速不了的才是护城河"，损失函数解释了为什么加速不了</span></a>
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">把不能打分的事翻译成 Agent 能执行的规则</span></a>
+      <a href="../02-think/人才公式（Taste×Agency）.html"><span class="rel-t">人才公式（Taste×Agency）</span><span class="rel-d">Taste 就是"写不出损失函数但能判断好坏"的能力</span></a>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Phil Chen《Career advice in the age of AI》(2026-07, X 长帖 <a href="https://x.com/philhchen/status/2072793818945167475" target="_blank" rel="noopener noreferrer">x.com/philhchen</a>)</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · 损失函数思维</p>
+    <p>词条源：concepts(概念库)/思维模型/损失函数思维.md（2026-07-05 建条）· 本页生成 2026-09-21</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">是什么</a></li>
+    <li><a href="#s3">为什么重要</a></li>
+    <li><a href="#s4">三步法+判断路线 ·核心</a></li>
+    <li><a href="#s5">前提与局限</a></li>
+    <li><a href="#s6">桑老哥适用</a></li>
+    <li><a href="#s7">关联词条</a></li>
+    <li><a href="#s8">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

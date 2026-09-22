@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git版本管理 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：Agent自动化 · 机械青（冷峻·工程感·护栏） ---- */
+:root {
+  --fam:#0e7490; --fam-deep:#155e75; --fam-soft:#ecfeff; --fam-line:#a5f3fc;
+}
+/* ---- 页面专属：叙事布局（垂直时间线 + 故事卡） ---- */
+
+/* 四站时间线 */
+.tl { position:relative; margin:20px 0; padding-left:30px; }
+.tl::before {
+  content:""; position:absolute; left:9px; top:8px; bottom:8px; width:2px;
+  background:var(--fam-line);
+}
+.tl .stop {
+  position:relative; margin-bottom:14px; background:var(--g0); border:1px solid var(--line);
+  border-radius:var(--r-box); padding:14px 18px; box-shadow:var(--sh-1);
+}
+.tl .stop::before {
+  content:""; position:absolute; left:-27px; top:22px; width:12px; height:12px;
+  border-radius:50%; background:var(--fam); border:2px solid var(--g1);
+}
+.tl .stop .stop-no {
+  font-size:14.5px; font-weight:700; color:var(--fam-deep); letter-spacing:.08em;
+}
+.tl .stop h3 { margin:2px 0 6px; font-size:17px; color:var(--ink); }
+.tl .stop h3 code { margin-left:6px; font-size:.88em; }
+.tl .stop p { font-size:15px; color:var(--ink-soft); margin:0; }
+.tl .stop .mte {
+  display:inline-block; font-size:14.5px; color:var(--ink-faint); margin-top:6px;
+}
+.tl .stop.arrived::before { background:var(--fam-deep); box-shadow:0 0 0 4px var(--fam-soft); }
+
+/* 分支图 */
+.branch { margin:18px 0 6px; }
+.branch svg { width:100%; height:auto; display:block; }
+.branch .main-ln { stroke:var(--fam); stroke-width:2.5; fill:none; }
+.branch .exp-ln { stroke:var(--fam-line); stroke-width:2; fill:none; stroke-dasharray:none; }
+.branch .nd { fill:var(--fam); }
+.branch .nd-e { fill:var(--g4); }
+.branch .tx { fill:var(--fam-deep); font-weight:700; }
+.branch .tx-s { fill:var(--ink-faint); }
+.branch-cap { font-size:14.5px; color:var(--ink-faint); text-align:center; margin-top:8px; }
+
+/* 翻译坑故事卡 */
+.story {
+  background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:var(--r-el); padding:14px 18px; margin:12px 0; box-shadow:var(--sh-1);
+}
+.story .s-word { font-weight:700; color:var(--fam-deep); font-size:16px; }
+.story .s-t { font-size:15px; color:var(--g8); margin-top:4px; line-height:1.75; }
+.story .s-date { display:block; font-size:14.5px; color:var(--ink-faint); margin-top:6px; }
+
+/* 三连查 */
+.chk3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .chk3 { grid-template-columns:1fr 1fr 1fr; } }
+.chk3 .card { padding:14px 16px; }
+.chk3 .card h3 { margin:0 0 6px; font-size:16px; color:var(--fam-deep); }
+.chk3 .card p { font-size:14.5px; margin:0; color:var(--ink-soft); }
+
+/* 验收：错法 vs 对法 */
+.vs2 { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:768px) { .vs2 { grid-template-columns:1fr 1fr; } }
+.vs2 .card { padding:16px 18px; }
+.vs2 .card h3 { margin:0 0 8px; font-size:16.5px; }
+.vs2 .bad { background:var(--g2); border-color:var(--g4); }
+.vs2 .bad h3 { color:var(--g6); }
+.vs2 .good { background:var(--fam-soft); border-color:var(--fam-line); }
+.vs2 .good h3 { color:var(--fam-deep); }
+.vs2 .card ol, .vs2 .card ul { font-size:14.5px; margin:0; padding-left:1.3em; }
+
+/* 金句条 */
+.creed {
+  background:var(--fam-soft); border:1.5px solid var(--fam-line); border-radius:var(--r-box);
+  padding:16px 20px; margin:16px 0; font-size:clamp(17px,2.6vw,20px);
+  font-family:var(--font-head); color:var(--g9); line-height:1.8;
+}
+.creed b { color:var(--fam-deep); }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">Agent自动化</span><span class="sep">›</span>
+    <span class="here">Git版本管理</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">Agent自动化 · AI 干活的验收基础设施</p>
+    <h1>Git版本管理</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-18</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑，示意从入门到精通的轻松学法"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <div class="creed">Git 是存档系统：<b>没存档的改动丢了就丢了</b>。对 AI 的产出，<b>diff 白纸黑字才算证据</b>，嘴上说「做完了」不算。</div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>搬家公司的四站旅程</h2>
+    <p>把改文件想成搬家：东西从房间出发，一站一站往前送，每过一站就多一层保障。</p>
+    <div class="tl">
+      <div class="stop">
+        <span class="stop-no">第一站</span>
+        <h3>工作区<code>房间里的东西</code></h3>
+        <p>你正在改的文件。<code>Cmd+S</code> 只是写硬盘，Git 还没记录——东西还在房间里，随时可能丢。</p>
+        <span class="mte">命令：还没有，这只是起点</span>
+      </div>
+      <div class="stop">
+        <span class="stop-no">第二站</span>
+        <h3>暂存区<code>装上货车</code></h3>
+        <p><code>git add 文件</code> 挑着装车。上了车还能卸下来——这一站可以反悔。</p>
+        <span class="mte">命令：git add 文件</span>
+      </div>
+      <div class="stop">
+        <span class="stop-no">第三站</span>
+        <h3>本地仓库<code>签收，拍板定死</code></h3>
+        <p><code>git commit -m "说明"</code> 盖章存档。从这一站起，历史里有据可查。</p>
+        <span class="mte">命令：git commit -m "说明"</span>
+      </div>
+      <div class="stop arrived">
+        <span class="stop-no">第四站 · 终点</span>
+        <h3>远程仓库<code>发车去云端</code></h3>
+        <p><code>git push</code> 异地备份。本地硬盘坏了，云端还有一份。</p>
+        <span class="mte">命令：git push</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>翻译坑：三个词的故事</h2>
+    <p>中文直译最容易把人带沟里，桑老哥共学时踩过：</p>
+    <div class="story">
+      <span class="s-word">add 不是「增加」，是「列清单」</span>
+      <p class="s-t">把要搬的东西列上装箱单，东西本身没动。</p>
+      <span class="s-date">2026-08-18 桑老哥踩过</span>
+    </div>
+    <div class="story">
+      <span class="s-word">commit 不是「提交」，是「盖章存档」</span>
+      <p class="s-t">中文「提交」误导人——它跟「交出去」无关，交出去是下一站的事。</p>
+      <span class="s-date">2026-08-18 桑老哥踩过</span>
+    </div>
+    <div class="story">
+      <span class="s-word">push 才是「交出去」</span>
+      <p class="s-t">本地仓库发车去云端，从这一步起别人才看得到。</p>
+      <span class="s-date">2026-08-18 桑老哥踩过</span>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>分支 = 复印底稿</h2>
+    <div class="branch">
+      <svg viewBox="0 0 680 180" role="img" aria-label="分支图：main原稿永远不动，experiment复印件上随便改，满意合并、砸了扔掉">
+        <line x1="40" y1="60" x2="640" y2="60" class="main-ln"/>
+        <circle cx="120" cy="60" r="6" class="nd"/>
+        <circle cx="260" cy="60" r="6" class="nd"/>
+        <circle cx="420" cy="60" r="6" class="nd"/>
+        <text x="46" y="36" font-size="15" class="tx">main（原稿）</text>
+        <text x="46" y="100" font-size="12.5" class="tx-s">永远不动</text>
+        <path d="M260 60 C 300 60, 310 130, 350 130" class="exp-ln"/>
+        <line x1="350" y1="130" x2="560" y2="130" class="exp-ln"/>
+        <circle cx="430" cy="130" r="6" class="nd-e"/>
+        <circle cx="510" cy="130" r="6" class="nd-e"/>
+        <text x="300" y="162" font-size="15" class="tx">experiment（复印件）</text>
+        <text x="556" y="112" font-size="12.5" class="tx-s">随便改</text>
+      </svg>
+    </div>
+    <p class="branch-cap">拿不准的改动在复印件上试：满意合并（merge），砸了扔掉，主干无损</p>
+    <p><strong>冲突</strong>：主干和复印件改了同一行，Git 不敢替你选，把两版摆出来你拍板。只一边改，不冲突。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>三连查口诀</h2>
+    <p><strong>status 看位置 / diff 看内容 / log 看历史</strong></p>
+    <div class="chk3">
+      <div class="card">
+        <h3>git status</h3>
+        <p>状态：改动在哪一站——房间、车上、还是已签收</p>
+      </div>
+      <div class="card">
+        <h3>git diff</h3>
+        <p>差异：绿行新增、红行删除，内容级证据</p>
+      </div>
+      <div class="card">
+        <h3>git log --oneline</h3>
+        <p>日志：签收单列表（feat 新功能 / fix 修 bug / chore 杂务）</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>Git 是 AI 的验收系统 ·核心</h2>
+    <div class="vs2">
+      <div class="card bad">
+        <h3>错法</h3>
+        <ul>
+          <li>AI 说「完成了」</li>
+          <li>→ 直接用</li>
+        </ul>
+      </div>
+      <div class="card good">
+        <h3>对法</h3>
+        <ol>
+          <li>AI 说「完成了」</li>
+          <li>→ <strong>diff 看改动</strong></li>
+          <li>→ <strong>实测</strong></li>
+          <li>→ 才 commit 签收</li>
+        </ol>
+      </div>
+    </div>
+    <p>与<a href="../01-ai/可信完成.html">可信完成</a>同源：铁柱说做完了不算，看真实信号；<strong>diff 就是那个信号的技术底座</strong>。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>边界</h2>
+    <ul>
+      <li>本词条覆盖日常 <span class="num">90%</span>（存档 + 试错 + 排查）；rebase、revert、submodule 等进阶操作用到再学</li>
+      <li>GitHub ≠ Git：Git 是本地工具，断网可用；GitHub 是云端仓库网站</li>
+      <li>diff 证明「改了什么」，不证明「改得对不对」——对不对要靠实测</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="MCP-Skill-Hook三件套.html"><span class="rel-t">MCP-Skill-Hook三件套</span><span class="rel-d">同属工程层：验收之外的护栏</span></a>
+      <a href="../01-ai/可信完成.html"><span class="rel-t">可信完成</span><span class="rel-d">diff 是它的技术底座</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">AI 的身体：版本管理是其中的回滚保险</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>WaytoAGI 转载《万字长文｜GitHub 从入门到精通》（miles_mazy，X）</li>
+      <li>桑老哥共学三口学习（2026-08-18，含「要实质证据不能听信口雌黄」验证）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · Agent自动化家族 · Git版本管理</p>
+    <p>词条源：concepts(概念库)/Agent与自动化/Git版本管理.md（2026-08-18 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">四站旅程</a></li>
+    <li><a href="#s3">翻译坑</a></li>
+    <li><a href="#s4">分支=复印底稿</a></li>
+    <li><a href="#s5">三连查口诀</a></li>
+    <li><a href="#s6">AI 的验收系统 ·核心</a></li>
+    <li><a href="#s7">边界</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

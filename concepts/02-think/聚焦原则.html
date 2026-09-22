@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聚焦原则 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：思维模型 · 赭墨棕（书卷气·大留白·低密度） ---- */
+:root {
+  --fam:#8c4a1f; --fam-deep:#5b2e0c; --fam-soft:#f9f1e8; --fam-line:#e5d5c0;
+}
+/* ---- 页面专属：对比布局（误区 vs 正解 双栏） ---- */
+
+.main-col > section { margin-bottom:56px; }
+.entry-head blockquote, .creed { font-family:var(--font-head); }
+.creed {
+  font-size:clamp(19px,3vw,24px); line-height:1.8; color:var(--g9);
+  padding:26px 8px 6px; max-width:36em;
+}
+.creed .mark { color:var(--fam); font-weight:700; }
+
+/* 公式条 */
+.formula { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:20px 0 8px; }
+.formula .f-box {
+  background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el);
+  padding:8px 18px; font-size:15.5px; color:var(--fam-deep); font-weight:700;
+}
+.formula .f-op { font-family:var(--font-head); font-size:20px; color:var(--ink-faint); }
+.formula .f-res { background:var(--fam); color:#fff; border-radius:var(--r-el); padding:8px 18px; font-size:15.5px; font-weight:700; }
+
+/* 对比双栏 */
+.duel { display:grid; grid-template-columns:1fr; gap:14px; margin:20px 0; }
+@media (min-width:768px) { .duel { grid-template-columns:1fr 1fr; } }
+.duel-col { border-radius:var(--r-box); padding:18px 20px 14px; }
+.duel-bad { background:var(--g2); border:1px solid var(--line); }
+.duel-good { background:var(--fam-soft); border:1.5px solid var(--fam-line); }
+.duel-col .dl-tag {
+  display:inline-block; font-size:14.5px; font-weight:700; padding:1px 12px;
+  border-radius:999px; margin-bottom:10px;
+}
+.duel-bad .dl-tag { background:var(--g0); color:var(--ink-soft); border:1px solid var(--g4); }
+.duel-good .dl-tag { background:var(--g0); color:var(--fam-deep); border:1px solid var(--fam-line); }
+.duel-col .dl-t { font-family:var(--font-head); font-size:19px; font-weight:700; color:var(--ink); margin-bottom:10px; }
+.duel-col ul { list-style:none; padding:0; margin:0; }
+.duel-col li { font-size:15px; color:var(--g8); padding:7px 0 7px 16px; position:relative; border-top:1px dashed var(--line); }
+.duel-col li:first-child { border-top:none; }
+.duel-bad li::before { content:"×"; position:absolute; left:0; color:var(--ink-faint); font-weight:700; }
+.duel-good li::before { content:"·"; position:absolute; left:1px; color:var(--fam); font-weight:900; }
+.duel-col li b { color:var(--g9); }
+
+/* 为什么重要三卡 */
+.why3 { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
+@media (min-width:768px) { .why3 { grid-template-columns:1fr 1fr 1fr; } }
+.why { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box); padding:16px 18px; box-shadow:var(--sh-1); }
+.why .wy-t { font-weight:700; color:var(--ink); margin-bottom:6px; }
+.why p { font-size:15px; margin-bottom:0; }
+
+/* 怎么用四步 */
+.how4 { counter-reset:hw; display:grid; grid-template-columns:1fr; gap:16px; margin:22px 0; }
+@media (min-width:768px) { .how4 { grid-template-columns:1fr 1fr; } }
+.how {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:18px 18px 14px; counter-increment:hw; position:relative; box-shadow:var(--sh-1);
+}
+.how::before {
+  content:counter(hw); position:absolute; top:-12px; left:16px; width:26px; height:26px;
+  line-height:26px; text-align:center; background:var(--fam); color:#fff;
+  border-radius:50%; font-weight:700; font-size:14.5px;
+}
+.how .hw-t { font-weight:700; color:var(--ink); margin:4px 0 6px; }
+.how p { font-size:15px; margin-bottom:0; }
+
+/* 动效兜底 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">思维模型</span><span class="sep">›</span>
+    <span class="here">聚焦原则</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">思维模型 · 判断力加压强</p>
+    <h1>聚焦原则</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意把所有注意力定在一个焦点上"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <p class="creed">聚焦不只是"专注做一件事"——<span class="mark">判断力</span>（知道什么最关键并敢放弃其他）和<span class="mark">压强</span>（投入压倒性资源打穿）缺一不可。战略的核心不是选什么，是放弃什么。</p>
+    <div class="formula">
+      <span class="f-box">判断力</span><span class="f-op">+</span>
+      <span class="f-box">压强</span><span class="f-op">=</span>
+      <span class="f-res">聚焦</span>
+    </div>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p>聚焦 = 判断力 + 压强：先靠判断力找到那个"最值得打"的城墙口，再用压倒性的资源打穿它。不是什么都做 60 分，是一个做到 <strong class="num">95 分</strong>。</p>
+    <blockquote>概念根："压强原则"的经典根是华为基本法 / 任正非——"千军万马只对准同一个城墙口冲锋"，已流传 20+ 年。Anthropic 的"聚焦 coding"是该原则的一个应用案例，不是概念出处。
+      <span class="q-src">来源文章：拆解 Anthropic（Celia）、tw93 开源产品方法论（向阳乔木），2026-05-28 沉淀</span>
+    </blockquote>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>两种打法对照 ·核心</h2>
+    <div class="duel">
+      <div class="duel-col duel-bad">
+        <span class="dl-tag">反模式</span>
+        <p class="dl-t">摊薄兵力</p>
+        <ul>
+          <li>OpenAI 同时铺 <b class="num">300 个</b>项目，被 Anthropic 田忌赛马</li>
+          <li>什么都做 <b class="num">60 分</b>，没有一个 <b class="num">95 分</b></li>
+          <li>频繁切换赛道，复利永远为零</li>
+          <li>反复纠结"该做什么"，决策消耗大</li>
+        </ul>
+      </div>
+      <div class="duel-col duel-good">
+        <span class="dl-tag">正解</span>
+        <p class="dl-t">压强打穿</p>
+        <ul>
+          <li>Anthropic 只压 coding，连多模态都不碰</li>
+          <li>Costco 只做低价、Apple 只做体验——一个变量推到极致</li>
+          <li>tw93 的 Mole 半年迭代 <b class="num">40 个</b>版本，越做越多人知道</li>
+          <li>提前把事定死，不用反复纠结——长期主义的本质不是坚持，是提前定死</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>为什么重要</h2>
+    <div class="why3">
+      <div class="why"><p class="wy-t">摊薄的代价被低估</p><p>兵力散在多条线，每条都打不穿。桑老哥四条线（选品 / 运营 / 共学 / IP）面临同样风险。</p></div>
+      <div class="why"><p class="wy-t">复利需要时间积累</p><p>频繁切换赛道，复利永远为零；守住一个口子持续迭代，时间才站在你这边。</p></div>
+      <div class="why"><p class="wy-t">减少决策消耗</p><p>长期主义的本质不是坚持，是提前把事定死，不用反复纠结。</p></div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>怎么用</h2>
+    <div class="how4">
+      <div class="how"><p class="hw-t">先找到最让你难受的问题</p><p>不是"我想做什么"，是"什么东西让我难受、我顺手解掉"。tw93 六款产品全部源于自身痛点。</p></div>
+      <div class="how"><p class="hw-t">主动设约束</p><p>GitHub 只留 6 个 pin 位、一家公司待 11 年。约束不是限制，是帮你省决策精力。</p></div>
+      <div class="how"><p class="hw-t">把关键变量推向极致</p><p>Anthropic 只做 coding、Costco 只做低价、Apple 只做体验。不是一个方向做到 95 分，其他碰都不碰。</p></div>
+      <div class="how"><p class="hw-t">记录失败比记录成功重要</p><p>别人可以蒸馏你的产品，蒸馏不了你踩过的坑。</p></div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>聚焦是高风险高回报策略——选对了赢很大，选错了浪费时间（幸存者偏差提醒）</li>
+      <li>需要有判断力——判断力来自领域经验和试错，新手盲目聚焦等于赌博</li>
+      <li>资源有限时聚焦是被迫的智慧；资源充足时要主动克制，更难</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <div class="why3">
+      <div class="why"><p class="wy-t">选品</p><p>不是什么品类都做，选一个最有杠杆效应的品类打穿。</p></div>
+      <div class="why"><p class="wy-t">个人 IP</p><p>不是什么都分享，找到一个独特角度持续输出。</p></div>
+      <div class="why"><p class="wy-t">AI 学习</p><p>不是什么新工具都试，先把 Claude Code 和核心 Skill 用到极致。</p></div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../02-think/约束先行.html"><span class="rel-t">约束先行</span><span class="rel-d">主动设约束就是聚焦的落地动作：先定死，再开干</span></a>
+      <a href="../06-learn/飞轮学习法.html"><span class="rel-t">飞轮学习法</span><span class="rel-d">守住一个飞轮持续转，复利才成立</span></a>
+      <a href="../02-think/信号与噪音过滤器.html"><span class="rel-t">信号与噪音过滤器</span><span class="rel-d">先滤掉噪音，才知道哪个口子值得压</span></a>
+      <a href="../04-skill/技能进化.html"><span class="rel-t">技能进化</span><span class="rel-d">在一个点上反复迭代，经验写回规则</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">判断力"知道什么最关键"的来源，藏在说不出的经验里</span></a>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>拆解 Anthropic（Celia）</li>
+      <li>tw93 开源产品方法论（向阳乔木）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · 思维模型家族 · 聚焦原则</p>
+    <p>词条源：concepts(概念库)/思维模型/聚焦原则.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">核心洞见</a></li>
+    <li><a href="#s2">一句话说清楚</a></li>
+    <li><a href="#s3">两种打法对照 ·核心</a></li>
+    <li><a href="#s4">为什么重要</a></li>
+    <li><a href="#s5">怎么用</a></li>
+    <li><a href="#s6">前提与局限</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

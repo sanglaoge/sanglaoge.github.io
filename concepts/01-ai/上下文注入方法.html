@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上下文注入方法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（冷静·可靠·结构性） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+
+/* ---- 页面专属：阶梯布局（7 层台阶，从重到轻逐级下沉） ---- */
+.heroq {
+  font-family:var(--font-head); font-size:clamp(20px,3.4vw,28px);
+  line-height:1.65; color:var(--ink); font-weight:700;
+}
+.heroq em { font-style:normal; color:var(--fam-deep); }
+
+.stairs { display:grid; gap:10px; margin:18px 0; }
+.stair {
+  background:var(--g0); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:var(--r-box); padding:12px 16px; box-shadow:var(--sh-1);
+  margin-left:calc(var(--i) * 4%);
+}
+@media (max-width:600px) { .stair { margin-left:calc(var(--i) * 2.4%); } }
+.stair .st-row { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.stair .st-no {
+  display:inline-block; width:26px; height:26px; line-height:26px; text-align:center;
+  border-radius:50%; background:var(--fam); color:#ffffff;
+  font-weight:700; font-size:14.5px; flex:none; align-self:center;
+}
+.stair .st-way { font-weight:700; font-size:16.5px; color:var(--fam-deep); }
+.stair .st-chip {
+  display:inline-block; padding:0 10px; border-radius:999px;
+  background:var(--fam-soft); border:1px solid var(--fam-line); color:var(--fam-deep);
+  font-size:14.5px; font-weight:600;
+}
+.stair p { margin:6px 0 0; font-size:15px; }
+.stair .st-bar {
+  height:7px; border-radius:4px; background:var(--fam);
+  width:calc(86% - var(--i) * 10.5%); margin-top:8px;
+}
+.stair .st-cap { font-size:14.5px; color:var(--ink-faint); margin-top:3px; }
+.stair-lab { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+
+/* 四件套 / 软硬约束 卡片网格 */
+.cgrid { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:700px) { .cgrid { grid-template-columns:1fr 1fr; } }
+.cg {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:14px 16px; box-shadow:var(--sh-1);
+}
+.cg h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.cg p { font-size:15px; margin:0; }
+.cg .arrow { display:block; margin-top:8px; font-size:14.5px; color:var(--ink-faint); }
+.cg .arrow b { color:var(--ink); font-weight:700; }
+.cg.soft { border-color:var(--fam-line); background:var(--fam-soft); }
+.cg.hard { border-color:#fde68a; background:#fffbeb; }
+.cg.hard h3 { color:#92400e; }
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="../index.html">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">上下文注入方法</span>
+  </nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 上下文家族 · 规则怎么送达</p>
+    <h1>上下文注入方法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-08-03</span>
+      <span>下次复核 2026-11-18</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象轻松微笑，示意这套注入方法桑老哥日常已经在用，不是新理论"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p class="heroq">7 层控制法，从最重到最轻——把规则和知识「注入」AI，让它<em>每次自动遵守</em>。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉</h2>
+    <p>你写了很多规则，但 AI 不是每次都能「看到」它们。注入方法解决的是<strong>「怎么让规则在需要的时候自动出现」</strong>——不是靠你每次手动粘贴。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>7 层漏斗（从重到轻的台阶）</h2>
+    <p class="stair-lab">台阶越往下越轻：上面的每次都进上下文，下面的按需才进。横条越长＝注入越重、越常驻。</p>
+    <div class="stairs">
+      <div class="stair" style="--i:0">
+        <div class="st-row"><span class="st-no">1</span><span class="st-way">CLAUDE.md</span><span class="st-chip">常驻</span></div>
+        <p>全局身份＋基本原则，每次都注入。</p>
+        <div class="st-bar"></div><p class="st-cap">最重：一开场就在桌面上</p>
+      </div>
+      <div class="stair" style="--i:1">
+        <div class="st-row"><span class="st-no">2</span><span class="st-way">子目录 CLAUDE.md</span><span class="st-chip">项目级</span></div>
+        <p>项目级规则，进项目时注入。</p>
+        <div class="st-bar"></div><p class="st-cap">重：跟着项目走</p>
+      </div>
+      <div class="stair" style="--i:2">
+        <div class="st-row"><span class="st-no">3</span><span class="st-way">Rules</span><span class="st-chip">特定场景</span></div>
+        <p>特定场景规则，碰到场景才生效。</p>
+        <div class="st-bar"></div><p class="st-cap">中：场景触发</p>
+      </div>
+      <div class="stair" style="--i:3">
+        <div class="st-row"><span class="st-no">4</span><span class="st-way">Skills</span><span class="st-chip">触发式加载</span></div>
+        <p>说关键词才加载——渐进披露的三层结构。</p>
+        <div class="st-bar"></div><p class="st-cap">中：不叫不动</p>
+      </div>
+      <div class="stair" style="--i:4">
+        <div class="st-row"><span class="st-no">5</span><span class="st-way">Subagent</span><span class="st-chip">隔离</span></div>
+        <p>隔离任务，独立上下文——脏活不弄脏主对话。</p>
+        <div class="st-bar"></div><p class="st-cap">轻：只在分身里活</p>
+      </div>
+      <div class="stair" style="--i:5">
+        <div class="st-row"><span class="st-no">6</span><span class="st-way">Hook</span><span class="st-chip">事件驱动</span></div>
+        <p>自动触发——「每次 X 必须做 Y」，代码级强制。</p>
+        <div class="st-bar"></div><p class="st-cap">轻而硬：不进上下文，直接拦动作</p>
+      </div>
+      <div class="stair" style="--i:6">
+        <div class="st-row"><span class="st-no">7</span><span class="st-way">动态工作流</span><span class="st-chip">按需编排</span></div>
+        <p>按需编排——需要什么流程现搭什么。</p>
+        <div class="st-bar"></div><p class="st-cap">最轻：用时才存在</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>记忆法：四件套怎么分</h2>
+    <div class="cgrid">
+      <div class="cg"><h3>事实</h3><p>你喜欢中文、工具路径这类稳定信息。</p><span class="arrow">放 → <b>CLAUDE.md</b></span></div>
+      <div class="cg"><h3>流程</h3><p>怎么生成 HTML、怎么查资料这类步骤。</p><span class="arrow">放 → <b>Skill</b></span></div>
+      <div class="cg"><h3>护栏</h3><p>删文件前备份这类必须拦住的规矩。</p><span class="arrow">放 → <b>Hook</b></span></div>
+      <div class="cg"><h3>隔离任务</h3><p>大量脏活只要结论的活。</p><span class="arrow">给 → <b>Subagent</b></span></div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>软约束 vs 硬约束</h2>
+    <div class="cgrid">
+      <div class="cg soft">
+        <h3>软约束：先问我</h3>
+        <p>「先问我」这类提醒——AI 会看但可能忘。</p>
+        <span class="arrow">CLAUDE.md 就够</span>
+      </div>
+      <div class="cg hard">
+        <h3>硬约束：绝对不能、连问都省</h3>
+        <p>删库、花钱这类一步都不能错的动作。</p>
+        <span class="arrow">Hook 代码级别强制执行</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>配置坑</h2>
+    <ul>
+      <li><strong>30 行流程别塞 CLAUDE.md</strong> → 放 Skill（塞进全局＝每次都白占窗口）</li>
+      <li><strong>「每次 X 必须做 Y」</strong> → 用 Hook 自动跑，别写在提示词里（写在提示词里＝指望它自觉）</li>
+    </ul>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p>你已经在用这套了：CLAUDE.md 管全局、项目级 CLAUDE.md 管共学笔记、Skills 管特定能力（生图/HTML）、Hook 管自动化（日记/PAI）。</p>
+    <blockquote>这 7 层不是理论——是你日常铁柱的工作方式。</blockquote>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>层级越多越复杂——非必要不加层</li>
+      <li>Hook 是硬约束，改错影响大，配置完要测</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">家族门厅：管总</span></a>
+      <a href="../01-ai/上下文组织原则.html"><span class="rel-t">上下文组织原则</span><span class="rel-d">家族：一次给的东西怎么摆</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">这些层挂在哪张跑道上</span></a>
+      <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">第④层触发式加载的专条</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>桑老哥 AGI 共学笔记 · 地基四件套 · 2026-07-14</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 上下文注入方法</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/上下文注入方法.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">7 层漏斗 ·核心</a></li>
+    <li><a href="#s4">四件套怎么分</a></li>
+    <li><a href="#s5">软约束 vs 硬约束</a></li>
+    <li><a href="#s6">配置坑</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">前提与局限</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
