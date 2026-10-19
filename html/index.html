@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文稿室 · 把一件事讲到能懂</title>
+<meta name="description" content="桑老哥的文稿室：8 篇把硬核概念讲成大白话的图文长稿——提示词、上下文、Agent、AGI 分级、AI 发展史。">
+<link rel="icon" href="../favicon.png">
+<meta property="og:title" content="文稿室 · 把一件事讲到能懂">
+<meta property="og:description" content="8 篇把硬核概念讲成大白话的图文长稿。">
+<meta property="og:image" content="https://sanglaoge.github.io/images/og/og-home.png">
+<meta property="og:type" content="website">
+<style>
+:root {
+  --bg: #FAF3EA;
+  --bg-alt: #F5E8D8;
+  --card: #FFFFFF;
+  --text: #2C1810;
+  --text-muted: #7A6A5C;
+  --accent: #C4573B;
+  --border: #E5D5C0;
+  --shadow: 0 4px 20px rgba(60, 40, 20, 0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.8; font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+.serif { font-family: Georgia, "Songti SC", "STSong", serif; }
+a { color: inherit; }
+.gnav{display:flex;justify-content:space-between;align-items:center;max-width:900px;margin:0 auto;padding:20px 24px 0;font-size:13.5px}
+.gnav a{color:var(--text-muted);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.gnav a:hover{color:var(--accent)}
+.gnav-links{display:flex;gap:18px}
+@media(max-width:520px){.gnav-links{gap:12px}.gnav-links .hide-s{display:none}}
+
+header{max-width:900px;margin:0 auto;padding:64px 24px 8px;text-align:center}
+.kick{font-size:12px;letter-spacing:5px;color:var(--text-muted);font-weight:600;margin-bottom:18px}
+.kick b{color:var(--accent)}
+h1{font-size:clamp(34px,6vw,52px);letter-spacing:4px;font-weight:600;margin-bottom:16px}
+.lede{font-size:15.5px;color:var(--text-muted);max-width:34em;margin:0 auto}
+.lede em{font-style:normal;color:var(--text);border-bottom:2px solid #E8C4B8}
+
+.grid{max-width:900px;margin:0 auto;padding:44px 24px 40px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{
+  display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:22px 24px;text-decoration:none;box-shadow:var(--shadow);
+  transition:transform .2s, box-shadow .2s, border-color .2s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(60,40,20,.13);border-color:var(--accent)}
+.cno{font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:700}
+.ct{font-size:19px;font-weight:600;letter-spacing:.5px}
+.cs{font-size:13.5px;color:var(--text-muted);line-height:1.7}
+.cgo{margin-top:6px;font-size:12.5px;color:var(--accent);letter-spacing:1px}
+
+footer{max-width:900px;margin:0 auto;padding:10px 24px 56px;text-align:center;font-size:12.5px;color:var(--text-muted);letter-spacing:1.5px}
+footer a{color:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<nav class="gnav" aria-label="全站导航">
+  <a href="../index.html">← 回首页</a>
+  <div class="gnav-links">
+    <a href="../concepts/index.html">概念馆</a>
+    <a href="../videos/index.html">放映厅</a>
+    <a href="../index.html#about" class="hide-s">关于</a>
+  </div>
+</nav>
+
+<header>
+  <div class="kick">SANGLAOGE <b>·</b> READING ROOM</div>
+  <h1 class="serif">文稿室</h1>
+  <p class="lede">概念馆的图文长稿版——同一个概念，<em>在这里被铺开讲一遍</em>。适合想慢慢读、看清来龙去脉的时候。</p>
+</header>
+
+<main class="grid">
+  <a class="card" href="02-上下文工程.html">
+    <span class="cno">01</span>
+    <span class="ct">上下文工程</span>
+    <span class="cs">好答案的隐藏前提——为什么同样的问题，喂对信息才有好答案。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="01-提示词工程-手机版.html">
+    <span class="cno">02</span>
+    <span class="ct">提示词工程 · 4 个核心技巧</span>
+    <span class="cs">把提示词从「许愿」改成「验收单」的四招。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="03-上下文组织原则.html">
+    <span class="cno">03</span>
+    <span class="ct">上下文组织原则</span>
+    <span class="cs">让每条信息待在正确的位置——给 AI 收拾桌面的规矩。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="04-上下文注入方法.html">
+    <span class="cno">04</span>
+    <span class="ct">上下文注入方法 · 7 层控制法</span>
+    <span class="cs">临时喂料怎么喂，才不冲掉原来的记忆。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="05-Tokenmaxxing.html">
+    <span class="cno">05</span>
+    <span class="ct">Tokenmaxxing</span>
+    <span class="cs">烧油不跑路——往 AI 脑子里疯狂塞料的翻车现场。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="Agent到底是什么.html">
+    <span class="cno">06</span>
+    <span class="ct">Agent 到底是什么？</span>
+    <span class="cs">从概念到实战——AI 从「会聊」到「会干活」差的那一步。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="AGI五级楼梯.html">
+    <span class="cno">07</span>
+    <span class="ct">AGI 五级楼梯</span>
+    <span class="cs">从思维链到具身智能——通用人工智能分几级、走到哪了。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+  <a class="card" href="AI发展史时间线.html">
+    <span class="cno">08</span>
+    <span class="ct">AI 发展史时间线</span>
+    <span class="cs">从游戏显卡到智能平权——一条线看懂 AI 是怎么长大的。</span>
+    <span class="cgo">读一读 ↗</span>
+  </a>
+</main>
+
+<footer>桑老哥 × 铁柱 · 文稿室 · <a href="https://space.bilibili.com/43602616" target="_blank" rel="noopener">B站 @桑老哥shine</a></footer>
+
+</body>
+</html>
