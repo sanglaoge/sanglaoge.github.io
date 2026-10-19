@@ -56,6 +56,11 @@ body {
 .crumbs a:hover { text-decoration:underline; }
 .crumbs .sep { color:var(--g4); }
 .crumbs .here { color:var(--ink); font-weight:600; }
+/* ---- 全站导航：面包屑首个「首页」入口 + 右侧站点导航 ---- */
+.crumbs .gnav-mini { margin-left:auto; display:flex; gap:18px; }
+.crumbs .gnav-mini a { color:var(--ink-faint); text-decoration:none; }
+.crumbs .gnav-mini a:hover { color:var(--fam-deep); text-decoration:underline; }
+@media (max-width:640px) { .crumbs .gnav-mini { display:none; } }
 .fam-pill {
   display:inline-block; padding:1px 10px; border-radius:999px;
   background:var(--fam-soft); color:var(--fam-deep);

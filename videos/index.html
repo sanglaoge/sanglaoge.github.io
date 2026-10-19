@@ -4,7 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>放映厅 · 桑老哥的三个视频系列</title>
-<meta name="description" content="桑老哥的三个自制视频系列：100问视频系列、AI底层逻辑22讲、好文视频系列。文案、口播、画面、剪辑全流程自制。">
+<meta name="description" content="桑老哥的三个自制视频系列：100问视频系列、AI底层逻辑22讲、好文视频系列，共 51 集成片。文案、口播、画面、剪辑全流程自制。">
+<link rel="icon" type="image/png" href="../favicon.png">
+<meta name="theme-color" content="#B8452F">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="桑老哥的个人展厅">
+<meta property="og:title" content="放映厅 · 桑老哥的三个视频系列">
+<meta property="og:description" content="三个自制视频系列，51 集成片：100问视频系列、AI底层逻辑22讲、好文视频系列。">
+<meta property="og:image" content="https://sanglaoge.github.io/images/og/og-videos.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://sanglaoge.github.io/videos/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="放映厅 · 桑老哥的三个视频系列">
+<meta name="twitter:description" content="三个自制视频系列，51 集成片。">
+<meta name="twitter:image" content="https://sanglaoge.github.io/images/og/og-videos.png">
 <style>
   :root {
     --bg: #FFFFFF;
@@ -32,10 +46,22 @@
   .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--red); z-index: 99; }
 
   .back {
-    display: inline-block; margin: 26px 0 0; font-size: 13.5px; color: var(--soft);
+    display: inline-block; font-size: 13.5px; color: var(--soft);
     text-decoration: none; letter-spacing: 2px; transition: color .2s;
   }
   .back:hover { color: var(--red); }
+
+  /* ---------- 全站顶栏 ---------- */
+  .gnav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0 0; font-size: 13.5px;
+  }
+  .gnav-links { display: flex; gap: 20px; }
+  .gnav-links a {
+    color: var(--faint); text-decoration: none; letter-spacing: 2px; transition: color .2s;
+  }
+  .gnav-links a:hover { color: var(--red); }
+  @media (max-width: 520px) { .gnav-links { gap: 14px; } .gnav-links .hide-s { display: none; } }
 
   header { padding: 30px 0 54px; }
   .kick { font-size: 11px; letter-spacing: 6px; color: var(--faint); font-weight: 600; margin-bottom: 22px; }
@@ -156,17 +182,24 @@
 <div class="progress" id="progress"></div>
 <div class="wrap">
 
-  <a class="back" href="../index.html">← 回到展厅</a>
+  <div class="gnav">
+    <a class="back" href="../index.html">← 回首页</a>
+    <nav class="gnav-links" aria-label="全站导航">
+      <a href="../concepts/index.html">概念馆</a>
+      <a href="../html/01-提示词工程-手机版.html">文稿室</a>
+      <a href="../index.html#about" class="hide-s">关于</a>
+    </nav>
+  </div>
 
   <header>
     <div class="kick">SANGLAOGE <b>·</b> SCREENING ROOM <b>·</b> 3 SERIES</div>
     <h1 class="serif">放映厅</h1>
     <p class="lede">三个视频系列，<em>没一个完结，都在长。</em>文案、口播、画面、剪辑全流程自制——好文系列五季 25 集全部上架B站，点开即播；100问重制版与概念馆整理后回归。</p>
     <div class="meta num">
-      <span><b>61</b> 集成片</span>
-      <span><b>25</b> 集站内可播</span>
+      <span><b>51</b> 集成片</span>
+      <span>全部站内可播</span>
       <span><b>2</b> 部连载中</span>
-      <span><b>1</b> 部不定期</span>
+      <span><b>1</b> 部完结</span>
     </div>
   </header>
 

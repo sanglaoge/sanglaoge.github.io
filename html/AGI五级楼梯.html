@@ -363,8 +363,24 @@ footer {
   .stair:hover, .links a:hover { box-shadow: none; }
 }
 </style>
+<style>
+.gnav{display:flex;justify-content:space-between;align-items:center;max-width:760px;margin:0 auto;padding:20px 24px 0;font-size:13.5px}
+.gnav a{color:var(--text-muted,#7A6A5C);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.gnav a:hover{color:var(--accent,#C4573B)}
+.gnav-links{display:flex;gap:18px}
+@media(max-width:520px){.gnav-links{gap:12px}.gnav-links .hide-s{display:none}}
+</style>
 </head>
 <body>
+<nav class="gnav" aria-label="全站导航">
+  <a href="../index.html">← 回首页</a>
+  <div class="gnav-links">
+    <a href="../concepts/index.html">概念馆</a>
+    <a href="../videos/index.html">放映厅</a>
+    <a href="../index.html#about" class="hide-s">关于</a>
+  </div>
+</nav>
+
 
 <section class="hero">
   <span class="hero-tag">AI 底层逻辑 · AGI 路线图</span>

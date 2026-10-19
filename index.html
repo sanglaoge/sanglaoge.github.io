@@ -4,7 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>桑老哥 · 看见的，都是学过的</title>
-<meta name="description" content="桑老哥的个人展厅：82 条概念可视化 + 3 个视频系列 + 共学笔记。一个不懂代码的设计师和一个 AI，每天啃一篇硬核文章。">
+<meta name="description" content="桑老哥的个人展厅：82 条概念可视化 + 3 个视频系列 + 51 集成片。一个不懂代码的设计师和一个 AI，每天啃一篇硬核文章。">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="theme-color" content="#B8452F">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="桑老哥的个人展厅">
+<meta property="og:title" content="桑老哥 · 看见的，都是学过的">
+<meta property="og:description" content="82 条概念可视化 · 3 个视频系列 · 51 集成片。一个不懂代码的设计师和一个 AI 的共学展厅。">
+<meta property="og:image" content="https://sanglaoge.github.io/images/og/og-home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://sanglaoge.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="桑老哥 · 看见的，都是学过的">
+<meta name="twitter:description" content="82 条概念可视化 · 3 个视频系列 · 51 集成片。">
+<meta name="twitter:image" content="https://sanglaoge.github.io/images/og/og-home.png">
 <style>
   :root {
     --bg: #FFFFFF;
@@ -194,6 +208,25 @@
     font-size: 12.5px; color: var(--faint); text-align: center; letter-spacing: 2px;
   }
 
+  /* ---------- 关注出口 ---------- */
+  .follow {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line);
+  }
+  .follow .flabel {
+    flex: none; width: 78px; font-size: 12px; letter-spacing: 4px;
+    color: var(--red); font-weight: 700;
+  }
+  .flink {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 14.5px; font-weight: 600; letter-spacing: 1px;
+    color: var(--ink); text-decoration: none;
+    border: 1px solid var(--line2); border-radius: 999px; padding: 8px 18px;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .flink:hover { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+  .flink .tag { font-size: 11px; letter-spacing: 2px; color: var(--faint); font-weight: 600; }
+
   /* ---------- 动效：stagger 入场 + 视差 ---------- */
   .rise { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
   .in .rise { opacity: 1; transform: none; }
@@ -233,7 +266,7 @@
     <div class="meta num">
       <span><b>82</b> 条概念</span>
       <span><b>3</b> 个视频系列</span>
-      <span><b>34</b> 集成片</span>
+      <span><b>51</b> 集成片</span>
       <span>持续更新中</span>
     </div>
   </header>
@@ -431,6 +464,15 @@
       <li><span class="who">晚 上</span><span class="what">和 AI 共学，啃硬核文章，做成<em>看得懂的可视化笔记</em></span></li>
       <li><span class="who">生 活</span><span class="what">一位奶爸，还有一个每天一起干活的 AI 搭档</span></li>
     </ul>
+
+    <div class="follow">
+      <span class="flabel">关 注</span>
+      <a class="flink" href="https://space.bilibili.com/43602616" target="_blank" rel="noopener"><span class="tag">B站</span>看视频 ↗</a>
+      <!-- TODO 待桑老哥补公众号链接 -->
+      <a class="flink" href="#"><span class="tag">公众号</span>关注 ↗</a>
+      <!-- TODO 待桑老哥补小红书链接 -->
+      <a class="flink" href="#"><span class="tag">小红书</span>关注 ↗</a>
+    </div>
   </section>
 
   <footer>桑老哥 × 铁柱 · 手写 HTML · 常设展，长期更新</footer>
