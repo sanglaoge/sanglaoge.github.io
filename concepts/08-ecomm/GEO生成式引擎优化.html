@@ -102,6 +102,41 @@
 .t3 .t3-t { font-weight:700; font-size:16px; color:var(--fam-deep); }
 .t3 .t3-d { font-size:14.5px; color:var(--g8); margin-top:2px; }
 
+/* 风险/边界提示 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb; border-radius:0 var(--r-el) var(--r-el) 0;
+  padding:12px 16px; margin:16px 0; font-size:15.5px; line-height:1.8; color:#78350f;
+}
+.warn b { color:#92400e; }
+
+/* 有序步骤（生产线 / 投钱节奏） */
+.steps { list-style:none; padding-left:0; margin:14px 0; counter-reset:st; }
+.steps li {
+  counter-increment:st; position:relative; padding:10px 0 10px 42px;
+  border-bottom:1px solid var(--line); font-size:15.5px; line-height:1.8; color:var(--g8);
+}
+.steps li:last-child { border-bottom:none; }
+.steps li::before {
+  content:counter(st); position:absolute; left:0; top:9px; width:26px; height:26px; line-height:26px;
+  text-align:center; border-radius:50%; background:var(--fam); color:#ffffff;
+  font-size:14.5px; font-weight:700;
+}
+.steps li b { color:var(--g9); }
+
+/* 三层 ROI 叠加 */
+.roi3 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .roi3 { grid-template-columns:repeat(3,1fr); } }
+.roi {
+  background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam-line);
+  border-radius:var(--r-el); padding:12px 16px;
+}
+.roi .ro-n { font-size:15.5px; font-weight:700; color:var(--fam-deep); }
+.roi .ro-p {
+  font-family:var(--font-head); font-size:21px; font-weight:700; color:var(--fam);
+  font-variant-numeric:tabular-nums; line-height:1.45; margin:2px 0;
+}
+.roi .ro-d { font-size:14.5px; color:var(--ink-soft); }
+
 /* 动效兜底 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -130,7 +165,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-06-28</span>
-      <span>下次复核 2026-09-07</span>
+      <span>下次复核 2026-12-27</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意被 AI 引用推荐等于被举牌点名"></div>
   </div>
@@ -241,9 +276,27 @@
       </tbody>
     </table></div>
     <p>原因：各家优先用自己更容易获取、更低成本、更可控的内容。六步投放：选目标 AI → 列问题库 → 采集引用 → 反推信源策略 → 适配各版 → 监测归因补投。</p>
+    <div class="warn"><b>榜单风险：</b>榜单最容易被引用（用户爱问「哪家好 / TOP10」），但虚假评测的风险也最高。要做就做有真实依据的评测：标准公开、来源明确、结论克制。AI 的交叉校验越来越强，多渠道发虚假信息会被识别成低可信主体——<b>GEO 的长期资产，建立在真实、稳定、可验证的信息上。</b></div>
   </section>
 
   <section id="s7" class="reveal">
+    <h2>工程思维 = 需求 + 系统 + 反馈</h2>
+    <p>上面是「内容该长什么样」，这里是「用什么脑子做」。李相宇 GEO 第二讲的核心：用<strong>工程思维</strong>，不是内容管理思维。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>环节</th><th>做什么</th><th>反例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>需求</strong></td><td>把模糊目标（「让 AI 推荐我品牌」）转成精准指标：哪些词、哪个平台、什么问题</td><td>「多发点文章」</td></tr>
+        <tr><td><strong>系统</strong></td><td>从全局看——选题、素材、结构、分发，每个环节拆解量化</td><td>想到什么写什么</td></tr>
+        <tr><td><strong>反馈</strong></td><td>用数据验证效果，持续迭代</td><td>只看发布量、只看体感</td></tr>
+      </tbody>
+    </table></div>
+    <div class="duo">
+      <div class="du-c bad"><div class="du-t">普通内容管理</div>今天想到什么写什么，看流量、看发布量</div>
+      <div class="du-c good"><div class="du-t">工程思维</div>目标明确 → 拆解要素 → 量化打分 → 迭代优化</div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
     <h2>内容工程 8 模块 + 查询扩散金矿</h2>
     <div class="tbl-scroll"><table class="tbl">
       <thead><tr><th class="c">#</th><th>模块</th><th>核心任务</th></tr></thead>
@@ -263,7 +316,7 @@
     <p>AI 先改写主词（千人千面），再把主意图拆成 8-12 个子查询并发搜。free/pricing/features 是 AI 扩散词价值一般；<strong>「行业+理想客户画像（ICP）」词是金矿</strong>——既被 AI 爬，又卡在付费客户决策路径。挖法：让 ChatGPT/Claude 模拟 AI Search 列扩散子查询 → ICP 筛金矿 → 写极度垂直的结构化内容 → 分发到 AI 喜欢的信源（Reddit/G2）放大。</p>
   </section>
 
-  <section id="s8" class="reveal">
+  <section id="s9" class="reveal">
     <h2>项目验收：三层框架与三连问</h2>
     <div class="accept">
       <div class="acc"><div class="ac-l">被看见</div><div class="ac-r"><span class="ac-q">有没有进答案？</span><br>提及率、平均提及排名、Top-N 比例、商品/门店卡片可见度</div></div>
@@ -274,7 +327,7 @@
     <p style="text-align:center; margin-top:-10px;">三问都能拿出数据、追回证据，项目才算验收过关。两个易骗点：<strong>平均排名会骗人</strong>（稳定第 3 不等于一半第 1 一半第 5，要看 Top-N 分布）；<strong>发布量不等于引用率</strong>（发 50 篇被引 3 篇，按媒体收录率调预算）。</p>
   </section>
 
-  <section id="s9" class="reveal">
+  <section id="s10" class="reveal">
     <h2>动手前的判断：Entity 四问与格局</h2>
     <h3>做 GEO 第一件事不是找词，是定义 Entity（网站的身份证）</h3>
     <div class="e4">
@@ -288,28 +341,118 @@
     <ul class="myth">
       <li><b>误区一</b>「GEO 流量已经很大了」——SEO 仍占流量大头约 42%，GEO 合计约 0.29%；AI 概览覆盖 20%+ 关键词，排名第一点击量降 34.5%。趋势明确但在早期，提前布局别押注</li>
       <li><b>误区二</b>「SEO 做好了 GEO 自然就有」——需要额外品牌建设+内容种草</li>
-      <li><b>误区三</b>「GEO 和 SEO 做一样的事」——外链优先级变了，答案型内容不同（维基百科专属词条与权威媒体最高，社区讨论次之，普通外链价值下降）</li>
+      <li><b>误区三</b>「GEO 和 SEO 做一样的事」——外链优先级变了，答案型内容不同（优先级见下表）</li>
     </ul>
-  </section>
-
-  <section id="s10" class="reveal">
-    <h2>官网施工三词 + 桑老哥直用</h2>
-    <div class="tri3">
-      <div class="t3"><div class="t3-t">可见</div><div class="t3-d">爬虫能抓，关键内容别藏图片/脚本</div></div>
-      <div class="t3"><div class="t3-t">可信</div><div class="t3-d">事实、证据、来源可核验</div></div>
-      <div class="t3"><div class="t3-t">可引用</div><div class="t3-d">对真实问题给清楚完整易摘取的答案</div></div>
-    </div>
-    <div class="card" style="margin-bottom:10px;">
-      <h3 style="margin-top:0;">独立站 / 亚马逊 Listing</h3>
-      <p>前 2000 字给答案、FAQ/结构化数据、权威外链、实体一致。Listing 走商品页 GEO：标题层级清晰、五点描述结构化（每点=一个证据块）、A+ 内容带定义和适用范围——AI 回答「500 元以内通勤耳机」时需要的是参数、对比、适用人群、售后。</p>
-    </div>
-    <div class="card hl">
-      <h3 style="margin-top:0;">个人 IP（桑老哥直用）</h3>
-      <p>sanglaoge.github.io 按三词体检：共学笔记写成「针对真实问题的清楚答案」+来源可核验+结构机器可读——别人问 AI「桑老哥共学笔记」能引用到原文。品牌名、产品名、案例名全平台一致，第三方信源互证。GEO 优化的是概率不是确定结果：30 个高价值提示 × 4 个引擎 × 5 次重复 = 600 条观测，看时间序列变化。</p>
-    </div>
+    <h3>外链优先级（2026 版）</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>优先级</th><th>外链类型</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>最高</td><td>维基百科专属词条</td><td>被当成「实体」引用，是 GEO 的身份证</td></tr>
+        <tr><td>最高</td><td>权威媒体报道</td><td>要持续发，不是一次发完</td></tr>
+        <tr><td>次之</td><td>社区讨论排名</td><td>Reddit / Quora，回答里能被搜到</td></tr>
+        <tr><td>明显下降</td><td>普通外链</td><td>价值下降，别再当主策略使</td></tr>
+      </tbody>
+    </table></div>
   </section>
 
   <section id="s11" class="reveal">
+    <h2>官网施工：三词 + 四步</h2>
+    <p>掏钱前的最后一步，用户会拿 AI 验证品牌——<span class="num">20</span> 万条样本里，官网在<strong>品牌类问题</strong>的引用占 <span class="num">24%</span>（全部引用中 <span class="num">4.28%</span>）。官网要从「给人看的画册」，变成「给 AI 备好标准答案的事实源」。</p>
+    <h3>三词体检</h3>
+    <div class="tri3">
+      <div class="t3"><div class="t3-t">可见</div><div class="t3-d">爬虫能抓，关键内容别藏图片 / 全靠脚本加载</div></div>
+      <div class="t3"><div class="t3-t">可信</div><div class="t3-d">事实、证据、来源可核验</div></div>
+      <div class="t3"><div class="t3-t">可引用</div><div class="t3-d">针对真实问题，给出清楚完整易摘取的答案</div></div>
+    </div>
+    <div class="chain">三词落到工程上就是三层：<b>域名权重 + 可抓取</b>（sitemap、内链、加载速度、可解析 HTML）→ <b>内容网络</b>（从「关于我们」扩成覆盖业务完整问题的知识库）→ <b>证据密度</b>（参数表、流程、价格区间、案例、对比、FAQ、来源）。</div>
+    <h3>生产线四步</h3>
+    <ol class="steps">
+      <li><b>企业事实库</b>——结构化 + 事实性表达。铁律：AI 可以整理事实，但事实必须由企业定义并确认</li>
+      <li><b>问题集</b>——人群 × 决策旅程 × 意图 × 场景四维组合；起步先做 40 个高价值问题：最常问 / 离决策最近 / 证据最全</li>
+      <li><b>页面标准答案</b>——产品页管功能、案例页管证据、对比页管选择、政策页管边界；四原则=结论清楚 / 结构可扫描 / 判断有证据 / 边界和下一步明确</li>
+      <li><b>被发现与测量</b>——Sitemap / Robots → 抓取速度 → 语义 HTML / Schema → 收录 / AI 引用 / 询盘转化</li>
+    </ol>
+    <h3>落地要点</h3>
+    <ul>
+      <li>八步路径跑通再扩大；怕动主站，就用二级域名先开一个 GEO 内容站试水</li>
+      <li>生成可以自动化，<strong>事实标准和发布责任必须有人守</strong>（知识库 / 质检 / 复测三环节）</li>
+      <li>价值外溢：一套事实系统全公司共口径——销售、客服、新员工都吃这一份</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>桑老哥直用</h2>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-top:0;">独立站 / 亚马逊 Listing</h3>
+      <p>前 2000 字给答案、FAQ / 结构化数据、权威外链、实体一致。Listing 走商品页 GEO：标题层级清晰、五点描述结构化（每点 = 一个证据块）、A+ 内容带定义和适用范围——AI 回答「500 元以内通勤耳机」时需要的是参数、对比、适用人群、售后，不只是标题。</p>
+    </div>
+    <div class="card hl">
+      <h3 style="margin-top:0;">个人 IP</h3>
+      <p>sanglaoge.github.io 按三词体检：共学笔记写成「针对真实问题的清楚答案」+ 来源可核验 + 结构机器可读——别人问 AI「桑老哥共学笔记」能引用到原文。品牌名、产品名、案例名全平台一致，第三方信源（论坛 / 评测 / 合作案例）互证。</p>
+    </div>
+    <div class="warn"><b>别拿一次截图当结论：</b>GEO 优化的是概率，不是确定结果——同一个问题，不同账号、地区、模型版本、时间段，答案都可能不同。正确测法是 <b>30 个高价值提示 × 4 个引擎 × 5 次重复 = 600 条观测</b>，看引用率、吸收率、归因准确率、竞品份额的时间序列。一次截图不是反馈，连续观测才是反馈；没有监测，就只能凭体感追技巧。</div>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>多模态 GEO：不只适用于文章</h2>
+    <p>短视频、商品页、图片同样要被工程化。媒介变了，底层逻辑没变——每种媒介都得能让 AI 把证据抽走。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>媒介</th><th>AI 需要的证据结构</th></tr></thead>
+      <tbody>
+        <tr><td><strong>短视频</strong></td><td>清晰标题、字幕文字稿、章节结构、关键数据、来源说明、产品参数、适用 / 不适用场景</td></tr>
+        <tr><td><strong>图片</strong></td><td>图注、alt 文本、上下文说明、图中数据口径</td></tr>
+        <tr><td><strong>商品页</strong></td><td>重量、续航、防水等级、佩戴稳定性、适用 / 不适用人群、售后政策、真实评价摘要、竞品对比</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>本质：</b>让不同媒介拥有同一套证据结构——<b>实体清楚、事实清楚、来源清楚、边界清楚、更新清楚</b>。媒介负责触达用户，结构负责服务 AI。</div>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>效果归因与 ROI：到底该投多少钱 ·核心</h2>
+    <p class="punch">归因的断点在「用户看到 AI 推荐」和「跟企业产生交互」之间——AI 对话里没有链接可跟踪。<span class="hl-w">直接转化只占整体价值的 20%-30%</span>（作者自报），所以直接 ROI &gt; 1 就是纯赚。</p>
+    <h3>价值四块：不止是线索</h3>
+    <div class="e4">
+      <div class="eq"><div class="eq-t">直接转化</div><div class="eq-d">专线专用等可归因线索</div></div>
+      <div class="eq"><div class="eq-t">延迟效应</div><div class="eq-d">品牌词搜索指数抬升；AI 第一提及的优先级高于第三四名</div></div>
+      <div class="eq"><div class="eq-t">渠道协同</div><div class="eq-d">直播间促销与 GEO 同步投放，1 + 1 &gt; 2</div></div>
+      <div class="eq key"><div class="eq-t">间接转化</div><div class="eq-d">AI 推荐 = 背书的 KOL——用户加购后问豆包「这个要不要买」，高客单价高决策场景尤其明显；没做品牌一致性优化，这一环直接丢失</div></div>
+    </div>
+    <h3>三层 ROI：相加才是真实贡献</h3>
+    <div class="roi3">
+      <div class="roi"><div class="ro-n">直接 ROI</div><div class="ro-p">20%-50%</div><div class="ro-d">可归因的那部分</div></div>
+      <div class="roi"><div class="ro-n">增量 ROI · 效果外溢</div><div class="ro-p">30%-60%</div><div class="ro-d">AI 背书带来的认知变化</div></div>
+      <div class="roi"><div class="ro-n">间接贡献 ROI</div><div class="ro-p">10%-40%</div><div class="ro-d">犹豫期问 AI 的那一段</div></div>
+    </div>
+    <p><strong>决策尺</strong>：直接 ROI <span class="num">0.8</span> 可以继续投（整体大概率 &gt; 1）；<span class="num">0.5</span> 看目标——要扩规模就加投入，要追利润就砍词根。越重决策的行业，增量与间接占比越高。以上区间均为作者自报经验值。</p>
+    <h3>十种标记法，分三类</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>类别</th><th>具体做法</th></tr></thead>
+      <tbody>
+        <tr><td><strong>直接追踪</strong></td><td>专属电话（把号码植入 AI 回答的摘要部分效果最好）、专属口令、专属落地页、注册表单问「从哪知道我们」</td></tr>
+        <tr><td><strong>交叉验证</strong></td><td>销售追问、网站日志 Referrer 识别豆包 / DeepSeek 跳转、购后问卷自报</td></tr>
+        <tr><td><strong>对比测试</strong></td><td>地域 A/B（全国地级市分四组，两组做两组不做）、渠道协同对比（固定预算联动直播间看前后）、间接观察（品牌词指数 / 直接访问 / 后端转化率）</td></tr>
+      </tbody>
+    </table></div>
+    <h3>投多少钱：三步加注</h3>
+    <ol class="steps">
+      <li><b>小范围试点</b>——先挑 5 个核心词根</li>
+      <li><b>做好标记</b>——上面三类标记法至少各用一条，否则后面算不清</li>
+      <li><b>看效果再加注</b>——跑顺了再上常态化监测</li>
+    </ol>
+    <p>适用边界：高决策 / 重决策 / 慢决策 / 高客单价行业效果最好（决策越复杂，用户越会触发「让 AI 帮我决策」）。行情价一个词根一季度 <span class="num">5000</span>~<span class="num">3 万</span>（作者自报，看竞争度、行业敏感度、当前排名基础、承诺指标）。</p>
+    <div class="chain"><b>词根级 A/B：</b>A 组词配专线 4001、B 组词配 4002（前提 = 各组词根的排名先优化到一致）——既知道哪类词根值得长期做，又反推得出词根的真实检索量。</div>
+    <h3>四个别被骗</h3>
+    <ul class="myth">
+      <li><b>被推荐 ≠ 有线索</b>——问句没人搜、覆盖人群个位数，选词是学问</li>
+      <li><b>发布越多 ≠ 效果越好</b>——数量不等于效果，质量、相关性、结构性优先</li>
+      <li><b>没有实验条件就别铺开</b>——一两个核心词根做深做透 + 专属电话；大公司先拿 10-20 万试</li>
+      <li><b>点击少 ≠ 没价值</b>——价值在背书、延迟、协同和后端转化率</li>
+    </ul>
+    <div class="warn"><b>「保前三」的承诺不科学：</b>GEO 本质是概率的优化——同一个词、不同账号、不同地区，结果不一样。给客户解释概率性最好的办法：三部手机现场搜同一个词，让结果自己说话。</div>
+    <div class="chain"><b>桑老哥直用：</b>①给跨境客户讲 GEO 时甩这套框架（四特征 + 三层 ROI + 决策尺），比单报「提及率」专业一档；②个人 IP 的间接转化自查——别人问 AI「桑老哥 共学笔记」时 AI 说什么，就是自己「被说对」那一层的价值。</div>
+  </section>
+
+  <section id="s15" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/Tokenmaxxing.html"><span class="rel-t">Tokenmaxxing</span><span class="rel-d">交叉验证在「装配」环节最有效：多来源让 AI 更放心</span></a>
@@ -321,20 +464,22 @@
     <p style="margin-top:10px;"><span style="color:var(--ink-faint)">Customer World Model</span>（Pedro Franceschi 2026-06：让外部 AI 引用你 vs 让自己的 AI 理解客户，两者互补；原词条 2026-09-20 删，思想并入本条）</p>
   </section>
 
-  <section id="s12" class="reveal">
+  <section id="s16" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>子木 SEO/GEO 文章（入门）+《GEO 流量密码：Fan-out Rank》（2026-07-27）+《GEO 排名因子之一：Entity 和主题权重》（2026-09-07）</li>
       <li>姚金刚《GEO 内容工程》公开课三讲（WaytoAGI 2026-06-27 起；第三讲 21 万条 AI 引用数据，2026-07-26）+ 第四次公开课《官网正在成为 GEO 主阵地》（2026-08，2026-09-18 审计并入）</li>
       <li>李相宇 GEO 内容工程第二讲（六要素权重+工程思维，WaytoAGI 2026-06-27）</li>
       <li>拔刀刘《GEO 项目怎么验收好》（2026-09-03，验收三层框架）</li>
+      <li>姚金刚第五次 GEO 公开课《GEO 到底该投多少钱》（2026-09-27，效果归因与 ROI，2026-09-29 并入；区间数字均为作者自报经验值）</li>
+      <li>多模态 GEO 证据结构（短视频 / 图片 / 商品页，GEO 系列方法论的多模态延伸）</li>
       <li>工具：GEOFlow 开源 github.com/yaojingang/GEOFlow</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · 电商设计家族 · GEO生成式引擎优化</p>
-    <p>词条源：concepts(概念库)/电商设计/GEO生成式引擎优化.md（2026-06-28 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/电商设计/GEO生成式引擎优化.md（2026-06-28 建条）· 本页生成 2026-09-22 · 2026-10-27 全节复评补节</p>
   </footer>
 
 </main>
@@ -348,12 +493,16 @@
     <li><a href="#s4">六要素打分卡</a></li>
     <li><a href="#s5">AI 眼中的质量</a></li>
     <li><a href="#s6">21 万条硬数字</a></li>
-    <li><a href="#s7">8 模块+金矿</a></li>
-    <li><a href="#s8">验收三连问 ·核心</a></li>
-    <li><a href="#s9">Entity 四问·格局</a></li>
-    <li><a href="#s10">官网施工·直用</a></li>
-    <li><a href="#s11">关联词条</a></li>
-    <li><a href="#s12">来源</a></li>
+    <li><a href="#s7">工程思维</a></li>
+    <li><a href="#s8">8 模块+金矿</a></li>
+    <li><a href="#s9">验收三连问 ·核心</a></li>
+    <li><a href="#s10">Entity 四问·格局</a></li>
+    <li><a href="#s11">官网施工三词四步</a></li>
+    <li><a href="#s12">桑老哥直用</a></li>
+    <li><a href="#s13">多模态 GEO</a></li>
+    <li><a href="#s14">归因与 ROI ·核心</a></li>
+    <li><a href="#s15">关联词条</a></li>
+    <li><a href="#s16">来源</a></li>
   </ul>
 </aside>
 </div>

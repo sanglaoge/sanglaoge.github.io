@@ -67,6 +67,17 @@
 .imp b { color:var(--fam-deep); }
 .imp .imp-t { display:block; font-weight:700; color:var(--fam-deep); margin-bottom:4px; }
 
+/* 两段路由：粗筛 → 精读 */
+.rt { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .rt { grid-template-columns:1fr 34px 1fr; align-items:stretch; } }
+.rt .r-step {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 16px;
+}
+.rt .r-step.hot { background:var(--fam-soft); border-color:var(--fam-line); }
+.rt .r-t { font-weight:700; font-size:15.5px; color:var(--fam-deep); }
+.rt .r-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; line-height:1.65; }
+.rt .r-ar { display:flex; align-items:center; justify-content:center; color:var(--fam); font-size:20px; font-weight:700; }
+
 /* 动效兜底：敏感用户全关 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -90,7 +101,7 @@
 <main class="main-col" id="top">
 
   <div class="entry-head">
-    <p class="kicker">Skill工程 · 设计总纲：三根支柱</p>
+    <p class="kicker">Skill工程 · 设计总纲：触发、拆合、进化</p>
     <h1>Skill设计方法论</h1>
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
@@ -146,6 +157,48 @@
   </section>
 
   <section id="s4" class="reveal">
+    <h2>外部印证一：判断模型做技能路由（2026-09-22）</h2>
+    <p>支柱一（触发精准）在「skill 太多」那天会撞墙：<strong><span class="num">182</span> 个 skill 里只能选 <span class="num">1</span> 个</strong>（WaytoAGI Jev 十五案例之一）。解法不是把描述写得更长，而是换一条路——先粗筛，再精读。</p>
+    <div class="rt">
+      <div class="r-step">
+        <p class="r-t">第一步 · 便宜粗筛</p>
+        <p class="r-d">用判断模型只看 skill 描述打分，把 182 个收敛到少数候选。不读正文，所以便宜</p>
+      </div>
+      <div class="r-ar" aria-hidden="true">→</div>
+      <div class="r-step hot">
+        <p class="r-t">第二步 · 精读胜出者</p>
+        <p class="r-d">只有入选项才被完整读一遍，再决定触发谁</p>
+      </div>
+    </div>
+    <div class="anchors">
+      <div class="an"><div class="av">182</div><p class="ak">候选 skill</p></div>
+      <div class="an"><div class="av">16.8% → 7.3%</div><p class="ak">错选率</p></div>
+    </div>
+    <div class="imp">
+      <span class="imp-t">启示</span>
+      skill 多到「名字牌」被挤小时，别让大模型逐个精读全文——<b>先便宜粗筛（只看描述打分），再精读胜出者</b>。这与「触发精准」同向，是 less is more 的路由版；判断模型本身见 <a href="../01-ai/System One判断模型.html">System One判断模型</a> 应用篇。
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>外部印证二：模版 vs Skill 分工（2026-09-24）</h2>
+    <p>卡尔 awesome-seedance（<span class="num">463</span> 条 AI 视频提示语实测蒸馏，烧两万复现跑出来的）给了一句最白话的分界：</p>
+    <div class="imp">
+      <span class="imp-t">一句话分界</span>
+      <b>模版是单个镜头的配方，Skill 是整部短片的拍摄手册。</b>模版把一段镜头参数填好、改主体场景就能用；Skill 管拆分镜 / 选模型 / 转场 / 角色一致性整套方法。
+    </div>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>维度</th><th>模版</th><th>Skill</th></tr></thead>
+      <tbody>
+        <tr><td>管到哪一层</td><td>单个镜头：参数填好、换主体场景即用</td><td>整部短片：拆分镜 / 选模型 / 转场 / 角色一致性</td></tr>
+        <tr><td>复用颗粒度</td><td>一次一填</td><td>长期反复调用</td></tr>
+        <tr><td>选择标准</td><td><strong>偶尔做一次 → 模版</strong></td><td><strong>每周做同一类 → Skill</strong></td></tr>
+      </tbody>
+    </table></div>
+    <p>这条与支柱二「结构拆合」同向：<strong>颗粒度按复用频率定</strong>——只做一次就写死成模版，天天做的才值得拆成方法论。具体形态见 <a href="../05-video/AI视频提示语实战.html">AI视频提示语实战</a>。</p>
+  </section>
+
+  <section id="s6" class="reveal">
     <h2>写 skill 前先问一问</h2>
     <div class="imp">
       <span class="imp-t">这个能力该是全局还是项目级？</span>
@@ -153,7 +206,7 @@
     </div>
   </section>
 
-  <section id="s5" class="reveal">
+  <section id="s7" class="reveal">
     <h2>前提与局限</h2>
     <ul>
       <li>总纲是合成方法论（source_type: synthesized · validation: practiced），三支柱之间的优先级依任务而定，不是硬顺序。</li>
@@ -161,7 +214,7 @@
     </ul>
   </section>
 
-  <section id="s6" class="reveal">
+  <section id="s8" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../04-skill/Skills（技能文件）.html"><span class="rel-t">Skills（技能文件）</span><span class="rel-d">Skill 的技术形态与写法九条</span></a>
@@ -172,17 +225,19 @@
     </div>
   </section>
 
-  <section id="s7" class="reveal">
+  <section id="s9" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>黄叔 Skill 系列（复杂 Skill 先拆后合等，reviewed 2026-04-19）</li>
       <li>GoalPro 实战（目标契约与五个闸门 §prompt-only 案例，reviewed）</li>
+      <li>WaytoAGI Jev 十五案例之一：<span class="num">182</span> 个 skill 的判断模型路由（2026-09-22，错选率 16.8% → 7.3%）</li>
+      <li>卡尔 awesome-seedance（<span class="num">463</span> 条 AI 视频提示语实测蒸馏；模版 vs Skill 分工，2026-09-24）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · Skill工程家族 · Skill设计方法论</p>
-    <p>词条源：concepts(概念库)/Skill工程/Skill设计方法论.md（2026-09-18 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/Skill工程/Skill设计方法论.md（2026-09-18 建条）· 本页生成 2026-09-22 · 2026-10-27 补节</p>
   </footer>
 
 </main>
@@ -193,10 +248,12 @@
     <li><a href="#s1">核心洞见</a></li>
     <li><a href="#s2">三根支柱 ·核心</a></li>
     <li><a href="#s3">铁柱家实践锚点</a></li>
-    <li><a href="#s4">写前先问</a></li>
-    <li><a href="#s5">前提与局限</a></li>
-    <li><a href="#s6">关联词条</a></li>
-    <li><a href="#s7">来源</a></li>
+    <li><a href="#s4">印证一：技能路由</a></li>
+    <li><a href="#s5">印证二：模版 vs Skill</a></li>
+    <li><a href="#s6">写前先问</a></li>
+    <li><a href="#s7">前提与局限</a></li>
+    <li><a href="#s8">关联词条</a></li>
+    <li><a href="#s9">来源</a></li>
   </ul>
 </aside>
 </div>

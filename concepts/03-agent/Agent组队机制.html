@@ -88,6 +88,47 @@
 }
 .warn b { color:#92400e; }
 
+/* 两家官方结论（默认单干） */
+.std2 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:768px) { .std2 { grid-template-columns:1fr 1fr; } }
+.std2 .sd {
+  background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam);
+  border-radius:var(--r-el); padding:12px 16px;
+}
+.std2 .sd-n { font-size:14.5px; font-weight:700; color:var(--fam); }
+.std2 .sd p { font-size:15px; line-height:1.75; margin:6px 0 0; color:var(--g8); }
+
+/* 编号判据 / 操作细节 */
+.crit { list-style:none; padding-left:0; margin:14px 0; counter-reset:cr; }
+.crit li {
+  counter-increment:cr; position:relative; padding:9px 0 9px 40px;
+  border-bottom:1px solid var(--line); font-size:15.5px; line-height:1.75; color:var(--g8);
+}
+.crit li:last-child { border-bottom:none; }
+.crit li::before {
+  content:counter(cr); position:absolute; left:0; top:9px; width:25px; height:25px; line-height:25px;
+  text-align:center; border-radius:50%; background:var(--fam); color:#ffffff;
+  font-size:14px; font-weight:700;
+}
+
+/* 记忆边界：共享 vs 各自独立 */
+.memo { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:640px) { .memo { grid-template-columns:1fr 1fr; } }
+.memo .m-card {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:12px 16px;
+}
+.memo .m-card.share { background:var(--fam-soft); border-color:var(--fam-line); }
+.memo .m-t { font-weight:700; font-size:15.5px; color:var(--fam-deep); }
+.memo .m-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; line-height:1.65; }
+
+/* 反向判据 */
+.judge {
+  border-left:4px solid var(--fam); background:var(--fam-soft);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:12px 16px; margin:16px 0;
+  font-size:15.5px; line-height:1.8; color:var(--g8);
+}
+.judge b { color:var(--fam-deep); }
+
 /* 动效兜底：敏感用户全关 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -111,7 +152,7 @@
 <main class="main-col" id="top">
 
   <div class="entry-head">
-    <p class="kicker">Agent自动化 · 多 Agent 协作的真实瓶颈在「协作语义」</p>
+    <p class="kicker">Agent自动化 · 真实瓶颈在「协作语义」，官方默认答案是先别组队</p>
     <h1>Agent组队机制</h1>
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
@@ -124,7 +165,7 @@
   <section id="s1" class="reveal">
     <h2>一句话说清楚</h2>
     <blockquote>
-      现在的 AI 组队是「包工头派活」——Leader 当分发器、成员互相隔离。该学真团队：懂业务能兜底、好好说话、先商量再开工、成员互相通气。
+      现在的 AI 组队是「包工头派活」——Leader 当分发器、成员互相隔离。该学真团队：懂业务能兜底、好好说话、先商量再开工、成员互相通气。反过来的官方共识（2026-10 补）：<strong>默认单干，拿不出理由别组队。</strong>
     </blockquote>
     <div class="headline">
       <p class="hl-n">砍掉协作机制，<span class="num">20</span> 个 Agent 干活 = <span class="num">1</span> 个 Agent</p>
@@ -216,6 +257,92 @@
   </section>
 
   <section id="s6" class="reveal">
+    <h2>组不组队：两家官方怎么说 ·核心</h2>
+    <p>这一节补的是反面：上面讲的都是「怎么组好」，而两家官方文档给的第一句都是<strong>先别组</strong>。</p>
+    <div class="std2">
+      <div class="sd">
+        <p class="sd-n">LangChain · 2026-01-15</p>
+        <p>从单智能体开始，先加工具，再加智能体。</p>
+      </div>
+      <div class="sd">
+        <p class="sd-n">Anthropic · 2026-10-22</p>
+        <p>带技能的单智能体，质量往往优于子智能体设计，成本和延迟通常更低。</p>
+      </div>
+    </div>
+    <h3>四条判据：拿不出任何一条，就别开子智能体</h3>
+    <ol class="crit">
+      <li>单循环因上下文膨胀，出现<strong>可衡量的</strong>性能下降</li>
+      <li>多个任务需要在全新窗口并行，干完即弃</li>
+      <li>单个智能体<strong>选不准工具</strong></li>
+      <li>系统提示词里有<strong>互相冲突的指令</strong></li>
+    </ol>
+    <h3>选型表：四种需求换四种架构</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>你的需求</th><th>该用哪种</th><th>关键代价</th></tr></thead>
+      <tbody>
+        <tr><td>多个不同领域（日历 / 邮件 / CRM），要并行执行</td><td><strong>子智能体</strong>（主管集中编排）</td><td>结果要多绕一道回主管，每轮多一次模型调用</td></tr>
+        <tr><td>一个智能体多种专业，轻量组合</td><td><strong>技能</strong></td><td>上下文累积，多领域时 token 最贵</td></tr>
+        <tr><td>带状态转换的顺序流程，全程与用户对话</td><td><strong>交接</strong></td><td>必须顺序执行，无法并行</td></tr>
+        <tr><td>不同垂直领域，并行查多源再综合</td><td><strong>路由器</strong></td><td>无状态，每次重复付路由开销</td></tr>
+      </tbody>
+    </table></div>
+    <p>注意这张表读法：<strong>技能是默认档</strong>，子智能体只在「多领域 + 要并行 + 结果可汇总」时赢；否则多花的每一次调用都是纯成本。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>组队的账：三个数字与四个坑</h2>
+    <p>两家都给实测数字，账不是按「谁更强」算，是按场景算：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>场景</th><th>单智能体路线</th><th>子智能体</th></tr></thead>
+      <tbody>
+        <tr><td>一次性请求</td><td>技能 / 交接 / 路由器各 <span class="num">3</span> 次模型调用</td><td><span class="num">4</span> 次</td></tr>
+        <tr><td>同一请求第二轮</td><td>技能与交接降到 <span class="num">2</span> 次（<strong>省 40%</strong>）</td><td>恒定 <span class="num">4</span> 次</td></tr>
+        <tr><td>多领域查询（比较三种语言）</td><td>技能 3 次 / <span class="num">15K</span> token</td><td>5 次 / <span class="num">9K</span> token（<strong>少 67%</strong>）</td></tr>
+      </tbody>
+    </table></div>
+    <p>最狠的一条来自企业客户对比：拿自家多智能体框架跟单智能体循环比，<strong>后者快约 2 倍</strong>。也就是说，组队只在「本来就必须并行」的活上划算。</p>
+    <h3>四个失败模式：组织问题投影成架构</h3>
+    <div class="flaws">
+      <div class="flaw"><span class="f-t">上下文交接有损</span><p class="f-d">每传一次手，信息掉一层</p></div>
+      <div class="flaw"><span class="f-t">子智能体泛滥</span><p class="f-d">每团队一个，几百个重叠、无主</p></div>
+      <div class="flaw"><span class="f-t">弗兰肯提示词</span><p class="f-d">各团队各加一句，规则互相打架</p></div>
+      <div class="flaw"><span class="f-t">评估被稀释</span><p class="f-d">各自过拟合自己那一格，整体没人看</p></div>
+    </div>
+    <div class="warn">Anthropic 的原话意思：<b>架构成了组织架构图的翻版——康威定律。</b>你公司怎么分组，你的 Agent 就怎么分裂。</div>
+    <h3>三条操作细节（都是踩过坑换来的）</h3>
+    <ol class="crit">
+      <li><strong>按上下文划分，不按问题类型划分</strong>——按问题分就变成传话游戏，每交接一次失真一次；好的切法是独立研究路径 / 接口清晰的组件 / 黑盒验证</li>
+      <li><strong>折叠要一次一个，用端到端评估对比</strong>——他们踩过：折完延迟降了，却弄坏正常流程（主智能体手里有订单查询工具就自己答了，没去问物流专家要交货日期），而且这种破坏<strong>两次运行只出现一次</strong>，评估必须跑多次</li>
+      <li><strong>工具定义超 30~50 个，工具选择开始退化</strong>——用延迟加载的工具搜索压住数量</li>
+    </ol>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>分角色的真正理由：记忆边界 ·核心</h2>
+    <p>上一节回答「组不组」，这一节回答「真要拆，按什么拆」。2026-10-26 补进的硅谷 101 那篇给了个更实用的答案。</p>
+    <p>Grok Bot 设计师郑芃的原话意思：人类团队分工是因为专业不同；Agent 团队分出一个「设计师 Bot」、一个「客户沟通 Bot」，<strong>关键不在专业能力，在记忆边界</strong>——</p>
+    <div class="memo">
+      <div class="m-card share">
+        <p class="m-t">技能插件：共享</p>
+        <p class="m-d">同一套工具、同一套技能，谁都能调，不重复装</p>
+      </div>
+      <div class="m-card">
+        <p class="m-t">记忆与偏好：各自独立</p>
+        <p class="m-d">把同一类工作的上下文封在一个 Bot 里，避免「上下文污染」——另一个项目的特例跑来干扰眼前判断</p>
+      </div>
+    </div>
+    <div class="judge">
+      判据反过来用：<b>两件事需要记的东西高度重叠，就别拆成两个 Agent；记的东西完全不相干，才值得拆。</b>角色是整理记忆的一种手段——一类工作长期交给同一个 Bot，它才攒得下经验，你也不用每次重讲背景。
+    </div>
+    <h3>同一篇给的两个反例：不是出错，是授权</h3>
+    <ul>
+      <li>Instinct 查航班条款时，直接把航班取消了，损失 <span class="num">300</span> 美元</li>
+      <li>Muse 卖键盘时，未经同意让买家上门取货，收货差评</li>
+    </ul>
+    <div class="warn">问题不在 Agent 的出错率，<b>在用户根本没意识到自己授了多少权限。</b>组队拆得越细，权限碎片越多，越需要一张「谁能动什么」的清单。</div>
+  </section>
+
+  <section id="s9" class="reveal">
     <h2>桑老哥直用</h2>
     <ul>
       <li>给铁柱派活用启发式：「这图你有想法放开试，拿不准我们聊」好过「把这图做一下」——同一规律</li>
@@ -224,7 +351,7 @@
     </ul>
   </section>
 
-  <section id="s7" class="reveal">
+  <section id="s10" class="reveal">
     <h2>前提与局限</h2>
     <ul>
       <li>多 Agent 不是越多越好：每多一层协作就多一层延迟、费用和信息损耗（与 Agent工程规范误区三互证）</li>
@@ -233,7 +360,7 @@
     </ul>
   </section>
 
-  <section id="s8" class="reveal">
+  <section id="s11" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">组队的主角：单 Agent 是什么</span></a>
@@ -244,16 +371,19 @@
     </div>
   </section>
 
-  <section id="s9" class="reveal">
+  <section id="s12" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>蒋泽林（林曜）《从 ReAct 到 Agent Teams：一个工程师视角的 Agent 协作机制思考》（公众号「千问AI平台」，2026-08-31，引 <span class="num">7</span> 篇 arXiv 论文；WaytoAGI 飞书转载 P6p1wDQ3yipgrUk6KEEcuTU5nIb）</li>
+      <li>LangChain / Sydney Runkle《选择正确的多智能体架构》（2026-01-15，WaytoAGI 转载 F5oawTaaIi6wWrk1BWncA8xznwc）</li>
+      <li>Anthropic / Diane Sarkis《构建智能体：何时将子智能体整合进主智能体循环》（2026-10-22，WaytoAGI 转载 IpFRw4RSpiq2yOk9P2Ic2aZLnmf）</li>
+      <li>硅谷 101《AI 助理争夺战：解析 Muse、Grok Bot 与 Instinct 背后的产品布局、入口生意与盈利难题》（2026-10-24，补「分工=记忆边界」与授权边界两反例）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · Agent自动化家族 · Agent组队机制</p>
-    <p>词条源：concepts(概念库)/Agent与自动化/Agent组队机制.md（2026-09-01 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/Agent与自动化/Agent组队机制.md（2026-09-01 建条）· 本页生成 2026-09-22 · 2026-10-27 补节</p>
   </footer>
 
 </main>
@@ -266,10 +396,13 @@
     <li><a href="#s3">五问五答</a></li>
     <li><a href="#s4">好领导四条+三步开工 ·核心</a></li>
     <li><a href="#s5">启发式管理 ·核心</a></li>
-    <li><a href="#s6">桑老哥直用</a></li>
-    <li><a href="#s7">前提与局限</a></li>
-    <li><a href="#s8">关联词条</a></li>
-    <li><a href="#s9">来源</a></li>
+    <li><a href="#s6">组不组队 ·核心</a></li>
+    <li><a href="#s7">三个数字·四个坑</a></li>
+    <li><a href="#s8">记忆边界 ·核心</a></li>
+    <li><a href="#s9">桑老哥直用</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
   </ul>
 </aside>
 </div>

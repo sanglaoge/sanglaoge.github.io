@@ -104,6 +104,32 @@
 }
 .chain b { color:var(--fam-deep); }
 
+/* 四层依赖图 */
+.dep { margin:18px 0 6px; }
+.dep svg { width:100%; height:auto; display:block; }
+.dep .bx { fill:var(--g0); stroke:var(--fam-line); stroke-width:1.6; }
+.dep .bx-base { fill:var(--fam-deep); stroke:var(--fam-deep); }
+.dep .ar { stroke:var(--fam); stroke-width:2; fill:none; }
+.dep .arb { stroke:var(--fam-line); stroke-width:1.8; fill:none; }
+.dep .mk { fill:var(--fam); }
+.dep .mk2 { fill:var(--fam-line); }
+.dep .t { fill:var(--g9); font-size:15px; font-weight:700; font-family:var(--font-body); }
+.dep .t-b { fill:#ffffff; }
+.dep .s { fill:var(--ink-faint); font-size:14.5px; font-family:var(--font-body); }
+.dep .s-b { fill:var(--fam-soft); }
+
+/* 一手实证条目 */
+.evid { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:768px) { .evid { grid-template-columns:1fr 1fr; } }
+.ev {
+  background:var(--g0); border:1px solid var(--line); border-left:3px solid var(--fam-line);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:11px 16px;
+}
+.ev.key { border-left-color:var(--fam); background:var(--fam-soft); }
+.ev .ev-t { font-weight:700; font-size:15.5px; color:var(--ink); }
+.ev .ev-d { font-size:14.5px; color:var(--ink-soft); margin-top:4px; line-height:1.65; }
+.ev .ev-d b { color:var(--fam-deep); }
+
 /* 动效兜底 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -280,6 +306,54 @@
   </section>
 
   <section id="s7" class="reveal">
+    <h2>四层的依赖关系</h2>
+    <p>四层不是并列清单，是一条有方向的链——而且最底层会反向喂养上面两层：</p>
+    <div class="dep">
+      <svg viewBox="0 0 680 300" role="img" aria-label="四层依赖图：第一层方向向下到第二层组织、第三层技术、第四层隐性知识；第四层反向喂养第二层与第三层">
+        <defs>
+          <marker id="da" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk"/>
+          </marker>
+          <marker id="db" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="mk2"/>
+          </marker>
+        </defs>
+
+        <rect class="bx" x="110" y="8" width="380" height="52" rx="9"/>
+        <text class="t" x="300" y="32" text-anchor="middle">第一层 · 做什么方向</text>
+        <text class="s" x="300" y="50" text-anchor="middle">Sam Altman Test</text>
+
+        <rect class="bx" x="110" y="76" width="380" height="52" rx="9"/>
+        <text class="t" x="300" y="100" text-anchor="middle">第二层 · 公司长什么样</text>
+        <text class="s" x="300" y="118" text-anchor="middle">AI Loop 五层架构</text>
+
+        <rect class="bx" x="110" y="144" width="380" height="52" rx="9"/>
+        <text class="t" x="300" y="168" text-anchor="middle">第三层 · 技术怎么实现</text>
+        <text class="s" x="300" y="186" text-anchor="middle">循环工程</text>
+
+        <rect class="bx-base" x="110" y="212" width="380" height="52" rx="9"/>
+        <text class="t t-b" x="300" y="236" text-anchor="middle">第四层 · 第一步干什么</text>
+        <text class="s s-b" x="300" y="254" text-anchor="middle">隐性知识显式化（燃料）</text>
+
+        <line class="ar" x1="300" y1="60" x2="300" y2="74" marker-end="url(#da)"/>
+        <line class="ar" x1="300" y1="128" x2="300" y2="142" marker-end="url(#da)"/>
+        <line class="ar" x1="300" y1="196" x2="300" y2="210" marker-end="url(#da)"/>
+
+        <path class="arb" d="M 490 224 C 640 224, 640 102, 496 102" stroke-dasharray="6 5" marker-end="url(#db)"/>
+        <path class="arb" d="M 110 240 C 24 240, 24 170, 104 170" stroke-dasharray="6 5" marker-end="url(#db)"/>
+      </svg>
+    </div>
+    <p class="stack-cap">实线 = 逐层依赖往下；虚线 = 第四层的产出反向喂养：知识喂回第二层、skills 写入第三层</p>
+    <ul>
+      <li><strong>第一层过滤方向</strong>：不做什么，比做什么更重要</li>
+      <li><strong>第二层定义形态</strong>：AI-native 公司的组织 DNA</li>
+      <li><strong>第三层提供实现</strong>：循环工程把五层 Loop 落地</li>
+      <li><strong>第四层提供燃料</strong>：没有隐性知识显式化，Loop 没东西可以转</li>
+      <li>第四层的结果<strong>反向喂养</strong>第二层与第三层——这也是为什么它是"第一次动手该做的事"，而不是收尾工作</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
     <h2>机会窗口（2026-09-15 Stripe×Replit 对谈并入）</h2>
     <p>Stripe 平台一手观察：AI 把"做出来"的门槛打掉了，难的部分换成获客与经营。</p>
     <div class="stats">
@@ -291,7 +365,7 @@
     <div class="chain"><b>清醒话：</b>价值不会自动全归模型公司——"价格和价值会流向稀缺的东西"，模型不稀缺，懂行+信任才稀缺；代码可复制，客户网络复制不走。"一个需求不够大到让全球平台下场，并不妨碍它成为一个人的真实生意。"桑老哥起手式：设计重复活 → 小工具 → 真实用户付费验证。</div>
   </section>
 
-  <section id="s8" class="reveal">
+  <section id="s9" class="reveal">
     <h2>build 越快，债务越快（实战验证）</h2>
     <p>AI 加速 building，但没让维护成本消失。Muji（Seede AI co-founder）《AI 创业第一年复盘》的血泪账：</p>
     <div class="tbl-scroll"><table class="tbl">
@@ -307,7 +381,43 @@
     <div class="chain"><b>核心洞察：</b>AI coding 解决 one-time building，没解决 keep it running。护城河不在"生成更多东西"，而在"把生成的东西安全、稳定、长期地变成业务资产"。如果产品能力完全因为模型牛逼而牛逼，那就是模型的功劳。</div>
   </section>
 
-  <section id="s9" class="reveal">
+  <section id="s10" class="reveal">
+    <h2>组织层一手实证：卡兹克 5 天 AI 化改造</h2>
+    <p>上面第二层是推演，这里是一手样本：30 人 AI 媒介 / MCN 公司（虚实传媒）国庆 5 天的实操记录。它的起点很典型——<strong>全员早已 Vibe Coding</strong>（财务给商务做开票助手，打通项目表 + 飞书机器人通知），却卡在<strong>应用部署、权限、分发</strong>三件事上。创始人的解法是租一台服务器，自建「以 Agent 操作为原生、飞书数据为基建」的企业中台。</p>
+    <div class="evid">
+      <div class="ev key">
+        <p class="ev-t">平台 MCP 化（最值钱一招）</p>
+        <p class="ev-d">中台开两扇门：<b>浏览器门给人，MCP 门给 Agent</b>。发段 Prompt 给自己的 Claude / Codex 就装上了中台 MCP（飞书登录 = 权限，本质是 Agent 往自己配置里写一行），再一句话完成隔离部署 + 自动子域名 + 权限范围问答。部署 / 权限 / 分发三大难，塌缩成「跟 Agent 说一句话」。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-t">Agent 原生是双刃</p>
+        <p class="ev-d">首页千人千面，但全无人工配置界面——只能让 Agent 按品牌 VI + 组件规范去改；<b>不用 Agent 的人寸步难行</b>（作者自认）。系统默认「人人带 Agent 上班」，这既是形态的前提，也是排斥力。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-t">三层复用飞书</p>
+        <p class="ev-d">身份 / 数据 / 权限全复用、不重造，自建只做最外层壳。冷知识：飞书工作台可整体指向自家网址（铁柱已核：官方「定制工作台」/ 网页应用路径，效果成立，「整个替换」的说法略美化）。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-t">顺序实证：先清屎山，再上 AI</p>
+        <p class="ev-d">多维表格里多年的人工错误，让 Agent 暴力推演规则 → 出异常项清单 → 团队统一口径 → 一次清完；之后数据全由 Agent 维护。（与同日栗子智培篇互证：业务版 + 组织版一天双证）</p>
+      </div>
+      <div class="ev">
+        <p class="ev-t">迭代节奏</p>
+        <p class="ev-d">1 小时开发 → 15 分钟吐槽会（飞书录音转文字）→ 扔回 Claude → 30 分钟修完上线。「事务性且机械的工作，能不让人做就不让人做。」</p>
+      </div>
+      <div class="ev">
+        <p class="ev-t">冷水两瓢（评论区）</p>
+        <p class="ev-d"><b>维护债</b>：做应用的人走了谁管、人人重造用谁的；<b>一把手工程</b>：30 人全员会 Vibe Coding 是前提，作者自认「除了创始人没人短期推得动」，大公司读者集体吐槽「数据出不来 / 没 token 复刻不了」。</p>
+      </div>
+    </div>
+    <div class="story">
+      <span class="st-tag">桑老哥部门对照（2026-10-10 追问补讲）</span>
+      <p>部门 6-7 人基本不用 AI，所以只取「复用飞书」这一条思路：①定制工作台收拢部门入口（管理员权限已有）②做一个零 AI 门槛的小工具——「一人做、大家用」是不用 AI 团队唯一可行的路线 ③动手前先理乱麻。服务器与 MCP 门不碰：同事不用 AI，门开了没人走，维护债全压在一个人身上。</p>
+      <p>0 到 1 教程五步（万涂幻象《卡兹克的飞书工作台是怎么搭的？》，WaytoAGI wiki 2026-10-12 轻记）：后台建工作台（先圈自己）→ 15 模板起步 → 编辑器加小组件 / 拖布局 → 预览 → 发布启用，跑顺再扩可见范围。</p>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
     <h2>前提与局限</h2>
     <ul>
       <li>面向 AI 创业 / 技术团队；"业务上下文变重"的思路对个人同样通用</li>
@@ -318,7 +428,7 @@
     </ul>
   </section>
 
-  <section id="s10" class="reveal">
+  <section id="s12" class="reveal">
     <h2>桑老哥适用：四条业务线对号</h2>
     <div class="tbl-scroll"><table class="tbl">
       <thead><tr><th>业务线</th><th>四层模型怎么用</th></tr></thead>
@@ -331,7 +441,7 @@
     </table></div>
   </section>
 
-  <section id="s11" class="reveal">
+  <section id="s13" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">第三层"技术怎么实现"的详细框架</span></a>
@@ -343,7 +453,7 @@
     </div>
   </section>
 
-  <section id="s12" class="reveal">
+  <section id="s14" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>AI-native 服务公司三法则（Sam Altman / YC 相关，2026-06 共学）</li>
@@ -357,7 +467,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · 思维模型家族 · AI-native创业公司的完整图景</p>
-    <p>词条源：concepts(概念库)/思维模型/AI-native创业公司的完整图景.md（2026-06-23 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/思维模型/AI-native创业公司的完整图景.md（2026-06-23 建条）· 本页生成 2026-09-22 · 2026-10-27 补节</p>
   </footer>
 
 </main>
@@ -365,18 +475,20 @@
 <aside class="side" aria-label="章节导航">
   <p class="toc-t">本页章节</p>
   <ul class="toc" id="toc">
-    <li><a href="#s1">核心洞见</a></li>
-    <li><a href="#s2">四层模型总览</a></li>
-    <li><a href="#s3">第一层：方向</a></li>
-    <li><a href="#s4">第二层：组织</a></li>
-    <li><a href="#s5">第三层：技术</a></li>
-    <li><a href="#s6">第四层：基础</a></li>
-    <li><a href="#s7">机会窗口</a></li>
-    <li><a href="#s8">债务警报</a></li>
-    <li><a href="#s9">前提与局限</a></li>
-    <li><a href="#s10">桑老哥适用</a></li>
-    <li><a href="#s11">关联词条</a></li>
-    <li><a href="#s12">来源</a></li>
+    <li><a href="#s1">一句话</a></li>
+    <li><a href="#s2">四层总览</a></li>
+    <li><a href="#s3">一 · 做什么方向</a></li>
+    <li><a href="#s4">二 · 公司长什么样</a></li>
+    <li><a href="#s5">三 · 技术怎么实现</a></li>
+    <li><a href="#s6">四 · 第一步干什么</a></li>
+    <li><a href="#s7">四层的依赖关系</a></li>
+    <li><a href="#s8">机会窗口</a></li>
+    <li><a href="#s9">build 快，债务快</a></li>
+    <li><a href="#s10">实证：卡兹克 5 天</a></li>
+    <li><a href="#s11">前提与局限</a></li>
+    <li><a href="#s12">桑老哥适用</a></li>
+    <li><a href="#s13">关联词条</a></li>
+    <li><a href="#s14">来源</a></li>
   </ul>
 </aside>
 </div>
