@@ -258,6 +258,59 @@
   </section>
 
   <section id="s10" class="reveal">
+    <h2>外部实证一：批准拦不住，不可用才是真保护</h2>
+    <p>来源：Yarchi《AI Agent 的 5 个层次：从单一提示词到生产级智能体》（@undefinedKi，2026-09-28，2026-10-10 并入）。用"新员工比喻"把上下文 / 循环 / Jev / Harness / 评估五层串成一体，四层已学词条全部对上号——这是主线第三次外部印证。</p>
+
+    <div class="case2">
+      <div class="card">
+        <h3>批准提示基本是安慰剂</h3>
+        <p class="case-stat">93%<small>实测：人们 93% 的时间会点同意</small></p>
+        <p>所以"弹出确认框"几乎拦不住事故。真正的保护是<strong>根本不可用的操作</strong>：没有删除权限的用户、只读数据库、限定单一仓库的令牌。</p>
+      </div>
+      <div class="card">
+        <h3>有效性排序（从强到弱）</h3>
+        <p><strong>够不到 &gt; 停下来问 &gt; 提示词里写一句"别删"</strong></p>
+        <p>这是红黄绿灯体系的外部实证——绿灯 = 不可达设计，红灯 = 停下来问，而"提示词里写规矩"连黄灯都算不上。CLAUDE.md 教规矩 + Hook 拦动作的双保险，正好覆盖前两档。</p>
+      </div>
+    </div>
+
+    <div class="warn"><b>还有一个必答项——闸门自己挂了是开门还是关门：</b>判官服务不可用、超时、返回乱码时，默认必须是保守回退（转人 / 拒绝），不能默认放行。<b>fail-closed &gt; fail-open</b>。（2026-10-20 补，源：Jev 中文综述《如何使用 Jev 重构 Agent 的运行框架》）</div>
+
+    <h3>脚手架赌注会过期</h3>
+    <p>约束的每一部分都在押注"模型做不到某事"，模型升级会让赌注作废——Anthropic 在一次模型升级后删掉了一整个防护组件。规矩：<strong>每隔几个月重读脚手架，删掉模型已超越的部分</strong>。这与 skill 年检（26 条年检项）完全同构，是独立信源互证：防护不是搭完就完，是持续对账的活。</p>
+
+    <h3>换壳增值的第三组独立证据</h3>
+    <p>LangChain 冻结模型只改 Harness，同一基准移动 <span class="num">13.7 分</span>；再围绕便宜 10 倍的开放模型调优 Harness，追到 <span class="num">0.86</span> vs Opus 4.8 的 <span class="num">0.87</span>。加上 Anthropic 只改容器资源就动 6 分。与 Floatboat"贵 57 倍五项全输"、Composio"同模型换壳成本差 2 倍"合成三组独立证据链：<strong>HLR 不只量质量，还量钱包。</strong></p>
+
+    <div class="motto">你"脚手架"的每一部分都押注于模型无法做到某事，而这些赌注会过期。</div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>外部实证二：学术侧三道同向证据</h2>
+    <p>来源：DAIR.AI《本周精选 AI 论文》（2026-10-19，10 篇里 3 篇直指 Harness，2026-10-20 并入）。<strong>数字全部取自该摘要、本轮未核原论文</strong>，标 <span style="color:var(--ink-faint)">[待核实]</span>；但三篇方向一致，可当趋势证据用。</p>
+
+    <div class="six">
+      <div class="sc6">
+        <b>LongHarness · 同模型只换壳</b>
+        <p>上海 AI Lab / 复旦等，面向 1 亿 token 级语料。同一个 GLM-5.3-Flash 什么都不改，只把「检索到的证据」和「当前结论」当<strong>显式状态</strong>存起来、不让它们混进不断膨胀的聊天历史：OfficeQA Pro 精确匹配 <strong>15.8% → 60.2%</strong>（V2 版 4.4% → 61.1%）；比 Claude Code 高 12.0 分、比 Codex 高 18.9 分；换 Qwen3.8-Flash 同样到 61.7%。<span style="color:var(--ink-faint)">[待核实]</span></p>
+      </div>
+      <div class="sc6">
+        <b>Harness² · 没有标准答案也能自己改</b>
+        <p>Google Cloud AI Research / 西北大学，即插即用。开放任务没有 ground-truth 检查器，就用<strong>对比式 Propose-Probe-Compose</strong>：提多个改法 → 互相测试 → 留效果最好的组合。单步操作 WorkBuddy-Bench 最高 +11.5 分、LAB +11.8 分；并行跑 5 个候选再 +2.9~3.9 分。对照的 ReasoningBank 在编码任务上反而比基础框架低 6.6 分——<strong>堆记忆不等于堆能力</strong>。<span style="color:var(--ink-faint)">[待核实]</span></p>
+      </div>
+      <div class="sc6">
+        <b>ReHarness · 记忆只写不改会害人</b>
+        <p>MIT / Meta / 耶鲁。常见记忆框架只做前向写入：经验进了库，永远没人回头验证它有没有用。ReHarness 加了<strong>后向修正</strong>——每个任务做完，用实际轨迹反过来重写当初被召回的那几条反思。严格在线（无回放缓冲、无验证集），靠增删保持库干净不够，得按"这条经验到底帮没帮上忙"来改。<span style="color:var(--ink-faint)">[待核实]</span></p>
+      </div>
+    </div>
+
+    <p>前几组证据都是"不同产品比"，LongHarness 这组是<strong>同模型只换壳</strong>，把"框架定成败"钉得最死。它顺手命名了两个可直接拿来诊断自己长会话的病根：<strong>无界探索</strong>（检索不断加长历史却没补上真正缺的那块）、<strong>证据状态漂移</strong>（早期证据或后来的修正，没能传到当前结论上）。</p>
+    <p>落到桑老哥手上：这条的解法就是<strong>学习账本 + 概念词条</strong>——结论写进文件当显式状态，不靠聊天记录活着。而 ReHarness 那条更直接：<strong>错题本和词条也需要回改</strong>，只写不修的记忆时间一长就是负资产。</p>
+
+    <div class="motto">同一个大脑，换个壳子能从 15.8 分走到 60.2 分；壳子还能自己改自己；但壳子里的经验若不许回头改，攒得越多越拖后腿。</div>
+  </section>
+
+  <section id="s12" class="reveal">
     <h2>边界</h2>
     <ul>
       <li>Harness 不是 MCP 那种统一协议，是各家自研的工程层，暂无行业标准</li>
@@ -266,7 +319,7 @@
     </ul>
   </section>
 
-  <section id="s11" class="reveal">
+  <section id="s13" class="reveal">
     <h2>桑老哥适用</h2>
     <ul>
       <li>你做视频/写 Listing/做设计，AI 跑偏不是模型笨，是你（或工具）没搭好「拽回标准」的机制</li>
@@ -276,7 +329,7 @@
     </ul>
   </section>
 
-  <section id="s12" class="reveal">
+  <section id="s14" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">四层里的 Agent Loop 层</span></a>
@@ -290,7 +343,7 @@
     </div>
   </section>
 
-  <section id="s13" class="reveal">
+  <section id="s15" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>机器之心《贵57.1倍的Claude Opus 4.8五项全输，赢它的不是模型，是Harness》（2026-08-08）</li>
@@ -304,7 +357,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Harness</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/Harness.md（2026-08-11 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Harness.md（2026-08-11 建条）· 本页生成 2026-10-27</p>
   </footer>
 
 </main>
@@ -321,10 +374,12 @@
     <li><a href="#s7">四问诊断</a></li>
     <li><a href="#s8">DSH 与四种壳</a></li>
     <li><a href="#s9">川处安轻记</a></li>
-    <li><a href="#s10">边界</a></li>
-    <li><a href="#s11">桑老哥适用</a></li>
-    <li><a href="#s12">关联词条</a></li>
-    <li><a href="#s13">来源</a></li>
+    <li><a href="#s10">实证一：批准拦不住</a></li>
+    <li><a href="#s11">实证二：学术三道</a></li>
+    <li><a href="#s12">边界</a></li>
+    <li><a href="#s13">桑老哥适用</a></li>
+    <li><a href="#s14">关联词条</a></li>
+    <li><a href="#s15">来源</a></li>
   </ul>
 </aside>
 </div>

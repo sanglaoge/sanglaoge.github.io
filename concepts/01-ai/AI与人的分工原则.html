@@ -272,6 +272,7 @@
           <li><strong>执行与判断解耦</strong>：过去绑死（会 Blender 就是懂 3D），现在执行层贬值、判断层升值</li>
           <li><strong>GUI 成为 Agent 时代的通用 API</strong>：AI 直接学会用软件本身</li>
           <li><strong>吊诡悖论</strong>：判断力偏偏是从执行里磨出来的——结果可以压缩，人的成长压缩不了（与吴恩达"AI 交作业不等于学会"同构互证）</li>
+          <li><strong>塔尖实证（2026-10-12）</strong>：DeepSeek 23 岁算子工程师刘胜与（北大图灵班，写 DeepSeek v4.1 主 Attention 算子）自述——一年前 AI 只能辅助查文档/读代码/找 bug，现已能独立读 CUDA/PTX/SASS、分析指令停顿、独立优化算子；他预判半年到一年后 AI 与自己持平甚至超越（当事人一手预判，非定论）。应对方式叫<b>机甲驾驶员</b>：不再亲手写代码，靠对工程/模型/硬件的理解带 Agent 干活。配<b>自我革命论</b>——"我希望革我自己命的人是我自己。"人文一层：织毛衣的下午，机器来了毛衣还在，窗边那个下午没了（工作还在，喜欢的工作方式没了）</li>
         </ul>
       </div>
     </div>
@@ -280,6 +281,35 @@
   </section>
 
   <section id="s13" class="reveal">
+    <h2>实证：Anthropic 内部用工报告「初级岗位最先被挤压」</h2>
+    <p>来源：Anthropic Institute《How employment is changing at Anthropic》（2026-10-16，作者 Nathan Wilmers / Regina Catipon / Maxim Massenkoff / Peter McCrory），基于公司内部用工、AI 使用、产出、日历与招聘数据 + 17 名员工访谈。<strong>已核官方原文</strong>（anthropic.com/news/employment-at-anthropic），数字与媒体转述一致——这是本词条第一次拿到<b>一手公司数据</b>，此前全是二手观察。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>指标</th><th>变化</th><th>口径</th></tr></thead>
+      <tbody>
+        <tr><td>技术部门新招里初级占比</td><td><strong>27% → 9%</strong></td><td>图表口径到 2026-06</td></tr>
+        <tr><td>技术部门在职初级占比</td><td>21% → 14%</td><td>自 2025 年初起</td></tr>
+        <tr><td>交互式 Agent 工时 ÷ 员工工时</td><td><strong>6 倍</strong></td><td>研究部门 19 倍；2026-03 起 Agent 总工时已超过人</td></tr>
+        <tr><td>工程师人均 commit</td><td>6 个月前的 <strong>5.1 倍</strong></td><td>跟踪 192 名用 coding agent 的工程师 vs 74 名未用者，且 agent 写的代码被回滚比例无差别</td></tr>
+        <tr><td>交互会话里 Claude 等人回复的时间</td><td>约 <strong>80%</strong></td><td>—</td></tr>
+        <tr><td>元工作（搭工具/写规范/盯流水线）占会话</td><td>10% → <strong>22%</strong></td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <blockquote>招聘经理越来越看重<strong>判断力、自主性与承诺</strong>，而不是 AI 已经能自动化的具体技术专长。<span class="q-src">—— 官方原文核心结论</span></blockquote>
+    <p>这条直接坐实本词条「执行贬值、判断升值」那层。</p>
+    <h3>三条限定必须一起记，否则会读歪</h3>
+    <ul>
+      <li><strong>是"份额"降，不是"人数"降</strong>——技术招聘绝对量仍在增长，官方与媒体均强调占比变化不证明初级录用人数下降</li>
+      <li><strong>只代表 Anthropic 一家</strong>——公司自认特殊（全员持股、人均收入是同期 Meta/Google 的 2—4 倍），不能外推整个行业</li>
+      <li>作者自己也承认：<strong>员工保护措施帮不到一开始就没被招进来的人</strong>（官方原话"Employment protections for incumbents will not benefit those not hired to begin with"）</li>
+    </ul>
+    <h3>对桑老哥的两层意思</h3>
+    <ul>
+      <li>招聘标准从"会什么"转向"判断准不准 + 能不能带 AI 干活"——跨境电商设计里"知道什么图点击率高、什么配色合品类调性"正是这种判断力，<strong>不必因为不写代码而心虚</strong></li>
+      <li><strong>80% 时间在等人回话</strong>说明新瓶颈是人的响应带宽：人的价值越来越落"及时拍板"，而不是"亲手做完"。这与 Howie Liu「Agent Manager」的指挥者位置同构</li>
+    </ul>
+  </section>
+
+  <section id="s14" class="reveal">
     <h2>前提与局限</h2>
     <ul>
       <li>边界因人而异，取决于你的专业领域——别人的分工表只能参考，不能照抄</li>
@@ -288,7 +318,7 @@
     </ul>
   </section>
 
-  <section id="s14" class="reveal">
+  <section id="s15" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../08-ecomm/AI对跨境电商设计师的价值边界.html"><span class="rel-t">AI对跨境电商设计师的价值边界</span><span class="rel-d">分工原则在跨境电商领域的应用</span></a>
@@ -302,7 +332,7 @@
     </div>
   </section>
 
-  <section id="s15" class="reveal">
+  <section id="s16" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>桑老哥共学总结（2026-04-12 建条）</li>
@@ -322,7 +352,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AI与人的分工原则</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/AI与人的分工原则.md（2026-04-12 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AI与人的分工原则.md（2026-04-12 建条）· 本页生成 2026-10-27</p>
   </footer>
 
 </main>
@@ -342,9 +372,10 @@
     <li><a href="#s10">90/10 定律</a></li>
     <li><a href="#s11">记住一句话</a></li>
     <li><a href="#s12">三条轻记</a></li>
-    <li><a href="#s13">前提与局限</a></li>
-    <li><a href="#s14">关联词条</a></li>
-    <li><a href="#s15">来源</a></li>
+    <li><a href="#s13">Anthropic 用工实证</a></li>
+    <li><a href="#s14">前提与局限</a></li>
+    <li><a href="#s15">关联词条</a></li>
+    <li><a href="#s16">来源</a></li>
   </ul>
 </aside>
 </div>

@@ -141,6 +141,36 @@
   </section>
 
   <section id="s3" class="reveal">
+    <h2>Why 层：为什么非要单独搞判断模型</h2>
+    <p>来源：橘AI 记 Jev CEO 发布前演讲（2026-09-24 并入，原文 youtube.com/watch?v=cJ0EOzey--o）。推理链是：<strong>现状悖论 → 根因在训练范式 → 第三条路</strong>。</p>
+
+    <h3>能力的巅峰，信任的谷底</h3>
+    <p>AI 能解没人解过的数学题，企业却只许客服机器人让用户翻文档、不敢让它做决定。因为软件不能自己决策，人就得一直在循环里纠偏；不敢担结果的责任 → 只能给建议让用户自己选 → 按结果收费无从谈起。<strong>最大价值来自决策，不是执行和提效。</strong></p>
+
+    <h3>根因：RLHF 把人放进了循环</h3>
+    <p>训练目标是人的满意，要人满意就得有人在场——<strong>为取悦屏幕前的人而生的模型，永远到不了完全自动化。</strong></p>
+    <p>谄媚与幻觉同根（机制见 <a href="../01-ai/AI确认偏误.html">AI确认偏误</a>）：谄媚是挑最让人满意的回答（放屁音效也能夸出"奇怪的氛围感"）；幻觉是同一个病的另一面——奖励模型里犹豫太容易被看出来、一看出来就挨罚，模型就学会丢掉犹豫装自信。<strong>幻觉是优化人类偏好内生的结果</strong>。而 Jev 让模型以置信度数字返回、不知道分数就低，装自信没有奖励，这类幻觉失去生存土壤。</p>
+
+    <h3>三条路：后训练各自的北极星</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>路线</th><th>优化什么</th><th>后果</th></tr></thead>
+      <tbody>
+        <tr><td>RLHF</td><td>人类偏好</td><td>讨人喜欢，但校准变差</td></tr>
+        <tr><td>RLVR</td><td>纯粹正确（对错可验证）</td><td>数学/代码变强，别的管不了</td></tr>
+        <tr><td><strong>Jev</strong></td><td><strong>校准的决策</strong></td><td>押的是第三条路</td></tr>
+      </tbody>
+    </table></div>
+    <p>主流模型是 RLHF + RLVR 混训——agentic 变强的同时开始不听话，两个奖励方向左右摇摆，<strong>这就是自动化卡壳的机制</strong>。CEO 定性："RLHF 是一段奇怪的弯路。"</p>
+
+    <h3>三个佐证</h3>
+    <ul>
+      <li><strong>苦涩教训反转</strong>：Sutton"算法胜过算力"在游戏成立、现实不成立——<strong>数据比算力重要，选对任务比做数据更重要</strong></li>
+      <li><strong>软件行业窘境</strong>：SaaS 2019 至今没变，只是旁边挂了聊天机器人；软件没有更聪明，只是写起来更便宜了。vibe coding 改变的是写的过程，没改变软件的结果（量变非质变）</li>
+      <li><strong>下棋实验</strong>：wondertwins/jev-benchmark 裸 FEN 喂棋局，结果接近随机甚至低于随机基线——Jev 得自己算哪些棋子能走、哪步吃子、国王是否暴露，基础事实算错，选择就没了依据。先让代码把合法走法/吃子/危险关系算好再交给 Jev，表现明显改善，但仍只到初学者水平、弱于深度 1 的 Stockfish。重点不是棋力，是<strong>先把可计算的事实准备好，判断才有用</strong>——与弱项清单"数数算数归代码"互证</li>
+    </ul>
+  </section>
+
+  <section id="s4" class="reveal">
     <h2>三种题型（打分卡）</h2>
     <div class="qtype">
       <div class="qt">
@@ -171,7 +201,7 @@
     </div>
   </section>
 
-  <section id="s4" class="reveal">
+  <section id="s5" class="reveal">
     <h2>为什么快、为什么敢信</h2>
     <div class="gate-wrap">
       <svg viewBox="0 0 680 268" role="img" aria-label="置信度三档门控路线图：材料交给打分模型，按置信度分流为自动放行、转人工确认、不动作三条路">
@@ -218,7 +248,7 @@
     </div>
   </section>
 
-  <section id="s5" class="reveal">
+  <section id="s6" class="reveal">
     <h2>用法三招</h2>
     <div class="moves">
       <div class="move"><span class="mv-no">1</span><h3>投机扇出</h3><p>状态只发一次，问题全并行问（连「可能用不上」的也一起问）。别一次次顺序调用。</p></div>
@@ -227,7 +257,7 @@
     </div>
   </section>
 
-  <section id="s6" class="reveal">
+  <section id="s7" class="reveal">
     <h2>短板红线（官方自曝 jaggedness 页）</h2>
     <ul>
       <li><strong>数数、精确算数、日期先后全不行</strong>——留给代码（数「列表里几个是水果」＝每项一个 Noul 再求和）</li>
@@ -238,13 +268,13 @@
     </ul>
   </section>
 
-  <section id="s7" class="reveal">
+  <section id="s8" class="reveal">
     <h2>生态位：军师＋传令兵</h2>
     <p>大模型坐军师（拆解复杂任务/生成核心代码创意），判断模型当前线传令兵（工具分拣/条件路由/合规拦截）——一次用户操作背后可以是几十次隐形小判断，完全不显示 AI 界面。</p>
     <p>LangChain 的 AutoMode 中间件已把「工具执行前先分级」做成现成零件（只读/可逆/不可逆，低置信度转问人）＝权限金律产品化；早期影子测试里一条模糊 <code>rm -rf</code> 拿到 0.33 低置信度，代码自动转问人而非瞎执行。</p>
   </section>
 
-  <section id="s8" class="reveal">
+  <section id="s9" class="reveal">
     <h2>实测下半场：剔掉虚火之后的真实账</h2>
     <p>发布不到一周，huangserva 亲自跑了四败两成，比概念更值钱的是这层数据（2026-09-20 并入）。</p>
     <p><strong>「便宜 40-400 倍」的边界（最重要修正）</strong>：只对前沿大模型成立。300 判断对照实验里，Jev 94.7% 对 Qwen Flash 93.0%，各花 0.003 美元——对便宜大模型<strong>无成本优势</strong>。它真正多出来的只有两样：时间稳定（国内实测约 0.7 秒、最慢 1.5 秒，Qwen Flash 中位数相当但最慢 32 秒——赢在「无长尾」不是快）＋可分流的校准把握度。</p>
@@ -259,7 +289,7 @@
     <div class="warn"><b>结论一句话：</b>想拿它给自己提效，走不通；把它当零件做进产品，才有可能。</div>
   </section>
 
-  <section id="s9" class="reveal">
+  <section id="s10" class="reveal">
     <h2>打分机制拆解：快 200 倍的原理</h2>
     <ul>
       <li><strong>改考卷不写作文</strong>：普通调用是自回归逐 token「写」答案；Jev 是预填充后一次读出所有候选的 logits，打分归一化直接交卷。警惕冒牌货——「让模型吐 JSON」（结构化输出）看着像选择题，其实仍逐字生成，一点没省。<strong>判断一个产品是否真用上决策模型：看它是生成答案，还是打分选择</strong></li>
@@ -269,7 +299,7 @@
     </ul>
   </section>
 
-  <section id="s10" class="reveal">
+  <section id="s11" class="reveal">
     <h2>部署方法论：7 步安全上线</h2>
     <ol>
       <li>选边界清晰的低风险决策</li>
@@ -293,7 +323,31 @@
     </div>
   </section>
 
-  <section id="s11" class="reveal">
+  <section id="s12" class="reveal">
+    <h2>应用篇收尾：四篇应用文的了解级快照</h2>
+    <p>四篇应用文（Greg Isenberg 播客实战 / DAIR.AI 初学者指南 / 腾讯技术工程工程账 / WaytoAGI 15 案例合集，2026-09-22 并入）与前两日内容约一半重合，只记增量。</p>
+    <h3>AI 交警：只分诊不开车</h3>
+    <p>Jev 是路口交警——决定谁走哪条道，开车（生成内容）仍是大模型的事。腾讯版的比喻："Jev 是拿手柄的玩家，代码是游戏本身。"</p>
+    <h3>判断成本塌了，一切案例才成立</h3>
+    <div class="warn"><b>70—500ms、每百万输入 token 约 4.2 美分</b>（百万次判断约 $42）。以前舍不得做的小判断（每封邮件打四项分、每次工具调用先分级），现在塞得起了。三个适用信号：反复调用 / 能减少串行步骤 / 程序需要识别"犹豫"。</div>
+    <h3>用好三条</h3>
+    <ol>
+      <li><strong>一次并行问三样</strong>——状态只发一次，问题全并行，"可能用不上"的也一起问</li>
+      <li><strong>阈值自己定</strong>——90% 放行 / 60% 转人是策略不是参数，归人调</li>
+      <li><strong>权限决策留在代码</strong>——它说"该退款"，钱不出它手；判断模型的判断 ≠ 执行权</li>
+    </ol>
+    <p><strong>弱项照旧翻车</strong>：算术 / 计数 / 日期 / 字面措辞 / 对抗性状态——比特币信号案例翻车即栽在字面措辞。</p>
+    <h3>四个实战样本</h3>
+    <ul>
+      <li>1700 封邮件 18 美分分拣完</li>
+      <li>设计公司询盘打分，销售先跟 98 分的那封</li>
+      <li><strong>182 个 skill 选 1 个，错选率 16.8% → 7.3%</strong>（先便宜粗筛再精读，与桑老哥 skill 精简同构，挂 <a href="../04-skill/Skill设计方法论.html">Skill设计方法论</a>）</li>
+      <li>Claude Code 上下文逐条压缩（判断模型当清洁工，挂 <a href="../01-ai/Tokenmaxxing.html">Tokenmaxxing</a>）</li>
+    </ul>
+    <p>桑老哥定位：<strong>了解级</strong>——知道是啥、用时能认出即可（无按 token 计费的大调量场景，自用路线已被实测下半场证伪；真到自建产品那天再回来翻这节）。</p>
+  </section>
+
+  <section id="s13" class="reveal">
     <h2>桑老哥适用</h2>
     <p><del>视频工厂流水线里所有「要不要/是哪类/打几分」环节，现在有几分钱级的零件可换</del>——2026-09-20 实测纠偏：咱用 Codex/Claude Code 是订阅制，判断已含在月费里边际成本为零，外加 Jev 反而多花钱，「零件」只在按 token 计费、调用量大的自建产品里成立。</p>
     <ul>
@@ -303,7 +357,7 @@
     </ul>
   </section>
 
-  <section id="s12" class="reveal">
+  <section id="s14" class="reveal">
     <h2>前提与局限</h2>
     <ul>
       <li>发布仅 4 天（2026-09-15），社区案例全是早期 demo，<strong>演示 ≠ 生产力</strong>（217 项目审计里今天真能用的仅 15 个）</li>
@@ -315,7 +369,7 @@
     </ul>
   </section>
 
-  <section id="s13" class="reveal">
+  <section id="s15" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">安全跑道：判断模型在跑道上做分拣</span></a>
@@ -327,7 +381,7 @@
     </div>
   </section>
 
-  <section id="s14" class="reveal">
+  <section id="s16" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>TypeSafe 官方博客《Introducing System One Models &amp; Jev》（2026-09-15，<a class="ext" href="https://typesafe.ai" target="_blank" rel="noopener noreferrer">typesafe.ai</a>，存在性/创始人已核）</li>
@@ -344,7 +398,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · System One判断模型</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/System One判断模型.md（2026-09-19 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/System One判断模型.md（2026-09-19 建条）· 本页生成 2026-10-27</p>
   </footer>
 
 </main>
@@ -354,18 +408,20 @@
   <ul class="toc" id="toc">
     <li><a href="#s1">一句话说清楚</a></li>
     <li><a href="#s2">来龙去脉</a></li>
-    <li><a href="#s3">三种题型 ·核心</a></li>
-    <li><a href="#s4">为什么快、为什么敢信</a></li>
-    <li><a href="#s5">用法三招</a></li>
-    <li><a href="#s6">短板红线</a></li>
-    <li><a href="#s7">生态位</a></li>
-    <li><a href="#s8">实测下半场</a></li>
-    <li><a href="#s9">打分机制拆解</a></li>
-    <li><a href="#s10">部署方法论</a></li>
-    <li><a href="#s11">桑老哥适用</a></li>
-    <li><a href="#s12">前提与局限</a></li>
-    <li><a href="#s13">关联词条</a></li>
-    <li><a href="#s14">来源</a></li>
+    <li><a href="#s3">Why 层：为什么非要判断模型</a></li>
+    <li><a href="#s4">三种题型 ·核心</a></li>
+    <li><a href="#s5">为什么快、为什么敢信</a></li>
+    <li><a href="#s6">用法三招</a></li>
+    <li><a href="#s7">短板红线</a></li>
+    <li><a href="#s8">生态位</a></li>
+    <li><a href="#s9">实测下半场</a></li>
+    <li><a href="#s10">打分机制拆解</a></li>
+    <li><a href="#s11">部署方法论</a></li>
+    <li><a href="#s12">应用篇收尾</a></li>
+    <li><a href="#s13">桑老哥适用</a></li>
+    <li><a href="#s14">前提与局限</a></li>
+    <li><a href="#s15">关联词条</a></li>
+    <li><a href="#s16">来源</a></li>
   </ul>
 </aside>
 </div>
