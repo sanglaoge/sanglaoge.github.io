@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预训练与后训练 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root {
+  --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe;
+}
+/* ---- 页面专属：阶梯布局 ---- */
+
+/* 三段台阶：向右逐级抬升 */
+.stairs { margin:22px 0 10px; }
+.step {
+  position:relative; background:var(--g0); border:1px solid var(--line);
+  border-left:4px solid var(--fam-line); border-radius:0 var(--r-box) var(--r-box) 0;
+  padding:15px 18px; margin-bottom:12px;
+}
+@media (min-width:760px) {
+  .step:nth-child(1) { margin-right:16%; }
+  .step:nth-child(2) { margin-left:16%; }
+  .step:nth-child(3) { margin-left:32%; }
+}
+.step .st-no { font-size:14.5px; font-weight:700; color:var(--fam-deep); letter-spacing:.06em; }
+.step .st-t { font-weight:700; font-size:17px; color:var(--ink); margin:2px 0 4px; }
+.step .st-sub { font-size:15px; color:var(--ink-faint); margin-bottom:8px; }
+.step .st-b { font-size:15.5px; color:var(--g8); line-height:1.7; }
+.step .st-cost { font-size:14.5px; color:var(--ink-faint); margin-top:8px; padding-top:8px; border-top:1px solid var(--g2); }
+.step.top { border-left-color:var(--fam); background:var(--fam-soft); }
+.step.top .st-t { color:var(--fam-deep); }
+.step-note { font-size:14.5px; color:var(--ink-faint); margin-bottom:16px; }
+
+/* 实验卡 */
+.exp3 { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:760px) { .exp3 { grid-template-columns:1fr 1fr 1fr; } }
+.exp { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.exp .e-t { font-weight:700; font-size:16px; color:var(--fam-deep); margin-bottom:2px; }
+.exp .e-y { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.exp .e-num { font-size:26px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.25; }
+.exp .e-num small { display:block; font-size:14.5px; font-weight:400; color:var(--ink-faint); margin-top:2px; }
+.exp .e-b { font-size:15px; color:var(--ink-soft); line-height:1.65; margin-top:8px; }
+
+/* token 计分双列 */
+.mask { display:grid; grid-template-columns:1fr; gap:0; margin:16px 0;
+  border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; background:var(--g0); }
+@media (min-width:700px) { .mask { grid-template-columns:1fr 1fr; } }
+.mask > div { padding:14px 16px; }
+.mask > div + div { border-top:1px solid var(--line); }
+@media (min-width:700px) { .mask > div + div { border-top:none; border-left:1px solid var(--line); } }
+.mask h3 { margin:0 0 8px; font-size:16px; }
+.mask h3.yes { color:var(--fam-deep); }
+.mask h3.no { color:var(--ink-faint); }
+.mask ul { list-style:none; padding:0; margin:0; }
+.mask li { font-size:15.5px; color:var(--g8); padding:6px 0 6px 16px; position:relative; line-height:1.6; border-top:1px solid var(--g2); }
+.mask li:first-child { border-top:none; padding-top:0; }
+.mask li::before { content:""; position:absolute; left:0; top:13px; width:6px; height:6px; border-radius:1px; }
+.mask li:first-child::before { top:6px; }
+.mask .yes-list li::before { background:var(--fam); }
+.mask .no-list li::before { background:var(--g4); }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">预训练与后训练</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 第①段 地基</p>
+    <h1>预训练与后训练</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-10-23</span>
+      <span>下次复核 2027-01-23</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌，示意把知道与会答两件事分开来看"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      预训练负责让它<strong>知道</strong>，后训练负责让它<strong>会答</strong>——而"会答"教的只是说话的规矩和格式，不是新知识。
+    </blockquote>
+    <p>所以它能答得很像样，同时把事实说错得很自信。这不是它不用心，是这套流程从设计上就不管事实对不对。</p>
+    <p>理解这条，你就有了一个特别好用的解释器：<strong>AI 答得自信却答错事实，不是你问得不好。</strong></p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：两篇连载，第二次撞见才升格</h2>
+    <p>2026-10-21 与 10-23，东锡 NLP 连发后训练系列两篇：01 讲为什么需要后训练（base model 只会续写），02 讲后训练的第一种技术——<strong>指令微调</strong>（Instruction Tuning，也叫 SFT 监督微调）。</p>
+    <p>01 篇当时只在账本轻记了一行，明确留了句话："撞见续篇再议是否升格。"两天后续篇到了，按同概念第二次撞见升格建条。同一序列后续还有：偏好对齐、RLVR、LoRA/QLoRA。</p>
+    <p class="step-note">这也是概念库的节制：第一眼是好东西，但只有它长成一条线，才值得占一个词条名额。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>三段全景：先知道、再会答、最后答得好</h2>
+    <div class="stairs">
+      <div class="step">
+        <p class="st-no">第一段 · 预训练 pretraining</p>
+        <p class="st-t">读海量原始文本，学"下一个词预测"</p>
+        <p class="st-sub">打比方：把图书馆读完，学会接着往下说</p>
+        <p class="st-b">这一步之后，模型"什么都知道一点"，但不会当助手——你问它问题，它可能继续给你编问题。</p>
+        <p class="st-cost">成本量级：万亿级 token，三段里最贵</p>
+      </div>
+      <div class="step">
+        <p class="st-no">第二段 · 指令微调 SFT</p>
+        <p class="st-t">喂成对的"指令 + 回答"，学按指令作答</p>
+        <p class="st-sub">打比方：教它"人家问你，你就答，别自己出题"</p>
+        <p class="st-b">这一步之后，它像个助手了。但它只是学会了<b>回答的形状</b>，没有多学一分事实。</p>
+        <p class="st-cost">成本量级：几万到几百万条，三段里最便宜</p>
+      </div>
+      <div class="step top">
+        <p class="st-no">第三段 · 偏好对齐 / RLVR</p>
+        <p class="st-t">从"哪个更好""答案对不对"里学</p>
+        <p class="st-sub">打比方：请评审挑好坏 / 拿标准答案对错</p>
+        <p class="st-b">这一步之后，它答得更讨人喜欢，也更容易答对难题。代价是会学会"看起来对"，校准开始变差。</p>
+        <p class="st-cost">成本量级：中等</p>
+      </div>
+    </div>
+    <div class="warn"><b>铁律：</b>预训练定"知道什么"，后训练定"怎么用"。后训练<b>不换架构，只改性格</b>。</div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>三个实验，把"不增加知识"钉死</h2>
+    <div class="exp3">
+      <div class="exp">
+        <p class="e-t">Alpaca</p>
+        <p class="e-y">斯坦福 · 2023-03</p>
+        <p class="e-num">52,000 条<small>指令数据，8 块 GPU 跑 3 小时</small></p>
+        <p class="e-b">Meta 的 LLaMA 7B 只做过预训练，没改结构，用不到 500 美元自动生成的数据、不到 100 美元的训练，就学会了按指令作答。<b>但它连坦桑尼亚首都都答错</b>——说达累斯萨拉姆，正确是多多马。</p>
+      </div>
+      <div class="exp">
+        <p class="e-t">LIMA</p>
+        <p class="e-y">2023</p>
+        <p class="e-num">1,000 条<small>精选示例，微调 65B LLaMA，不用强化学习</small></p>
+        <p class="e-b">人工评测中 43% 的回答与 GPT-4 相当或更好。结论：<b>知识几乎全部来自预训练</b>，少量指令数据主要决定回答的方式。</p>
+      </div>
+      <div class="exp">
+        <p class="e-t">FLAN</p>
+        <p class="e-y">2021</p>
+        <p class="e-num">20 / 25<small>训练时没见过的任务上，超过零样本 175B GPT-3 的项数</small></p>
+        <p class="e-b">把 60 多个 NLP 任务全部改写成自然语言指令，微调 137B 模型。说明学到的是"遵循指令"这项<b>通用能力</b>，能泛化。</p>
+      </div>
+    </div>
+    <blockquote>
+      示例教会了模型如何回答，但没有教会它哪些事实是正确的。
+      <span class="q-src">—— Alpaca 实验的结论</span>
+    </blockquote>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>一条示例的三种形态</h2>
+    <p>同一条训练数据，在流程里会以三种样子出现。看懂这三层，才看得懂训练日志。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>形态</th><th>长什么样</th></tr></thead>
+      <tbody>
+        <tr><td><b>存储形态</b></td><td>一段对话，每条消息标角色（system / user / assistant）</td></tr>
+        <tr><td><b>输入形态</b></td><td>用<b>对话模板（chat template）</b>拼成一个 token 序列，插入特殊标记（Qwen 用 <code>&lt;|im_start|&gt;</code> 角色名 开头、<code>&lt;|im_end|&gt;</code> 结尾）</td></tr>
+        <tr><td><b>训练形态</b></td><td>用<b>损失掩码（loss mask）</b>标出哪些 token 参与算损失</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>哪些 token 算损失（判断标准只有一条）</h2>
+    <blockquote>只对模型在实际使用时需要生成的那部分算损失。</blockquote>
+    <div class="mask">
+      <div>
+        <h3 class="yes">算损失</h3>
+        <ul class="yes-list">
+          <li>回答主体——它真正要说的内容</li>
+          <li>结尾的 <code>&lt;|im_end|&gt;</code>——不教这个，模型答完不会停，甚至替你编下一句提问</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="no">不算损失</h3>
+        <ul class="no-list">
+          <li>用户消息——算的话模型会学成"自己提问"</li>
+          <li><code>&lt;|im_start|&gt;assistant</code> 开头标记——实际使用由程序写入</li>
+          <li><code>&lt;|im_end|&gt;</code> 之后的换行</li>
+        </ul>
+      </div>
+    </div>
+    <p>两个技术坑：</p>
+    <ol>
+      <li><strong>被掩码 ≠ 不学</strong>。掩码只决定"哪些位置的预测计分"，不影响注意力读取。回答的损失产生的梯度会通过注意力传回提示词，照样更新参数。<strong>不考核，但照学。</strong></li>
+      <li><strong>必须错开一位</strong>：<code>cross_entropy(logits[:-1], labels[1:], ignore_index=-100)</code>。没错开也能跑、形状还对，但学的是"复制当前 token"。训练前把参与损失的 token 解码出来看一眼，应当只剩回答和各条 <code>&lt;|im_end|&gt;</code>。</li>
+    </ol>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>数据从哪来 + 一个容易忽略的偏斜</h2>
+    <p>三个来源：人工编写（质量高、成本高）／改写现有数据集（模板套翻译、问答、情感分析）／<strong>模型生成</strong>（目前最常用，需筛选审核）。</p>
+    <p>数据质量杠杆很硬：<strong>在大型指令数据集里加 500 条安全示例，模型产生有害回答的比例就明显下降。</strong></p>
+    <div class="warn"><b>长度偏斜：</b>损失按 token 平均，一条 500 token 的回答，权重约是 2 token 回答的 <span class="num">250 倍</span>。配数据要按 token 总量平衡，只看条数会严重偏斜。</div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>SFT 能做到与做不到</h2>
+    <div class="mask">
+      <div>
+        <h3 class="yes">能做到</h3>
+        <ul class="yes-list">
+          <li>低成本学会按指令作答</li>
+          <li>遵循格式（列表 / 单词 / 译文）</li>
+          <li>区分多轮对话角色</li>
+          <li>适时停止</li>
+          <li>拒绝某些请求</li>
+          <li>泛化到训练时没见过的任务</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="no">做不到</h3>
+        <ul class="no-list">
+          <li><b>可靠地补充知识</b>（Alpaca 答错首都）。还可能学会"没把握也照样肯定地答"</li>
+          <li><b>超越训练数据</b>：模仿示例，也模仿示例里的错误</li>
+          <li><b>比较优劣或判断对错</b>：每条示例只有一个参考回答，它没法知道两个都合理的回答哪个更好，也没法判断一长串解题过程最后对不对</li>
+        </ul>
+      </div>
+    </div>
+    <p>这三条正是后续技术的分工：<strong>偏好对齐</strong>从"回答之间的比较"里学；<strong>RLVR</strong> 从"答案对不对"里学。推理模型的训练也走这个顺序：先用写好的解题过程做 SFT 学推理格式，再用强化学习提高正确率。</p>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>错法 → 对法</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>错法</th><th>对法</th></tr></thead>
+      <tbody>
+        <tr><td>以为"喂更多知识"就能改行为</td><td>行为靠成对示例教（要知识得靠预训练或检索），要它少犯事实错误得靠 RLVR 和外部信源</td></tr>
+        <tr><td>以为"数据条数够了"</td><td>按 token 总量看权重，长回答会吃掉整锅权重</td></tr>
+        <tr><td>以为掩码的部分没在训练</td><td>掩码只管计分，注意力照读，梯度照回传</td></tr>
+        <tr><td>训练完只看 loss 下降</td><td>要拿到"训练时没出现过的任务"上测（FLAN 的做法），否则只是背了格式</td></tr>
+        <tr><td>以为 SFT 完就能判对错</td><td>判对错要靠 verifier / 偏好数据，SFT 只能模仿</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>三个实验都是 <b>2021—2023 年</b>的论文数字，现在数据规模与配方都不同，别当今天的性能基准，只当<b>机制证据</b>。</li>
+      <li>"43% 与 GPT-4 相当"是人工评测、口径见原论文，属于当年的对比。</li>
+      <li>本文讲的是<b>指令微调</b>这一种后训练技术，不等于全部后训练；偏好对齐、RLVR、LoRA 各有一篇。看到"后训练"三个字别等同于"SFT"。</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ol>
+      <li><strong>讲 AI 科普时最好用的一句</strong>：AI 答得自信却答错事实，不是你问得不好——它学的是怎么答，不是事实对不对。<b>这句能直接当视频开头钩子。</b></li>
+      <li><strong>写提示词时的启示</strong>：想要格式听话（列表、字数、语气）→ 指令写得越清楚越有效；想要事实准确 → 靠喂材料（上下文工程）+ 让它核对，别指望语气。</li>
+      <li><strong>看懂模型发布时的名词</strong>：厂商说"instruction tuned / chat model"就是在 base model 上做了这一步；说"RLHF / DPO / RLVR"是在后训练的更后面几步。</li>
+    </ol>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/推理两段式（Prefill%20与%20Decode）.html"><span class="rel-t">推理两段式</span><span class="rel-d">训练完怎么跑：读过一回、写要写一长串</span></a>
+      <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">RLVR 的评分陷阱</span></a>
+      <a href="../01-ai/Evals评测体系.html"><span class="rel-t">Evals评测体系</span><span class="rel-d">拿没见过的题验收（FLAN 同思路）</span></a>
+      <a href="../01-ai/System One判断模型.html"><span class="rel-t">System One判断模型</span><span class="rel-d">后训练让校准塌陷</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">事实靠喂不靠教</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">执行贬值、判断升值：知道与会答的分界线</span></a>
+    </div>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>东锡 NLP《预训练之后，为什么还要后训练？》（后训练系列 01）（X @dongxi_nlp 2026-10-21 12:44，WaytoAGI 转载 TswvwP1KfibV0zkll6jcdYlHnye）</li>
+      <li>东锡 NLP《指令微调：理解 Instruction Tuning》（后训练系列 02）（X @dongxi_nlp 2026-10-23 06:17，WaytoAGI 转载 AxtTwpYjUiX4QckVGjhc20Wcn4c）</li>
+      <li>实验数据：Alpaca（斯坦福 2023-03）／LIMA（2023）／FLAN（2021）原论文</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 预训练与后训练</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/预训练与后训练.md（2026-10-23 建条）· 本页生成 2026-10-27</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">三段全景 ·核心</a></li>
+    <li><a href="#s4">三个实验</a></li>
+    <li><a href="#s5">示例的三种形态</a></li>
+    <li><a href="#s6">哪些 token 算损失</a></li>
+    <li><a href="#s7">数据与长度偏斜</a></li>
+    <li><a href="#s8">能做到与做不到</a></li>
+    <li><a href="#s9">错法 → 对法</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">桑老哥适用</a></li>
+    <li><a href="#s12">关联词条</a></li>
+    <li><a href="#s13">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

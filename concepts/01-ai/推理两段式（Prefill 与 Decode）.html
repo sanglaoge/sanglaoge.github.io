@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>推理两段式（Prefill 与 Decode） · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝 ---- */
+:root {
+  --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe;
+}
+/* ---- 页面专属：对比布局 ---- */
+
+/* 两段对照：左读右写 */
+.vs { display:grid; grid-template-columns:1fr; gap:0; margin:20px 0;
+  border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; background:var(--g0); }
+@media (min-width:700px) { .vs { grid-template-columns:1fr 1fr; } }
+.vs > div { padding:16px 18px 14px; }
+.vs > div + div { border-top:1px solid var(--line); }
+@media (min-width:700px) { .vs > div + div { border-top:none; border-left:1px solid var(--line); } }
+.vs .vs-t { font-weight:700; font-size:17px; color:var(--ink); margin-bottom:2px; }
+.vs .vs-sub { font-size:15px; color:var(--ink-faint); margin-bottom:12px; }
+.vs .vs-read .vs-t { color:var(--fam-deep); }
+.vs ul { list-style:none; padding:0; margin:0; }
+.vs li { font-size:15.5px; color:var(--g8); line-height:1.65; padding:7px 0 7px 15px; position:relative; border-top:1px solid var(--g2); }
+.vs li:first-child { border-top:none; padding-top:0; }
+.vs li::before { content:""; position:absolute; left:0; top:14px; width:5px; height:5px; border-radius:50%; background:var(--g4); }
+.vs li:first-child::before { top:7px; }
+.vs .k { color:var(--ink); font-weight:600; }
+
+/* 机理图 */
+.mech { margin:18px 0; }
+.mech svg { width:100%; height:auto; }
+.sv-fill-a { fill:var(--fam-soft); stroke:var(--fam); }
+.sv-fill-b { fill:var(--g2); stroke:var(--g4); }
+.sv-line { stroke:var(--fam-line); fill:none; }
+.sv-line-g { stroke:var(--g4); fill:none; }
+.sv-t { fill:var(--fam-deep); }
+.sv-t2 { fill:var(--ink); }
+.sv-g { fill:var(--ink-faint); }
+.sv-cap { font-size:14.5px; color:var(--ink-faint); margin-top:4px; }
+
+/* 三路线卡 */
+.routes { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .routes { grid-template-columns:1fr 1fr 1fr; } }
+.route { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:13px 15px; }
+.route .r-tag { font-size:14.5px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em; }
+.route .r-name { font-weight:700; font-size:16px; color:var(--ink); margin:3px 0 6px; }
+.route .r-desc { font-size:15px; color:var(--ink-soft); line-height:1.6; }
+.route.win { border-color:var(--fam-line); background:var(--fam-soft); }
+.route.win .r-name { color:var(--fam-deep); }
+
+/* 推论条 */
+.deduce { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:700px) { .deduce { grid-template-columns:1fr 1fr 1fr; } }
+.deduce .d-card { padding:14px 16px; border-left:3px solid var(--fam); background:var(--g0); }
+.deduce .d-no { font-size:14.5px; font-weight:700; color:var(--fam-deep); }
+.deduce .d-t { font-weight:700; font-size:16px; color:var(--ink); margin:2px 0 6px; }
+.deduce .d-b { font-size:15px; color:var(--ink-soft); line-height:1.65; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">推理两段式</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 第①段 地基</p>
+    <h1>推理两段式（Prefill 与 Decode）</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-10-20</span>
+      <span>下次复核 2027-01-20</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头往墙里张望，示意翻开模型内部看它怎么出话"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      AI 出话不是"想好了再说"，是先一口气把你给的整段读完，再一个字一个字往外蹦。
+    </blockquote>
+    <p>这两段干的活完全不同——<strong>一段算得快、一段跑得慢；一段是首字延迟，一段是生成速度</strong>。AI 为什么卡、为什么越聊越慢、为什么省钱要清会话，全在这两段里。</p>
+    <p>它是三条已学词条共同踩的地基：<span style="color:var(--ink-faint)">上下文工程</span> 讲"要省"，<span style="color:var(--ink-faint)">Tokenmaxxing</span> 讲"怎么省"，<span style="color:var(--ink-faint)">System One判断模型</span> 讲"Jev 快两个数量级"——三条都没讲为什么，这条补的就是那个为什么。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：补的是一层缺的地基</h2>
+    <p>2026-10-19 腾讯技术工程 leonjia 发了一篇架构演进长文，从 2017 年 Transformer 一路讲到 2026 年的 Jev。它没教新工具，而是补齐了一块此前概念库没踩到的底板。</p>
+    <p>更早一次撞见是 9 月 29 日读知乎蓝宝书，当时判"跳过"只留了账本一行。第二次撞见时发现它同时是一堆已学词条的底层解释——<strong>能解释三条词条的知识，比它自己重要得多</strong>，于是升格成条。</p>
+    <p>这也是概念库的升格判据在起作用：同一概念第二次撞见，才建词条。第一次撞见时它还只是个技术细节，第二次才显出骨架的身份。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>两段式：一次回答的两副面孔</h2>
+    <p>对 Decoder-only 模型（ChatGPT、DeepSeek、Qwen 这一支）来说，"读懂你的话"和"往外说话"<strong>不是两个网络，是同一个网络、同一套参数的两个阶段</strong>。</p>
+
+    <div class="vs">
+      <div class="vs-read">
+        <p class="vs-t">第一阶段：Prefill（读）</p>
+        <p class="vs-sub">把你给的整段 prompt 一次全喂进去</p>
+        <ul>
+          <li><span class="k">能并行</span>：所有 token 同时算</li>
+          <li><span class="k">瓶颈在算力</span>：矩阵乘法密集</li>
+          <li><span class="k">你感知到的是首字延迟</span>：问完话到第一个字冒出来之间的干等</li>
+          <li><span class="k">产出缓存</span>：各层的 Key/Value 存进 KV cache</li>
+        </ul>
+      </div>
+      <div class="vs-write">
+        <p class="vs-t">第二阶段：Decode（写）</p>
+        <p class="vs-sub">一次生成一个 token，接回输入再生成下一个</p>
+        <ul>
+          <li><span class="k">只能串行</span>：一步等一步，快不起来</li>
+          <li><span class="k">瓶颈在访存</span>：每步都要读全部权重 + 全部缓存</li>
+          <li><span class="k">你感知到的是生成速度</span>：每秒蹦几个字</li>
+          <li><span class="k">追加缓存</span>：新 token 的 K/V 接在缓存后面</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mech">
+      <svg viewBox="0 0 680 196" role="img" aria-label="推理两段式机理图：左侧 Prefill 整段并行读入并写入 KV cache，右侧 Decode 逐 token 串行生成">
+        <text x="0" y="14" class="sv-t2" font-size="14.5" font-weight="700">输入 prompt（整段）</text>
+        <g>
+          <rect x="0" y="24" width="72" height="30" rx="6" class="sv-fill-b"/>
+          <rect x="78" y="24" width="72" height="30" rx="6" class="sv-fill-b"/>
+          <rect x="156" y="24" width="72" height="30" rx="6" class="sv-fill-b"/>
+          <rect x="234" y="24" width="72" height="30" rx="6" class="sv-fill-b"/>
+          <text x="36" y="44" class="sv-g" font-size="13" text-anchor="middle">tok 1</text>
+          <text x="114" y="44" class="sv-g" font-size="13" text-anchor="middle">tok 2</text>
+          <text x="192" y="44" class="sv-g" font-size="13" text-anchor="middle">tok 3</text>
+          <text x="270" y="44" class="sv-g" font-size="13" text-anchor="middle">tok n</text>
+        </g>
+        <path d="M153 60 L153 82" class="sv-line" stroke-width="2"/>
+        <path d="M153 78 L149 71 L157 71 Z" class="sv-t"/>
+        <rect x="60" y="86" width="186" height="34" rx="8" class="sv-fill-a" stroke-width="1.6"/>
+        <text x="153" y="108" class="sv-t" font-size="14.5" font-weight="700" text-anchor="middle">Prefill · 并行一次算完</text>
+
+        <path d="M246 103 L330 103" class="sv-line" stroke-width="2"/>
+        <path d="M326 99 L333 103 L326 107 Z" class="sv-t"/>
+        <text x="288" y="94" class="sv-g" font-size="12.5" text-anchor="middle">写入</text>
+
+        <rect x="336" y="66" width="150" height="74" rx="8" fill="none" class="sv-line" stroke-width="1.6" stroke-dasharray="5 4"/>
+        <text x="411" y="83" class="sv-g" font-size="13" text-anchor="middle">KV cache</text>
+        <g>
+          <rect x="348" y="90" width="26" height="20" rx="3" class="sv-fill-b" stroke-width="0"/>
+          <rect x="376" y="90" width="26" height="20" rx="3" class="sv-fill-b" stroke-width="0"/>
+          <rect x="404" y="90" width="26" height="20" rx="3" class="sv-fill-b" stroke-width="0"/>
+          <rect x="348" y="114" width="26" height="20" rx="3" class="sv-fill-a" stroke-width="1.2"/>
+          <rect x="376" y="114" width="26" height="20" rx="3" class="sv-fill-a" stroke-width="1.2"/>
+          <rect x="404" y="114" width="26" height="20" rx="3" class="sv-fill-a" stroke-width="1.2"/>
+          <text x="432" y="105" class="sv-g" font-size="12.5">prompt</text>
+          <text x="432" y="129" class="sv-t" font-size="12.5">新增</text>
+        </g>
+
+        <path d="M486 103 L536 103" class="sv-line" stroke-width="2"/>
+        <path d="M532 99 L539 103 L532 107 Z" class="sv-t"/>
+        <text x="511" y="94" class="sv-g" font-size="12.5" text-anchor="middle">每步读</text>
+
+        <rect x="542" y="60" width="138" height="86" rx="8" class="sv-fill-a" stroke-width="1.6"/>
+        <text x="611" y="80" class="sv-t" font-size="14.5" font-weight="700" text-anchor="middle">Decode</text>
+        <text x="611" y="100" class="sv-t2" font-size="13" text-anchor="middle">串行 · 一次一字</text>
+        <text x="611" y="120" class="sv-g" font-size="12.5" text-anchor="middle">读全部权重+缓存</text>
+        <text x="611" y="138" class="sv-g" font-size="12.5" text-anchor="middle">一步等一步</text>
+
+        <path d="M611 146 L611 160 L153 160 L153 120" class="sv-line-g" stroke-width="1.4" stroke-dasharray="4 4"/>
+        <path d="M149 126 L153 118 L157 126 Z" class="sv-line-g"/>
+        <text x="382" y="176" class="sv-g" font-size="13" text-anchor="middle">新 token 回灌，重复 decode —— 这就是"边生成边想"</text>
+      </svg>
+      <p class="sv-cap">读一次就完，写要写一长串，且每一步都重新读一遍全部缓存。</p>
+    </div>
+
+    <p>一个常见误解要拆掉：<strong>AI 不是先想完整段再输出，是边生成边"想"。</strong>后面每个字都要重新过一遍整个网络。所以"让它再想一遍"在机制上不存在——你只能给它新信息，或重开一次。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>三个直接推论（这条词条真正的用处）</h2>
+    <div class="deduce">
+      <div class="d-card">
+        <p class="d-no">推论一</p>
+        <p class="d-t">首字要等，之后顺</p>
+        <p class="d-b">第一段要把整段话算完才出第一个字，后面每个字只算一小步。所以"慢"通常慢在开头。</p>
+      </div>
+      <div class="d-card">
+        <p class="d-no">推论二</p>
+        <p class="d-t">聊得越长越慢越贵</p>
+        <p class="d-b">KV cache 随对话长度线性增长，而 decode 每一步都要把它读完。上下文不是"多放点没关系"，是每一步都在付利息。</p>
+      </div>
+      <div class="d-card">
+        <p class="d-no">推论三</p>
+        <p class="d-t">前缀一个字都不能动</p>
+        <p class="d-b">缓存认的是"从第一个字起的完整前缀"。改了开头，后面全部作废重算。所以静态内容放头部，多变内容堆尾部。</p>
+      </div>
+    </div>
+    <div class="warn"><b>这三条是可直接改操作的：</b>首字慢就精简开头那段指令；越聊越卡就 <code>/clear</code> 开新的；CLAUDE.md 别每轮都改第一句——改一个字的代价是整段缓存重算。</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>GPT 凭什么赢：两个差异决定一切</h2>
+    <p>2018 年前后，Transformer 被拆成三份用，长出三条路线。三者层结构几乎一样，<strong>实质差异只有两点：注意力能不能看到后文；训练时是填空还是续写。</strong></p>
+    <div class="routes">
+      <div class="route">
+        <p class="r-tag">只留读的</p>
+        <p class="r-name">BERT（2018.10）</p>
+        <p class="r-desc">留 Encoder，双向能看前后文。训练做<b>完形填空</b>——遮词还原。</p>
+      </div>
+      <div class="route">
+        <p class="r-tag">两半都留</p>
+        <p class="r-name">T5（2019.10）</p>
+        <p class="r-desc">Encoder + Decoder 都在。训练是<b>遮一段再补出来</b>。</p>
+      </div>
+      <div class="route win">
+        <p class="r-tag">只留写的</p>
+        <p class="r-name">GPT-1（2018.6）→ 今</p>
+        <p class="r-desc">只留 Decoder，因果掩码看不到后文。训练做<b>接着往下写</b>。</p>
+      </div>
+    </div>
+    <p>GPT 赢的三条原因：</p>
+    <ol>
+      <li><strong>训练信号更密</strong>——续写是"每个位置都是一道题"，填空只有被遮住的少数位置有题。同样一批文本，续写的训练密度高一个量级。</li>
+      <li><strong>任务形态统一</strong>——对话、代码、推理、调工具，全都能写成"在同一段里接着写"，不用为每类任务重造输入输出。GPT-3 的"上下文学习"（只看几个示例就会新任务）正是这种统一带来的。</li>
+      <li><strong>缓存能复用</strong>——因果掩码保证已算过的 token 不受后面影响，多轮对话只往后追加；双向 Encoder 每次新增输入都要重算。</li>
+    </ol>
+    <p><strong>BERT 没死</strong>，它退到了检索、推荐、内容审核这类"读一次就出结果"的高吞吐场景（2024 年的 ModernBERT 就是当代版）。它的活法是预训练 + 微调：任务和类别在训练时就焊死了，换任务得重新标注重新训。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>后训练没改架构，改的是"性格"</h2>
+    <p>ChatGPT 的对话能力不来自结构变化，来自预训练之后的几轮后训练。这一段同时解释了另一件事：<strong>校准就是在这一步塌的。</strong></p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>阶段</th><th>干什么</th><th>结果</th></tr></thead>
+      <tbody>
+        <tr><td>预训练</td><td>几万亿 token 续写</td><td>会接话，但不会当助手</td></tr>
+        <tr><td>SFT 指令微调</td><td>人写的问答对</td><td>学会问答格式</td></tr>
+        <tr><td>RLHF</td><td>人给多个回答排序 → 训奖励模型 → 强化学习偏移</td><td>像个助手了，但<b>概率变不准</b></td></tr>
+        <tr><td>推理 RL</td><td>只看答案对错</td><td>数学/代码变强，延迟从秒级变分钟级</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>关键副作用（OpenAI 在 GPT-4 技术报告里给过对照）：</b>预训练模型说"八成把握"，大约就八成答对；经过后训练之后，这种一致性明显变差。原因是标注的人偏爱语气确定的回答，模型就学会了"看起来对"，而不是"概率反映真实正确率"。</div>
+    <p>这条因果链是 <a href="../01-ai/System One判断模型.html">System One判断模型</a> 存在的真正理由：<strong>自动化卡住的不是能力，是它说不清自己哪 5% 会错。</strong></p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>Jev 为什么快两个数量级：它根本不进第二段</h2>
+    <p>这是整条词条最值钱的一条辨析。普通模型和"结构化输出"都在逐 token 生成，只是后者被格式约束；Jev 干脆没有生成过程。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th></th><th>普通大模型</th><th>JSON 模式 / 结构化输出</th><th>Jev</th></tr></thead>
+      <tbody>
+        <tr><td>读完输入</td><td>是</td><td>是</td><td>是</td></tr>
+        <tr><td><b>逐 token 生成</b></td><td>是</td><td><b>是（一步没少）</b></td><td><b>否</b></td></tr>
+        <tr><td>输出</td><td>一段文本</td><td>一段被格式约束的文本</td><td>每个选项上的概率</td></tr>
+        <tr><td>表述</td><td>串行采样</td><td>串行采样 + 格式约束</td><td>并行采样</td></tr>
+      </tbody>
+    </table></div>
+    <p>所以"类型安全"不是产品包装：<strong>它压根没有生成过程，不可能说出选项外的话。</strong>但它照样可能选错——schema 零错误 ≠ 判断正确。</p>
+    <p><strong>开源对照 Laya</strong>（Convai，9-18 开源，Apache 2.0）：输出方式跟 Jev 一路（读一次、按选项读概率、以校准为训练目标），底层却是 ModernBERT-large 上接个决策头——把选项写进输入序列，在选项前的 <code>[MASK]</code> 位置读分做 softmax。它也印证了对 Jev 的推断：<strong>去掉"生成"这一步不难，难的是底下那层能零样本读懂任意问题的理解能力。</strong></p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>2026 年的前沿模型：动的是内脏，不是骨架</h2>
+    <p>DeepSeek-V4.1-Flash（9 月，总参 552B / 每 token 激活 16B）和 Qwen3.8-27B（8 月开源，27B 全激活）——都还是自回归、逐 token 生成的 Transformer，prefill/decode 两段式原样适用。创新只发生在两处，目标一致：同等能力下省算力和显存。</p>
+    <ul>
+      <li><strong>前馈网络改 MoE</strong>：每层拆成几百个子网络，每个 token 只激活少数几个，把"总参数量"和"每 token 计算量"解耦。</li>
+      <li><strong>KV cache 压缩</strong>：长上下文和 Agent 场景下缓存竞比权重还占地方。DeepSeek 用低维潜向量 + 稀疏选择，还把前 20 层当因果 encoder、后 20 层的 KV 由它投影出来（prefill 只跑一半网络）；Qwen 自 3-Next 起每 4 层拿 3 层换成线性注意力（Gated DeltaNet），用固定大小状态替代逐 token 缓存。</li>
+    </ul>
+    <div class="warn"><b>判断一个模型属于哪条路线，别看名字，看两点：</b>注意力是不是因果掩码；结果是不是逐 token 生成出来的。</div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>错法 → 对法</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>错法</th><th>对法</th></tr></thead>
+      <tbody>
+        <tr><td>把 AI 当"想好再说"，反复重问同一段对话想让它"重新想想"</td><td>它每次都重走一遍 decode；要它换思路，就给新信息或开新会话，别指望"再想一遍"</td></tr>
+        <tr><td>想到什么就往对话里加，觉得上下文不要钱</td><td>每一步都在读全部缓存，长度是<b>每一步的利息</b>。不相关就 <code>/clear</code></td></tr>
+        <tr><td>每轮都改 CLAUDE.md 开头一句</td><td>前缀一改，全部缓存作废。稳定内容放头部，多变内容堆尾部</td></tr>
+        <tr><td>以为加了 JSON 约束就等于"不会胡说"</td><td>约束的只是字符串形状，逐 token 生成一步没少；要靠校准，不靠格式</td></tr>
+        <tr><td>以为新模型出来架构变了、旧认知作废</td><td>骨架 2017 年至今没变过，变的只是内部组件和训练方式</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>本文的 Jev 实现细节（底层是预训练因果 Transformer + 并行分支 + softmax 读头）是<b>作者从 API 行为推断</b>，不是官方披露——别当定论。</li>
+      <li>prefill/decode 是 Decoder-only 主线的说法；Encoder-only（BERT 系）只有一次前向，不适用。</li>
+      <li>BERT 系在固定任务上、标注充足时，往往比零样本的通用模型更准——"GPT 赢"说的是通用能力，不是所有场景。</li>
+      <li>推理模型的思考过程<b>仍然是逐 token 自回归生成</b>，只是不给你看，所以延迟照旧。</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li><strong>解释了三个日常体感</strong>：为什么首字要等、为什么长对话越聊越慢、为什么"任务干完就关会话"确实省钱。</li>
+      <li><strong>一个可直接用的判断</strong>：任何号称"快 100 倍"的模型，先问一句——它是不是跳过了 decode？跳过的多半只能做判断题，做不了写作。</li>
+      <li><strong>工具选型有底了</strong>：要写文案、做图说明、出脚本 → 走生成式（要 decode）；要分流、要打标、要"这条消息急不急" → 判断题类工具（不 decode）才对。</li>
+      <li><strong>别拿"重开一次让它再想想"当优化手段</strong>，那只是重烧一遍电。</li>
+      <li>以后遇到"AI 怎么变笨 / 变慢 / 变贵"，先想两段式，再去查别的。</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">"要省"的机制来源：KV cache 线性增长 + 前缀不可变</span></a>
+      <a href="../01-ai/Tokenmaxxing.html"><span class="rel-t">Tokenmaxxing</span><span class="rel-d">"怎么省"落在 decode 的访存成本和上下文长度上</span></a>
+      <a href="../01-ai/System One判断模型.html"><span class="rel-t">System One判断模型</span><span class="rel-d">Jev 快的原理=不进 decode；校准塌陷是它存在的理由</span></a>
+      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">Agent 每轮循环都在重复付费，harness 设计直接决定账单</span></a>
+      <a href="../01-ai/AI确认偏误.html"><span class="rel-t">AI确认偏误</span><span class="rel-d">RLHF 让模型学会"看起来对"，是偏好优化的副作用</span></a>
+      <a href="../01-ai/预训练与后训练.html"><span class="rel-t">预训练与后训练</span><span class="rel-d">本篇"后训练改性格"的机制展开：SFT 只对回答算损失</span></a>
+    </div>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>主来源：腾讯技术工程 leonjia《从 BERT、GPT 到 Jev：一文看懂大模型架构的演进与分化》（公众号 2026-10-19 17:36，WaytoAGI 转载 JnXFwl8dsiYmHbkZzkgcetElnUe）</li>
+      <li>首撞来源：知乎蓝宝书第一册《AI infra：模型如何被训练、运行与持续优化》导读（WaytoAGI 转载 Kcsfwr35Gi8g0ZkOPKuc8OAInig，2026-09-29 账本轻记 Prefill/Decode 两段式）</li>
+      <li>校准副作用对照：OpenAI GPT-4 技术报告</li>
+      <li>开源对照：Convai Laya（2026-09-18 开源，Apache 2.0）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 推理两段式（Prefill 与 Decode）</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/推理两段式（Prefill 与 Decode）.md（2026-10-20 建条）· 本页生成 2026-10-27</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">两段式 ·核心</a></li>
+    <li><a href="#s4">三个推论</a></li>
+    <li><a href="#s5">GPT 凭什么赢</a></li>
+    <li><a href="#s6">后训练改性格</a></li>
+    <li><a href="#s7">Jev 不进第二段</a></li>
+    <li><a href="#s8">动内脏不动骨架</a></li>
+    <li><a href="#s9">错法 → 对法</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">桑老哥适用</a></li>
+    <li><a href="#s12">关联词条</a></li>
+    <li><a href="#s13">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

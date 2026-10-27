@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频连贯性手法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：判断路线布局 ---- */
+
+/* 衬线金句 */
+.pull {
+  font-family:var(--font-head); font-size:clamp(19px,3vw,24px);
+  line-height:1.55; color:var(--ink); margin:22px 0 6px;
+  padding-left:16px; border-left:3px solid var(--fam);
+}
+.pull-src { font-size:14.5px; color:var(--ink-faint); padding-left:16px; margin-bottom:20px; }
+
+/* 决策路线图 */
+.route-map { margin:20px 0 8px; }
+.route-map svg { width:100%; height:auto; }
+.sv-a { fill:var(--fam-soft); stroke:var(--fam); }
+.sv-b { fill:var(--g2); stroke:var(--g4); }
+.sv-hi { fill:var(--fam); }
+.sv-t { fill:var(--fam-deep); }
+.sv-t2 { fill:var(--ink); }
+.sv-g { fill:var(--ink-faint); }
+.sv-ln { stroke:var(--fam-line); fill:none; }
+.sv-lg { stroke:var(--g4); fill:none; }
+.sv-cap { font-size:14.5px; color:var(--ink-faint); margin-top:2px; }
+
+/* 决策卡：症状 → 换哪条通道 */
+.decide { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:760px) { .decide { grid-template-columns:repeat(3,1fr); } }
+.dcard { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.dcard .dc-sym { font-size:14.5px; font-weight:700; color:#92400e; letter-spacing:.04em; }
+.dcard .dc-arrow { font-size:14.5px; color:var(--ink-faint); margin:6px 0 2px; }
+.dcard .dc-fix { font-weight:700; font-size:16.5px; color:var(--fam-deep); }
+.dcard .dc-b { font-size:15px; color:var(--g8); line-height:1.65; margin-top:7px; }
+
+/* 两层拆解：左故事世界 右摄影机 */
+.two-layer { display:grid; grid-template-columns:1fr; gap:0; margin:18px 0;
+  border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; background:var(--g0); }
+@media (min-width:720px) { .two-layer { grid-template-columns:1fr 1fr; } }
+.two-layer > div { padding:15px 17px; }
+.two-layer > div + div { border-top:1px solid var(--line); }
+@media (min-width:720px) { .two-layer > div + div { border-top:none; border-left:1px solid var(--line); } }
+.two-layer h3 { margin:0 0 4px; font-size:16.5px; color:var(--fam-deep); }
+.two-layer .tl-sub { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.two-layer ul { list-style:none; padding:0; margin:0; }
+.two-layer li { font-size:15.5px; color:var(--g8); line-height:1.65; padding:7px 0 7px 15px; position:relative; border-top:1px solid var(--g2); }
+.two-layer li:first-child { border-top:none; padding-top:0; }
+.two-layer li::before { content:""; position:absolute; left:0; top:14px; width:5px; height:5px; border-radius:50%; background:var(--g4); }
+.two-layer li:first-child::before { top:7px; }
+
+/* 记账法三步 */
+.ledger { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:700px) { .ledger { grid-template-columns:repeat(3,1fr); } }
+.ledger .lg-card { padding:13px 15px; background:var(--g0); border-top:3px solid var(--fam); }
+.ledger .lg-t { font-weight:700; font-size:16px; color:var(--ink); margin-bottom:5px; }
+.ledger .lg-b { font-size:15px; color:var(--ink-soft); line-height:1.65; }
+
+/* 数字对照 */
+.stat2 { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:640px) { .stat2 { grid-template-columns:1fr 1fr; } }
+.stat2 .s-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:13px 16px; }
+.stat2 .s-num { font-size:26px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.3; }
+.stat2 .s-num small { display:block; font-size:14.5px; font-weight:400; color:var(--ink-faint); margin-top:2px; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI视频连贯性手法</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 镜头之间怎么接</p>
+    <h1>AI视频连贯性手法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-29</span>
+      <span>下次复核 2026-12-29</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂嘴，示意有些信息本来就说不清，该换条通道"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <p class="pull">上一镜发生的事，下一镜要接得住——伤还在、盖子开着、比例没变。</p>
+    <p class="pull-src">文字说不清的信息，换图、换参照、换三维去说。</p>
+    <p>AI 单镜头已经能打，<strong>真正难的是镜头之间</strong>：状态接不住、信息说不清、力量看不见。这条词条就是这三件事的排查表。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：一个镜头做了一天</h2>
+    <p>《行镖》是腾讯视频 9.1 分的 AI 古装剧，八个月制作、十位 AI 导演协作。这条词条来自两位主创（老神·视觉流，大地超人·动作拆解）的幕后方法整理。</p>
+    <p>整篇最实在的一句是：<strong>一个群戏镜头做了一天。</strong>不是做不出好看的画面，是接不上、说不清、看着没分量。这一天踩出来的东西，就是下面这些。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>后果延续（视觉流的根）</h2>
+    <p>上一镜发生的事，下一镜要接得住：</p>
+    <ul>
+      <li>人物受了伤 → 后面每镜伤还在</li>
+      <li>武器有重量 → 挥动要费力、放下要声响</li>
+      <li>对白 → 反应 → 行动，三拍衔接不断裂</li>
+    </ul>
+    <p>观众觉得"顺畅"的背后全是这个。状态断了（伤好了、盖子自己关上了），观众立刻出戏——而且他们说不清哪里不对，只会觉得"不好看"。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>交代换通道（最实用的排查表）</h2>
+    <p>提示词改不动时，别死磕文字——<strong>信息是什么类型，决定用什么方式交代</strong>。</p>
+
+    <div class="route-map">
+      <svg viewBox="0 0 680 214" role="img" aria-label="决策路线图：提示词改不动时，先判断信息类型，再换位置图、参照图或三维示意">
+        <rect x="196" y="8" width="288" height="36" rx="18" class="sv-b"/>
+        <text x="340" y="31" class="sv-t2" font-size="15" font-weight="700" text-anchor="middle">提示词改不动了</text>
+
+        <path d="M340 44 L340 62" class="sv-ln" stroke-width="2"/>
+        <path d="M336 58 L340 66 L344 58 Z" class="sv-t"/>
+
+        <rect x="180" y="66" width="320" height="34" rx="8" class="sv-a" stroke-width="1.6"/>
+        <text x="340" y="88" class="sv-t" font-size="15" font-weight="700" text-anchor="middle">先问：这是哪一类信息？</text>
+
+        <path d="M200 100 L120 132" class="sv-ln" stroke-width="2"/>
+        <path d="M340 100 L340 132" class="sv-ln" stroke-width="2"/>
+        <path d="M480 100 L560 132" class="sv-ln" stroke-width="2"/>
+        <path d="M118 128 L124 136 L110 136 Z" class="sv-t"/>
+        <path d="M336 128 L340 136 L344 128 Z" class="sv-t"/>
+        <path d="M562 128 L556 136 L570 136 Z" class="sv-t"/>
+
+        <rect x="30" y="140" width="180" height="60" rx="8" class="sv-a" stroke-width="1.4"/>
+        <text x="120" y="162" class="sv-t" font-size="14.5" font-weight="700" text-anchor="middle">站错位</text>
+        <text x="120" y="184" class="sv-g" font-size="14" text-anchor="middle">位置图（手绘都行）</text>
+
+        <rect x="250" y="140" width="180" height="60" rx="8" class="sv-a" stroke-width="1.4"/>
+        <text x="340" y="162" class="sv-t" font-size="14.5" font-weight="700" text-anchor="middle">道具忽大忽小</text>
+        <text x="340" y="184" class="sv-g" font-size="14" text-anchor="middle">参照图：人手同框锁比例</text>
+
+        <rect x="470" y="140" width="180" height="60" rx="8" class="sv-a" stroke-width="1.4"/>
+        <text x="560" y="162" class="sv-t" font-size="14.5" font-weight="700" text-anchor="middle">空间关系说不清</text>
+        <text x="560" y="184" class="sv-g" font-size="14" text-anchor="middle">三维示意（逐级升级）</text>
+      </svg>
+      <p class="sv-cap">死磕文字是下策；改成"换个通道去说"才是正解。</p>
+    </div>
+
+    <div class="decide">
+      <div class="dcard">
+        <p class="dc-sym">症状：人物站错位</p>
+        <p class="dc-arrow">换这条通道 ↓</p>
+        <p class="dc-fix">位置图</p>
+        <p class="dc-b">手绘都行。要的不是好看，是"谁在哪"。文字描述空间关系，模型永远理解成大概。</p>
+      </div>
+      <div class="dcard">
+        <p class="dc-sym">症状：道具忽大忽小</p>
+        <p class="dc-arrow">换这条通道 ↓</p>
+        <p class="dc-fix">参照图</p>
+        <p class="dc-b">人手和道具同框，比例就锁住。人手的尺寸模型最熟，拿它当尺子最稳。</p>
+      </div>
+      <div class="dcard">
+        <p class="dc-sym">症状：空间关系说不清</p>
+        <p class="dc-arrow">换这条通道 ↓</p>
+        <p class="dc-fix">三维示意</p>
+        <p class="dc-b">手绘图 → Codex + Blender 摆站位 → 机位规划图，逐级升级。越复杂的关系越值得上升级。</p>
+      </div>
+    </div>
+
+    <div class="warn"><b>写作提示词时最该记住的一句：</b>文字不是唯一通道。改不动提示词时先问——这个信息是不是本来就说不适合用文字说？</div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>动作拆两层（大地的手艺）</h2>
+    <p>写"举起劈下"很快没分量。同一件事拆两层写：</p>
+    <div class="two-layer">
+      <div>
+        <h3>故事世界里发生的事</h3>
+        <p class="tl-sub">这一层决定观众信不信这一斧真劈下去了</p>
+        <ul>
+          <li><b>身体怎么用力</b>：双手握紧 → 手腕扭动 → 手肘抬起 → 上半身后仰蓄力</li>
+          <li><b>环境怎么回应</b>：地面裂出蜘蛛网纹、碎石离地十厘米、粉尘以脚为中心扩散、火光被气流带得摇曳</li>
+        </ul>
+      </div>
+      <div>
+        <h3>摄影机怎么表达</h3>
+        <p class="tl-sub">这一层决定观众能不能感到那股劲</p>
+        <ul>
+          <li>机位、运镜、震动、模糊</li>
+          <li><b>震动要有原因</b>：先能量释放 → 再冲击镜头 → 最后震荡</li>
+          <li>单写"镜头震一下"没力——没有因的果是假的</li>
+        </ul>
+      </div>
+    </div>
+    <p>力量要"经过"身体、环境、镜头，观众才相信这一斧真劈下去了。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>守确定，放灵活</h2>
+    <div class="two-layer">
+      <div>
+        <h3>锁死</h3>
+        <p class="tl-sub">变了就破坏故事</p>
+        <ul>
+          <li>已经发生的事实：受伤、站位</li>
+          <li>上一镜留下的状态</li>
+        </ul>
+      </div>
+      <div>
+        <h3>留活</h3>
+        <p class="tl-sub">意外的惊喜可以留下</p>
+        <ul>
+          <li>光线细节</li>
+          <li>动作表现的临场变化</li>
+        </ul>
+      </div>
+    </div>
+    <p>全锁死，AI 就没有发挥空间了。这条和提示词工程的"只在关键处下约束"是同一个道理，只是搬到了画面上。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>剪辑余量：留 1.5—2 秒</h2>
+    <p>动作完成后留 1.5—2 秒再停，别劈完就掐断。剪辑时才能选 0.5 秒还是 1 秒再切，也给观众看清结果的时间。</p>
+    <p>这是最便宜的一条改进：<strong>成本为零，但决定你后期有没有得选。</strong>生成时省下的那 2 秒，剪辑台上要多花十倍时间去补救。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>散点速查</h2>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>坑</th><th>药</th></tr></thead>
+      <tbody>
+        <tr><td>远景糊</td><td>两千万像素分摊给每个对象就少了，重要细节别只靠远景</td></tr>
+        <tr><td>模型参考小脸放弃大脸</td><td>全身图去掉头部，脸单独给大图</td></tr>
+        <tr><td>规模感出不来</td><td>夸张数字引导：想要 20 米写 100 米、想要密集写一百万（当时模型的玄学，换版本要重试）</td></tr>
+        <tr><td>处处鲜艳锐利 = 刺眼 = 假</td><td>降低饱和度和对比度</td></tr>
+        <tr><td>人物和场景"贴不到一起"</td><td>光线匹配：人物参考图偏白，夜景里就飘——人物光要贴场景光</td></tr>
+        <tr><td>声音</td><td>动作音效保留，BGM 后期统一铺</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>剧集级协作体系</h2>
+    <ul>
+      <li><strong>资产库 + 制作台本</strong>：角色 / 场景 / 道具图 + 拆成镜头的表格，每个创作决定都存档——换个人接手也知道"为什么这么决定"（防交接失真）。</li>
+      <li><strong>提示词四层组织</strong>：素材说明 → 整段目标 → 逐镜头描述 → 全局约束。</li>
+      <li><strong>经验 Skill 化要写适用条件</strong>：强冲击的 Skill 用在安静戏上会把停顿填满——不写边界的好经验会变成新坑。</li>
+      <li><strong>实拍迁移</strong>：实拍提供力、节奏、距离；图片提供外观；模型完成转化。</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>世界账：跨镜连续性的"记账法"</h2>
+    <p><strong>治什么病</strong>：多镜头短片里，单个镜头好看不难，难的是<strong>回到旧场景时东西还在原处</strong>。只靠最近几帧、文字摘要或参考图，相邻镜头能接住，回到很早的场景或换机位重放同一件事就断。</p>
+    <div class="ledger">
+      <div class="lg-card">
+        <p class="lg-t">场景记忆</p>
+        <p class="lg-b">点云存静态空间结构。管"东西在哪"。</p>
+      </div>
+      <div class="lg-card">
+        <p class="lg-t">事件记忆</p>
+        <p class="lg-b">按时间存动态动作片段。管"发生过什么"。</p>
+      </div>
+      <div class="lg-card">
+        <p class="lg-t">先拆再取</p>
+        <p class="lg-b">每个镜头拆小请求：先写清场景、机位、时间、事件，再去两份记忆里取参考，才交给视频模型。</p>
+      </div>
+    </div>
+    <div class="warn"><b>关键一步：生成的片段不直接信任</b>——审片、重建、对齐到场景坐标三项都通过，才写回记忆。这就是"干活的不自己验收"用在视频片段上。</div>
+
+    <p>成绩（作者自述，4 个视频模型 × 5 种 agent 方法对比）：综合分每组最高；回旧场景 PSNR / SSIM / LPIPS 三项全胜；人工评分 6 项最高。但 Wan 2.7 上的 VBench 单项输给 ReCA（0.846 对 0.854）——不是全胜。</p>
+    <div class="stat2">
+      <div class="s-card">
+        <p class="s-num">1.00 → 0.54 次<small>每镜头平均重试次数，省了</small></p>
+      </div>
+      <div class="s-card">
+        <p class="s-num">51.9 → 64.9 分钟<small>每个故事总耗时，涨了</small></p>
+      </div>
+    </div>
+    <blockquote>
+      更稳的连贯性是用更多算力换来的。
+    </blockquote>
+    <p><strong>为什么值钱</strong>：它把散在"后果延续""交代换通道"里的直觉，升级成一套可记账的机制——<strong>记忆要分静态 / 动态两本，且写回前必须过验收</strong>。同一套结构在出稿评审分离法里叫"干活的不自己验收"，只是这里用在视频片段上。</p>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li><strong>产品视频直接抄</strong>：上一镜产品被按开盖子，下一镜盖子就得是开的——状态连续。</li>
+      <li><strong>操作完成后留 2 秒</strong>：看清结果再停，别掐死。</li>
+      <li><strong>比例锁参照图</strong>：人手和产品同框，产品忽大忽小就治了。</li>
+      <li><strong>产品操作也拆两层</strong>：手怎么用力 → 产品怎么回应（盖子弹开、灯光亮起）→ 镜头怎么呈现（微距推近）。</li>
+    </ul>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>剧集级项目（八个月十人）的方法，散装按需取，不必全上。</li>
+      <li>夸张数字写法针对当时模型版本，换模型要重新试。</li>
+      <li>现场口述整理：作者自标"两成实拍"不严谨、"百分之八九十是当场估计"——数字当参考别当精确值。</li>
+    </ul>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">六层法管镜头内动作怎么写，本条管镜头间状态怎么接</span></a>
+      <a href="../05-video/AI视频白模预演.html"><span class="rel-t">AI视频白模预演</span><span class="rel-d">三维示意=钉死空间同思想；行镖团队最终用位置图替代</span></a>
+      <a href="../05-video/剪辑思维七手法.html"><span class="rel-t">剪辑思维七手法</span><span class="rel-d">七手法管怎么切，本条管切完怎么接；余量是气口</span></a>
+      <a href="../05-video/AI视频提示语实战.html"><span class="rel-t">AI视频提示语实战</span><span class="rel-d">提示词四层组织与模版思路互补</span></a>
+      <a href="../05-video/代码画视频三路线.html"><span class="rel-t">代码画视频三路线</span><span class="rel-d">Codex + Blender 三维站位=代码画工具用进视频流程</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">ATAS 的"审片重建对齐后才写回记忆"=验证后入库的同构版</span></a>
+    </div>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>CY《高分〈行镖〉幕后：一个镜头做了一天，AI 剧集到底难在哪？》（WaytoAGI 共学复盘 2026-09-27，主讲老神 + 大地超人，飞书 wiki MEhowly9IibPJXkC64kcSuUlnXf）</li>
+      <li>世界账机制来源：论文 ATAS / Any Time, Any Space（arXiv 2610.20571，2026-10 并入）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI视频连贯性手法</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI视频连贯性手法.md（2026-09-29 建条）· 本页生成 2026-10-27</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">后果延续</a></li>
+    <li><a href="#s4">交代换通道 ·核心</a></li>
+    <li><a href="#s5">动作拆两层</a></li>
+    <li><a href="#s6">守确定放灵活</a></li>
+    <li><a href="#s7">剪辑余量</a></li>
+    <li><a href="#s8">散点速查</a></li>
+    <li><a href="#s9">剧集级协作</a></li>
+    <li><a href="#s10">世界账记账法</a></li>
+    <li><a href="#s11">桑老哥适用</a></li>
+    <li><a href="#s12">前提与局限</a></li>
+    <li><a href="#s13">关联词条</a></li>
+    <li><a href="#s14">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

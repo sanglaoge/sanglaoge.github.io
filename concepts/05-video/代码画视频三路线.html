@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>代码画视频三路线 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：叙事布局 ---- */
+
+/* 长成记时间线 */
+.tl { position:relative; margin:22px 0 6px; padding-left:26px; }
+.tl::before { content:""; position:absolute; left:7px; top:6px; bottom:6px; width:2px; background:var(--fam-line); }
+.tl .ev { position:relative; padding:0 0 20px 0; }
+.tl .ev:last-child { padding-bottom:0; }
+.tl .ev::before {
+  content:""; position:absolute; left:-23px; top:7px; width:9px; height:9px;
+  border-radius:50%; background:var(--g0); border:2px solid var(--fam-line);
+}
+.tl .ev.key::before { background:var(--fam); border-color:var(--fam); }
+.tl .ev .ev-date { font-size:14.5px; font-weight:700; color:var(--ink-faint); letter-spacing:.04em; font-variant-numeric:tabular-nums; }
+.tl .ev .ev-t { font-weight:700; font-size:16.5px; color:var(--ink); margin:1px 0 4px; }
+.tl .ev.key .ev-t { color:var(--fam-deep); }
+.tl .ev .ev-b { font-size:15.5px; color:var(--g8); line-height:1.68; }
+
+/* 原理对照：视频模型 vs 代码画 */
+.split { display:grid; grid-template-columns:1fr; gap:0; margin:18px 0;
+  border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; background:var(--g0); }
+@media (min-width:720px) { .split { grid-template-columns:1fr 1fr; } }
+.split > div { padding:15px 17px; }
+.split > div + div { border-top:1px solid var(--line); }
+@media (min-width:720px) { .split > div + div { border-top:none; border-left:1px solid var(--line); } }
+.split h3 { margin:0 0 3px; font-size:16.5px; color:var(--ink); }
+.split .sp-sub { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.split ul { list-style:none; padding:0; margin:0; }
+.split li { font-size:15.5px; color:var(--g8); line-height:1.65; padding:7px 0 7px 15px; position:relative; border-top:1px solid var(--g2); }
+.split li:first-child { border-top:none; padding-top:0; }
+.split li::before { content:""; position:absolute; left:0; top:14px; width:5px; height:5px; border-radius:50%; background:var(--g4); }
+.split li:first-child::before { top:7px; }
+.split .win h3 { color:var(--fam-deep); }
+
+/* 路线卡 */
+.routes4 { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:700px) { .routes4 { grid-template-columns:1fr 1fr; } }
+.rt { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:15px 17px; }
+.rt .rt-tag { font-size:14.5px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em; }
+.rt .rt-name { font-weight:700; font-size:17px; color:var(--ink); margin:2px 0 6px; }
+.rt .rt-tools { font-size:14.5px; color:var(--ink-faint); margin-bottom:8px; }
+.rt .rt-b { font-size:15.5px; color:var(--g8); line-height:1.66; }
+.rt .rt-fit { font-size:15px; color:var(--ink-soft); margin-top:9px; padding-top:9px; border-top:1px solid var(--g2); }
+.rt .rt-fit b { color:var(--fam-deep); }
+
+/* 五部门流程 */
+.dept { display:grid; grid-template-columns:1fr; gap:0; margin:16px 0; }
+.dept .dp {
+  display:grid; grid-template-columns:88px 1fr; gap:14px; align-items:baseline;
+  padding:11px 0; border-top:1px solid var(--g2);
+}
+.dept .dp:first-child { border-top:none; }
+.dept .dp-role { font-weight:700; font-size:15.5px; color:var(--fam-deep); }
+.dept .dp-body { font-size:15.5px; color:var(--g8); line-height:1.6; }
+.dept .dp-body code { font-size:.9em; }
+
+/* 两列要点 */
+.pair2 { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:700px) { .pair2 { grid-template-columns:1fr 1fr; } }
+.pair2 .p-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.pair2 .p-t { font-weight:700; font-size:16px; color:var(--ink); margin-bottom:6px; }
+.pair2 .p-b { font-size:15.5px; color:var(--g8); line-height:1.68; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">代码画视频三路线</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 不用视频模型这一支</p>
+    <h1>代码画视频三路线</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-29</span>
+      <span>下次复核 2027-01-20</span>
+      <span>10 篇来源 · 累计加厚 6 次</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头往墙里张望，示意绕开视频模型，从代码那边进去"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      不用视频模型，让 Claude 写代码画每一帧——哪帧不对改哪帧，画面文字不乱码。
+    </blockquote>
+    <p>视频模型是让画家凭感觉一口气画一整段；代码画是写好程序规定每一帧。前者是抽卡，后者是定点修。</p>
+    <p>这是 AI 视频家族此前真正的空白：家族里全是"怎么给视频模型写提示语"，没有"不用视频模型"这条路线。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>它是怎么长成现在这样的</h2>
+    <p>这条词条不是一个来源写成的，是一个月里七次撞见叠出来的。看它的长成过程，比看结论更能说明这条路为什么成立。</p>
+
+    <div class="tl">
+      <div class="ev">
+        <p class="ev-date">2026-09-25</p>
+        <p class="ev-t">先有现象，才有解释</p>
+        <p class="ev-b">Opus 5.5 发布后，一批"好看得不寻常"的 AI 视频冒出来。张梦飞拆了 10 个案例，发现共性：<b>这些视频不是视频模型生成的，是 Claude 写代码画出来的</b>（p5.js / three.js / Remotion）。代表作"末日之歌"（开源模板）、"机器人逃出虚拟世界"（12 种画风 4—5 小时没用视频模型）、《咬了一口月亮》中秋短片。</p>
+      </div>
+      <div class="ev key">
+        <p class="ev-date">2026-09-29</p>
+        <p class="ev-t">建条，同一天三篇撞上来</p>
+        <p class="ev-b">词条当天建立。同一天还有 Eian 的 8 步 SOP（"提示词只占 10%，流程占 90%"）、xilo 的万字拆解、卡尔的模型选型实测（Sonnet 便宜一半快三成，但 3D 拉胯）。一天之内四个角度，说明这不是个例。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-date">2026-09-30</p>
+        <p class="ev-t">论点被收束成一句话</p>
+        <p class="ev-b">云舒 50 个案例把整件事压成一句：<b>Coding is all you need</b>——代码写到足够好，就成了通往一切的接口，视频 / 音乐 / 3D / 游戏都从同一个代码口进去。宝玉补了工程侧细节。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-date">2026-10-08</p>
+        <p class="ev-t">工具链补上最后一公里</p>
+        <p class="ev-b">宝玉写透 HyperFrames（HeyGen 开源，5.8 万 Star，"Write HTML. Render video. Built for agents."）；xilo 补 7 类代码工具箱；成峰开源 15 种风格提示词。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-date">2026-10-20</p>
+        <p class="ev-t">从"能画"升级到"能组织生产"</p>
+        <p class="ev-b">Mori 的五部门工作室：把一个人干活拆成导演 / 美术指导 / 动画师 / 渲染工程师 / 评论家五个角色、五份文件。真正的新东西是第五个角色——评论家。</p>
+      </div>
+      <div class="ev">
+        <p class="ev-date">2026-10-21</p>
+        <p class="ev-t">开始治"太规整"的病</p>
+        <p class="ev-b">空格丶补去 AI 味三板斧：rough.js 手绘抖线、SVG 描边生长、p5.brush 四十层薄叠水彩。代码画的画面容易"太规整像 PPT"，三板斧治这个。</p>
+      </div>
+      <div class="ev key">
+        <p class="ev-date">2026-10-27</p>
+        <p class="ev-t">同一作者第二次撞见：从画面质感进到版面规范</p>
+        <p class="ev-b">卡尔再写 6 条去掉新模型 AI 味的提示语——这次治的不是线条，是<b>信息怎么摆</b>（字号、配色、框、动效）。同一人二撞，遂并入本条。至此三层齐了：质感、版面、生产线。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>原理：代码画视频 = 翻页书</h2>
+    <div class="split">
+      <div>
+        <h3>视频模型</h3>
+        <p class="sp-sub">让画家凭感觉一口气画一整段</p>
+        <ul>
+          <li><b>概率生成</b>：每次结果不一样</li>
+          <li>不满意 → <b>重抽</b>（成本按次算）</li>
+          <li>画面写字 → <b>必乱码</b></li>
+          <li>改一个细节 → 整段重来</li>
+        </ul>
+      </div>
+      <div class="win">
+        <h3>代码画</h3>
+        <p class="sp-sub">写好程序规定每一帧</p>
+        <ul>
+          <li><b>确定性绘制</b>：同一份代码每次渲染一模一样</li>
+          <li>不满意 → <b>定点修</b>（改那几行）</li>
+          <li>画面写字 → 文字就是一个形状，<b>画出来就是对的</b></li>
+          <li>改一个细节 → 只改那一帧</li>
+        </ul>
+      </div>
+    </div>
+    <p>它和 <a href="../05-video/AI视频白模预演.html">AI视频白模预演</a> 是同一思想的两张脸——把能确定的钉死，让模型少猜：<strong>白模在空间上钉死（走位、机位），代码画在时间上钉死（每一帧）。</strong></p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>两个杀手锏</h2>
+    <div class="pair2">
+      <div class="p-card">
+        <p class="p-t">哪帧不对改哪帧</p>
+        <p class="p-b">视频模型的改法是重抽，代码画的改法是定点修。0.0 秒下蹲、0.2 秒腾空、0.4 秒落地——连续播放成动画，每一帧都可编辑。<br><br>这是抽卡问题的另一种解法：那边教"抽得省"，这边是"不用抽"。</p>
+      </div>
+      <div class="p-card">
+        <p class="p-t">画面文字不乱码</p>
+        <p class="p-b">视频模型画面写字必乱码，这是电商视频卖点字幕的长期痛点。代码画里文字就是一个形状，画出来就是对的。<br><br>对做产品视频的人来说，这一条自己就值回票价。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>画看改循环（好看的关键）</h2>
+    <p>光会画不够。好几位作者共同的规矩是：<strong>让它渲染出静帧，回头自己看，放大挑毛病。</strong></p>
+    <p>流程：渲染截图 → 看图找问题（鸟脚悬空没踩到树枝）→ 改代码 → 重新渲染，有问题继续循环。</p>
+    <p>这是验证器思想的视频版——AI 说"画好了"不算数，渲染出来亲眼看到才算。<a href="../01-ai/目标契约与五个闸门.html">目标契约与五个闸门</a> 的"把'做完了'当不可信声明"是同根。</p>
+    <p>Opus 5.5 的进步：会自己渲染看图找问题，有些毛病人还没提它已经改了。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>三条路线 + 一条延伸</h2>
+    <div class="routes4">
+      <div class="rt">
+        <p class="rt-tag">路线一</p>
+        <p class="rt-name">2D</p>
+        <p class="rt-tools">p5.js / Canvas / SVG / Remotion</p>
+        <p class="rt-b">上限比想象高——12 种画风做 4—5 小时，全程没用视频模型。很多作品本身就是网页。</p>
+        <p class="rt-fit"><b>适合</b>：风格化短片、片头动画。最合算的起步路线。</p>
+      </div>
+      <div class="rt">
+        <p class="rt-tag">路线二</p>
+        <p class="rt-name">3D</p>
+        <p class="rt-tools">three.js</p>
+        <p class="rt-b">先搭片场，再扛摄像机进去拍。提示词要把毛病说清（物体别悬空 / 别穿模 / 镜头别钻进地里）；做完让 Claude 开浏览器自查。写实人物仍是短板。</p>
+        <p class="rt-fit"><b>适合</b>：空间感强的展示。</p>
+      </div>
+      <div class="rt">
+        <p class="rt-tag">路线三</p>
+        <p class="rt-name">多模型混合</p>
+        <p class="rt-tools">Claude 当导演</p>
+        <p class="rt-b">图片模型画角色场景 + Seedance 打底 + ElevenLabs 音效 + JS 重画。效果最炸，门槛最高：要提前备素材库 / API / 预算，让 Claude 拆分镜、写生成请求、检查结果、不合格重来。</p>
+        <p class="rt-fit"><b>适合</b>：大片级项目。</p>
+      </div>
+      <div class="rt">
+        <p class="rt-tag">延伸</p>
+        <p class="rt-name">专业软件</p>
+        <p class="rt-tools">Blender / AE + MCP 或插件</p>
+        <p class="rt-b">Claude 当遥控器：claude.ai 直接调 Blender 做黏土动画；操作 AE 剪发布片只花 Pro 额度 5%（约 150 日元），成品回 AE 还能继续改。<b>人的手艺不动，AI 跑腿。</b></p>
+        <p class="rt-fit"><b>适合</b>：已有专业软件工作流的人。</p>
+      </div>
+    </div>
+    <p>云舒版三角色叫法：<strong>当画笔</strong> = 2D / 3D，<strong>当遥控器</strong> = 专业软件，<strong>当包工头</strong> = 多模型混合——同一条"代码是接口"论点的三个切面。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>实操清单（《咬了一口月亮》实证）</h2>
+    <ul>
+      <li><strong>起步用模板</strong>：ClaudeAnimationBase（"末日之歌"作者开源，p5.js + 手绘笔刷 + 31 个表情），让 Claude 读完 README 和动画指南再开工。</li>
+      <li><strong>两样提前备</strong>：角色设定图（各角度各姿态，或让模型手绘）、TTS 接口文档放进项目（免得最后用免费朗读声）。</li>
+      <li><strong>提示词三宝</strong>：
+        <ol>
+          <li>"必须做清楚的两个瞬间"——验收标准具体到能打勾：咬一口月饼月亮同步缺一口且缺口同形状、分一半月饼月亮复圆（不是"做得唯美点"）。</li>
+          <li>先做到"月亮缺了一口"确认笑点成立，再做后半段——分阶段验收，前半段不成立不烧后半段的钱。</li>
+          <li>每个镜头渲染截图自己检查——把画看改循环写死在提示词里。</li>
+        </ol>
+      </li>
+      <li><strong>提前写死的还有</strong>：观众画像（手机上看的中国读者）、规格（30—40 秒 / 1920×1080 / 24fps）、镜头间转场、给观众留看懂的时间。</li>
+    </ul>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>8 步 SOP 精髓</h2>
+    <div class="warn"><b>核心咒语「每一帧只由时间决定」</b>——确定性绘制的可执行版：改哪秒改哪秒、导出结果每次一样。写进需求省一大半返工。</div>
+    <ul>
+      <li><strong>卡点别按 BPM 算</strong>——先分析真实鼓点存成表（差 0.05 秒耳朵听得出来），动画按"第几拍"写不按"第几秒"；自己作曲时让模型输出时间表，曲子就是剧本，改音乐画面自动对齐。</li>
+      <li><strong>挑剔导演自查</strong>——把每镜头截图拼成联系表，6 项打分（开头 2 秒抓人 / 手机上字清楚 / 动作顺 / 变化够多 / 构图 / 卡点准），挑最差 3 个改完再交。</li>
+      <li><strong>项目放 CLAUDE.md 规则手册</strong>——"不要渐变背景 / 要卡点"等固定要求写手册，不重复说。</li>
+      <li><strong>类型切换只换"节奏"段</strong>：卡点 MV = 鼓点节奏，宣传片 = 信息节奏（每 2—4 秒讲清一件事），故事片 = 剧情节奏。</li>
+      <li><strong>避坑</strong>：免费音乐不等于随便用（Uppbeat 免费档要署名且一码一视频，Pixabay 不强制署名）；字体加载完再截图；拼接咔哒声加淡入淡出；30fps 预览比 60fps 快近一倍。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>工具落地</h2>
+    <ul>
+      <li><strong>HyperFrames 补上最后一公里</strong>：HeyGen（数字人公司）开源，58696 Star，定位"Write HTML. Render video. Built for agents."——自搭摄像机环节（无头浏览器逐帧截图 + FFmpeg 拼接）它全包。</li>
+      <li><strong>HeyGen 选型教训</strong>：早期试 Remotion（React 框架），发现框架限制越多、智能体产出越保守雷同，换回纯 HTML 创意才回来——<strong>给智能体留自由度，工具不是越规范越好</strong>。</li>
+      <li><strong>7 类代码工具箱</strong>：① JS + Canvas2D 平面画布 ② HTML/CSS + SVG 网页元素（产品宣传片动效）③ WebGL 着色器（独立质感层——扫描线 / 胶片颗粒 / 水面反光）④ Three.js 3D（产品 3D 模型文件可直接交给 Opus 导入做动画，电商展示对口）⑤ p5.js + p5.brush 手绘笔触 ⑥ HyperFrames / Remotion 框架类 ⑦ Manim（Python 数学动画）。</li>
+      <li><strong>确定性渲染三条军规</strong>：代码不能读当前时间、不能用没有固定种子的随机数、渲染时不能联网。守住三条，同一份代码每次渲染出完全相同的视频，多浏览器进程并行分渲才可能。</li>
+      <li><strong>15 种风格提示词全开源</strong>：皮影戏 / 等距流程 / 比例尺对比 / 白板手绘 / 汉字演变 / 3D 拆解 / 像素典故 / 绘本科普 / 数学可视化 / 地图动画 / 数据信息图 / 扁平 MG / 卡点金句 / 漫画分格 / 时间线。三大优势：字不会错、改得快、10 块 vs 视频模型几百抽卡。</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>五部门流水线：把自查拆成五个角色</h2>
+    <p>「挑剔导演自查」的进阶版：一个人干五个角色的活，但要交出五份文件。</p>
+    <div class="dept">
+      <div class="dp"><span class="dp-role">导演</span><span class="dp-body">片子在说什么 → 交出 <code>BRIEF.md</code></span></div>
+      <div class="dp"><span class="dp-role">美术指导</span><span class="dp-body">视觉规则（字体 / 配色 / 构图 / 动势）→ 交出 <code>STYLE.md</code></span></div>
+      <div class="dp"><span class="dp-role">动画师</span><span class="dp-body">写动画代码 → 交出源码</span></div>
+      <div class="dp"><span class="dp-role">渲染工程师</span><span class="dp-body">导出、验分辨率帧率字体资源 → 交出 MP4 + 静帧</span></div>
+      <div class="dp"><span class="dp-role">评论家</span><span class="dp-body">挑毛病 → 交出 <code>reviews/findings.md</code></span></div>
+    </div>
+    <ul>
+      <li><strong>顺序不能乱</strong>：多数视觉失败发生在渲染之前——"故事不清楚，更好的动效也救不了它"。所以导演和美术指导都要先出文件、等批准，再让动画师碰代码。</li>
+      <li><strong>一个角色一个文件</strong>：会话断了、任务跑几小时，靠文件恢复现场，不靠聊天记录还活着。这是长任务能不能扛住的真分界线。</li>
+      <li><strong>美术指导不抄图，抄规则</strong>：给 2—3 个参考，每个指定一项用途（一个定字体、一个定转场、一个定节奏），让模型抽出规则写进 STYLE.md；同时写清要避免什么。光说"高端极简电影感"等于没说。</li>
+    </ul>
+    <div class="warn"><b>第五个角色才是真增量——评论家：</b>① 干活的不给自己打分，要开全新上下文，只喂原始简报 + 渲染出的帧，不喂制作过程的心路 ② 渲染成功只证明文件存在，不证明东西好 ③ 缺陷写成工单五件套：帧号 / 看见什么 / 为什么重要 / 最小修法 / <b>PRESERVE 不许动什么</b> ④ 修复只做局部，改完只重渲受影响帧 ⑤ 同一缺陷最多修两轮，两轮不成停下说清卡点 ⑥ 绝不许为过验收而删验收要求。</div>
+    <p><strong>交付观</strong>：一次渲染不是一份交付物。16:9 / 1:1 / 9:16 各自重新排版、各自抽帧各自验收，禁止裁切复用。交付包 = 成片 + 封面帧 + 联系表 + 可编辑源文件 + 一页"还剩什么限制"的说明。</p>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>去 AI 味：从质感一路管到版面</h2>
+    <p>代码画有个副作用——画面太规整，像 PPT。这条词条一个月里长出了三层解法，分工明确、别混用：</p>
+    <div class="split">
+      <div>
+        <h3>质感层（4.8，空格）</h3>
+        <p class="sp-sub">治"线条太干净"</p>
+        <ul>
+          <li><b>rough.js 手绘线</b>：端点加随机偏移，用两三条略不同的曲线叠起来，像铅笔描了两遍</li>
+          <li><b>SVG 描边生长</b>：虚线长度设成整条路径长度，偏移从全长减到 0，线条像笔画出来</li>
+          <li><b>水彩晕染</b>：同一形状生成 40 多个边缘带偏移的版本，每层 4.5% 不透明度叠加——中间深、边缘浅</li>
+        </ul>
+      </div>
+      <div>
+        <h3>版面层（4.9，卡尔）</h3>
+        <p class="sp-sub">治"信息不会摆"</p>
+        <ul>
+          <li><b>语义色板</b>：背景 / 正文 / 次要 / 重点 / 状态五种含义五种色，写死</li>
+          <li><b>一屏一事</b>：先定这屏最想让人看懂的那一件</li>
+          <li><b>删装饰</b>：标题上方的英文小字、每段套的框、失控的字号</li>
+          <li><b>动效四目的</b>：引导视线 / 展示变化 / 推进叙事 / 操作反馈，答不上就删</li>
+        </ul>
+      </div>
+    </div>
+    <p>三层之外还有第三层：<strong>生产线层</strong>（五部门 + 评论家），治的是"人怎么组织"。三层从上到下越来越靠近"人的判断"，而不是越来越靠近"代码技巧"。</p>
+    <div class="warn"><b>一个容易用错的地方：</b>4.9 全是减法，但 <a href="../07-ip/人味与AI味.html">人味与AI味</a> 的结论是"减法死路"。两者不冲突，分界在<b>这东西是谁写出来的</b>——破折号、口水词是你分布的一部分，删掉=回到均值；标题上方的装饰英文、每段套的框是<b>模型偏好的产物</b>，删掉=回到中性而非回到平均。<b>一句话：删装饰 ≠ 删指纹。</b></div>
+    <p>这三层已成体系：版面六条抽成了 <code>html(可视化笔记)/概念馆-批量生产规范.md</code> 的 §4.5「版面去 AI 味六查」，概念馆批量出页时与 lint 红线一起过。lint 管禁什么，§4.5 管怎么分主次，4.8 管质感。</p>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>成本账</h2>
+    <p>80 分钟出 30—40 秒手绘短片（渲染约 21 分钟）；输出约 22 万 token；<strong>总量约 4400 万但 98% 是便宜的缓存读取</strong>——同一会话反复读同一坨代码和指南，缓存命中便宜十倍以上。</p>
+    <p>按 API 折算约 16.8 美元，占 Max 5x 周额度约 3%。</p>
+    <p>省钱的机制就在 <a href="../01-ai/上下文工程.html">上下文工程</a> 的 KV Cache 经济学里：省钱主要省在同一会话内，任务干完再关。</p>
+  </section>
+
+  <section id="s13" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <div class="warn"><b>状态修正（2026-10-08）：</b>本词条所述路线桑老哥<b>已在生产一线使用近月</b>——视频工厂三系列全走 HyperFrames 线，声音时间线 / 字幕实测时长等铁律已内化成 SOP。下方起步类建议（先做小片试等）已过时；视频工厂踩坑账本（字体竞态 11 轮根治 / 渲染启动五连坑 / 气泡漂移静态抽帧验证被骗）是一手实证，比外部文章更硬，复用本词条知识时以那边为准。</div>
+    <ul>
+      <li><strong>省钱分工</strong>：想方案 / 定审美切 Opus，批量执行丢 Sonnet 5.5（便宜一半快三成效果不打折）；这活是 Claude 家独门——CodeX 三败垫底（一个 case 用到底没合集感 / 缩放偷懒 / 配乐不卡点）。3D 也是 Opus 独门，Sonnet 只会干净执行不会"加戏"。</li>
+      <li><strong>电商直接对口</strong>：实拍素材卡节拍剪发布片；口播剪成片（实测一单 $72）；零生成模型店铺片。配套提示词法——电商宣传片给网址自动截真实界面、找真实 logo 配色，<strong>禁止凭想象画界面</strong>；多尺寸同一套时间线分开做，<strong>禁止横屏裁竖屏</strong>。</li>
+      <li><strong>产品视频字幕不再乱码</strong>：卖点字幕用代码画路线，文字就是形状，画出来就是对的。</li>
+      <li>做熟的同类片打包成 skill = 「每周同类 → Skill」同构，下次口令直出。</li>
+      <li>宜家手册式分步讲解可迁移到 A+ / 详情页：一张图讲一步、只讲当下这步。</li>
+      <li><strong>2D 路线最合算</strong>：B 站三系列片头动画、风格化短视频直接对口，且不用另花钱买视频模型抽卡。</li>
+    </ul>
+  </section>
+
+  <section id="s14" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>写实人物仍是短板（3D 路线人物模型需单独生成）。</li>
+      <li>混合路线不是一段提示词能完成的，需提前备工具和预算。</li>
+      <li>成本数字为作者自报、无第三方验证；但模板开源可查、方法论独立成立。</li>
+      <li><strong>代码画治不了"画面质感"</strong>——质感仍要视频模型或图片模型。与 <a href="../05-video/AI视频提示语实战.html">AI视频提示语实战</a> 是配对关系：那条讲给视频模型写提示语，这条讲不用视频模型。</li>
+    </ul>
+  </section>
+
+  <section id="s15" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/AI视频白模预演.html"><span class="rel-t">AI视频白模预演</span><span class="rel-d">钉死确定部分的两张脸：白模钉空间，代码画钉时间</span></a>
+      <a href="../05-video/AI视频提示语实战.html"><span class="rel-t">AI视频提示语实战</span><span class="rel-d">配对：提示语路线 vs 代码画路线</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">代码画=抽卡问题的定点修解法</span></a>
+      <a href="../05-video/AI视频连贯性手法.html"><span class="rel-t">AI视频连贯性手法</span><span class="rel-d">Codex + Blender 三维站位=代码画工具用进视频流程</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">画看改循环=验证器思想的视频版；先做前半段=分阶段验收</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">五部门里的评论家=该词条的视频流水线落地</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">98% 缓存读取=KV Cache 经济学活例</span></a>
+      <a href="../07-ip/人味与AI味.html"><span class="rel-t">人味与AI味</span><span class="rel-d">删装饰 ≠ 删指纹；减法死路的边界在哪</span></a>
+    </div>
+  </section>
+
+  <section id="s16" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>张梦飞i《Opus 5.5 实测！10 个案例拆解，全网模型审美天花板真的来了》（公众号 梦飞AI 2026-09-25，WaytoAGI 转载 YzMLwbAHtiwWxZkDESkcWRS5n9e）</li>
+      <li>Eian《Opus 5.5 动效视频指南：如何从 0 开始手搓视频？》（X @EianLu 2026-09-29，WaytoAGI 转载 IHB5wFejoiLl9TkMPLWcPMMgnFg，09-30 补 8 步 SOP）</li>
+      <li>云舒《Opus 5.5 能做出什么：我收藏的 50 个案例》（WaytoAGI 转载 S9TnwLwxaiqK6fkXh9PcYrlsnfX，09-30 补论点与电商三案例）</li>
+      <li>卡尔《实测 Claude Sonnet 5.5：做 AI 代码动画断档领先 gpt6 但 3D 拉了》（公众号 AI沃茨 2026-09-29，WaytoAGI 转载 PgWywvBBmiViP9k4AuhcR1Fnnfd）</li>
+      <li>宝玉《Claude Opus 5.5 是怎么做出视频的》（公众号 宝玉AI 2026-09-30，WaytoAGI 转载 Xz60wH0TMim27qkszjGctYHOnGJ，10-08 补 HyperFrames 与工程细节）</li>
+      <li>xilo《零基础入门 Opus 5.5 做视频，万字拆解 AI 是如何用代码做视频的》（X @xilo2991 2026-09-29，WaytoAGI 转载 G6MGwsALHi4xBCk657yca5oGnld，10-08 补 7 类工具箱）</li>
+      <li>成峰《Opus 5.5 正在吃掉科普视频！免费开源 15 种风格提示词》（公众号 AI产品自由 2026-10-07，WaytoAGI 转载 XhIBwaGrFi7jeWk4RK9cv2synLg）</li>
+      <li>Mori《动态工程：一个机器人，五个部门，整个工作室》（X @0xjmori 2026-10-18，WaytoAGI 转载 GoGtwOQ8libLZAkZwnRcsiT3nub，10-20 补五部门流水线）</li>
+      <li>空格丶《拆解 9 个方法，让 AI 写代码帮你做视频起号》（公众号·空格的键盘 2026-10-20，WaytoAGI 转载 VM7fwe8bEiQty5kikh4cqVMfnTd，10-21 补去 AI 味三板斧与 map-motion）</li>
+      <li>卡尔《分享 6 个新提示语去掉 DeepSeek 新模型的 AI 味》（公众号，WaytoAGI 转载 ZtWtwovAai2qZWkEqDfcQsE1n6c，2026-10-27 补版面去 AI 味六条；作者为前序「卡尔实测 Sonnet 5.5」同一人，二撞）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · 代码画视频三路线</p>
+    <p>词条源：concepts(概念库)/AI视频制作/代码画视频三路线.md（2026-09-29 建条）· 本页生成 2026-10-27</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">它怎么长成这样的</a></li>
+    <li><a href="#s3">原理：翻页书</a></li>
+    <li><a href="#s4">两个杀手锏</a></li>
+    <li><a href="#s5">画看改循环</a></li>
+    <li><a href="#s6">三路线 + 延伸</a></li>
+    <li><a href="#s7">实操清单</a></li>
+    <li><a href="#s8">8 步 SOP 精髓</a></li>
+    <li><a href="#s9">工具落地</a></li>
+    <li><a href="#s10">五部门流水线</a></li>
+    <li><a href="#s11">去 AI 味三层</a></li>
+    <li><a href="#s12">成本账</a></li>
+    <li><a href="#s13">桑老哥适用</a></li>
+    <li><a href="#s14">前提与局限</a></li>
+    <li><a href="#s15">关联词条</a></li>
+    <li><a href="#s16">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

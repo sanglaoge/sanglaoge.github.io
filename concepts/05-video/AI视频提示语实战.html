@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频提示语实战 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：词典网格布局 ---- */
+
+/* 器材卡墙 */
+.wall { display:grid; grid-template-columns:1fr; gap:12px; margin:18px 0; }
+@media (min-width:640px) { .wall { grid-template-columns:1fr 1fr; } }
+@media (min-width:960px) { .wall.three { grid-template-columns:1fr 1fr 1fr; } }
+.tile {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:14px 16px 13px;
+}
+.tile .t-era { font-size:14.5px; font-weight:700; color:var(--ink-faint); letter-spacing:.06em; }
+.tile .t-name { font-weight:700; font-size:16.5px; color:var(--ink); margin:2px 0 7px; }
+.tile .t-body { font-size:15.5px; color:var(--g8); line-height:1.68; }
+.tile .t-key { display:block; margin-top:8px; padding-top:8px; border-top:1px solid var(--g2); font-size:15px; color:var(--ink-soft); }
+.tile .t-key b { color:var(--fam-deep); }
+
+/* 三坑清单 */
+.pit { margin:16px 0; border-left:3px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:14px 16px 6px; }
+.pit .pit-t { font-weight:700; font-size:16px; color:#92400e; margin-bottom:6px; }
+.pit ol { margin:0 0 8px; padding-left:1.5em; color:#78350f; font-size:15.5px; }
+.pit li { margin-bottom:7px; line-height:1.65; }
+
+/* 抽屉分组：模版 vs Skill */
+.drawer { display:grid; grid-template-columns:1fr; gap:0; margin:18px 0;
+  border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; background:var(--g0); }
+@media (min-width:720px) { .drawer { grid-template-columns:1fr 1fr; } }
+.drawer > div { padding:15px 17px; }
+.drawer > div + div { border-top:1px solid var(--line); }
+@media (min-width:720px) { .drawer > div + div { border-top:none; border-left:1px solid var(--line); } }
+.drawer .d-head { font-weight:700; font-size:16.5px; color:var(--ink); margin-bottom:3px; }
+.drawer .d-sub { font-size:14.5px; color:var(--ink-faint); margin-bottom:10px; }
+.drawer dl { margin:0; }
+.drawer dt { font-size:14.5px; color:var(--ink-faint); margin-top:9px; }
+.drawer dd { margin:1px 0 0; font-size:15.5px; color:var(--g8); line-height:1.6; }
+.drawer .col-key { border-top:2px solid var(--fam); }
+.drawer .col-key .d-head { color:var(--fam-deep); }
+
+/* 打分条 */
+.score { display:grid; grid-template-columns:1fr; gap:10px; margin:16px 0; }
+@media (min-width:700px) { .score { grid-template-columns:1fr 1fr; } }
+.score .s-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:13px 15px; }
+.score .s-num { font-size:27px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.25; }
+.score .s-num small { display:block; font-size:14.5px; font-weight:400; color:var(--ink-faint); margin-top:2px; }
+.score .s-b { font-size:15px; color:var(--ink-soft); line-height:1.65; margin-top:7px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI视频提示语实战</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 写提示语这一支</p>
+    <h1>AI视频提示语实战</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-09-24</span>
+      <span>下次复核 2026-12-24</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象轻松微笑，示意从现成模版起步就好"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      真实感靠指名器材演缺陷，动作靠写接触点——具体打败抽象，临摹代替烧钱抽卡。
+    </blockquote>
+    <p>这是 463 条实测蒸馏出来的结论，不是道理推演。作者把市面上流传的 AI 视频提示语全部重跑了一遍，留下能复现的。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉：463 条全部重跑了一遍</h2>
+    <p>卡尔烧两万块、肝近一个月，把 463 条 AI 视频提示语全部重新跑了一遍（烧干 GPT-6 Astra 三张重置卡 + 两个 max 账号的 Claude Fable 5.1），蒸馏成 <strong>25 个提示语模版 + 60 个 Skills</strong>，全部开源成 awesome-seedance。</p>
+    <p>配套的 goodcase.ai 每天自动收录 GitHub / 抖音 / 小红书 / X 上带提示语的 case，用四个多模态模型（GPT / Claude / Grok / DeepSeek）打分、聚类、起标题。</p>
+    <p>为什么做这件事：市面提示语合集水平高低不一、没有统一打分机制和分类，与其到处抄，不如自己全部实测一遍。<strong>463 条不是收集来的，是复现跑出来的</strong>——这是它和普通合集最大的区别。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>临摹学习法（总纲）</h2>
+    <p>小时候学画画，是对着一幅好作品一笔一笔学，才懂为什么这里留白、那里压暗。AI 视频同理：先找一个喜欢的效果，拿模版换人物、改动作、调镜头，看结果有什么变化。</p>
+    <p>做着做着就懂 CAMERA 模块为什么放最前、接触动作写太多会怎样、指定流派和只写"打得好看"差在哪。<strong>光看道理没什么感觉，动手才知道每一笔的用处</strong>——这也是把这一步开源的原因：以前迈出第一步要自己烧钱试错，现在有参照，修改也有方向。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>器材年代缺陷换真实感</h2>
+    <p>不要笼统说"真实"——要指名什么年代、什么类型的相机、<strong>它有什么操作毛病</strong>，把缺陷演出来：</p>
+    <div class="wall three">
+      <div class="tile">
+        <p class="t-era">2005 年</p>
+        <p class="t-name">DV 摄像机</p>
+        <p class="t-body">果冻感的上下摇晃</p>
+        <span class="t-key"><b>可用的缺陷</b>：镜头追人总是慢半拍</span>
+      </div>
+      <div class="tile">
+        <p class="t-era">现代</p>
+        <p class="t-name">iPhone</p>
+        <p class="t-body">电子防抖的痕迹</p>
+        <span class="t-key"><b>可用的缺陷</b>：过度补偿之后那种丝滑</span>
+      </div>
+      <div class="tile">
+        <p class="t-era">90 年代</p>
+        <p class="t-name">VHS 录像带</p>
+        <p class="t-body">磁带的物理损伤</p>
+        <span class="t-key"><b>可用的缺陷</b>：卷带纹 + 色彩溢出</span>
+      </div>
+    </div>
+
+    <div class="pit">
+      <p class="pit-t">三个坑（模版里全规避了）</p>
+      <ol>
+        <li><b>又要手持真实感又要 4K 电影级打光</b> → 画面不伦不类。真实中没有任何设备能同时做到。</li>
+        <li><b>频繁男友视角大特写</b> → 增加暴露 AI 脸的机率。太近，脸部细节经不起审视。</li>
+        <li><b>数字变焦当转场用</b> → 直接破坏一镜到底的连贯性。</li>
+      </ol>
+    </div>
+
+    <p><strong>用法</strong>：把模版整段复制给正在用的 Agent，让它改成你要的内容。模版保留参考视频和示例，信息损耗最低，新示例加入还能持续更新。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>打斗三关键</h2>
+    <div class="wall three">
+      <div class="tile">
+        <p class="t-era">关键一</p>
+        <p class="t-name">写接触点，不写抽象词</p>
+        <p class="t-body">"两个武者激烈搏斗，拳脚交加"——差一档的模型跑出来就是两人对着空气打。</p>
+        <span class="t-key">要写"直拳打中下巴""格挡后反击体踢"：<b>拳打到哪里、对方怎么反应</b></span>
+      </div>
+      <div class="tile">
+        <p class="t-era">关键二</p>
+        <p class="t-name">动作链 ≤ 4 段</p>
+        <p class="t-body">5—10 秒的打斗最好不超过 4 段动作。超过 4 段有些模型做不完整——前 3 段还行，第 4 段开始糊甚至脸都糊。</p>
+        <span class="t-key">招式写成链：直拳接勾拳接低扫 → 对方格挡、滑步下潜、封挡 → 随即反击体踢。<b>一环扣一环，模型才知道先后</b></span>
+      </div>
+      <div class="tile">
+        <p class="t-era">关键三</p>
+        <p class="t-name">指名流派的生物力学</p>
+        <p class="t-body">写"泰拳的扫踢"和"跆拳道的横踢"，模型真的会给出不同的动作幅度和力量感。</p>
+        <span class="t-key">泰拳扫踢是<b>整身旋转带出来的大弧线</b>；跆拳道横踢是<b>髋部弹射出去的直线爆发</b></span>
+      </div>
+    </div>
+    <p>关键一正好与 <a href="../05-video/动作导演六层法.html">动作导演六层法</a> 的"一攻一应"因果链互证：谁发起 → 打向哪 → 碰到还是落空 → 对方怎么回应。那边是完整体系，这里是浓缩表述。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>模版 vs Skill：分工在哪</h2>
+    <div class="drawer">
+      <div>
+        <p class="d-head">模版</p>
+        <p class="d-sub">单个镜头的配方</p>
+        <dl>
+          <dt>管什么</dt>
+          <dd>把一段镜头参数填好，改改主体场景就能用</dd>
+          <dt>例子</dt>
+          <dd>找一条喜欢的手持 vlog 模版，换成自己的产品</dd>
+          <dt>什么时候上</dt>
+          <dd>偶尔做一次</dd>
+        </dl>
+      </div>
+      <div class="col-key">
+        <p class="d-head">Skill</p>
+        <p class="d-sub">整部短片的拍摄手册</p>
+        <dl>
+          <dt>管什么</dt>
+          <dd>怎么拆分镜、怎么选模型、怎么处理转场、怎么保持角色一致性</dd>
+          <dt>例子</dt>
+          <dd>说"做 30 秒产品广告"，它拆成若干镜头并衔接</dd>
+          <dt>什么时候上</dt>
+          <dd>每周都做同一类内容</dd>
+        </dl>
+      </div>
+    </div>
+    <p>流程上很简单：Skill 从 GoodCase 下载、装到 Agent，然后说需求即可。这与 <a href="../04-skill/Skill设计方法论.html">Skill设计方法论</a> 的"Skill 是方法不是提示语"互为外部印证。</p>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>复现验证：数据可信度是怎么来的</h2>
+    <ul>
+      <li>每条提示语都实测复现、有打分、有分类；四个多模态模型交叉评分，同类视频聚类。</li>
+      <li>跨模型复测：同一提示语在 MiniMax H3 与 H3 Max 上复跑对比。</li>
+      <li>视频复现比图片难好几倍：各模型时长上限不同（15 秒提示语在 10 秒模型上效果完全不同）、部分提示语需带参考图才有稳定画风、评判维度多（动作连贯 / 镜头运动 / 卡音频）。</li>
+    </ul>
+    <div class="score">
+      <div class="s-card">
+        <p class="s-num">63.9 分<small>热度榜第一名"复古餐厅时间冻结"，复测后判降级</small></p>
+        <p class="s-b"><b>热度 ≠ 复现最好。</b>这是整篇最反直觉的一条——被转得最多的，不一定是自己能跑出来的。</p>
+      </div>
+      <div class="s-card">
+        <p class="s-num">4 个模型<small>交叉评分，同一批数据各自打分</small></p>
+        <p class="s-b">单个模型打分容易偏爱自己的风格；交叉评分是为了压掉这个偏好。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>桑老哥适用场景</h2>
+    <ul>
+      <li><strong>产品视频从模版起步</strong>：awesome-seedance 找相近 case → 复制提示语改主体场景 → 先跑起来。UGC 口播测评带货模版作者已实测（洗头产品一次性生成，展示角度没毛病）——家纺、日用品展示同路。</li>
+      <li><strong>每周固定产出同类产品视频了，再上对应的 Skill。</strong>别一上来就装 Skill，那是给自己加一层要维护的东西。</li>
+      <li><strong>器材缺陷法直接可用</strong>：产品实拍感视频指名"手机拍摄"比笼统"真实感"听话。</li>
+      <li><strong>临摹路径就是共学路径</strong>：先抄跑起来，有参照后修改才有方向——与烧钱瞎抽卡是同一条路上的两种走法。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li><b>数字口径微出入</b>：README 写 463 条 case / 25 模版 / 60 skills，文内写 59 个 skills——如实记，不强行统一。</li>
+      <li>复现以 Seedance 2.5 / 2.0 为主（作者实测主力），其他模型（MiniMax H3 / H3 Max）在补。</li>
+      <li>"烧两万""463 条全部复现"为作者自报、无第三方验证；但仓库开源可查、方法论独立成立。</li>
+      <li>视频评分主观性强（作者用按秒截图喂多模态模型辅助判断，非金标准）。</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../05-video/动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">一攻一应互证，打斗深水区在那边</span></a>
+      <a href="../05-video/视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">七层结构总纲，本条是实测蒸馏层</span></a>
+      <a href="../05-video/AI视频抽卡策略.html"><span class="rel-t">AI视频抽卡策略</span><span class="rel-d">临摹代替瞎抽</span></a>
+      <a href="../05-video/代码画视频三路线.html"><span class="rel-t">代码画视频三路线</span><span class="rel-d">配对：这条给视频模型写提示语，那条不用视频模型</span></a>
+      <a href="../04-skill/Skill设计方法论.html"><span class="rel-t">Skill设计方法论</span><span class="rel-d">模版 vs Skill 分工的外部印证</span></a>
+      <a href="../01-ai/Evals评测体系.html"><span class="rel-t">Evals评测体系</span><span class="rel-d">复现打分思路</span></a>
+      <a href="../05-video/AI视频白模预演.html"><span class="rel-t">AI视频白模预演</span><span class="rel-d">成本清醒：演示不等于生产力</span></a>
+      <a href="../01-ai/System One判断模型.html"><span class="rel-t">System One判断模型</span><span class="rel-d">打分选择而非生成答案的同类结构</span></a>
+      <a href="../05-video/AI视频连贯性手法.html"><span class="rel-t">AI视频连贯性手法</span><span class="rel-d">提示词四层组织与模版思路互补；镜头之间怎么接</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>卡尔《我把 463 个 AI 视频做成了 Skill 和提示语模版，全都开源！》（公众号"卡尔的AI沃茨" 2026-09-22 11:27，WaytoAGI 转载 RnLewCa42iQ56VkC1HnclnYbnSd）</li>
+      <li>开源仓库：GitHub LearnPrompt/awesome-seedance（2026-09-24 实测确认存在：MIT 协议、1.3k stars、25 模版 + 60 skills 每日同步；README 口径与文内 463/59 数字微出入）</li>
+      <li>配套站点：goodcase.ai（每日自动收录 + 四模型交叉打分聚类）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI视频提示语实战</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI视频提示语实战.md（2026-09-24 建条）· 本页生成 2026-10-27</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">临摹学习法</a></li>
+    <li><a href="#s4">器材缺陷换真实感</a></li>
+    <li><a href="#s5">打斗三关键</a></li>
+    <li><a href="#s6">模版 vs Skill</a></li>
+    <li><a href="#s7">复现验证</a></li>
+    <li><a href="#s8">桑老哥适用</a></li>
+    <li><a href="#s9">前提与局限</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
