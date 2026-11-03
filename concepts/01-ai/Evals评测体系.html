@@ -52,6 +52,11 @@
 }
 .warn b { color:#92400e; }
 
+/* 最小可跑版：可复制代码块 */
+.codebox { background:var(--g9); border-radius:var(--r-box); padding:16px 18px; margin:14px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.codebox pre { margin:0; font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8; color:var(--g2); white-space:pre; }
+.codebox code { background:none; border:none; padding:0; font-size:inherit; color:inherit; }
+
 /* 动效兜底：敏感用户全关 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -80,6 +85,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-09-08</span>
+      <span>更新 2026-11-02</span>
       <span>下次复核 2026-12-08</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌宣告，示意分数不退步才准上线"></div>
@@ -157,6 +163,30 @@
     <div class="warn"><b>对照记忆：</b>打分前先问三句——题目哪来的、多久没更新、谁批的卷。这三句正好对应三种死法。</div>
   </section>
 
+  <section id="s9" class="reveal">
+    <h2>20 行评估表</h2>
+    <p>不用先搭整套 harness：拿 <strong>20 行真实历史任务</strong>建一张表，就能开始考。这不是缩水版，是能落地的起点——方向性退化落在哪一行，几行就露馅，不需要几百条来凑统计。</p>
+    <p>Anthropic 的原始建议同样是「约 20 个代表真实使用的查询」。<strong>20 行是起点，500 条精选是终点</strong>，两者不冲突。</p>
+    <div class="drawer-t"><span class="dt-chip">五步</span><h3>拆步骤 · 建表 · 先跑 · 单换 · 写死版本</h3></div>
+    <ul class="rule-list">
+      <li><span class="r-no">1</span><b>把工作拆成步骤</b>（分类 / 提取 / 分析 / 撰写），每一步是一次独立的模型调用——不拆开就分不清是哪一步在错。</li>
+      <li><span class="r-no">2</span><b>建表填 20 行真实历史任务</b>，必须包含那些棘手的。</li>
+      <li><span class="r-no">3</span>顶级模型先跑一遍，逐行记<strong>通过 / 失败</strong>。</li>
+      <li><span class="r-no">4</span><b>一次只换一个步骤的模型</b>，重跑全部 20 行；<strong>通过率不掉才保留这个替换</strong>，绝不一次换两个步骤。</li>
+      <li><span class="r-no">5</span><b>配置里写死版本号，不用别名</b>（<code>xxx-2026-10-01</code> 而不是 <code>xxx-latest</code>）。</li>
+    </ul>
+    <div class="codebox"><pre><code>任务ID | 输入 | 预期输出 | 通过标准 | 模型A | 模型B
+------ | ---- | -------- | -------- | ----- | -----
+T-01   | ...  | ...      | ...      | 通过  | 失败
+T-02   | ...  | ...      | ...      | 通过  | 通过
+...    | ...  | ...      | ...      | ...   | ...
+T-20   | ...  | ...      | ...      | 失败  | 失败</code></pre></div>
+    <p>再加一列裁判（对应上一节）：对每个输出跑一份评分提示词；每次改提示词 / 工具 / 模型后，<strong>重跑全部 20 行</strong>。这就是「改一版考一版」的最小实现。</p>
+    <blockquote>「并非每个任务都需要最聪明的模型。」——先上最聪明的，评估证明可以降级时才降级。</blockquote>
+    <div class="warn"><b>什么时候该上更大的评估集：</b>要比两个相近模型、要对外发布或写合规结论、任务类型差别大需要分组看分，或 20 行里同一步骤反复踩同一个坑要拆细——这几种 20 行不够，按「建考卷的规矩」扩到几百条精选。</div>
+    <p style="font-size:14.5px;color:var(--ink-faint)">做法来源：Yarchi 七层栈文第 1、6 层（2026-10-30）。</p>
+  </section>
+
   <section id="s5" class="reveal">
     <h2>桑老哥的用法</h2>
     <ul>
@@ -196,7 +226,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Evals评测体系</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/Evals评测体系.md（2026-09-08 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Evals评测体系.md（2026-09-08 建条）· 本页生成 2026-11-02</p>
   </footer>
 
 </main>
@@ -208,6 +238,7 @@
     <li><a href="#s2">三种死法 ·核心</a></li>
     <li><a href="#s3">建考卷的规矩</a></li>
     <li><a href="#s4">AI 裁判</a></li>
+    <li><a href="#s9">20 行评估表</a></li>
     <li><a href="#s5">桑老哥的用法</a></li>
     <li><a href="#s6">前提与局限</a></li>
     <li><a href="#s7">关联词条</a></li>

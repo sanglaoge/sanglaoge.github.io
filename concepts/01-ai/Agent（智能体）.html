@@ -9,8 +9,10 @@
 <script>document.documentElement.classList.add('js')</script>
 <style>
 /* ---- 家族皮肤：AI底层逻辑 · 工程蓝（系统·克制·可信） ---- */
-:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
-/* ---- 页面专属：对比布局（左右对照 · 误区vs正解） ---- */
+:root {
+  --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe;
+}
+/* ---- 页面专属：对比布局（左右对照 · 误区vs正解）+ 一段实战推演 ---- */
 
 /* 对照面板 */
 .vs { border:1px solid var(--line); border-radius:var(--r-box); overflow:hidden; background:var(--g0); box-shadow:var(--sh-1); margin:16px 0; }
@@ -19,10 +21,10 @@
 .vs-head .l { background:var(--g2); color:var(--ink-soft); }
 .vs-head .r { background:var(--fam-soft); color:var(--fam-deep); }
 .vs-row { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); }
-.vs-row div { padding:10px 14px; font-size:14.5px; color:var(--g8); line-height:1.75; }
+.vs-row div { padding:10px 14px; font-size:15.5px; color:var(--g8); line-height:1.75; }
 .vs-row .lc { border-right:1px solid var(--line); }
 .vs-row .rc strong { color:var(--fam-deep); }
-.vs-row .lc code { font-size:.88em; }
+.vs-row .lc code { font-size:.9em; }
 
 /* 金句条 */
 .motto {
@@ -37,10 +39,10 @@
 .trio { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
 @media (min-width:820px) { .trio { grid-template-columns:1fr 1fr 1fr; } }
 .trio .tcard { background:var(--g0); border:1px solid var(--line); border-top:3px solid var(--fam); border-radius:var(--r-box); padding:15px 16px; box-shadow:var(--sh-1); }
-.trio .tcard h3 { margin:0 0 8px; font-size:16.5px; color:var(--fam-deep); }
-.trio .tcard .tc-q { font-size:13.5px; color:var(--ink-faint); margin-bottom:6px; }
-.trio .tcard p, .trio .tcard li { font-size:14.5px; color:var(--g8); }
+.trio .tcard h3 { margin:0 0 8px; font-size:18px; color:var(--fam-deep); }
+.trio .tcard p, .trio .tcard li { font-size:15.5px; color:var(--g8); }
 .trio .tcard ul { margin-bottom:0; }
+.trio .tcard .tc-go { font-size:14.5px; color:var(--ink-faint); margin:8px 0 0; }
 
 /* 警示条 */
 .warn {
@@ -52,15 +54,25 @@
 
 /* 五部分公式条 */
 .formula { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; }
-.fchip { background:var(--g0); border:1.5px solid var(--fam-line); border-radius:999px; padding:5px 14px; font-size:15px; color:var(--fam-deep); font-weight:600; }
+.fchip { background:var(--g0); border:1.5px solid var(--fam-line); border-radius:999px; padding:5px 14px; font-size:15.5px; color:var(--fam-deep); font-weight:600; }
 .fchip.brain { background:var(--fam); color:#ffffff; border-color:transparent; }
-.fplus { color:var(--ink-faint); font-weight:700; font-size:16px; }
+.fplus { color:var(--ink-faint); font-weight:700; font-size:18px; }
 
 /* 完整链条 */
 .chain { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; }
-.chain .ck { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:6px 12px; font-size:14.5px; color:var(--fam-deep); font-weight:600; }
+.chain .ck { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:6px 12px; font-size:15.5px; color:var(--fam-deep); font-weight:600; }
 .chain .ck.last { background:var(--fam); color:#ffffff; border-color:transparent; }
 .chain .arr { color:var(--fam); font-weight:700; }
+
+/* ReAct 四行格式 */
+.react {
+  background:var(--g2); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:14px 16px; margin:14px 0;
+  font-family:"SF Mono",Menlo,Consolas,monospace;
+  font-size:15.5px; line-height:1.95; color:var(--g8);
+  overflow-x:auto; tab-size:2;
+}
+.react b { color:var(--fam-deep); font-weight:700; }
 
 /* 动效兜底：敏感用户全关 */
 @media (prefers-reduced-motion:reduce) {
@@ -90,19 +102,25 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-03</span>
-      <span>下次复核 2026-11-18</span>
+      <span>下次复核 2026-11-11</span>
     </div>
-    <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑出镜，示意这是最轻松的入门地基概念"></div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举牌，示意「关键决策交给模型」这一条就是划定 Agent 与非 Agent 的界线"></div>
   </div>
 
   <section id="s1" class="reveal">
     <h2>一句话说清楚</h2>
     <div class="motto">下一步做什么，如果是代码提前写死的 → <b>工作流</b>；如果是模型根据当前情况自己判断 → <b>Agent</b>。</div>
-    <p>ChatGPT 刚出来只能聊天；现在 AI 能在工作角落里真干活。跨越靠两样：<strong>Agent（自主决策的大脑）</strong>和 <strong>Skill（具体能力的手脚）</strong>。</p>
-    <p>Agent 不是一堆 If-Else 拼接，而是能和环境动态交互的「活」系统。它不再一问一答——你给个目标，它自己想路径、选工具、纠错，直到把事办成。</p>
+    <p>要给 Agent 下个准确的定义，比想象中难。教科书给的是一串词：<strong>感知、规划、记忆、行动</strong>——听着都对，可落到工程里，还是不知道第一步该做什么。</p>
+    <p>所以先别追求完美定义，先看边界：<strong>关键不在于它有没有接大模型、有没有调用 API，而在于任务推进过程中那些无法提前写死的关键决策，是不是交给了模型。</strong></p>
   </section>
 
   <section id="s2" class="reveal">
+    <h2>来龙去脉：从只会聊天，到能真干活</h2>
+    <p>ChatGPT 刚出来只能聊天；现在 AI 能在工作角落里真干活。这一步跨越靠两样：<strong>Agent（自主决策的大脑）</strong>和 <strong>Skill（具体能力的手脚）</strong>。</p>
+    <p>Agent 不是一堆 If-Else 拼接，而是能和环境动态交互的「活」系统。它不再一问一答——你给个目标，它自己想路径、选工具、纠错，直到把事办成。</p>
+  </section>
+
+  <section id="s3" class="reveal">
     <h2>工作流 vs Agent ·核心</h2>
     <div class="vs">
       <div class="vs-head"><div class="l">工作流 Workflow</div><div class="r">Agent 智能体</div></div>
@@ -113,35 +131,54 @@
     <div class="motto">核心原则：<b>确定的交给代码，不确定的交给模型</b>。模型负责判断，工程负责兜底。</div>
   </section>
 
-  <section id="s3" class="reveal">
+  <section id="s4" class="reveal">
     <h2>三大基础</h2>
     <div class="trio">
       <div class="tcard">
         <h3>① 模型 · 怎么想</h3>
-        <p class="tc-q">MODEL</p>
-        <p>不是越强越好。选模型 = 做取舍：<strong>能力 × 延迟 × 成本</strong>。先保效果再压成本（先跑通再降配）。别让模型做确定性的事——参数校验、格式转换交给代码。</p>
+        <p>不是越强越好。选模型 = 做取舍：<strong>能力 × 延迟 × 成本</strong>。先保效果再压成本（先跑通再降配）。</p>
+        <p>别让模型做确定性的事——参数校验、格式转换交给代码。</p>
       </div>
       <div class="tcard">
         <h3>② 工具 · 能做什么</h3>
-        <p class="tc-q">TOOLS</p>
         <ul>
           <li>数据类（查/读/搜）：自主调用</li>
           <li>行动类（发/改/删）：<strong>必须确认</strong></li>
         </ul>
+        <p class="tc-go">工具本身也要设计，见下「三道护栏」。</p>
       </div>
       <div class="tcard">
         <h3>③ 提示词 · 按什么边界</h3>
-        <p class="tc-q">PROMPT</p>
-        <ul>
-          <li>确定规则任务：写清依据、步骤、动作、异常分支</li>
-          <li>探索型任务：写清目标、工具、约束、停止条件</li>
-        </ul>
+        <p>确定规则任务：写清依据、步骤、动作、异常分支。</p>
+        <p>探索型任务：写清目标、工具、约束、停止条件。</p>
+        <p class="tc-go">两种任务两套写法，见下两例。</p>
       </div>
     </div>
+
+    <h3>工具的三道护栏</h3>
+    <p>工具给得越多，Agent 越容易在接口上翻车。下面三条是反模式对照正确做法：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>反模式</th><th>正确做法</th></tr></thead>
+      <tbody>
+        <tr><td>没权限直接返回空 → 模型以为「没填」</td><td>标「受限」，而不是给一个空值</td></tr>
+        <tr><td>返回原始 JSON → 模型抓错重点</td><td>整理成业务状态再返回</td></tr>
+        <tr><td>工具全平铺 → 模型选错</td><td>先分流再执行：Router → Executor → Composer</td></tr>
+      </tbody>
+    </table></div>
     <div class="warn"><b>铁律：行动类工具必须确认</b>——发邮件、删数据、下订单、改合同，凡不可逆、有成本、超授权的操作，都要加一道确认。</div>
+
+    <h3>提示词：两种任务，两种写法</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>任务类型</th><th>写清什么</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td>确定规则任务</td><td>依据、步骤、动作、异常分支</td><td><strong>退款处理</strong>：每步具体到调哪个 API</td></tr>
+        <tr><td>探索型任务</td><td>目标、工具、约束、停止条件</td><td><strong>旅行规划</strong>：不给固定步骤，只给边界</td></tr>
+      </tbody>
+    </table></div>
+    <p>分法就一句：<strong>错一步就回不来的活，写到 API 级；怎么走都能到终点的活，只给边界。</strong></p>
   </section>
 
-  <section id="s4" class="reveal">
+  <section id="s5" class="reveal">
     <h2>六种设计模式（两条线）</h2>
     <h3>第一条线：内部怎么推进</h3>
     <div class="tbl-scroll"><table class="tbl">
@@ -164,25 +201,58 @@
     <blockquote>从单体到多体，增加的是复杂度，不是能力等级。能一个 Agent 完成的，就不要拆成三个。</blockquote>
   </section>
 
-  <section id="s5" class="reveal">
+  <section id="s6" class="reveal">
     <h2>Agent 五部分</h2>
-    <div class="formula" aria-label="Agent五部分公式">
+    <div class="formula" aria-label="Agent 五部分公式">
       <span class="fchip brain">大脑（LLM）</span><span class="fplus">+</span>
       <span class="fchip">工具</span><span class="fplus">+</span>
       <span class="fchip">提示词</span><span class="fplus">+</span>
       <span class="fchip">循环（想→动→看→再想）</span><span class="fplus">+</span>
       <span class="fchip">停止条件</span>
     </div>
-    <p>循环怎么收敛归 <a href="../01-ai/循环工程.html">循环工程</a> 管，安全跑道归 <a href="../01-ai/Harness.html">Harness</a> 管——五部分是零件清单，那两条是装配手册。</p>
+    <p>循环怎么收敛归 <a href="循环工程.html">循环工程</a> 管，安全跑道归 <a href="Harness.html">Harness</a> 管——五部分是零件清单，那两条是装配手册。</p>
   </section>
 
-  <section id="s6" class="reveal">
+  <section id="s7" class="reveal">
+    <h2>最小实战：苏州三日行程</h2>
+    <p>不添新概念，只把上面五部分落成一个能跑的最小 Agent：输入一句话目标，它自己查天气、搜景点，最后生成一份三天行程。</p>
+    <blockquote>「未来三天的苏州旅程」<span class="q-src">全部输入就这一句，没有附加步骤，也没写死先查什么</span></blockquote>
+
+    <h3>三个关键细节</h3>
+    <ol>
+      <li><strong>「未来三天的苏州旅程」——输入只是一句话目标，路径不写死。</strong>查哪几天的天气、搜哪几个景点、按什么顺序排，都由它当场决定。这是它和工作流的第一个分岔。</li>
+      <li><strong>「天气不是终点，而是约束」——查到某天下雨，就要把露天景点挪走。</strong>天气结果不是拿来汇报的，是拿来改方案的。工具结果能不能反哺决策，是 Agent 和「会调接口的脚本」的分界。</li>
+      <li><strong>「博物馆周一闭馆，又要回头调整」——排完才发现闭馆，就得回头重排。</strong>下一步调什么，取决于上一步查到了什么——这正是 ReAct 适合的场景，先跑起来再修，不要指望一次规划到底。</li>
+    </ol>
+
+    <h3>五部分在这个 Demo 里的具体参数</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>部分</th><th>在这里是什么</th></tr></thead>
+      <tbody>
+        <tr><td>大脑</td><td>LLM，负责每一轮的推理</td></tr>
+        <tr><td>工具</td><td>查天气 / 搜景点 / 模拟订酒店</td></tr>
+        <tr><td>提示词</td><td>告诉它能用哪些工具、按什么规则推进</td></tr>
+        <tr><td>循环</td><td>想→动→看→再想，直到行程排好</td></tr>
+        <tr><td>停止条件</td><td><strong>最多 12 轮</strong>；有成本操作先问人</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>ReAct 循环的四行格式</h3>
+    <pre class="react"><b>Thought:</b> （当前掌握什么、还缺什么、下一步做什么）
+<b>Action:</b> 工具名[参数]
+<b>Observation:</b> 工具返回结果
+<b>Action:</b> Finish[完整的三天行程规划]</pre>
+    <p>前三行是「想—动—看」，第四行才是收工。<strong>循环就是前三行反复跑，直到某一次能写出 Finish</strong>——写不出，说明还缺东西。</p>
+    <p>停止条件必须硬写进提示词：<strong>最多 12 轮；有成本的操作（订酒店）先问人。</strong>不写这一条，它会一直查到「看起来差不多了」才停——而「差不多」并不是你能验收的标准。</p>
+  </section>
+
+  <section id="s8" class="reveal">
     <h2>指挥心法：把「确定交代码」落到日常</h2>
     <p>原 Agent指挥心法 词条并入（2026-09-18 审计）。核心就一条：<strong>确定性写死成规则，不确定性才交给模型判断</strong>。</p>
     <div class="vs">
       <div class="vs-head"><div class="l">确定 → 交规则</div><div class="r">不确定 → 交 AI</div></div>
-      <div class="vs-row"><div class="lc">SOP、CLAUDE.md、Skill——凡是答案唯一的地方，用规则/代码，不劳烦模型</div><div class="rc">需要<strong>权衡、创造、临场判断</strong>的地方，给模型自由度 + 事后验证器兜底</div></div>
-      <div class="vs-row"><div class="lc">行动规范 5 条（Fable5 Prompt 合集）就是「写死侧」的具体化：把确定的动作写成清单</div><div class="rc">判完不是散养：<strong>验证器</strong>接住结果再放行</div></div>
+      <div class="vs-row"><div class="lc">SOP、CLAUDE.md、Skill——凡是答案唯一的地方，用规则/代码，不劳烦模型</div><div class="rc">需要<strong>权衡、创造、临场判断</strong>的地方，给模型自由度 + <strong>事后验证器</strong>兜底</div></div>
+      <div class="vs-row"><div class="lc">行动规范 5 条（Fable5 Prompt 合集）就是「写死侧」的具体化：把确定的动作写成清单</div><div class="rc">判完不是散养：验证器接住结果再放行</div></div>
     </div>
     <p>完整链条：</p>
     <div class="chain" aria-label="指挥心法完整链条">
@@ -191,52 +261,62 @@
       <span class="ck">模型管不确定</span><span class="arr">→</span>
       <span class="ck last">验证器兜底</span>
     </div>
-    <p>与 <a href="../01-ai/AI与人的分工原则.html">AI与人的分工原则</a> 一脉：那条管人和 AI 怎么分，这条管 AI 内部怎么分。</p>
-  </section>
-
-  <section id="s7" class="reveal">
-    <h2>桑老哥适用</h2>
-    <ul>
-      <li>铁柱就是一个 Agent——你给目标（「查这篇飞书文档」），它自己想路径（lark-cli 抓）、选工具、纠错</li>
-      <li>铁柱 + 爱马仕双 bot 协作 = <strong>多 Agent 架构雏形</strong>（管理者/交接模式的起点）</li>
-      <li>行动类必须确认这条铁律，就是咱家红黄绿灯的分界依据</li>
-    </ul>
-  </section>
-
-  <section id="s8" class="reveal">
-    <h2>前提与局限</h2>
-    <ul>
-      <li>Agent 能自己跑但不代表不需要人——行动类操作必须确认</li>
-      <li>单体优先，非必要不拆多 Agent</li>
-      <li>ReAct 循环的停止条件必须硬写（最多 N 轮），否则无限烧 token</li>
-    </ul>
+    <p>与 <a href="AI与人的分工原则.html">AI与人的分工原则</a> 一脉：那条管人和 AI 怎么分，这条管 AI 内部怎么分。</p>
   </section>
 
   <section id="s9" class="reveal">
-    <h2>关联词条</h2>
-    <div class="rel-grid">
-      <a href="../01-ai/循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">五部件里「循环」的装配手册</span></a>
-      <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">Model + Harness = Agent 的另一半</span></a>
-      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">停止条件的清单化落地</span></a>
-      <a href="../01-ai/AGI五级楼梯.html"><span class="rel-t">AGI五级楼梯</span><span class="rel-d">Agent 在整张地图上的位置</span></a>
-      <a href="../01-ai/RAG检索增强生成.html"><span class="rel-t">RAG检索增强生成</span><span class="rel-d">Agent 的「翻资料」手脚</span></a>
-      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">人和 AI 怎么分，与 AI 内部怎么分互为表里</span></a>
-    </div>
+    <h2>桑老哥适用</h2>
+    <ul>
+      <li>铁柱就是一个 Agent——你给目标（「查这篇飞书文档」），它自己想路径（lark-cli 抓）、选工具、纠错。</li>
+      <li>铁柱 + 爱马仕双 bot 协作 = <strong>多 Agent 架构雏形</strong>（管理者/交接模式的起点）。</li>
+      <li>行动类必须确认这条铁律，就是咱家红黄绿灯的分界依据。</li>
+      <li>概念馆批量建页那种活，就是「一句话目标 + 硬边界 + 硬停止条件」的最小实战——规范是边界，页数是停止条件。</li>
+    </ul>
   </section>
 
   <section id="s10" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>Agent 能自己跑，不代表不需要人——行动类操作必须确认。</li>
+      <li>单体优先，非必要不拆多 Agent。</li>
+      <li>ReAct 循环的停止条件必须硬写（最多 N 轮），否则无限烧 token。</li>
+    </ul>
+    <h3>收尾自检四问</h3>
+    <p>Agent 跑不稳时，按顺序问一遍，往往比换架构有用：</p>
+    <ol>
+      <li>目标有没有说清楚？</li>
+      <li>工具边界有没有设计好？</li>
+      <li>哪些地方该让模型判断，哪些地方该交给代码？</li>
+      <li>有代价的动作，有没有让人确认？</li>
+    </ol>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="循环工程.html"><span class="rel-t">循环工程</span><span class="rel-d">五部件里「循环」的装配手册</span></a>
+      <a href="Harness.html"><span class="rel-t">Harness</span><span class="rel-d">Model + Harness = Agent 的另一半</span></a>
+      <a href="目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">停止条件的清单化落地</span></a>
+      <a href="AGI五级楼梯.html"><span class="rel-t">AGI五级楼梯</span><span class="rel-d">Agent 在整张地图上的位置</span></a>
+      <a href="RAG检索增强生成.html"><span class="rel-t">RAG检索增强生成</span><span class="rel-d">Agent 的「翻资料」手脚</span></a>
+      <a href="AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">人和 AI 怎么分，与 AI 内部怎么分互为表里</span></a>
+    </div>
+  </section>
+
+  <section id="s12" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>熊猫 Jay《Agent 到底是什么？》· 铁柱 Neo-Brutalism 风格生成 · 2026-07-20</li>
       <li>熊猫Jay《Agent实战方法论》（2026-09-15 补建 Agent指挥心法 词条，2026-09-18 审计并入本词条）</li>
       <li>《Claude Fable5 最佳 Prompt 合集》（行动规范 5 条 = 指挥心法的具体化）</li>
       <li>桑老哥 AGI 共学笔记</li>
+      <li>2026-10-29 回填：学术定义铺垫、工具三道护栏、提示词两例、最小实战与收尾四问，自第一代概念馆页面恢复</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Agent（智能体）</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/Agent（智能体）.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Agent（智能体）.md（更新 2026-10-29）</p>
   </footer>
 
 </main>
@@ -245,15 +325,17 @@
   <p class="toc-t">本页章节</p>
   <ul class="toc" id="toc">
     <li><a href="#s1">一句话说清楚</a></li>
-    <li><a href="#s2">工作流 vs Agent ·核心</a></li>
-    <li><a href="#s3">三大基础</a></li>
-    <li><a href="#s4">六种设计模式</a></li>
-    <li><a href="#s5">Agent 五部分</a></li>
-    <li><a href="#s6">指挥心法</a></li>
-    <li><a href="#s7">桑老哥适用</a></li>
-    <li><a href="#s8">前提与局限</a></li>
-    <li><a href="#s9">关联词条</a></li>
-    <li><a href="#s10">来源</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">工作流 vs Agent ·核心</a></li>
+    <li><a href="#s4">三大基础</a></li>
+    <li><a href="#s5">六种设计模式</a></li>
+    <li><a href="#s6">Agent 五部分</a></li>
+    <li><a href="#s7">最小实战：苏州三日</a></li>
+    <li><a href="#s8">指挥心法</a></li>
+    <li><a href="#s9">桑老哥适用</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
   </ul>
 </aside>
 </div>

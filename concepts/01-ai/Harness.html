@@ -101,7 +101,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-11</span>
-      <span>更新 2026-08-24</span>
+      <span>更新 2026-11-02</span>
       <span>下次复核 2026-11-18</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象扒墙探头，示意Harness是Agent跑起来之前先张望的门与跑道"></div>
@@ -310,6 +310,107 @@
     <div class="motto">同一个大脑，换个壳子能从 15.8 分走到 60.2 分；壳子还能自己改自己；但壳子里的经验若不许回头改，攒得越多越拖后腿。</div>
   </section>
 
+  <section id="s16" class="reveal">
+    <h2>长任务七层设置：具体配哪七个地方（2026-10-30 并入）</h2>
+    <p>来源：beamnxw《Make Opus 5.5 Finish Long Tasks: A Reusable Harness Engineering Setup》（X 2026-10-07，WaytoAGI 转载）。<strong>教程型、零自报数字</strong>，全是对 Claude Code 官方功能的配置说明（<span style="color:var(--ink-faint)">四个官方链接实核 200</span>）。前面几节讲「为什么值钱、为什么跑偏」，这一节讲<strong>具体配哪七个位置</strong>。</p>
+
+    <div class="motto">长任务结束必须留下三样：<b>可打开的结果</b>（不是「已完成」三个字）· <b>可检查的证据</b>（每条结论对得上哪个来源）· <b>够明天继续的进度</b>。三缺一，这活等于没交。</div>
+
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>层</th><th>位置</th><th>管什么</th><th>对应本词条的哪一块</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><code>CLAUDE.md</code></td><td>跨任务不变的事实（目录规矩、来源要求、写作规范）</td><td>六可之「可约束」</td></tr>
+        <tr><td>2</td><td>Skill</td><td>重复的流程：读原料→出稿→送审→改→存证据→更新进度</td><td>流程型 Harness</td></tr>
+        <tr><td>3</td><td>MCP</td><td>外部原料接入</td><td>六可之「可连接」</td></tr>
+        <tr><td>4</td><td>Permissions + PreToolUse Hook</td><td>能动哪些文件、哪些动作先问</td><td>六可之「可约束」执行层</td></tr>
+        <tr><td>5</td><td>子代理 <code>evidence-reviewer</code></td><td>只审证据、不写稿</td><td>六可之「可验证」</td></tr>
+        <tr><td>6</td><td>effort（推理强度）</td><td>主会话 medium、审查者 high</td><td>成本与深度分配</td></tr>
+        <tr><td>7</td><td><code>/goal</code></td><td>完成条件 + 轮次上限</td><td>六可之「可恢复」+ 收敛</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>目录三分 + 把任务本身写成文件</h3>
+    <p><code>sources/</code>（原料）· <code>drafts/</code>（草稿）· <code>published/</code>（已批准），再放一张 <code>sources/task.md</code>：主题 / 读者 / 交付物 / 验收条件 / 约束。<strong>验收条件写进文件、不散在聊天里</strong>——下次跑同类任务只换原料和验收条件，流程和审查者不用重建。这跟本节开头的「轮班工程师」比喻同源：交接靠文件，不靠记忆。</p>
+
+    <h3>证据表：审查者必须交的四列三档（最值钱一条）</h3>
+    <p>子代理返回的不是「我觉得没问题」，而是四列：<strong>声明 | 判定 | 来源链接 | 该怎么改</strong>。判定只有三档——<strong>已验证 / 不正确 / 未解决</strong>：「不正确」必须附冲突证据与改法，「未解决」必须说清缺哪份证据。</p>
+    <div class="warn">原文一句话：一份自信的审查者报告，仍然需要它建议背后有可用的证据。配套一条：改完一句要回头检查相邻句子——改一个词常改掉整段意思。</div>
+
+    <h3>三个「看起来配了其实没生效」的坑</h3>
+    <div class="six">
+      <div class="sc6"><b>权限规则要演练</b><p>在 <code>published/</code> 放个假文件让它改，应该被拒；不试就不知道规则加载没生效。而且权限<strong>只管文件工具</strong>——任意 Python/Node 进程可自行读写，真要挡得靠系统沙箱。</p></div>
+      <div class="sc6"><b><code>@import</code> 不是按需加载</b><p>拆成 <code>@path</code> 只是整齐，会话开始照样全量加载。真按需得放 Skill——正对上文「30 行流程别塞 CLAUDE.md」。</p></div>
+      <div class="sc6"><b><code>/rewind</code> 只回退文件编辑</b><p>shell 改动和多数子代理改动要单独恢复，<strong>git 仍是最后一道</strong>。</p></div>
+    </div>
+
+    <h3>恢复靠六行</h3>
+    <p><code>progress.md</code> 固定六行：任务 / 输出路径 / 已完成 / 已定决策 / 未解决 / 下一步。新会话一句「读 progress.md，打开它指的草稿和检查表，从记录的下一步继续」就能接上。</p>
+
+    <h3>边界</h3>
+    <ul>
+      <li><strong>无效果数据</strong>：全文是配置说明，没给「配了以后快多少 / 错多少」的数字，别当收益承诺</li>
+      <li><strong>工具绑定</strong>：七层写死 Claude Code 的路径（<code>.claude/agents/</code>、<code>/goal</code>、<code>--effort</code>）；换壳子要重写映射，方法论可迁移、路径不可照抄</li>
+      <li><strong>短任务不必上全套</strong>：与本词条「短任务 Harness 增益小」一致</li>
+    </ul>
+  </section>
+
+  <section id="s17" class="reveal">
+    <h2>七层栈诊断：先判哪层坏，再动手修（2026-10-30 并入）</h2>
+    <p>来源：Yarchi《How to Build a Production AI Agent: The 7 Layers Between the Model and the Result》（X @undefinedKi 2026-10-30，WaytoAGI 转载）。与上文「四问」「四层结构」互补：四层讲<strong>系统怎么分层</strong>，七层讲<strong>出错怎么定位</strong>。同一作者前面讲过 5 个层次，这版是升级：5 层答「层次在哪」，7 层答「每层坏了怎么修」。</p>
+
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>层</th><th>名称</th><th>管什么</th><th>坏了的症状</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>模型</td><td>推理引擎</td><td>简单的也做错、成本高</td></tr>
+        <tr><td>2</td><td>指令与上下文</td><td>入职文档：角色 / 规则 / 示例 / 任务事实</td><td>忘规则、答偏、上下文越长越糊涂</td></tr>
+        <tr><td>3</td><td>工具</td><td>能读什么、能动什么</td><td>只能给建议、动手就错</td></tr>
+        <tr><td>4</td><td>记忆</td><td>窗口外的笔记本</td><td>每次重来、同一个错反复犯</td></tr>
+        <tr><td>5</td><td>循环</td><td>计划 → 行动 → 检查 → 观察，外加<strong>停止条件</strong></td><td>死循环、烧钱、跑一半没结果</td></tr>
+        <tr><td>6</td><td>审查</td><td>评估 + 护栏 + 权限 + 沙箱：干得好不好、何时必须拦</td><td>数字对不上源头、删了不该删的</td></tr>
+        <tr><td>7</td><td>最终批准</td><td>谁签最后一个字</td><td>未经批准发出客户邮件</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="motto">如果你的智能体只是一条提示词加一句祈祷，那它不在生产中，而是在演示中。</div>
+    <p><strong>换模型通常不解决问题</strong>——模型只是七层里的一层。这和上文「同一个模型换套壳五项全胜」是同一条思路。</p>
+
+    <h3>和 beamnxw 的「长任务七层设置」不是同一张表</h3>
+    <div class="case2">
+      <div class="card">
+        <h3>beamnxw 七层 · 配置位置</h3>
+        <p><code>CLAUDE.md</code> / Skill / MCP / Permissions + PreToolUse Hook / 子代理 / effort / <code>/goal</code></p>
+        <p><strong>答「文件放哪」</strong>——照着一张清单把 Claude Code 配齐。</p>
+      </div>
+      <div class="card">
+        <h3>Yarchi 七层 · 解剖结构</h3>
+        <p>模型 / 指令与上下文 / 工具 / 记忆 / 循环 / 审查 / 最终批准</p>
+        <p><strong>答「哪一层坏了」</strong>——出错时顺着往下查，而不是先换模型。</p>
+      </div>
+    </div>
+    <p>两张表互为索引：Yarchi 第 2 层 ≈ beamnxw 的 <code>CLAUDE.md</code> + Skill；第 3 层 ≈ MCP + Permissions；第 7 层 ≈ <code>/goal</code> 的完成条件与放行。</p>
+
+    <h3>第 5 层的反直觉数据</h3>
+    <div class="case2">
+      <div class="card">
+        <h3>多开子智能体的收益</h3>
+        <p class="case-stat">+90.2%<small>Anthropic 内部研究评估，子智能体对比单智能体</small></p>
+        <p>官方工程博客原文，已核。分头干活确实能啃下更复杂的任务。</p>
+      </div>
+      <div class="card">
+        <h3>多开子智能体的代价</h3>
+        <p class="case-stat">15 倍<small>同样任务消耗的 token</small></p>
+        <p>早期版本还会「为简单查询生成 50 个子智能体」。所以顺序是<strong>先把单个智能体做到极限，撑不住了再加第二个</strong>（OpenAI 同一主张）。</p>
+      </div>
+    </div>
+
+    <h3>边界</h3>
+    <ul>
+      <li><strong>生产级分解，不是家用全套</strong>：个人单任务场景用不上全部七层，同本词条「短任务 Harness 增益小」</li>
+      <li><strong>案例细节未逐条核</strong>：文中 Replit 删生产库事件（Jason Lemkin / SaaStr，2025-07）事件真实，细节未核</li>
+    </ul>
+    <div class="warn"><b>来源提醒：</b>原文文首声明由 Viktor 赞助、每层结尾都在推该产品。框架本身出自 Anthropic / OpenAI 公开材料（可核），<strong>营销段落未上页</strong>，别把「每层都用某个工具解决」当结论。</div>
+  </section>
+
   <section id="s12" class="reveal">
     <h2>边界</h2>
     <ul>
@@ -357,7 +458,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · Harness</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/Harness.md（2026-08-11 建条）· 本页生成 2026-10-27</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/Harness.md（2026-08-11 建条）· 本页生成 2026-11-02</p>
   </footer>
 
 </main>
@@ -376,6 +477,8 @@
     <li><a href="#s9">川处安轻记</a></li>
     <li><a href="#s10">实证一：批准拦不住</a></li>
     <li><a href="#s11">实证二：学术三道</a></li>
+    <li><a href="#s16">长任务七层设置</a></li>
+    <li><a href="#s17">七层栈诊断</a></li>
     <li><a href="#s12">边界</a></li>
     <li><a href="#s13">桑老哥适用</a></li>
     <li><a href="#s14">关联词条</a></li>

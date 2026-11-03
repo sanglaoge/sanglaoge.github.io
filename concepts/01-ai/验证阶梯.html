@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>验证阶梯 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（系统·克制·可信） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：阶梯布局（七层逐级抬升） ---- */
+
+/* 阶梯：每级比上一级多缩进一档，形成"往上走"的视觉 */
+.ladder { list-style:none; padding:0; margin:18px 0; }
+.ladder li {
+  position:relative; background:var(--g0); border:1px solid var(--line);
+  border-left:4px solid var(--fam); border-radius:0 var(--r-box) var(--r-box) 0;
+  padding:13px 16px 13px 54px; margin-bottom:10px; box-shadow:var(--sh-1);
+  font-size:15.5px; color:var(--g8);
+}
+.ladder li:nth-child(1) { margin-right:0; }
+.ladder li:nth-child(2) { margin-right:6%; }
+.ladder li:nth-child(3) { margin-right:12%; }
+.ladder li:nth-child(4) { margin-right:18%; }
+.ladder li:nth-child(5) { margin-right:24%; }
+.ladder li:nth-child(6) { margin-right:30%; }
+.ladder li:nth-child(7) { margin-right:36%; border-left-color:#d97706; background:#fffbeb; }
+.ladder .l-no {
+  position:absolute; left:14px; top:13px; width:28px; height:28px; line-height:26px;
+  text-align:center; border:2px solid var(--fam); border-radius:8px;
+  color:var(--fam-deep); background:var(--fam-soft);
+  font-weight:700; font-size:14.5px; font-variant-numeric:tabular-nums;
+}
+.ladder li:nth-child(7) .l-no { border-color:#d97706; color:#92400e; background:#fef3c7; }
+.ladder b { color:var(--ink); }
+.ladder .l-who { display:block; font-size:14.5px; color:var(--ink-faint); margin-top:2px; }
+@media (max-width:767px) {
+  .ladder li:nth-child(n) { margin-right:0; }
+}
+
+/* 金句条 */
+.pull {
+  font-family:var(--font-head); font-size:clamp(18px,2.6vw,22px); line-height:1.65;
+  color:var(--fam-deep); background:var(--fam-soft); border-radius:var(--r-box);
+  padding:18px 20px; margin:18px 0; border:1px solid var(--fam-line);
+}
+.pull em { font-style:normal; font-weight:700; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px; }
+
+/* 双栏对照 */
+.pair { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:780px) { .pair { grid-template-columns:1fr 1fr; } }
+.pair .p-card { border-radius:var(--r-box); padding:14px 16px; font-size:15.5px; }
+.pair .bad { background:#fef2f2; border:1px solid #fecaca; color:#7f1d1d; }
+.pair .good { background:#f0fdf4; border:1px solid #bbf7d0; color:#14532d; }
+.pair .p-t { display:block; font-size:14.5px; font-weight:700; letter-spacing:.06em; margin-bottom:6px; opacity:.85; }
+
+/* 数字速查 */
+.statline { display:flex; flex-wrap:wrap; gap:12px 24px; margin:14px 0; }
+.statline .st-item { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:10px 16px; font-size:14.5px; color:var(--ink-soft); }
+.statline .st-item b { display:block; font-size:21px; color:var(--fam-deep); font-variant-numeric:tabular-nums; line-height:1.3; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">验证阶梯</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 交付前的分层验收 · 2026-10-29 建条</p>
+    <h1>验证阶梯</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-10-29</span>
+      <span>下次复核 2027-01-29</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头张望，示意逐层往上看还有几道闸"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>别指望某一层检查挡住所有问题——设计成「多层各抓一类 + 承认每层都会漏 + 最后一层是能快速撤回」，并且给审查设轮次上限。</blockquote>
+    <p>一句话记住：<strong>审查的上限不是「零缺陷」，是「缺陷的可撤销性」。</strong></p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉</h2>
+    <p>2026-10-26，Addy Osmani 在 X 上转述 Anthropic Claude Code 团队的代码审查流程。背景数字很硬：</p>
+    <div class="statline">
+      <div class="st-item"><b>90%</b>的 Claude Code 代码由 Claude 自己写</div>
+      <div class="st-item"><b>2,500 → 30,000+</b>单体仓库每天合并的变更（5 月→9 月）</div>
+      <div class="st-item"><b>翻一倍多</b>Claude Code 自己的 PR 数量（6 月→9 月）</div>
+    </div>
+    <p>在这个速度下，逐行人工审查不是「变难」，是<strong>不可能</strong>。他们的解法不是少写点，也不是不审查，是把审查本身重构成一套分层系统。</p>
+    <p>为什么值得单独成条：这是 2026-10-28 白皮书「门槛从能生成变成能验证」的具体实现版——白皮书说「要验证」，这篇说「怎么验证、几层、谁验、验不过怎么办」。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>核心一：先把那个错问题换掉</h2>
+    <div class="pair">
+      <div class="p-card bad"><span class="p-t">错的问法（过程指标）</span>「<strong>是否有人读了代码？</strong>」——只问有没有人看过，问完也说不清这次改动到底危不危险。</div>
+      <div class="p-card good"><span class="p-t">对的问法（结果指标）</span>「<strong>这个变更可能出什么问题，哪种检查才能发现它？</strong>」——问完就能决定派哪一层上。</div>
+    </div>
+    <p>副产品：<strong>审查的时机也变了</strong>。传统是「写完、提 PR、等人看」（事后检查），他们改成「写的过程中不断查」——原文比喻：<em>更像写作时不断进行的拼写检查</em>。</p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>核心二：七层，没有一层是「终审」</h2>
+    <ol class="ladder">
+      <li><span class="l-no">1</span><b>PR 前验证</b>：跑测试、跑构建、截图与设计稿比对；再用全新上下文的子 agent 审 diff。<span class="l-who">谁干：AI 自己</span></li>
+      <li><span class="l-no">2</span><b>每个 PR 都过 AI 审查</b>：多个 agent 并行找 bug → 投票判有效/误报 → 过滤纯风格问题 → 按严重度排序。<span class="l-who">谁干：AI</span></li>
+      <li><span class="l-no">3</span><b>安全审查</b>：有未解决发现就堵住不让合并。<span class="l-who">谁干：AI</span></li>
+      <li><span class="l-no">4</span><b>CI 硬检查</b>：lint、类型检查、全平台测试、构建（典型 CLI PR 跑几十项）。<span class="l-who">谁干：自动</span></li>
+      <li><span class="l-no">5</span><b>按风险分级的人工审批</b>：低 0 人 / 中 1 人 / 高 2 人。<span class="l-who">谁干：人</span></li>
+      <li><span class="l-no">6</span><b>合并队列 + 功能开关 + 分级灰度</b>：内部员工先吃到。<span class="l-who">谁干：自动</span></li>
+      <li><span class="l-no">7</span><b>快速回滚</b>：开关一关、版本一回退，几分钟撤销大多数错误。<span class="l-who">谁干：人 · 这一层不是更严，是更快</span></li>
+    </ol>
+    <div class="pull">每一层都会捕获一些 Bug，同时也会遗漏一些。很少有 Bug 能穿过所有层级；<em>如果有漏网的，我们有回滚机制</em>。</div>
+    <p><strong>设计假设从一开始就是「一定会有漏网的」</strong>——所以最后一层不是「更严的审查」，是「更快地撤回来」。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>核心三：人的时间要算两笔账</h2>
+    <blockquote>我们不仅算人们花在<strong>代码审查</strong>上的时间，还要算花在<strong>修复由不良代码引入的 Bug</strong> 上的时间。如果只减前者不减后者，我们并没有真正节省人的时间。</blockquote>
+    <p>所以他们用<strong>护栏指标</strong>，不用单一目标：</p>
+    <ul>
+      <li>追的：每个 PR 的中位人工批准数（含 P95）、人工评论数、PR 等人工的时间</li>
+      <li><strong>卡死的：回滚率、事故率</strong>——这两个一涨，说明你不是省了时间，是把时间挪到后面去了</li>
+    </ul>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>核心四：风险由「变更」决定，不由「谁写的」决定</h2>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>风险</th><th>例子</th><th>人工审批</th></tr></thead>
+        <tbody>
+          <tr><td>低</td><td>文档、文案、内部功能、带功能开关的增量改动</td><td><strong>0 人</strong>（自动化全过就放行）</td></tr>
+          <tr><td>中</td><td>普通产品改动；缓存 / 自动更新器 / 系统提示词这类敏感区</td><td>1 人</td></tr>
+          <tr><td>高</td><td>最高风险代码、CI 工作流文件、所有者标记为敏感的路径</td><td>2 人</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>三条硬规矩：</p>
+    <ol>
+      <li><strong>一个分类器判风险等级，另一个分类器判「这个变更是否确实需要额外审批」</strong>——风险等级本身不等于必须再批一次。</li>
+      <li><strong>智能体的批准不算人工批准。</strong>「AI 说没问题」永远不能顶替「人看过」。</li>
+      <li><strong>审批只对一个提交有效。</strong>有新提交（agent 又推了东西、有人手解了冲突）→ 全部审批作废，重新批。</li>
+    </ol>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>核心五：审查会无限循环，必须强制收敛</h2>
+    <p>这是全文最诚实、也最反直觉的一段，讲他们自己搞砸的地方。</p>
+    <p><strong>现象</strong>：CLI 项目里有一个 PR，因为「AI 作者 + AI 审查者」来回，<strong>一夜之间循环了五十多轮</strong>，最后是人工掐停的。</p>
+    <p><strong>根因</strong>：对反复被标记的问题跑 <code>git blame</code>，约 <strong>59%</strong> 的代码在第一次提交时就已经存在——<strong>审查很少发现新 bug，每一轮都在翻出更老的 bug</strong>。他们原话：「我们把情况变得更糟了，因为我们养成了默认多跑几轮的习惯。」</p>
+    <h3>四招收敛</h3>
+    <ul>
+      <li>三轮之后强制要求作者<strong>重新评估方法</strong>（不是继续改）</li>
+      <li>初始轮之后的重新审查<strong>只审新 diff</strong></li>
+      <li><strong>明确 bug 类别</strong>，一次修一整类，不是修一行</li>
+      <li><strong>不重复报告已经报过的问题</strong></li>
+    </ul>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>指标</th><th>收敛前</th><th>收敛后</th></tr></thead>
+        <tbody>
+          <tr><td>平均审查轮次</td><td class="num">2.08</td><td class="num"><strong>1.32</strong></td></tr>
+          <tr><td>需要 5 轮以上</td><td class="num">8.9%</td><td class="num"><strong>1.5%</strong></td></tr>
+          <tr><td>一轮就过</td><td class="num">65%</td><td class="num"><strong>78%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>错法 → 对法</h2>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>错法</th><th>对法</th></tr></thead>
+        <tbody>
+          <tr><td>「谁读了代码？」（过程）</td><td>「这个变更可能出什么问题，哪一层能抓住它？」（结果）</td></tr>
+          <tr><td>指望最后一层把关，前面随便</td><td>前面几层先清常规问题，人的注意力只留给高风险和判断类</td></tr>
+          <tr><td>追求「零缺陷」</td><td>承认会有漏网，把力气花在「能几分钟撤回」</td></tr>
+          <tr><td>只砍审查时间，不管修 bug 时间</td><td>两个一起算，用回滚率/事故率当护栏</td></tr>
+          <tr><td>所有改动一视同仁，全都要人盯</td><td>按变更风险分级，低风险自动放行</td></tr>
+          <tr><td>AI 审过就算过</td><td>智能体批准 ≠ 人工批准；新提交要重新批</td></tr>
+          <tr><td>「多跑几轮更保险」</td><td>三轮不过就怀疑方法，之后只审新 diff</td></tr>
+          <tr><td>每轮都从头审全篇</td><td>初始轮之后只审增量</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>边界（什么时候别用）</h2>
+    <ul>
+      <li><strong>有明确对错的任务才适用。</strong>代码 diff 有「对/错」，审美判断没有。「三轮上限」搬去做审美验收要打折——审美上三轮反复可能是正常的。</li>
+      <li><strong>小项目是杀鸡用牛刀。</strong>单人、无外部用户、改坏了顶多重做——七层全套是浪费。原文也说了，这套流程是被「每天三万次合并」逼出来的。</li>
+      <li><strong>「最后一层是回滚」有前提。</strong>版本可回退、开关能关、旧产物还在。<strong>没有这个前提，最后一层是空的</strong>——那你其实只剩「更严的审查」，风险全压在人身上。</li>
+      <li><strong>护栏指标不能只用一个。</strong>只看「审查轮次降了」会逼人放水；必须同时盯回滚率和事故率。</li>
+    </ul>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p>对照下来，你的视频工厂<strong>已经有这套东西的雏形</strong>，缺三块：</p>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>你已经有的</th><th>对应哪一层</th></tr></thead>
+        <tbody>
+          <tr><td>门槛项客观实测（规格/时长/LUFS/静止帧/词数/停留/禁词/溯源）</td><td>第 4 层 CI 硬检查</td></tr>
+          <tr><td>观感 6 项人工打分（铁柱初评、桑老哥终评）</td><td>第 5 层人工审批</td></tr>
+          <tr><td>验收错题本 + 必停点</td><td>第 1 层「给自己一份可运行的检查清单」</td></tr>
+          <tr><td>「验收一律正向实测，静态量测/缩图目验不作数」</td><td>与原文「别说任务完成，给我看结果」同一条</td></tr>
+          <tr><td>三款成片留旧版文件</td><td>第 7 层的<strong>原料</strong>（但没写成规矩）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn">
+      <b>缺的三块：</b>①没有「回滚」这一层——验收是过/不过二元，没有「改坏了能几分钟回到上一版」的显式规矩；②没有分级——「改错别字」和「改渲染逻辑」用同一套验收，这是累的根源；③没有收敛规则——<b>该立的规矩：改三轮还没过，不是继续改，是回头怀疑方法。</b>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/可信完成.html"><span class="rel-t">可信完成</span><span class="rel-d">管「完成由谁认定、失败怎么恢复」；本条管「认定要靠几层」</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">管「一个写一个查」；本条管「查要分几层」</span></a>
+      <a href="../01-ai/Evals评测体系.html"><span class="rel-t">Evals评测体系</span><span class="rel-d">管「考卷怎么出、怎么打分」；本条管「考卷之外还有几道闸」。2026-10-30 该条补 §5「考卷怎么跑起来」：三跑四分类 + 只对「一直过→一直挂」报警，正是本条 CI 那层的落地做法</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">管「执行前把目标和停止条件写死」；本条管「执行后怎么分层验收」</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">人的时间该花在哪一层：高风险 + 判断类</span></a>
+      <a href="../01-ai/演示优于描述.html"><span class="rel-t">演示优于描述</span><span class="rel-d">解决「知道要什么」；本条解决「做出来算不算对」</span></a>
+    </div>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Addy Osmani 转述 Anthropic Claude Code 团队《How the Claude Code team does code review》（X @addyosmani 2026-10-26 14:27）</li>
+      <li>2026-10-28 知乎×魔搭《AI 时代开发者生态白皮书 2026》第 1.5 节「验证能力成为新的门槛」（同概念第一次撞见）</li>
+    </ul>
+    <p style="font-size:14.5px;color:var(--ink-faint)">核实说明：原文工程博客直链未直接取到；关键数字用多处独立转述交叉核对。约 59% 与每天 2,500→30,000 次合并两条未独立核实，按团队自述看待。立场提示：Anthropic 同时在卖 Code Review 这个产品。</p>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 验证阶梯</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/验证阶梯.md（2026-10-29 建条）· 本页生成 2026-10-30</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">换掉错问题</a></li>
+    <li><a href="#s4">七层阶梯 ·核心</a></li>
+    <li><a href="#s5">人的时间两笔账</a></li>
+    <li><a href="#s6">风险由变更决定</a></li>
+    <li><a href="#s7">审查要收敛</a></li>
+    <li><a href="#s8">错法 → 对法</a></li>
+    <li><a href="#s9">边界</a></li>
+    <li><a href="#s10">桑老哥适用</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

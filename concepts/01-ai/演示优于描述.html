@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演示优于描述 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI底层逻辑 · 工程蓝（系统·克制·可信） ---- */
+:root { --fam:#1d4ed8; --fam-deep:#1e3a8a; --fam-soft:#eff6ff; --fam-line:#bfdbfe; }
+/* ---- 页面专属：对比布局（错法 vs 对法双栏 + 失真链条） ---- */
+
+/* 失真链条：竖排四段，每段标"丢掉什么" */
+.chain { margin:18px 0; }
+.chain .c-node {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:11px 16px; font-size:15.5px; color:var(--g8); text-align:center;
+}
+.chain .c-node b { color:var(--ink); }
+.chain .c-gap {
+  display:flex; align-items:center; gap:10px; padding:7px 16px;
+  font-size:14.5px; color:#92400e;
+}
+.chain .c-gap::before { content:"↓"; font-size:17px; color:var(--g5); }
+.chain .c-gap .c-loss { background:#fffbeb; border:1px solid #fde68a; border-radius:999px; padding:1px 10px; }
+.chain .c-end { border-color:#fca5a5; background:#fef2f2; }
+
+/* 双栏对照 */
+.pair { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:780px) { .pair { grid-template-columns:1fr 1fr; } }
+.pair .p-card { border-radius:var(--r-box); padding:14px 16px; font-size:15.5px; }
+.pair .bad { background:#fef2f2; border:1px solid #fecaca; color:#7f1d1d; }
+.pair .good { background:#f0fdf4; border:1px solid #bbf7d0; color:#14532d; }
+.pair .p-t { display:block; font-size:14.5px; font-weight:700; letter-spacing:.06em; margin-bottom:6px; opacity:.85; }
+
+/* 降级顺序条：成本与失真两列对照 */
+.lvl { list-style:none; padding:0; margin:16px 0; counter-reset:lvl; }
+.lvl li {
+  display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:start;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el);
+  padding:12px 14px; margin-bottom:9px; font-size:15.5px; color:var(--g8);
+}
+.lvl li::before {
+  counter-increment:lvl; content:counter(lvl);
+  width:26px; height:26px; line-height:24px; text-align:center;
+  border:2px solid var(--fam); border-radius:7px; color:var(--fam-deep);
+  background:var(--fam-soft); font-weight:700; font-size:13.5px;
+}
+.lvl li .l-main b { color:var(--ink); }
+.lvl li .l-met { display:block; font-size:14.5px; color:var(--ink-faint); margin-top:3px; }
+.lvl li.worst { border-color:#fca5a5; background:#fef2f2; }
+.lvl li.worst::before { border-color:#dc2626; color:#991b1b; background:#fee2e2; }
+
+/* 金句条 */
+.pull {
+  font-family:var(--font-head); font-size:clamp(18px,2.6vw,22px); line-height:1.65;
+  color:var(--fam-deep); background:var(--fam-soft); border-radius:var(--r-box);
+  padding:18px 20px; margin:18px 0; border:1px solid var(--fam-line);
+}
+.pull em { font-style:normal; font-weight:700; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px;
+}
+.warn b { color:#92400e; }
+
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI底层逻辑</span><span class="sep">›</span>
+    <span class="here">演示优于描述</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI底层逻辑 · 需求怎么递进去才不失真 · 2026-10-29 建条</p>
+    <h1>演示优于描述</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-10-29</span>
+      <span>下次复核 2027-01-29</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂嘴，示意说不清的东西别硬说，演给对方看"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>能演给对方看的，就别只用嘴说。<strong>每转述一层就失真一次</strong>——视频 / 截图 / 图注 &gt; 文字描述 &gt; 口头形容。</blockquote>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>来龙去脉</h2>
+    <p>2026-10-26，Manus 创始人肖弘写了团队 AI Native 改造的实践。里面有个细节看着不起眼，却是全篇最可迁移的一条：</p>
+    <blockquote>一些产品经理交出的需求，<strong>不再是传统的需求文档（PRD）或设计稿，而是一段完整的视频</strong>。几分钟里，视频交代了功能的关键信息：用户在什么场景下使用，界面怎么设计，点击后会发生什么，不同状态和特殊情况怎么处理，以及背后的实现逻辑。设计、研发和测试看同一段演示，更容易理解「最后要做成什么样」，不用再向不同的人反复解释。</blockquote>
+    <p>他们管这个叫 <strong>PRV（Product Requirement Video，产品需求视频）</strong>，在公司内部已经成了主流做法。</p>
+    <p>为什么值得单独成条：它直接解释了「改三轮还不过」这种返工循环的根因——<strong>不是执行方不努力，是需求在转述过程中已经失真了</strong>。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>核心一：失真发生在哪一环</h2>
+    <div class="chain">
+      <div class="c-node"><b>你脑子里的画面</b></div>
+      <div class="c-gap"><span class="c-loss">丢掉细节：颜色 / 节奏 / 位置 / 程度</span>转成语言</div>
+      <div class="c-node"><b>你嘴上的描述</b></div>
+      <div class="c-gap"><span class="c-loss">按自己的经验脑补：你说的「高级感」是哪种高级</span>对方理解</div>
+      <div class="c-node"><b>对方脑子里的画面</b></div>
+      <div class="c-gap"><span class="c-loss">AI 按训练分布补全剩下的空白</span>转成执行</div>
+      <div class="c-node c-end"><b>做出来的东西</b></div>
+    </div>
+    <p>三道全都失真，而且都是<strong>乘法</strong>：每一步只保留 80%，三步之后只剩一半。</p>
+    <div class="pull">「改三轮还不过」的本质，就是<em>三轮都在猜同一个东西</em>。</div>
+    <p>演示的作用是把这三道压成一道：<strong>你指哪一帧、哪个元素、怎么变，对方直接看见，不用脑补。</strong></p>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>核心二：为什么视频比文字强</h2>
+    <p>原文列的那几项，正好是纯文字最难说清的部分：</p>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>要交代的</th><th>文字写法</th><th>视频写法</th></tr></thead>
+        <tbody>
+          <tr><td>用户在什么场景用</td><td>「在卧室床上使用」</td><td>直接演一遍</td></tr>
+          <tr><td>界面怎么设计</td><td>「简洁、留白、圆角」</td><td>直接是那个界面</td></tr>
+          <tr><td>点击后发生什么</td><td>「弹出选择框，选中后切换」</td><td>演一次就知道了</td></tr>
+          <tr><td>不同状态 / 特殊情况</td><td>要逐条列举，还容易漏</td><td>正常态和异常态各演 5 秒</td></tr>
+          <tr><td>背后的实现逻辑</td><td>写 800 字还可能理解偏</td><td>用动效把因果关系演出来</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>同一条信息，文字要 2000 字且解释成本极高；视频 3 分钟，看完就对上了。</strong></p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>核心三：降级顺序（最实用的部分）</h2>
+    <p>不是每次都能拍视频。<strong>按这个顺序往下降，别一上来就用最差的方式</strong>：</p>
+    <ol class="lvl">
+      <li><span class="l-main"><b>10 秒屏录 + 手指点</b>（「就这儿，这儿不对」）<span class="l-met">成本最低 · 失真几乎为零</span></span></li>
+      <li><span class="l-main"><b>截图 + 圈注 + 一句话</b>（「这个位置，往左挪一点」）<span class="l-met">成本低 · 失真很小</span></span></li>
+      <li><span class="l-main"><b>发一段参考片</b>（「我要这种效果，第 12 秒那种节奏」）<span class="l-met">成本中 · 失真小</span></span></li>
+      <li><span class="l-main"><b>文字描述到具体坐标</b>（「第 8 秒，右下角字幕，字重加粗到 600」）<span class="l-met">成本高 · 失真中</span></span></li>
+      <li class="worst"><span class="l-main"><b>纯感受词</b>（「差点意思」「不够高级」「太生硬」）<span class="l-met">看起来最省事 · 失真最大</span></span></li>
+    </ol>
+    <div class="warn"><b>关键认知：</b>第 5 档看起来最省事（张嘴就来），实际最贵——<b>因为它必然导致下一轮返工。</b></div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>核心四：另一半——交回来的时候</h2>
+    <p>上面三条讲的都是<strong>输入侧</strong>：你已知想要什么，怎么把它传准。这一节讲<strong>输出侧</strong>：AI 做完了，怎么交到你手上。</p>
+    <div class="pair">
+      <div class="p-card bad"><span class="p-t">生成 ≠ 交付</span>AI 说「已生成」，和你真的看到了那个东西，中间还隔着一步。如果要你自己找文件、复制路径、切窗口、开服务，那些技术上完成的工作，<strong>到了你手上还没真正交付</strong>。</div>
+      <div class="p-card good"><span class="p-t">就在眼前才算交付</span>「已完成」是一句承诺，<strong>「就在眼前」才是交付</strong>。界面成本如果由人来付，等于把工作从 AI 那边挪回了人这边。</div>
+    </div>
+    <h3>人的意见，是看到之后才长出来的</h3>
+    <blockquote>没看到之前，我可能只能说「想要轻松一点」。看到之后，我才能指出：<strong>这个颜色太重了，这一屏信息太多，这句话可以留，前面那段铺垫删掉</strong>。作品摆在眼前，我才有一个具体的东西可以回应。</blockquote>
+    <div class="pair">
+      <div class="p-card bad"><span class="p-t">错误顺序</span>先问清需求 → 一次做对</div>
+      <div class="p-card good"><span class="p-t">正确顺序</span><strong>先做个能看的粗版 → 人看到才有意见 → 再改</strong></div>
+    </div>
+    <p>推论：当你自己也没想清楚时，「再想想怎么说清楚」是死路——<strong>想不出来的东西，看起来才有。</strong>此时该让 AI 先出 2-3 个粗糙方向，而不是逼自己描述。</p>
+    <h3>执行记录 ≠ 作品</h3>
+    <p>改了几个文件、第几行、跑过哪些检查——这些是<strong>过程</strong>，不是<strong>成果</strong>。堆在人面前等于让他自己在日志里找「我该看哪个」。<strong>该给能直接看的东西（图 / 片 / 可点的页面），过程日志放后面需要时再翻。</strong></p>
+    <h3>按作品形态给呈现</h3>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>交付物</th><th>该怎么给</th></tr></thead>
+        <tbody>
+          <tr><td>图</td><td>并排比版本，一眼看出差异</td></tr>
+          <tr><td>网页</td><td>能直接点一遍</td></tr>
+          <tr><td>文章 / 文案</td><td>给正文，不是给文件路径</td></tr>
+          <tr><td>视频</td><td>能直接播 + 关键帧对比</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>错法 → 对法</h2>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>错法</th><th>对法</th></tr></thead>
+        <tbody>
+          <tr><td>「这里感觉不对」</td><td>截一张图，圈出来</td></tr>
+          <tr><td>「太生硬了」</td><td>发一段你认为「不生硬」的参考片</td></tr>
+          <tr><td>「要高级感」</td><td>拍两个版本让你选（<strong>让你选，不让你描述</strong>）</td></tr>
+          <tr><td>反复解释同一个位置</td><td>在图上点一下，说「就这儿」</td></tr>
+          <tr><td>文字写 2000 字说清一个动效</td><td>录 10 秒动效给他看</td></tr>
+          <tr><td>等对方问「你指的是哪个」</td><td>一开始就把「哪个」标出来</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>最后一行是重点</strong>：与其等对方问，不如一开始就标。<strong>一次标注换三轮返工。</strong></p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>边界（什么时候别用）</h2>
+    <ul>
+      <li><strong>审美判断不能全靠演示。</strong>「我要的感觉」很多时候你自己也还没想清楚——这时候拍一百段也没用，得先做 2-3 个方向让你选。<strong>能演示的前提是「你已知想要什么」。</strong></li>
+      <li><strong>「用视频描述视频」有同义反复的风险。</strong>Manus 做的是软件，界面就是成品，视频演示天然贴合；做视频的人拿视频当需求，可能是拿成品去描述半成品——此时更有效的是「拆解式标注」（标出第几秒、哪个元素、参照哪条片子的哪个手法）。</li>
+      <li><strong>录制成本超过沟通成本时，别录。</strong>改一个错别字不需要拍视频。</li>
+      <li><strong>演示不等于验收标准。</strong>它解决「知道要什么」，不解决「做出来的算不算对」——后者归 <a href="../01-ai/验证阶梯.html">验证阶梯</a>。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p><strong>你的「改三轮还不过」，根因大概率在这</strong>：不是铁柱不努力，是「这里」「差点意思」「不够高级」这些词经过我脑子时，被按我的经验补全了。</p>
+    <ul>
+      <li><strong>说「不对」的时候，顺手拍 10 秒屏录，手指点一下</strong>——手机上就能拍</li>
+      <li><strong>说「要这种感觉」的时候，发一段参考片</strong>，指出「第几秒那种」——你的审美判断力比描述能力强得多，别浪费在描述上</li>
+      <li><strong>说不清的时候就别硬说</strong>——让我出 2-3 个版本给你选，比描述十句管用</li>
+    </ul>
+    <div class="warn"><b>铁柱这边的动作：</b>接收模糊需求时，先问一句「能拍一下 / 圈一下吗」，而不是直接开工猜。猜错三次的成本，远大于问一句。</div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="../01-ai/提示词工程.html"><span class="rel-t">提示词工程</span><span class="rel-d">同目标（消除模糊）的另一条路：用更精确的文字；本条是用更少的文字</span></a>
+      <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">本条是「给什么材料」的一种：把画面直接当材料递过去</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">管「谁写谁审」；本条管「需求怎么递进去才不失真」</span></a>
+      <a href="../01-ai/验证阶梯.html"><span class="rel-t">验证阶梯</span><span class="rel-d">本条解决「知道要什么」，那条解决「做出来算不算对」</span></a>
+      <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">人负责判断；本条是让判断以最小失真传到执行侧的手段</span></a>
+      <a href="../02-think/隐性知识.html"><span class="rel-t">隐性知识</span><span class="rel-d">「对比逼近：让你选，不让你描述」是本条的同名手法</span></a>
+    </div>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>hidecloud（肖弘，Manus 创始人）《用 Manus 改造 Manus，AI Native 组织改造的实践和思考》（2026-10-26）</li>
+      <li>元子《每天和 AI 聊上百轮以后，我开始研究怎么少操点心》（2026-10-28，补「输出侧」核心四）</li>
+      <li>桑老哥 2026-10-29 拍板建条（起因：视频工厂「改三轮还不过」的返工循环）</li>
+    </ul>
+    <p style="font-size:14.5px;color:var(--ink-faint)">核实说明：文章来源为一手（创始人亲述团队实践），但无第三方验证，采用率等数字均为自报。「用视频描述视频」是否同义反复，原文未涉及、本条未验证，当前按「优先屏录/截图标注」降级使用。</p>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 演示优于描述</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/演示优于描述.md（2026-10-29 建条）· 本页生成 2026-10-30</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s3">失真在哪一环 ·核心</a></li>
+    <li><a href="#s4">视频 vs 文字</a></li>
+    <li><a href="#s5">降级顺序</a></li>
+    <li><a href="#s6">交回来的时候</a></li>
+    <li><a href="#s7">错法 → 对法</a></li>
+    <li><a href="#s8">边界</a></li>
+    <li><a href="#s9">桑老哥适用</a></li>
+    <li><a href="#s10">关联词条</a></li>
+    <li><a href="#s11">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
