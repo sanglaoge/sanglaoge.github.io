@@ -84,7 +84,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-04-12</span>
-      <span>下次复核 2026-11-18</span>
+      <span>下次复核 2027-11-10</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举起牌子，示意把人和AI的分工边界宣告出来"></div>
   </div>
@@ -171,6 +171,50 @@
       </tbody>
     </table></div>
     <p>AI 前 1% 用户的共同点：先变成<strong>问题猎人</strong>（列出反复拖延/复制/等待的环节），再变成工具使用者（挑低风险的先试 → 给上下文 → 校准结果）。"找出你想解决的问题，大概占了 80% 的战斗。"判断 Agent 价值的标准不是"能不能写文案"，而是<strong>能不能跨工具跑完一整段流程</strong>（拿到数据 → 调用工具 → 生成结果 → 闭环反馈）。</p>
+  </section>
+
+  <section id="s5a" class="reveal">
+    <h2>Agent Manager 增厚：管 agent ≠ 管人</h2>
+    <blockquote>Addy Osmani 把"整天和 coding agent 打交道"直接类比成管理：反复选任务、写指令、委派、跟进、评估、决定发布什么。核心不是当官僚，而是"通过让他人的工作发生来拿结果"。这里说的"管理"仅指此意，不是说 agent 能替代同事。<span class="q-src">—— Addy Osmani，2026-11-08</span></blockquote>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>管理实践</th><th>对 agent 怎么用</th><th>反模式</th></tr></thead>
+      <tbody>
+        <tr><td>给它自检机制</td><td>测试/构建/截图，让它自己跑并出示证据；Skill、hook、subagent 都是为了收紧这个循环</td><td>把"看起来完成了"当确认，自己变成测试套件</td></tr>
+        <tr><td>设定清晰上下文</td><td>只给它在仓库里看不到的：目标、约束、范围外、成功标准（指挥官意图／"上下文而非控制"）</td><td>一行任务，真正期望只在脑子里</td></tr>
+        <tr><td>让修正产生复利</td><td>同一件事纠正两次就写进 CLAUDE.md 或做成 Skill</td><td>每次会话手动纠正同一件事</td></tr>
+        <tr><td>让它决定，只硬强制不可妥协的</td><td>prompts/Skill 当"请求"，hooks/deny 当"必须"</td><td>全大写规则、给偏好设钩子</td></tr>
+        <tr><td>构建前先规划</td><td>先出计划、读潜在假设再派活；大任务让另一会话做设计评审</td><td>多个 agent 抢重叠任务，下午解决合并冲突</td></tr>
+        <tr><td>尽早引导，快速重置</td><td>第一分钟盯着，偏了就按 Esc；<strong>两次纠正失败就清会话重写提示词</strong>（印证 <a href="../01-ai/验证阶梯.html">验证阶梯</a>）</td><td>第三次、第四次去纠正</td></tr>
+        <tr><td>委派任务，绝不委派判断</td><td>人管产品决策、安全边界、发不发布；agent 管风格、测试、lint</td><td>测试通过＋命名合理就批准大改动（批准仪式）</td></tr>
+        <tr><td>设计不需要你的运行</td><td>完成标准／自检／边界／护栏／人工审批五问</td><td>睡前启动、无停止点，醒来发现整晚在错误前提上跑</td></tr>
+        <tr><td>扩展验证，不扩展注意力</td><td>用自检、目标检查、新鲜上下文审查者接替监视</td><td>开比自己能审的更多会话，用"写了多少代码"衡量</td></tr>
+      </tbody>
+    </table></div>
+    <h3>三条"类比失效"的提醒</h3>
+    <ul>
+      <li><strong>编排税（orchestration tax）</strong>：超过最初几个 agent 后，每多一个要的注意力比前一个更多。作者日常 4–5 个后台 agent＋几个本地，有些天已太多。扩产靠"更少监控"，不是"更多监控"。</li>
+      <li><strong>认知投降（cognitive surrender）</strong>：沃顿研究里，多数人接受了错误的 AI 答案，而且信心变强。对策：让 agent 先反驳自己的答案。</li>
+      <li><strong>没有经验，只有笔记本</strong>：agent 的记忆不跨会话、也不跨队友；你的判断力得写进 CLAUDE.md/团队 Skill，别指望它自己长。而且"你只有一种 agent 原型"，优缺点随模型版本变。</li>
+    </ul>
+    <p>一句话收口：<strong>智能体执行工作，你决定重要事项；审查的单位就是理解的单位，变更保持小。</strong></p>
+    <p style="font-size:14.5px;color:var(--ink-faint)">来源：Addy Osmani《你的 Coding Agent 让你成了管理者》，@addyosmani，2026-11-08，X</p>
+  </section>
+
+  <section id="s5b" class="reveal">
+    <h2>斯坦福 CS146S：教的是判断，不是写码</h2>
+    <blockquote>Latent Space《How Stanford Teaches AI-Native Engineering》（2026-11-08，嘉宾 Mihail Eric：斯坦福 CS146S 讲师、Monaco AI 负责人；meng shao X 2026-11-09 转述、WaytoAGI 飞书转载）。与上节 Addy Osmani 同向，是一个"教人怎么管 Agent"的课程版。</blockquote>
+    <p><strong>课程为什么改</strong>：去年的作业，今年 Agent 一句话就能做完。继续考"独立写出一段代码"，分不清学生是懂了、还是只拿到了可运行的结果。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>旧考点</th><th>新考点</th></tr></thead>
+      <tbody>
+        <tr><td>能不能生成代码</td><td>能不能提出一个合理变更，并对它负责（真实开源仓库 + 维护者审阅）</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>教学顺序（先懂循环，再扩规模）</strong>：手搭极简 Agent（工具调用 → 读结果 → 继续）→ 看生产级怎么处理系统提示/计划/上下文压缩 → 上下文、技能、子 Agent → 审查、安全、后台任务、CI、团队基础设施。<strong>目的：一次失败能判断是模型、上下文、工具还是任务定义的问题</strong>，而不是换模型、加提示词。</p>
+    <p><strong>Monaco 的工具策略：买来学，自建来长期掌握（buy to learn, build to keep）</strong>：代码审查买 Devin；Agent 工作区自建 Monacoder（基于 Coder），因为要跑产品、复现故障、测补丁，跟公司环境强绑定。早期靠多开会话 + git worktree 扩并行，撞出端口冲突/磁盘占用/通知混乱——<strong>要的是隔离、可复现的工作环境，不是再开几个 Agent</strong>。</p>
+    <p><strong>最硬一条：新瓶颈是审查和理解</strong>。Faros 研究：高 AI 采用团队 PR 合并量 <span class="num">+98%</span>，PR 审查时间 <span class="num">+91%</span>。检验法：让 Agent 解释变更，再反过来问它；你答不上来、必须重开代码看的地方，就是没掌握。<strong>"看过解释"≠"理解了变更"，正如"测试通过"≠"这个功能值得做"。</strong></p>
+    <p><strong>Agent 看得到代码，看不到"为什么"</strong>：半年前否决的方案、客户承诺、风险判断都不在代码里。解法不是更大的上下文窗，是让重要决策有权威记录（决策日志/Authority Map），并告诉 Agent 哪些约束不能改。</p>
+    <blockquote>落到桑老哥：他不写代码，但管 Agent 的姿势同构——①失败先分四层再动手 ②让 Agent 解释变更再反问 ③环境隔离（Orca worktree 正是这条）。</blockquote>
   </section>
 
   <section id="s6" class="reveal">
@@ -324,11 +368,12 @@
       <a href="../08-ecomm/AI对跨境电商设计师的价值边界.html"><span class="rel-t">AI对跨境电商设计师的价值边界</span><span class="rel-d">分工原则在跨境电商领域的应用</span></a>
       <a href="../02-think/人才公式（Taste×Agency）.html"><span class="rel-t">人才公式（Taste×Agency）</span><span class="rel-d">Taste 是"人做决策"的能力基础</span></a>
       <a href="../01-ai/奖励工程RewardEngineering.html"><span class="rel-t">奖励工程RewardEngineering</span><span class="rel-d">"人做决策"的执行层技术</span></a>
-      <a href="../02-think/损失函数思维.html"><span class="rel-t">需求弹性</span><span class="rel-d">先判断什么值得放大，再分工</span></a>
+      <a href="../02-think/损失函数思维.html"><span class="rel-t">损失函数思维</span><span class="rel-d">先判断什么值得放大，再分工</span></a>
       <a href="../01-ai/Agent（智能体）.html"><span class="rel-t">Agent（智能体）</span><span class="rel-d">Agent 版细化：确定交规则，不确定交 AI</span></a>
       <a href="../01-ai/图谱工程.html"><span class="rel-t">图谱工程</span><span class="rel-d">验证器思路是"验过程不验成品"的工程版</span></a>
       <a href="../06-learn/提问的智慧.html"><span class="rel-t">提问的智慧</span><span class="rel-d">人侧核心能力的练法</span></a>
       <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">"会验收 AI"的落地一招</span></a>
+      <a href="../01-ai/演示优于描述.html"><span class="rel-t">演示优于描述</span><span class="rel-d">让判断以最小失真传到执行侧（2026-10-29 新增）</span></a>
     </div>
   </section>
 
@@ -347,12 +392,14 @@
       <li>OpenAI 产品负责人 Tara 访谈（Lenny's Podcast，WaytoAGI 转载，2026-08-31 并入）</li>
       <li>卡兹克《因为GPT-6 Astra的爆火，我好像看见了时代的断层》（2026-09-07 并入）</li>
       <li>文档处理分流（词条 2026-09-20 删，思想归此）</li>
+      <li>Addy Osmani《你的 Coding Agent 让你成了管理者》（@addyosmani，2026-11-08，X 原文）</li>
+      <li>Latent Space《How Stanford Teaches AI-Native Engineering — Mihail Eric, Monaco》（2026-11-08）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AI与人的分工原则</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/AI与人的分工原则.md（2026-04-12 建条）· 本页生成 2026-10-27</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AI与人的分工原则.md（2026-04-12 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -365,6 +412,8 @@
     <li><a href="#s3">设计师具体边界</a></li>
     <li><a href="#s4">CAIO</a></li>
     <li><a href="#s5">从 IC 到 Agent Manager</a></li>
+    <li><a href="#s5a">管 agent ≠ 管人</a></li>
+    <li><a href="#s5b">斯坦福 CS146S</a></li>
     <li><a href="#s6">Reward Engineering</a></li>
     <li><a href="#s7">确定交规则 不确定交AI</a></li>
     <li><a href="#s8">分工细化到步骤</a></li>

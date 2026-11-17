@@ -96,7 +96,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-10-29</span>
-      <span>下次复核 2027-01-29</span>
+      <span>下次复核 2027-03-14</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头张望，示意逐层往上看还有几道闸"></div>
   </div>
@@ -141,6 +141,26 @@
     </ol>
     <div class="pull">每一层都会捕获一些 Bug，同时也会遗漏一些。很少有 Bug 能穿过所有层级；<em>如果有漏网的，我们有回滚机制</em>。</div>
     <p><strong>设计假设从一开始就是「一定会有漏网的」</strong>——所以最后一层不是「更严的审查」，是「更快地撤回来」。</p>
+  </section>
+
+  <section id="s4b" class="reveal">
+    <h2>AI 自检工具箱：代码与声音怎么验</h2>
+    <blockquote>来源：WquGuru《Fable 5.2 从建模到 FPS 游戏完整教程》（X @wquguru 2026-11-11，WaytoAGI 飞书转载，lark-cli 抓取；<a class="ext" href="https://github.com/wquguru/fable52-fps-repro" target="_blank" rel="noopener noreferrer">仓库</a>可复现）。一手复现，成本为作者自报。</blockquote>
+    <p><strong>无人值守合同（写进系统提示词）</strong>：用户只给一次需求、之后不再回答任何问题、所有决定自己做到完成；产物只写指定目录；完成后 3—6 行汇报（做了什么 / 文件路径 / 已知问题）。外层加预算上限。</p>
+    <p><strong>四个自检通道</strong>（第 1 层「AI 自己验」的具体做法）：</p>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>验什么</th><th>用什么</th><th>判据</th></tr></thead>
+        <tbody>
+          <tr><td>画面对不对</td><td>无头浏览器打开自己写的页面截图</td><td>截图自检，发现问题就改</td></tr>
+          <tr><td>页面报错</td><td>浏览器 console</td><td>无报错才算过</td></tr>
+          <tr><td>是不是真 GPU</td><td>读 WebGL renderer 字符串</td><td>出现 SwiftShader 等软件渲染，要在汇报里写明</td></tr>
+          <tr><td>声音对不对</td><td>OfflineAudioContext 离线渲染</td><td>查峰值、削波、静音段；汇报写明「未经人耳试听」</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>为什么这条重要</strong>：AI 听不到声音、看不见渲染结果。不给它这些通道，它只能「嘴上说完成」；给了通道，它才能自己发现并修。</p>
+    <div class="warn"><b>成本参考（自报）：</b>音效台 16.6 分钟 / $4.66；整游戏 40.8 分钟 / $15.96（缓存命中 90.9%）；四个模块可拆开跑，仓库开源可复现。</div>
   </section>
 
   <section id="s5" class="reveal">
@@ -195,6 +215,40 @@
         </tbody>
       </table>
     </div>
+  </section>
+
+  <section id="s7b" class="reveal">
+    <h2>实操：怎么打断「改—测—改」死循环</h2>
+    <p>老金（金先森，2026-11-04 并入）补的是「怎么落到对话里」。根因一句话：<strong>它不是写得差，是在猜</strong>——没有新证据时，就把昨天试过的三个办法再试一遍。</p>
+    <div class="warn">
+      <b>① 别问它「你做过什么」。</b>它为了回答你，会再做一遍。正确做法是<b>只读已有记录</b>，让它说清四件事：最近的失败是什么 · 试过哪些办法 · 新发现了什么 · 依据在哪。<b>不知道原因就直说，不许编。</b>
+    </div>
+    <div class="pair">
+      <div class="p-card bad">
+        <span class="p-t">缺材料</span>
+        缺样本文件 → 先把文件给它（它变不出文件）；外部服务连不上 → 先修连接，修不好就停。
+      </div>
+      <div class="p-card good">
+        <span class="p-t">缺方法</span>
+        查到「导出拿到的是空数据」→ 有方向，可以继续。判据：<b>答案没找到没关系，但得知道下一步往哪找。</b>
+      </div>
+    </div>
+    <p><strong>③ 第二次修不好就停（硬规则）</strong>，配套四条可直接抄进项目规则：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>规则</th><th>意思</th></tr></thead>
+      <tbody>
+        <tr><td>只改本次相关问题</td><td>无关旧问题只列出，不顺手修、不加功能，扩大范围先问</td></tr>
+        <tr><td>先找同一根因</td><td>在本次范围内搜同模式问题，一起最小修复，不全仓替换</td></tr>
+        <tr><td>每轮复查受影响的部分</td><td>已解决且未受影响的不重复提，未解决项继续跟踪</td></tr>
+        <tr><td>同一问题两次没修好，先停</td><td>报已试办法、实际改动、剩余失败和待你决定的事；同样失败且无新证据，不必等满两次</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>④ 防过度防御。</strong>Codex 的典型毛病：眼前这个一还没做好，先把「万一」都安排上——怕以后不好扩展就多拆几层、怕功能不够就多加几项。要求写进项目规则：<strong>为假设中的问题增加复杂度，先说清具体问题和代价，再征求同意</strong>；已有实现能用就接着用。边界：外部新进来的数据该查还得查，跨信任边界仍要验证，类型断言不能替代验证。</p>
+    <div class="warn">
+      <b>⑤ 「它说修好了」这一步千万别省：检查通过 ≠ 实际文件可用。</b>自己点一次导出、下载、打开、看内容对不对，顺手再试一两个常用功能。两个反例：测试绑死实现细节（代码换个写法就红）；失败伪装成成功（搜索失败返回空数组，看起来像「没搜到」）。<b>不许靠删测试、跳过检查、放宽条件、隐藏错误来换通过。</b>
+    </div>
+    <p><strong>⑥ 长任务留交接记录（跨会话必备）</strong>：只记四样——目标与验收 · 已检查的命令和结果 · 未解决项 · 下一步；恢复时先读完再动手。一条防自欺细则：<strong>模拟测试通过，不能记成「真实流程已验收」。</strong></p>
+    <p><strong>⑦ 想固化</strong>：老金提到 <code>meta-skill-creator</code>（把常用步骤做成 Skill）。熟了就把流程写进 skill 或 CLAUDE.md。</p>
   </section>
 
   <section id="s8" class="reveal">
@@ -255,6 +309,7 @@
       <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">管「执行前把目标和停止条件写死」；本条管「执行后怎么分层验收」</span></a>
       <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">人的时间该花在哪一层：高风险 + 判断类</span></a>
       <a href="../01-ai/演示优于描述.html"><span class="rel-t">演示优于描述</span><span class="rel-d">解决「知道要什么」；本条解决「做出来算不算对」</span></a>
+      <a href="../01-ai/AI幻觉（Hallucination）.html"><span class="rel-t">AI幻觉（Hallucination）</span><span class="rel-d">名字/数字/日期/引用是幻觉高发区，本条给「查到什么程度算数」的分层标准</span></a>
     </div>
   </section>
 
@@ -263,13 +318,14 @@
     <ul class="src-list">
       <li>Addy Osmani 转述 Anthropic Claude Code 团队《How the Claude Code team does code review》（X @addyosmani 2026-10-26 14:27）</li>
       <li>2026-10-28 知乎×魔搭《AI 时代开发者生态白皮书 2026》第 1.5 节「验证能力成为新的门槛」（同概念第一次撞见）</li>
+      <li>WquGuru《Fable 5.2 从建模到 FPS 游戏完整教程》（X @wquguru 2026-11-11，WaytoAGI 飞书转载，lark-cli 抓取；AI 自检工具箱，2026-11-10 并入；开源仓库 <a class="ext" href="https://github.com/wquguru/fable52-fps-repro" target="_blank" rel="noopener noreferrer">wquguru/fable52-fps-repro</a>，成本为作者自报）</li>
     </ul>
     <p style="font-size:14.5px;color:var(--ink-faint)">核实说明：原文工程博客直链未直接取到；关键数字用多处独立转述交叉核对。约 59% 与每天 2,500→30,000 次合并两条未独立核实，按团队自述看待。立场提示：Anthropic 同时在卖 Code Review 这个产品。</p>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 验证阶梯</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/验证阶梯.md（2026-10-29 建条）· 本页生成 2026-10-30</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/验证阶梯.md（2026-10-29 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -281,9 +337,11 @@
     <li><a href="#s2">来龙去脉</a></li>
     <li><a href="#s3">换掉错问题</a></li>
     <li><a href="#s4">七层阶梯 ·核心</a></li>
+    <li><a href="#s4b">AI 自检工具箱</a></li>
     <li><a href="#s5">人的时间两笔账</a></li>
     <li><a href="#s6">风险由变更决定</a></li>
     <li><a href="#s7">审查要收敛</a></li>
+    <li><a href="#s7b">打断改—测—改</a></li>
     <li><a href="#s8">错法 → 对法</a></li>
     <li><a href="#s9">边界</a></li>
     <li><a href="#s10">桑老哥适用</a></li>

@@ -21,7 +21,7 @@
   border-radius:var(--r-el); padding:14px 18px 12px;
 }
 .fstep .fs-tag {
-  display:inline-block; font-size:13px; font-weight:700; border-radius:999px;
+  display:inline-block; font-size:14.5px; font-weight:700; border-radius:999px;
   padding:0 10px; margin-bottom:6px;
   background:var(--fam-soft); color:var(--fam-deep); border:1px solid var(--fam-line);
 }
@@ -49,7 +49,7 @@
   border-radius:0 0 var(--r-box) var(--r-box); padding:14px 20px 12px; margin:14px 0;
 }
 .toolcard .tc-k {
-  font-size:13px; font-weight:700; color:var(--fam-deep); letter-spacing:.05em;
+  font-size:14.5px; font-weight:700; color:var(--fam-deep); letter-spacing:.05em;
 }
 .toolcard .tc-t { font-weight:700; font-size:17px; margin:2px 0 6px; }
 .toolcard p, .toolcard li { font-size:15px; color:var(--g8); }
@@ -67,13 +67,13 @@ pre.tmpl {
 /* 三问大字 */
 .triq { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; margin:16px 0; }
 .tq { background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:12px 16px; text-align:center; }
-.tq .tq-n { font-size:13px; font-weight:700; color:var(--fam-deep); }
+.tq .tq-n { font-size:14.5px; font-weight:700; color:var(--fam-deep); }
 .tq .tq-t { font-family:var(--font-head); font-size:19px; font-weight:700; color:var(--ink); margin-top:2px; }
 
 /* 8 场景网格 */
 .scenes { display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:8px; margin:14px 0; }
 .sc { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:8px 12px; }
-.sc .sc-n { font-size:13px; font-weight:700; color:var(--fam); font-variant-numeric:tabular-nums; }
+.sc .sc-n { font-size:14.5px; font-weight:700; color:var(--fam); font-variant-numeric:tabular-nums; }
 .sc .sc-t { font-size:14.5px; font-weight:700; color:var(--ink); }
 .sc .sc-d { font-size:14.5px; color:var(--ink-faint); line-height:1.5; }
 
@@ -81,8 +81,16 @@ pre.tmpl {
 .sick3 { list-style:none; padding-left:0; }
 .sick3 li { padding:6px 0 6px 24px; position:relative; border-bottom:1px solid var(--line); color:var(--g8); font-size:15px; }
 .sick3 li:last-child { border-bottom:none; }
-.sick3 li::before { content:"查"; position:absolute; left:0; top:7px; font-size:13px; font-weight:700; color:var(--fam-deep); background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:0 6px; line-height:1.7; }
+.sick3 li::before { content:"查"; position:absolute; left:0; top:7px; font-size:14.5px; font-weight:700; color:var(--fam-deep); background:var(--fam-soft); border:1px solid var(--fam-line); border-radius:var(--r-el); padding:0 6px; line-height:1.7; }
 .sick3 li b { color:var(--g9); }
+
+/* 警示条（模型坑，非家族色） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:12px 16px; margin:14px 0;
+  color:#78350f; font-size:15px;
+}
+.warn b { color:#92400e; }
 
 /* 动效兜底 */
 @media (prefers-reduced-motion:reduce) {
@@ -112,7 +120,7 @@ pre.tmpl {
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-24</span>
-      <span>下次复核 2026-11-24</span>
+      <span>下次复核 2027-01-28</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头张望，示意出问题不猜咒语，逐个维度排查"></div>
   </div>
@@ -304,16 +312,82 @@ pre.tmpl {
   </section>
 
   <section id="s10" class="reveal">
+    <h2>模型选型：Seedream 5.5 / GPT Image 2.6 / 香蕉 Pro（2026-11 并入）</h2>
+    <p>来源：海辛和阿文《Seedream 5.5：字节多模态的重要拼图》（2026-11-09）。150 道盲测、双人各自盲选，Seedream 5.5 代号 Z1015 胜率 81%。作者自认「这是俩人的口味，最好拿自己常画的图亲手比」。</p>
+    <div class="toolcard">
+      <div class="tc-k">四句话记住三家</div>
+      <div class="tc-t">超写实 / 风格化 / 指令遵循 / 多轮编辑</div>
+      <ul>
+        <li><strong>超写实</strong>：Seedream 5.5 最像「真实电影的一帧」（光从环境来、东西有用旧痕迹）</li>
+        <li><strong>风格化</strong>：Seedream 偶尔胜、偶尔不稳；<b>像素画翻车</b>，只有香蕉 Pro 能用</li>
+        <li><strong>指令遵循</strong>：GPT Image 2.6 更听话（「只用 4 色、不要渐变」它照做）</li>
+        <li><strong>多轮编辑</strong>：Seedream 5.5 是 SOTA</li>
+      </ul>
+    </div>
+    <h3>多轮编辑数据（最值钱）</h3>
+    <p>同一张老杂货铺，三家各改 8 轮、每轮只改点名区域。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>模型</th><th>8 轮后与原图相似度</th><th>特点</th></tr></thead>
+      <tbody>
+        <tr><td>Seedream 5.5</td><td class="num"><strong>0.88</strong></td><td>基本只动点名那块</td></tr>
+        <tr><td>GPT Image 2.6</td><td class="num">0.69</td><td>每轮重画一大片</td></tr>
+        <tr><td>香蕉 Pro</td><td class="num">0.58</td><td>每轮重画更大</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn"><b>坑：</b>Seedream 约每 8 轮会突然整图重画一次，画面变软、回不去。重要图别无限轮改，到节点换底图。</div>
+    <h3>怎么选</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>你的需求</th><th>选谁</th></tr></thead>
+      <tbody>
+        <tr><td>有硬限制（颜色数、不改结构、文字精准）</td><td>GPT Image 2.6 / 香蕉 Pro</td></tr>
+        <tr><td>要求不严、想让它自动平衡审美</td><td>Seedream 5.5</td></tr>
+        <tr><td>超写实、要旧痕/环境光质感</td><td>Seedream 5.5</td></tr>
+        <tr><td>像素画</td><td>香蕉 Pro</td></tr>
+        <tr><td>要反复局部改同一张</td><td>Seedream 5.5</td></tr>
+      </tbody>
+    </table></div>
+    <h3>价格（2K，2026-11 时点）</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>模型</th><th>单价</th></tr></thead>
+      <tbody>
+        <tr><td>Seedream 5.5（火山引擎 API）</td><td class="num">约 0.23 元/张（每张参考图 +0.05）</td></tr>
+        <tr><td>GPT Image 2.6（OpenAI，high 档）</td><td class="num">约 0.4–0.55 元/张</td></tr>
+        <tr><td>香蕉 Pro（Gemini）</td><td class="num">约 0.9 元/张</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:14.5px; color:var(--ink-faint);">上线：豆包/豆包工作已灰度，火山引擎 API 本周上线（原文 2026-11-09 口径）。</p>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>提示词技巧补充：豆包工作 Seedream 5.5 指南（2026-11 并入）</h2>
+    <p>来源：豆包工作官方《Seedream 5.5 使用指南》。偏「工程化表达」，9 条里与心法 / 三件工具重合的不重复，只补最值得加进习惯的。</p>
+    <ul>
+      <li><strong>先写任务，再写风格</strong>：先说生成/改成什么，再补氛围、质感、风格词。</li>
+      <li><strong>先定整体骨架再堆细节</strong>：这是什么图、什么构图、版面怎么分；模型拿到全局，细节才知道往哪放。</li>
+      <li><strong>结构比形容词重要</strong>：写清位置、层级、模块关系，别只写「高级感」。</li>
+      <li><strong>落到「看得见的东西」</strong>：「氛围感」→「浓雾/光影美学/梦幻梦核」；「皮肤变好」→「细腻/真实/祛痘/磨皮」。</li>
+      <li><strong>具体文字逐字给全</strong>：引号引用，写清字体、字重、颜色、对齐、行数；改字精确到「哪个位置的哪个词」，并声明原排版/行距/背景补全保持一致。</li>
+      <li><strong>多图参考先判角色</strong>：一句话说清每张图提供什么（主体/配色/版式），编辑指令以「将参考图 X……」起句，紧跟「改什么、留什么、新增什么」。</li>
+      <li><strong>编辑分清「保留」和「变化」</strong>：哪些不变、哪些新增/替换/删除，分开写。</li>
+      <li><strong>多轮编辑每轮自包含</strong>：不写「上一轮那个」，直接说这次改什么、其他什么保持不变。</li>
+      <li><strong>复杂动作拆开写</strong>：人多、动作复杂、连续性要求高时，越要收紧约束、分步迭代。</li>
+    </ul>
+    <blockquote>官方还附了<strong>风格词库 / 美学词库</strong>——写提示词卡住时，拿来填「看得见的词」。</blockquote>
+  </section>
+
+  <section id="s12" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>Su《第一性原理拆解：生图提示词究竟该怎么写？》(@Sukiea1008, X 2026-08-23, WaytoAGI 飞书转载)</li>
       <li>尹小歪《GPT Image 2.5 夯爆了！30组案例对比即梦5.0 Pro》(2026-09-10, WaytoAGI 飞书转载；修改边界法增量来源)</li>
+      <li>海辛和阿文《Seedream 5.5：字节多模态的重要拼图》(公众号 2026-11-09，WaytoAGI 飞书转载；模型选型来源)</li>
+      <li>豆包工作《Seedream 5.5 使用指南》(WaytoAGI 飞书转载，2026-11-09 并入；提示词技巧与风格词库)</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · 电商设计家族 · 生图提示词排查表</p>
-    <p>词条源：concepts(概念库)/电商设计/生图提示词排查表.md（2026-08-24 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/电商设计/生图提示词排查表.md（2026-08-24 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -330,7 +404,9 @@ pre.tmpl {
     <li><a href="#s7">三问验收闭环</a></li>
     <li><a href="#s8">术语对照</a></li>
     <li><a href="#s9">桑老哥直用</a></li>
-    <li><a href="#s10">来源</a></li>
+    <li><a href="#s10">模型选型</a></li>
+    <li><a href="#s11">提示词技巧补充</a></li>
+    <li><a href="#s12">来源</a></li>
   </ul>
 </aside>
 </div>

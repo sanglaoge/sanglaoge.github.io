@@ -82,6 +82,9 @@
 }
 .warn b { color:#92400e; }
 
+/* 来源小字 */
+.src-note { font-size:14.5px; color:var(--ink-faint); line-height:1.7; }
+
 /* 动效兜底：敏感用户全关 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -110,8 +113,8 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-09-29</span>
-      <span>下次复核 2027-01-20</span>
-      <span>10 篇来源 · 累计加厚 6 次</span>
+      <span>下次复核 2027-03-28</span>
+      <span>13 篇来源</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探头往墙里张望，示意绕开视频模型，从代码那边进去"></div>
   </div>
@@ -252,6 +255,34 @@
     <p>云舒版三角色叫法：<strong>当画笔</strong> = 2D / 3D，<strong>当遥控器</strong> = 专业软件，<strong>当包工头</strong> = 多模型混合——同一条"代码是接口"论点的三个切面。</p>
   </section>
 
+  <section id="s6b" class="reveal">
+    <h2>第四条路：现成 Skill 做白板手绘</h2>
+    <p><code>srt-whiteboard-animation</code>（github.com/geeklee，MIT，5349 星 / 842 fork，最后更新 2026-07-27）把 SRT 字幕变成「一只手在画」的白板动画。它<strong>不是独立软件</strong>：Skill = 工作说明书 + 脚本 + 素材，装进 Agent 才跑得起来。</p>
+    <div class="routes4">
+      <div class="rt">
+        <p class="rt-tag">七步工序</p>
+        <p class="rt-name">每步都要人确认</p>
+        <p class="rt-b">① <code>parse_srt.py</code> 解析字幕 → 按 <b>25—35 秒/幕</b> 出分镜 ② 生图模型出线稿 ③ 做 <code>annotation.json</code> 把画面主体绑到字幕事件 ④ 出编号/方向检查图 ⑤ 浏览器预览台调区域/时序 ⑥ 逐幕渲染 MP4 ⑦ 多幕合并。</p>
+        <p class="rt-fit"><b>必配</b>：生图模型。Skill 本身不含任何图像模型。</p>
+      </div>
+      <div class="rt">
+        <p class="rt-tag">画法</p>
+        <p class="rt-name">stream 连续笔迹</p>
+        <p class="rt-b">每个区域在自己掩码内：起笔 <code>ink</code> 铺线稿、再 <code>color</code> 上色（权重 2:1）；未开始区域完全隐藏，重叠主体用 <code>protectedRegions</code> 保护。<code>--ink-path grid</code> 默认稳、<code>skeleton</code> 线稿清晰时更贴合。</p>
+        <p class="rt-fit"><b>出图规范</b>：米色纸 #F5EBD7 + 深灰线，只许少量红/橙/蓝；禁图内文字、写实、3D、高饱和。</p>
+      </div>
+      <div class="rt">
+        <p class="rt-tag">成本</p>
+        <p class="rt-name">60 秒 ≈ 6 分钟</p>
+        <p class="rt-b">Python 独立 venv，依赖 opencv-python / numpy / av / Pillow；PyAV 自带 H.264 编码，<b>不需要系统 ffmpeg</b>。</p>
+        <p class="rt-fit"><b>分工</b>：代码画 = 形状准、文字不乱；白板 Skill = 有「人在画」的亲切感，但每幕限 25—35 秒，生图一致性是最大变数。</p>
+      </div>
+    </div>
+    <div class="warn">
+      <b>最值钱的教训：工序边界。</b>这个 Skill 只负责渲染画面——第一版出来是哑巴视频，没配音也没字幕，作者回头问 Agent 才知道要另外让它做。<b>不要把「Skill 能做的」和「Agent 能继续帮你做的」混为一谈；装了 Skill 不等于端到端出片。</b>
+    </div>
+  </section>
+
   <section id="s7" class="reveal">
     <h2>实操清单（《咬了一口月亮》实证）</h2>
     <ul>
@@ -289,6 +320,23 @@
       <li><strong>确定性渲染三条军规</strong>：代码不能读当前时间、不能用没有固定种子的随机数、渲染时不能联网。守住三条，同一份代码每次渲染出完全相同的视频，多浏览器进程并行分渲才可能。</li>
       <li><strong>15 种风格提示词全开源</strong>：皮影戏 / 等距流程 / 比例尺对比 / 白板手绘 / 汉字演变 / 3D 拆解 / 像素典故 / 绘本科普 / 数学可视化 / 地图动画 / 数据信息图 / 扁平 MG / 卡点金句 / 漫画分格 / 时间线。三大优势：字不会错、改得快、10 块 vs 视频模型几百抽卡。</li>
     </ul>
+  </section>
+
+  <section id="s9b" class="reveal">
+    <h2>程序化 3D 页面：菜谱不是菜</h2>
+    <p>单文件网页里能塞下 1.4M 的 3D 游戏（约 700KB 是 Three.js，其余是代码），也能塞下 97K 的 WebGPU 水世界。原因不是压缩狠，是<strong>文件里存的不是模型、贴图、录音，是"怎么生成"的规则</strong>——像菜谱，不是菜。打开网页那几秒，是显卡按规则现算。</p>
+    <div class="pair2">
+      <div class="p-card">
+        <p class="p-t">两条提示词约束</p>
+        <p class="p-b">① 不用任何外部图片或模型文件，全部代码生成。② 一开始就拆成独立组件，后面改一栋楼、换一座桥不牵一发动全身。</p>
+      </div>
+      <div class="p-card">
+        <p class="p-t">自审法</p>
+        <p class="p-b">每改完一版，用浏览器打开，从几个固定角度各截一张图，让模型看着截图自己迭代——和"画看改"循环同源。</p>
+      </div>
+    </div>
+    <div class="warn"><b>边界：</b>纯代码难做人 / 动物这类曲线多的东西；可以先用 Blender / Tripo 做好模型再放进网页，体积会变大。极限压缩（97K、连 Three.js 都不要）是地狱难度，日常直接用 Three.js。</div>
+    <p class="src-note">来源：卡兹克《这些AI手搓的几百K的3D世界，正在让HTML再次伟大》（公众号·数字生命卡兹克 2026-11-16）。现象观察 + 他人 demo。</p>
   </section>
 
   <section id="s10" class="reveal">
@@ -346,11 +394,29 @@
     <p>省钱的机制就在 <a href="../01-ai/上下文工程.html">上下文工程</a> 的 KV Cache 经济学里：省钱主要省在同一会话内，任务干完再关。</p>
   </section>
 
+  <section id="s12b" class="reveal">
+    <h2>模型三级分工：Fable 指挥、Opus 干活、Sol 打后端</h2>
+    <p>2026-11-09 发布的 Fable 5.2，比 Opus 5.5 贵一倍（$8/$40 对 $4/$20；5.1 是 $10/$50，降 20%）。核心增量不是"新模型更强"，是<strong>按价分工</strong>：能力再强，也不能拿来批量抽卡。官方参数为 1M 上下文 / 128K 输出 / 知识截止 2026-06，比 5.1 快最多 30%；另有 Fast 模式 $16/$80。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>角色</th><th>模型</th><th>官方价（输入 / 输出，每百万）</th><th>干什么</th></tr></thead>
+      <tbody>
+        <tr><td>宰相（指挥）</td><td>Fable 5.2</td><td>$8 / $40</td><td>规划、诊断、最难的审美判断、指挥其他模型</td></tr>
+        <tr><td>主力（干活）</td><td>Opus 5.5</td><td>$4 / $20</td><td>审美、前端、动效、日常批量</td></tr>
+        <tr><td>后端（补位）</td><td>GPT-6.2 Sol</td><td>未核</td><td>算法、后端；审美仍弱于 Opus 5.5</td></tr>
+        <tr><td>便宜执行（可选）</td><td>Sonnet 5.5</td><td>$2 / $10</td><td>批量执行，便宜一半</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>成本实测（作者账）：</strong>200 刀 Ultra，4 小时 10 个任务（Xhigh 档）烧掉总额度约 <span class="num">24%</span>，Fable 周额度用掉约 <span class="num">50%</span>。结论：贵模型只做指挥，不做抽卡和批量。</p>
+    <p><strong>最值钱的是过程：</strong>作者做上海 Apple 静安店 3D 还原（2.5 小时）时，先搜报道、找真实照片、挨张放大看细节（近 1 小时、上百张），再建模 1 小时。<strong>先查参考再动手，不是提示词魔法</strong>——这条可直接迁移到做图和做视频。</p>
+    <div class="warn"><b>边界：</b>① 音效 / 配乐是短板，作者自己说调 Suno，别让一条 prompt 全包 ② 国内门槛是封号 / KYC，不是能力 ③ 官方要求 30 天数据保留 ④ 模型名和价格会变，用前现查官网。误拦截降幅、AA 分数、千子智能体造 OS 等为官方 / 作者自报，未独立核。</div>
+    <p class="src-note">来源：卡兹克《实测 Claude Fable 5.2 — 审美与细节的绝对统治》（公众号·数字生命卡兹克 2026-11-10，一手实测）；官方参数与价格已核 Anthropic 官网。</p>
+  </section>
+
   <section id="s13" class="reveal">
     <h2>桑老哥适用场景</h2>
     <div class="warn"><b>状态修正（2026-10-08）：</b>本词条所述路线桑老哥<b>已在生产一线使用近月</b>——视频工厂三系列全走 HyperFrames 线，声音时间线 / 字幕实测时长等铁律已内化成 SOP。下方起步类建议（先做小片试等）已过时；视频工厂踩坑账本（字体竞态 11 轮根治 / 渲染启动五连坑 / 气泡漂移静态抽帧验证被骗）是一手实证，比外部文章更硬，复用本词条知识时以那边为准。</div>
     <ul>
-      <li><strong>省钱分工</strong>：想方案 / 定审美切 Opus，批量执行丢 Sonnet 5.5（便宜一半快三成效果不打折）；这活是 Claude 家独门——CodeX 三败垫底（一个 case 用到底没合集感 / 缩放偷懒 / 配乐不卡点）。3D 也是 Opus 独门，Sonnet 只会干净执行不会"加戏"。</li>
+      <li><strong>省钱分工（2026-11-10 升级为三级，见上节）</strong>：想方案 / 定审美切 Opus，批量执行丢 Sonnet 5.5（便宜一半快三成效果不打折）；这活是 Claude 家独门——CodeX 三败垫底（一个 case 用到底没合集感 / 缩放偷懒 / 配乐不卡点）。3D 也是 Opus 独门，Sonnet 只会干净执行不会"加戏"。<strong>Fable 5.2 只当指挥（贵一倍价），Opus 5.5 干活，算法后端给 GPT-6.2 Sol。</strong></li>
       <li><strong>电商直接对口</strong>：实拍素材卡节拍剪发布片；口播剪成片（实测一单 $72）；零生成模型店铺片。配套提示词法——电商宣传片给网址自动截真实界面、找真实 logo 配色，<strong>禁止凭想象画界面</strong>；多尺寸同一套时间线分开做，<strong>禁止横屏裁竖屏</strong>。</li>
       <li><strong>产品视频字幕不再乱码</strong>：卖点字幕用代码画路线，文字就是形状，画出来就是对的。</li>
       <li>做熟的同类片打包成 skill = 「每周同类 → Skill」同构，下次口令直出。</li>
@@ -380,6 +446,7 @@
       <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">五部门里的评论家=该词条的视频流水线落地</span></a>
       <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">98% 缓存读取=KV Cache 经济学活例</span></a>
       <a href="../07-ip/人味与AI味.html"><span class="rel-t">人味与AI味</span><span class="rel-d">删装饰 ≠ 删指纹；减法死路的边界在哪</span></a>
+      <a href="../05-video/AI短剧制作流水线.html"><span class="rel-t">AI短剧制作流水线</span><span class="rel-d">同为"代码补模型短板"：监控 HUD / 时间码 / 字幕用 PIL + ffmpeg 画，文字永远清晰（2026-11-13 关联）</span></a>
     </div>
   </section>
 
@@ -396,12 +463,15 @@
       <li>Mori《动态工程：一个机器人，五个部门，整个工作室》（X @0xjmori 2026-10-18，WaytoAGI 转载 GoGtwOQ8libLZAkZwnRcsiT3nub，10-20 补五部门流水线）</li>
       <li>空格丶《拆解 9 个方法，让 AI 写代码帮你做视频起号》（公众号·空格的键盘 2026-10-20，WaytoAGI 转载 VM7fwe8bEiQty5kikh4cqVMfnTd，10-21 补去 AI 味三板斧与 map-motion）</li>
       <li>卡尔《分享 6 个新提示语去掉 DeepSeek 新模型的 AI 味》（公众号，WaytoAGI 转载 ZtWtwovAai2qZWkEqDfcQsE1n6c，2026-10-27 补版面去 AI 味六条；作者为前序「卡尔实测 Sonnet 5.5」同一人，二撞）</li>
+      <li>管三《我发现一个逆天Skill！丢进字幕，AI就能自动生成手绘动画视频》（公众号 2026-11-03，WaytoAGI 转载 VvMTwuga9iAZYgkCf4ccXbUanud → obj_token UrsidtPKYomCfzx4qbEcEAYQn4f，2026-11-02 并入第四条路；仓库 geeklee/srt-whiteboard-animation 已实核 MIT / 5349 星）</li>
+      <li>卡兹克《实测 Claude Fable 5.2 — 审美与细节的绝对统治》（公众号·数字生命卡兹克 2026-11-10；2026-11-10 并入模型三级分工；官方参数与价格已核 anthropic.com/claude-fable-and-mythos-5-2 与 platform.claude.com 模型页）</li>
+      <li>卡兹克《这些AI手搓的几百K的3D世界，正在让HTML再次伟大》（公众号·数字生命卡兹克 2026-11-16，mp.weixin.qq.com/s/ZJddy1ssHBvw_1sm12jrkg；现象观察 + 他人 demo，2026-11-16 并入程序化 3D）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI视频家族 · 代码画视频三路线</p>
-    <p>词条源：concepts(概念库)/AI视频制作/代码画视频三路线.md（2026-09-29 建条）· 本页生成 2026-10-27</p>
+    <p>词条源：concepts(概念库)/AI视频制作/代码画视频三路线.md（2026-09-29 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -415,12 +485,15 @@
     <li><a href="#s4">两个杀手锏</a></li>
     <li><a href="#s5">画看改循环</a></li>
     <li><a href="#s6">三路线 + 延伸</a></li>
+    <li><a href="#s6b">第四条路：白板手绘</a></li>
     <li><a href="#s7">实操清单</a></li>
     <li><a href="#s8">8 步 SOP 精髓</a></li>
     <li><a href="#s9">工具落地</a></li>
+    <li><a href="#s9b">程序化 3D 页面</a></li>
     <li><a href="#s10">五部门流水线</a></li>
     <li><a href="#s11">去 AI 味三层</a></li>
     <li><a href="#s12">成本账</a></li>
+    <li><a href="#s12b">模型三级分工</a></li>
     <li><a href="#s13">桑老哥适用</a></li>
     <li><a href="#s14">前提与局限</a></li>
     <li><a href="#s15">关联词条</a></li>

@@ -19,7 +19,7 @@
 @media (min-width:768px) { .vs { grid-template-columns:1fr 1fr; } }
 .vs-col { border-radius:var(--r-box); padding:16px 20px 14px; border:1px solid var(--line); background:var(--g0); }
 .vs-col .vs-tag {
-  display:inline-block; font-size:13px; font-weight:700; border-radius:999px;
+  display:inline-block; font-size:14.5px; font-weight:700; border-radius:999px;
   padding:1px 12px; margin-bottom:10px;
 }
 .vs-col.ai { background:var(--fam-soft); border-color:var(--fam-line); }
@@ -70,7 +70,7 @@
 .cond::before {
   content:counter(c3); position:absolute; top:-10px; left:14px;
   width:24px; height:24px; line-height:24px; text-align:center; border-radius:50%;
-  background:var(--fam); color:#fff; font-weight:700; font-size:13px;
+  background:var(--fam); color:#fff; font-weight:700; font-size:14.5px;
 }
 .cond .cd-t { font-weight:700; font-size:15.5px; margin-top:4px; }
 .cond .cd-d { font-size:14.5px; color:var(--ink-soft); }
@@ -122,7 +122,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-04-11</span>
-      <span>下次复核 2026-08-03</span>
+      <span>下次复核 2027-03-28</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象趴在墙上张望，示意站在人机分工的边界上看两边"></div>
   </div>
@@ -161,9 +161,9 @@
   </section>
 
   <section id="s3" class="reveal">
-    <h2>三层架构：Claude Code 做跨境电商</h2>
+    <h2>三层架构：AI 编程工具做跨境电商</h2>
     <div class="arch">
-      <div class="lay"><span class="ly-t">引擎（Claude Code）</span><span class="ly-d">执行所有操作</span></div>
+      <div class="lay"><span class="ly-t">引擎（AI 编程工具）</span><span class="ly-d">Claude Code（重活）/ OpenCode / ZCode 并用，按模型能力 + 成本选，不按品牌</span></div>
       <div class="arrow">↓</div>
       <div class="lay"><span class="ly-t">数据管道（MCP）</span><span class="ly-d">Sorftime 拉亚马逊/TikTok 数据，Amazon Ads API 直连广告后台</span></div>
       <div class="arrow">↓</div>
@@ -217,6 +217,38 @@
   </section>
 
   <section id="s7" class="reveal">
+    <h2>淘宝设计一天实证：AI 把执行接走后（卡兹克 2026-11）</h2>
+    <p>来源：卡兹克《时隔3年，我重新入职淘宝当了一天设计师》（公众号·数字生命卡兹克 2026-11，用户粘贴全文、无链接）。一手体验（双十一前，淘宝设计团队一天）；TaoDesign 为内部工具、未对外，数据为团队自述。</p>
+    <h3>团队把 AI 分三块</h3>
+    <div class="conds">
+      <div class="cond"><div class="cd-t">创意</div><div class="cd-d">海量会场/品牌/投放素材已基本 AI 化，设计师转成「提需求、编排 Agent 流程、调风格」</div></div>
+      <div class="cond"><div class="cd-t">知识</div><div class="cd-d">200+ 设计/体验/营销知识库清洗进 AI，新人直接问，不用追着师傅和规范负责人</div></div>
+      <div class="cond"><div class="cd-t">工具</div><div class="cd-d">自研 TaoDesign（画布+AI+资源库+MCP），目标是交付物=最终上线产品，无实现漏损</div></div>
+    </div>
+    <h3>工具迭代教训（自建同样成立）</h3>
+    <p>对话生成 HTML（改起来费劲）→ 塞回 Figma/MasterGo 插件（画布自定义差、走查还原难）→ 自研画布+AI。三阶段核心都是：<strong>让生成结果可编辑、可验收、能对接下游</strong>。</p>
+    <h3>新人反模式：许愿式编程</h3>
+    <div class="tj">
+      <div class="tj-row"><div class="tj-h">错法</div><div class="tj-c">一次扔 6 个模板 + 大段 Prompt → 8 个页面全崩。TaoDesign 里 <b>Prompt 优先级最高</b>，会覆盖十几年规范</div></div>
+      <div class="tj-row"><div class="tj-h">正法</div><div class="tj-c">一页一页来、同会话往后扩、<b>Prompt 写粗一点</b>，让知识库/Skill 发挥作用</div></div>
+    </div>
+    <h3>被 AI 接走的 vs 留下的</h3>
+    <div class="tj">
+      <div class="tj-row"><div class="tj-h">接走</div><div class="tj-c">找图、换字、标注、量间距、走查、还原设计稿</div></div>
+      <div class="tj-row"><div class="tj-h">留下</div><div class="tj-c">业务判断、用户理解、审美取舍、描述能力（把方案讲清楚让 AI 执行）</div></div>
+    </div>
+    <h3>评审差异（最值钱）</h3>
+    <p>同一需求三个人，赢的不是画得细，是：</p>
+    <div class="hist">
+      <div class="hcard"><div class="h-t">GMV 拆解</div><div class="h-d">曝光×点击×转化×客单价，先找能控的变量</div></div>
+      <div class="hcard"><div class="h-t">购买意图</div><div class="h-d">模糊→逛/直播/风格榜；明确→最短链路</div></div>
+      <div class="hcard"><div class="h-t">屏效</div><div class="h-d">主视觉占首屏一半以上，没击中就走</div></div>
+    </div>
+    <p><strong>能力公式：描述 + 判断。</strong>AI 放大有观点的人，替代只做重复执行的人；体验设计反而被放大——人人能 Vibe Coding 后，同质化产品的决胜点是体验。</p>
+    <p><strong>桑老哥迁移：</strong>没有 TaoDesign 也能搭简化版——知识库（规范/组件/历史 PRD）+ Skill（流程）+ 画布或 HTML + MCP 交付；先做一页再扩，Prompt 少写细节。</p>
+  </section>
+
+  <section id="s8" class="reveal">
     <h2>1997 年类比：像早期的互联网</h2>
     <ul>
       <li>1997 年的人也知道互联网会改变世界，但不知道 Yahoo 和 Google 谁赢</li>
@@ -226,7 +258,21 @@
     </ul>
   </section>
 
-  <section id="s8" class="reveal">
+  <section id="s9" class="reveal">
+    <h2>2026-10-29 复评校正</h2>
+    <p>review_date 过期 87 天后补三条，最后一条改的是「量质分工」的边界。</p>
+    <h3>① 引擎不写死品牌</h3>
+    <p>原文多处把工具写死成 Claude Code，实际是三个并用：Claude Code（重活）、OpenCode、ZCode。工具会换代，判据不会——「引擎」这一层按<strong>模型能力 + 成本</strong>选，不按品牌。把工具名当结论写进词条，下次换工具这条就废了。</p>
+    <h3>② 两条已经落地</h3>
+    <div class="tj">
+      <div class="tj-row"><div class="tj-h">运营自动化</div><div class="tj-c">视频生产线（<code>视频工厂/主图视频系列/</code>）：门槛项客观实测 + 观感 6 项打分 + 验收评分表</div></div>
+      <div class="tj-row"><div class="tj-h">Listing</div><div class="tj-c">已并入 <code>跨境电商部知识库/Listing/</code>，4 个项目 skill + 飞书集成</div></div>
+    </div>
+    <h3>③ 要修的边界（最重要）</h3>
+    <p>原文「AI 负责量、人负责质」暗示质这一侧全靠人盯。三个月的实际教训：<strong>人的注意力是有限资源，不能全都盯</strong>。改错别字和改渲染逻辑不该用同一套验收；低风险改动该自动放行，人的时间只花在「高风险 + 判断类」上——机制见 <a href="../01-ai/验证阶梯.html">验证阶梯</a>。</p>
+  </section>
+
+  <section id="s10" class="reveal">
     <h2>桑老哥适用</h2>
     <div class="card" style="margin-bottom:10px;">
       <h3 style="margin-top:0;">设计师本行</h3>
@@ -238,10 +284,11 @@
     </div>
   </section>
 
-  <section id="s9" class="reveal">
+  <section id="s11" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/AI与人的分工原则.html"><span class="rel-t">AI与人的分工原则</span><span class="rel-d">更通用的分工方法论，本条是它在电商设计岗的特化</span></a>
+      <a href="../01-ai/验证阶梯.html"><span class="rel-t">验证阶梯</span><span class="rel-d">分级验收 + 回滚兜底：人的时间只花在高风险和判断类</span></a>
       <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">三层架构的通用版本</span></a>
       <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">长 session 做电商任务时避免 context rot</span></a>
       <a href="../02-think/人才公式（Taste×Agency）.html"><span class="rel-t">人才公式（Taste×Agency）</span><span class="rel-d">Taste（判断力）+ Agency（主动性）= AI 时代的护城河</span></a>
@@ -250,17 +297,18 @@
     <p style="margin-top:10px;"><span style="color:var(--ink-faint)">Agent-Led Growth</span>（GEO 就是它在电商的落地；原词条 2026-09-20 删，思想已并入本词条与 GEO 条）</p>
   </section>
 
-  <section id="s10" class="reveal">
+  <section id="s12" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>桑老哥实践总结（自建词条，practiced 验证）</li>
       <li>Benedict Evans：Task vs Job 论述</li>
+      <li>卡兹克《时隔3年，我重新入职淘宝当了一天设计师》（公众号·数字生命卡兹克 2026-11；用户粘贴全文无链接）。一手体验（双十一前，淘宝设计团队一天），TaoDesign 为内部工具、未对外，数据为团队自述</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · 电商设计家族 · AI对跨境电商设计师的价值边界</p>
-    <p>词条源：concepts(概念库)/电商设计/AI对跨境电商设计师的价值边界.md（2026-04-11 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/电商设计/AI对跨境电商设计师的价值边界.md（2026-04-11 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -274,10 +322,12 @@
     <li><a href="#s4">三套算法·认知差</a></li>
     <li><a href="#s5">交给 AI 三条件</a></li>
     <li><a href="#s6">Task vs Job</a></li>
-    <li><a href="#s7">1997 类比</a></li>
-    <li><a href="#s8">桑老哥适用</a></li>
-    <li><a href="#s9">关联词条</a></li>
-    <li><a href="#s10">来源</a></li>
+    <li><a href="#s7">淘宝设计一天实证</a></li>
+    <li><a href="#s8">1997 类比</a></li>
+    <li><a href="#s9">复评校正</a></li>
+    <li><a href="#s10">桑老哥适用</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
   </ul>
 </aside>
 </div>

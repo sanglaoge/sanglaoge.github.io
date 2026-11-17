@@ -112,7 +112,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-03</span>
-      <span>下次复核 2026-11-18</span>
+      <span>下次复核 2027-01-28</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂着嘴，示意规模化之后那些说不出口的隐藏坑"></div>
   </div>
@@ -241,6 +241,41 @@
     <p>范式转移（详见关联词条·技能进化）：过去一次写 90 分才上线，现在 <strong>60 分上线，靠真实失败迭代</strong>。CQS（Character Quality Score）五个维度各 0-10 分——角色一致性、任务完成度、信息准确性、边界意识、表达清晰度。Δ &gt; +0.5 才 promote，否则 discard。关键设计：<strong>Shadow 部署</strong>（影子 session 不影响生产）+ <strong>Capsule 留底</strong>（每次改动可回滚）。</p>
   </section>
 
+  <section id="s6b" class="reveal">
+    <h2>从几十个 Skill 到可视化系统</h2>
+    <p>空格丶把几十个 Skill 改造成一套能自动跑的内容创作系统（公众号 2026-11-03；仓库 <code>SpaceZephyr/creator-buddy</code> 1,825 星、<b>无 LICENSE</b>、2026-08-26 后未更新）。<strong>先分清：内容自动化 ≠ 代码自动化。</strong></p>
+    <div class="imp"><span class="imp-t">本节最该记住的一句</span>代码有对错，测试过了就是过了；内容没有标准、风格各异、灵感每天在变。所以内容侧只能是：<strong>AI 自主执行（采集/拆解/初稿）→ 把结果摆到人面前 → 人做决策、参与创作。</strong>不是「全自动出稿」。</div>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>步</th><th>人干什么</th><th>系统干什么</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>刷到好内容，粘个链接</td><td>抓回博主粉丝数、历史爆款</td></tr>
+        <tr><td>2</td><td>点进去看</td><td>视频转逐字稿 + 拆开头钩子 / 观众痛点 / 内容结构</td></tr>
+        <tr><td>3</td><td>觉得有用点「采纳」</td><td>存进选题库</td></tr>
+        <tr><td>4</td><td>进写作台</td><td>出初稿，还能改写成可直接念的口播</td></tr>
+      </tbody>
+    </table></div>
+    <p>后台另有一条：<strong>每天定时采集几十个关注对象的更新</strong>，不占人。搭建方式不是写代码——把常用 Skill 装进去，用大白话描述要什么页面/数据/按钮，豆包工作背后调飞书秒搭的现成组件，<strong>前端 + 后端 + 数据库一条龙</strong>，作者实测 50 分钟出 7 页。</p>
+    <div class="note"><b>别混：</b>Agent-Autoloop 那类常驻服务管多 Agent 并发调度；本节是<b>网页应用</b>，把零散 Skill 变成能天天用的界面。前者要写 <code>rules.json</code> + 权限配置，后者用大白话；前者风险在早期版本 + 订阅额度，后者风险在数据放第三方 + 供应商绑定。</div>
+    <div class="pit">
+      <div class="card">
+        <span class="p-no">边界 1</span>
+        <h3>无 LICENSE</h3>
+        <p>严格说默认保留所有权利，<b>商用前必须问作者</b>。</p>
+      </div>
+      <div class="card">
+        <span class="p-no">边界 2</span>
+        <h3>接口随时失效</h3>
+        <p>仓库三个月没更新，抓小红书/抖音这类能力随时可能坏。</p>
+      </div>
+      <div class="card">
+        <span class="p-no">边界 3</span>
+        <h3>数字是自报</h3>
+        <p>50 分钟是作者自报；「不输顶级模型」是主观评价；平台托管 = 数据与流程绑在那家平台，迁移成本先想。</p>
+      </div>
+    </div>
+    <div class="note"><b>桑老哥对号：</b>Skill 是零件，可视化系统是成品。攒了几十个 Skill 之后，问题不再是「该用哪个」，而是<b>能不能自动跑、我只看结果</b>——但到这一步之前，先把重复流程写成规范的 Skill。</div>
+  </section>
+
   <section id="s7" class="reveal">
     <h2>对桑老哥的实操指导</h2>
     <ul>
@@ -280,7 +315,7 @@
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · Skill工程家族 · Skill工程实践</p>
-    <p>词条源：concepts(概念库)/Skill工程/Skill工程实践.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/Skill工程/Skill工程实践.md（2026-08-03 建条）· 本页生成 2026-09-22 · 2026-11-07 补可视化系统节</p>
   </footer>
 
 </main>
@@ -294,6 +329,7 @@
     <li><a href="#s4">200+ 的三个坑</a></li>
     <li><a href="#s5">五个设计模式</a></li>
     <li><a href="#s6">标准与自我进化</a></li>
+    <li><a href="#s6b">从 Skill 到可视化系统</a></li>
     <li><a href="#s7">桑老哥实操</a></li>
     <li><a href="#s8">前提与局限</a></li>
     <li><a href="#s9">关联词条</a></li>

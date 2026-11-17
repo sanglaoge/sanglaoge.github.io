@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI短剧制作流水线 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（镜头黑场做点缀，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+/* ---- 页面专属：流程布局 ---- */
+
+/* 七站总图 */
+.pipe {
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+  padding:14px 12px 8px; margin:18px 0 10px; overflow-x:auto;
+}
+.pipe svg { display:block; width:100%; min-width:640px; height:auto; }
+.pipe-cap { font-size:14.5px; color:var(--ink-faint); margin:0 0 18px; }
+.pp-band { fill:var(--fam-soft); }
+.pp-band-t { fill:var(--fam-deep); font-weight:700; letter-spacing:.04em; }
+.pp-line { stroke:var(--fam-line); }
+.pp-arrow { fill:var(--fam-line); }
+.pp-node { fill:var(--g0); stroke:var(--fam); stroke-width:1.6; }
+.pp-node.on { fill:var(--fam); }
+.pp-num { fill:var(--fam-deep); font-weight:700; }
+.pp-num.on { fill:var(--g0); }
+.pp-name { fill:var(--ink); font-weight:700; }
+.pp-note { fill:var(--ink-faint); }
+
+/* 一句重话 */
+.verdict {
+  background:var(--fam-deep); color:var(--g0);
+  border-radius:var(--r-box); padding:18px 20px; margin:16px 0;
+}
+.verdict .v-k { font-size:14.5px; color:var(--fam-line); font-weight:600; letter-spacing:.06em; margin-bottom:5px; }
+.verdict p { margin:0; font-size:16.5px; line-height:1.75; color:var(--g0); }
+.verdict b { color:var(--g0); }
+
+/* 七步竖向流水线 */
+.flow { margin:6px 0 0; }
+.flow .step { position:relative; display:grid; grid-template-columns:40px minmax(0,1fr); gap:14px; padding-bottom:24px; }
+.flow .step:last-child { padding-bottom:0; }
+.flow .step::before { content:""; position:absolute; left:19px; top:44px; bottom:2px; width:1px; background:var(--fam-line); }
+.flow .step:last-child::before { content:none; }
+.s-no {
+  width:40px; height:40px; border-radius:50%; border:1.5px solid var(--fam);
+  background:var(--g0); color:var(--fam-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:15.5px; font-variant-numeric:tabular-nums;
+}
+.step.key .s-no { background:var(--fam); color:var(--g0); }
+.s-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:5px; }
+.s-body { min-width:0; }
+.s-head h3 { margin:0; font-size:18px; line-height:1.45; }
+.s-tag {
+  font-size:14.5px; color:var(--fam-deep); background:var(--fam-soft);
+  border:1px solid var(--fam-line); border-radius:999px; padding:0 9px; font-weight:600;
+}
+.s-body p { margin-bottom:10px; font-size:15.5px; line-height:1.7; }
+.s-body p:last-child { margin-bottom:0; }
+
+/* 紧凑要点 */
+.mini { list-style:none; padding:0; margin:8px 0 10px; }
+.mini li { position:relative; padding-left:16px; margin-bottom:5px; font-size:15.5px; line-height:1.68; color:var(--g8); }
+.mini li::before { content:""; position:absolute; left:0; top:.74em; width:5px; height:5px; border-radius:50%; background:var(--g4); }
+.mini li:last-child { margin-bottom:0; }
+
+/* 关键行 */
+.keyline {
+  border-left:3px solid var(--fam); background:var(--fam-soft);
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:10px 14px;
+  font-size:15px; line-height:1.68; color:var(--g8); margin:12px 0 0;
+}
+.keyline b { color:var(--fam-deep); }
+
+/* 提示词固定结构 */
+.formula { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:12px 0 14px; }
+.formula span {
+  background:var(--g0); border:1px solid var(--line); border-radius:6px;
+  padding:3px 9px; font-size:14.5px; color:var(--g8);
+}
+.formula .plus { border:none; background:none; padding:0 1px; color:var(--ink-faint); font-weight:700; }
+.formula .must { background:var(--fam-soft); border-color:var(--fam-line); color:var(--fam-deep); font-weight:600; }
+
+/* 调参台 */
+.param { margin:12px 0 0; border-top:1px solid var(--line); }
+.pr { display:grid; grid-template-columns:1fr; gap:3px 16px; padding:11px 0; border-bottom:1px solid var(--line); }
+@media (min-width:720px) {
+  .pr { grid-template-columns:148px 200px 1fr; align-items:baseline; }
+  .pr.wide { grid-template-columns:148px 1fr; }
+  .pr.wide .pr-v, .pr.wide .pr-d { grid-column:2; }
+}
+.pr-k { font-weight:700; color:var(--ink); font-size:15.5px; line-height:1.6; }
+.pr-v {
+  justify-self:start; max-width:100%; overflow-wrap:anywhere;
+  font-family:"SF Mono",Menlo,Consolas,monospace;
+  font-size:14.5px; color:var(--fam-deep); background:var(--fam-soft);
+  border:1px solid var(--fam-line); border-radius:5px; padding:0 7px;
+  font-variant-numeric:tabular-nums; line-height:1.7;
+}
+.pr-d { font-size:15px; color:var(--g8); line-height:1.65; }
+
+/* 警示条 */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px; line-height:1.7;
+}
+.warn b { color:#92400e; }
+
+/* 桑老哥适用 */
+.acts { list-style:none; padding:0; margin:12px 0 0; counter-reset:a; }
+.acts li {
+  counter-increment:a; position:relative; padding:13px 0 13px 40px;
+  border-top:1px solid var(--line); font-size:15.5px; line-height:1.72; color:var(--g8);
+}
+.acts li:first-child { border-top:none; }
+.acts li::before {
+  content:"0" counter(a); position:absolute; left:0; top:13px;
+  font-size:14.5px; font-weight:700; color:var(--fam-deep); font-variant-numeric:tabular-nums;
+}
+
+/* 工具分工在手机上堆叠：工具名 → 岗位 → 职责 */
+@media (max-width:767px) {
+  .tbl-crew { min-width:0; }
+  .tbl-crew thead { display:none; }
+  .tbl-crew, .tbl-crew tbody, .tbl-crew tr, .tbl-crew td { display:block; width:100%; }
+  .tbl-crew tr { padding:12px 0; border-bottom:1px solid var(--line); }
+  .tbl-crew td { padding:0; border-bottom:none; }
+  .tbl-crew td:nth-child(2) { margin-top:2px; color:var(--fam-deep); font-weight:600; font-size:14.5px; }
+  .tbl-crew td:nth-child(3) { margin-top:4px; font-size:15px; color:var(--g8); }
+  .tbl-crew tr:last-child { border-bottom:none; }
+}
+
+/* 翻车对照在手机上堆叠，别让人横着拖 */
+@media (max-width:767px) {
+  .tbl-flip { min-width:0; }
+  .tbl-flip thead { display:none; }
+  .tbl-flip, .tbl-flip tbody, .tbl-flip tr, .tbl-flip td { display:block; width:100%; }
+  .tbl-flip tr { padding:11px 0; border-bottom:1px solid var(--line); }
+  .tbl-flip td { padding:0; border-bottom:none; }
+  .tbl-flip td:first-child { font-weight:600; color:var(--ink); }
+  .tbl-flip td + td { margin-top:3px; font-size:14.5px; color:var(--ink-soft); }
+  .tbl-flip td + td::before { content:"→ "; color:var(--fam-deep); font-weight:700; }
+  .tbl-flip tr:last-child { border-bottom:none; }
+}
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+}
+/* 手机端给点睛位让出位置，别压住复核日期 */
+@media (max-width:767px) {
+  .entry-meta { padding-right:86px; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI短剧制作流水线</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 从一句话点子到成片</p>
+    <h1>AI短剧制作流水线</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-11-13</span>
+      <span>下次复核 2027-05-13</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象从墙后探出头，探头看整条 AI 剧组流水线从剧本、分镜一路走到成片交付"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      会用视频模型只是最简单的一步；真正决定成片的是——剧本绕开模型短板、分镜锁死人物、提示词按秒卡死、配音返工、后期用代码补齐。
+      <span class="q-src">—— 刘老板《一个人指挥一支 AI 剧组》</span>
+    </blockquote>
+    <p>作者用 Gemini 4 + Omni 1.2 做了一串古装监控视角的西游喜剧（《真假美猴王》《西梁国留婚》）。做完几支片，他最大的感受是：<strong>抽卡和写提示词反而是最简单的部分</strong>，难的是把"一句话点子 → 有反转的剧本 → 五六个镜头人物不串戏 → 中文不吞尾音 → 干净的代码后期"串成一条不断掉的线。</p>
+    <p>这条词条就是那条线：七步、四个工具，每个节点都有可复制的提示词。和《AI短剧剧本写法》分工——那条管纸上的剧本，这条管从纸到成片。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>剧组分工：四个工具，四个岗位</h2>
+    <p>不是四个软件那么简单，是四个岗位。缺一个，片子就停在"素材"阶段，进不了成片。</p>
+    <div class="tbl-scroll"><table class="tbl tbl-crew">
+      <thead><tr><th>工具</th><th>剧组角色</th><th>干什么</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Gemini 4（Antigravity）</strong></td><td>总导演兼程序员</td><td>扩剧本、拆分镜、写视频提示词；接管浏览器提交生成；调本地语音模型；写 Python/ffmpeg 后期</td></tr>
+        <tr><td><strong>Omni 1.2（Google Flow）</strong></td><td>摄影师兼演员</td><td>按分镜生成单段 <span class="num">8—12</span> 秒视频，演动作、表情和环境声</td></tr>
+        <tr><td><strong>VoxCPM2 + Whisper（本地）</strong></td><td>配音师兼质检员</td><td>VoxCPM2 按角色生成 <span class="num">48kHz</span> 干音；Whisper 做词级时间戳与错漏字检查</td></tr>
+        <tr><td><strong>Python + ffmpeg</strong></td><td>剪辑师兼后期</td><td>逐帧画监控 HUD/时间码/字幕，加混响、切镜音效、拼接成片</td></tr>
+      </tbody>
+    </table></div>
+    <p class="pipe-cap">四个工具各管一段，前后咬合，才凑成一条能出片的流水线。</p>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>七站总图 ·核心</h2>
+    <p>从左往右是一条不能倒着走的线：<strong>前 3 站在纸上完成，第 4 站才第一次开模型</strong>。顺序反了，后面每一站都在补前面的坑。</p>
+    <div class="pipe">
+      <svg viewBox="0 0 680 200" role="img" aria-label="AI短剧七步流水线：剧本、分镜、提示词、生成、配音、后期、复核，前三步在纸上，第四步生成，第五步配音，最后两步做后期与交付">
+        <g class="pp-band">
+          <rect x="24" y="16" width="252" height="24" rx="6"/>
+          <rect x="300" y="16" width="88" height="24" rx="6"/>
+          <rect x="396" y="16" width="88" height="24" rx="6"/>
+          <rect x="492" y="16" width="164" height="24" rx="6"/>
+        </g>
+        <g class="pp-band-t" text-anchor="middle" font-size="13.5">
+          <text x="150" y="33">A · 纸上（1—3）</text>
+          <text x="344" y="33">B · 生成</text>
+          <text x="440" y="33">C · 声音</text>
+          <text x="574" y="33">D · 后期与交付</text>
+        </g>
+        <defs>
+          <marker id="parrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path class="pp-arrow" d="M0,0 L10,5 L0,10 z"/>
+          </marker>
+        </defs>
+        <line class="pp-line" x1="32" y1="112" x2="654" y2="112" stroke-width="2" marker-end="url(#parrow)"/>
+        <g text-anchor="middle">
+          <circle class="pp-node" cx="60" cy="112" r="20"/>
+          <text class="pp-num" x="60" y="117" font-size="14.5">1</text>
+          <circle class="pp-node" cx="154" cy="112" r="20"/>
+          <text class="pp-num" x="154" y="117" font-size="14.5">2</text>
+          <circle class="pp-node" cx="248" cy="112" r="20"/>
+          <text class="pp-num" x="248" y="117" font-size="14.5">3</text>
+          <circle class="pp-node on" cx="344" cy="112" r="20"/>
+          <text class="pp-num on" x="344" y="117" font-size="14.5">4</text>
+          <circle class="pp-node" cx="440" cy="112" r="20"/>
+          <text class="pp-num" x="440" y="117" font-size="14.5">5</text>
+          <circle class="pp-node" cx="536" cy="112" r="20"/>
+          <text class="pp-num" x="536" y="117" font-size="14.5">6</text>
+          <circle class="pp-node" cx="632" cy="112" r="20"/>
+          <text class="pp-num" x="632" y="117" font-size="14.5">7</text>
+        </g>
+        <g text-anchor="middle">
+          <text class="pp-name" x="60" y="156" font-size="14.5">剧本</text>
+          <text class="pp-note" x="60" y="176" font-size="13.5">绕开短板</text>
+          <text class="pp-name" x="154" y="156" font-size="14.5">分镜</text>
+          <text class="pp-note" x="154" y="176" font-size="13.5">锁人物</text>
+          <text class="pp-name" x="248" y="156" font-size="14.5">提示词</text>
+          <text class="pp-note" x="248" y="176" font-size="13.5">按秒卡死</text>
+          <text class="pp-name" x="344" y="156" font-size="14.5">生成</text>
+          <text class="pp-note" x="344" y="176" font-size="13.5">自动提交</text>
+          <text class="pp-name" x="440" y="156" font-size="14.5">配音</text>
+          <text class="pp-note" x="440" y="176" font-size="13.5">治三病</text>
+          <text class="pp-name" x="536" y="156" font-size="14.5">后期</text>
+          <text class="pp-note" x="536" y="176" font-size="13.5">代码补画面</text>
+          <text class="pp-name" x="632" y="156" font-size="14.5">复核</text>
+          <text class="pp-note" x="632" y="176" font-size="13.5">换眼睛</text>
+        </g>
+      </svg>
+    </div>
+    <p class="pipe-cap">第 4 站标黑：到这里才第一次开视频模型。前三站没写死，抽卡抽得再多也救不回来。</p>
+    <div class="verdict">
+      <p class="v-k">作者做完几支片后的判断</p>
+      <p><b>抽卡和写提示词是最简单的部分。</b>真正难的是：一句话点子 → 有反转的剧本 → 五六个镜头人物不串戏 → 中文不吞尾音 → 干净的代码后期。</p>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>第 1—3 步：纸上先把坑填掉</h2>
+    <p>这三步不碰视频模型，但决定了后面所有素材的上限。核心只有一句：<strong>写剧本时就绕开模型的已知短板，别等生成失败再回头改。</strong></p>
+
+    <div class="flow">
+      <div class="step">
+        <div class="s-no">01</div>
+        <div class="s-body">
+          <div class="s-head"><h3>想法 → 剧本</h3><span class="s-tag">绕短板</span></div>
+          <p>四条实战原则：</p>
+          <ul class="mini">
+            <li><strong>学参考片的思路，不抄皮肉</strong>：拆它为什么好笑（比如"现代严肃画幅 + 古典荒诞人物"），换自己的故事</li>
+            <li><strong>选模型最稳的多机位片段式结构</strong>：五六个固定机位、每段 <span class="num">11—12</span> 秒，靠切镜连接，不硬接上一个镜头的动作，成功率翻倍</li>
+            <li><strong>每镜内部有"正经场面 → 动作穿帮 → 旁人点破"</strong>：嘴上冠冕堂皇，手脚干相反的事</li>
+            <li><strong>写剧本时就砍掉模型短板</strong>：多人打斗缠抱、吃喝吞咽、画面超过 3 人、两人同时抢话</li>
+          </ul>
+          <p class="keyline"><b>自检方式：</b>写完让 AI 换身份挑刺——挑剔的喜剧导演 + AI 视频技术总监；别问"写得好不好"，要它按这两个身份找毛病。</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="s-no">02</div>
+        <div class="s-body">
+          <div class="s-head"><h3>分镜：定机位、锁人物、调节奏</h3><span class="s-tag">锁人物</span></div>
+          <ul class="mini">
+            <li><strong>固定机位优先</strong>：天花板右上角 <span class="num">35</span> 度斜俯拍广角。运镜 + 多人精细动作同时交给模型，边缘容易扭曲</li>
+            <li><strong>人物一致性靠"外貌死描述"</strong>：每个角色约 <span class="num">30</span> 字（服装、头饰、长相），每镜提示词原封不动复制</li>
+            <li><strong>加一镜红外夜视黑白</strong>：五镜全暖光会审美疲劳，一暗一亮节奏就活了</li>
+          </ul>
+          <p class="keyline"><b>这一步的产出不是画得漂亮，是死参数：</b>哪台机器、谁、穿什么、站在哪，写成每镜都能原样复制的文本。</p>
+        </div>
+      </div>
+
+      <div class="step key">
+        <div class="s-no">03</div>
+        <div class="s-body">
+          <div class="s-head"><h3>视频提示词：按时间轴卡死</h3><span class="s-tag">按秒卡死</span></div>
+          <p>固定结构，六段拼起来，缺一段就多一个变量：</p>
+          <div class="formula" aria-label="视频提示词固定结构">
+            <span class="must">【画风与机位】</span><span class="plus">+</span>
+            <span class="must">【场景与人物外貌】</span><span class="plus">+</span>
+            <span>【0—4 秒】</span><span class="plus">+</span>
+            <span>【4—8 秒】</span><span class="plus">+</span>
+            <span>【8—12 秒】</span><span class="plus">+</span>
+            <span class="must">【声音与画面纯净度】</span>
+          </div>
+          <p>五条铁律，对应五个最常见的翻车：</p>
+          <div class="tbl-scroll"><table class="tbl tbl-flip">
+            <thead><tr><th>翻车</th><th>解法</th></tr></thead>
+            <tbody>
+              <tr><td>最后一句没说完就停</td><td>台词在第 <span class="num">10</span> 秒前说完，最后 <span class="num">1.5</span> 秒写"保持定格、不再开口"</td></tr>
+              <tr><td>长句中间被吞</td><td>单句 <span class="num">10—14</span> 字，多用句号感叹号断句</td></tr>
+              <tr><td>多音字读错（为师→喂师）</td><td>换同音单音字（"维师"），或留到本地重配</td></tr>
+              <tr><td>画面自己长出乱码字</td><td>结尾死命令：画面纯净、无文字、无字幕、无水印、无 UI</td></tr>
+              <tr><td>没说话的人嘴也在动</td><td>明确"仅 X 开口，其余人紧闭双唇只做表情"</td></tr>
+            </tbody>
+          </table></div>
+          <p class="keyline"><b>不是提示词技巧，是硬约束：</b>把模型的五个已知毛病提前写死；第 3 站写不进去的，第 5 站要靠重配、第 6 站要靠后期补。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>第 4 步：让浏览器自动生成</h2>
+    <div class="flow">
+      <div class="step key">
+        <div class="s-no">04</div>
+        <div class="s-body">
+          <div class="s-head"><h3>Gemini 4 接管 Flow，按单排队</h3><span class="s-tag">第一次开模型</span></div>
+          <p>给 Chrome 开远程调试端口（如 <code>9222</code>），让 Gemini 4 自己接管 Flow，不再手点：</p>
+          <ul class="mini">
+            <li>确认 <strong>Video / x1 / Omni 1.2 / 16:9</strong></li>
+            <li>按分镜顺序提交</li>
+            <li>下载 <code>raw_scene_01..05.mp4</code></li>
+            <li>重拍用 <code>_v2</code>、<code>_v3</code>，<strong>绝不覆盖旧文件</strong></li>
+          </ul>
+          <div class="warn"><b>文件名就是版本记录：</b>重拍一律加 <code>_v2</code>、<code>_v3</code>，绝不覆盖旧文件——旧版本留着可拼，小毛病也不用重抽。</div>
+          <p>三个省算力的经验：</p>
+          <ul class="mini">
+            <li>旧版本留着，剪的时候可拼</li>
+            <li>小毛病用代码裁帧，不重抽</li>
+            <li>首尾留白不够，用 ffmpeg <code>tpad</code> 克隆首帧 <span class="num">0.35</span> 秒、尾帧 <span class="num">0.45</span> 秒</li>
+          </ul>
+          <p class="keyline"><b>这一步只负责拿到干净素材：</b>不在这里追求成片，画面里的文字、边框、时间码全部留给第 6 站用代码画。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>第 5 步：本地重配音，治吞尾音和多音字</h2>
+    <p>视频模型直出中文常有三病：<strong>咬字发飘、多音字乱读、句尾断掉</strong>。中远景里人脸占比小，最干净的办法是保留动作和环境底噪，<strong>人声全部重配</strong>。</p>
+    <div class="flow">
+      <div class="step">
+        <div class="s-no">05</div>
+        <div class="s-body">
+          <div class="s-head"><h3>VoxCPM2 出干音 + Whisper 做质检</h3><span class="s-tag">四个关键细节</span></div>
+          <div class="param">
+            <div class="pr">
+              <div class="pr-k">音色与情绪</div>
+              <div class="pr-v">文字描述</div>
+              <div class="pr-d">每个角色写年龄、声线基底 + 随剧情变化的语气，用文字定音色，不靠选预设</div>
+            </div>
+            <div class="pr">
+              <div class="pr-k">句末防吞尾</div>
+              <div class="pr-v">……</div>
+              <div class="pr-d">句末加省略号，模型读完会自然留 <span class="num">0.25</span> 秒气息衰减</div>
+            </div>
+            <div class="pr">
+              <div class="pr-k">Whisper 第一遍</div>
+              <div class="pr-v">错漏字</div>
+              <div class="pr-d">先查错字、漏字，词级时间戳顺便留给字幕用</div>
+            </div>
+            <div class="pr">
+              <div class="pr-k">Whisper 第二遍</div>
+              <div class="pr-v">首尾边界</div>
+              <div class="pr-d">中文塞擦音（清/松/是）前有约 <span class="num">50ms</span> 闭塞段；裁静音要从最后一个发声帧往回留 <span class="num">0.26</span> 秒，否则整个字被切掉</div>
+            </div>
+            <div class="pr wide">
+              <div class="pr-k">空间混响</div>
+              <div class="pr-v">aecho=0.85:0.82:22|48:0.14|0.07</div>
+              <div class="pr-d">干音必须加早期反射，再垫低音量环境底噪，人才像在大殿里说话</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="s-no">续</div>
+        <div class="s-body">
+          <div class="s-head"><h3>口型对不上，按这个顺序收</h3><span class="s-tag">最后才动语速</span></div>
+          <ul class="mini">
+            <li>先取原视频张嘴/闭嘴真值，确认每个音的边界</li>
+            <li>把大于 <span class="num">0.25</span> 秒的句间空白收成 <span class="num">0.14</span> 秒换气口</li>
+            <li>仍长就用 <code>atempo</code> <span class="num">1.05—1.15</span> 微调；幅度守住，别把声音拉变形</li>
+          </ul>
+          <p class="keyline"><b>顺序不能反：</b>先保发声帧，再收空白，最后才压语速。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>第 6—7 步：代码后期，再换一双眼睛验收</h2>
+    <div class="flow">
+      <div class="step key">
+        <div class="s-no">06</div>
+        <div class="s-body">
+          <div class="s-head"><h3>代码做后期：文字、边框、时间码全交给 Python + ffmpeg</h3><span class="s-tag">代码补画面</span></div>
+          <p>凡是文字、边框、时间码，<strong>不要让视频模型画</strong>。模型画字会乱码，代码画字永远准：</p>
+          <ul class="mini">
+            <li>监控四角框、暗角、扫描线</li>
+            <li>左上角闪烁 <strong>REC</strong> + 机位名；右上角精确到帧的时间码</li>
+            <li>人物身上的搞笑识别框（"御弟哥哥 | 心率 148 | 状态：嘴硬手诚实"）</li>
+            <li>底部半透明字幕条，严格按 Whisper 起止时间显示"角色名：台词"</li>
+            <li>每两镜交界加 <span class="num">0.12</span> 秒切镜静电咔哒声</li>
+          </ul>
+          <p class="keyline"><b>同一条思路：</b>文字就是形状。与《代码画视频三路线》的 HUD/字幕/动效做法同源——能用代码画的，绝不交给模型猜。</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="s-no">07</div>
+        <div class="s-body">
+          <div class="s-head"><h3>全片复核 + 经验沉淀</h3><span class="s-tag">交付前最后一关</span></div>
+          <p>成片别马上发：你看了几十遍分镜，脑子会自动脑补。让 AI 当<strong>"第一次看片的挑剔观众"</strong>：</p>
+          <ul class="mini">
+            <li>每秒 <span class="num">2</span> 帧 + 切镜前后各 <span class="num">3</span> 帧抽图</li>
+            <li>查黑帧、崩脸、多手指；再查台词尾音、字幕对齐</li>
+            <li>问题分「必须修」和「可优化」，先修前者</li>
+            <li>修完把踩坑写成经验文档，存项目目录</li>
+          </ul>
+          <p class="keyline"><b>复核不是再看一遍：</b>是换一个没看过分镜的上下文，用抽帧当证据，把"感觉不对"落成具体帧号。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>主创 + 独立质检：四个角色</h2>
+    <p>开一个对话框从头聊到尾，上下文一长 AI 会忘规矩。作者把职责拆成四个，干活的和挑刺的分开：</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>角色</th><th>负责</th></tr></thead>
+      <tbody>
+        <tr><td><strong>总导演（主做）</strong></td><td>剧本、分镜、浏览器生成、配音、后期合成</td></tr>
+        <tr><td>剧本与画面审核</td><td>只挑刺不改文件：外貌词是否统一、是否只有一人说话、结尾是否留 <span class="num">1.5</span> 秒</td></tr>
+        <tr><td>声音与字幕质检</td><td>Whisper + 音频能量查吞尾、错字、语速、字幕对齐</td></tr>
+        <tr><td>需求备忘监督</td><td>把偏好列成《项目铁律清单》，每阶段对照，防遗忘</td></tr>
+      </tbody>
+    </table></div>
+    <p class="keyline"><b>为什么拆：</b>同一上下文里让主创自审，等于让写的人替自己打分；审核角色"只挑刺不改文件"，才不会把问题顺手抹平。</p>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p>做视频、做设计时直接照这四步搬，顺序别倒：</p>
+    <ol class="acts">
+      <li><strong>先锁剧本和分镜，再抽卡。</strong>一句话点子先按《AI短剧剧本写法》写成"五六个固定机位、每段 11—12 秒"的片段式结构；分镜写死天花板右上角 35 度斜俯拍广角，每个角色约 30 字的外貌描述逐镜复制。前两步没定，别开 Flow 抽卡——后面每一站都在补前面的坑。</li>
+      <li><strong>配音参数先在自己口播上试。</strong>句末加"……"、Whisper 两遍质检（塞擦音前 50ms、切点留 0.26 秒）、干音挂 aecho 混响，这三样能从短剧直接搬到好文视频和产品口播。</li>
+      <li><strong>文字类后期交给代码。</strong>监控 HUD、时间码、字幕条用 Python + ffmpeg 画，别让视频模型写一个字；文字就是形状，永远不会乱码（同《代码画视频三路线》）。</li>
+      <li><strong>验收换干净上下文。</strong>主创不自审，按《出稿评审分离法》让 AI 当第一次看片的观众；抽帧用每秒 2 帧 + 切镜前后各 3 帧，问题分「必须修/可优化」，修完记进项目文档。</li>
+    </ol>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>边界与前提</h2>
+    <ul>
+      <li>一手经验，未独立复现；工具版本和 Flow 界面会变，提示词需按当下调整</li>
+      <li>「免费 Google AI Pro」以账号资格和额度为准，别当固定成本</li>
+      <li>适合中远景/监控/固定机位；近景大特写、复杂口型仍不稳</li>
+      <li>本地配音流水线（VoxCPM2 + Whisper + 降噪）需要配置环境，不是装个 App 就能跑</li>
+      <li>方法会过期，导演思路（反差故事/分镜控节奏/代码补短板）不会</li>
+    </ul>
+  </section>
+
+  <section id="s11" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="AI短剧剧本写法.html"><span class="rel-t">AI短剧剧本写法</span><span class="rel-d">上游：一句话模板、短剧/短片两套写法、三轮自检</span></a>
+      <a href="视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">七层结构与 H3 低成本路线</span></a>
+      <a href="AI视频连贯性手法.html"><span class="rel-t">AI视频连贯性手法</span><span class="rel-d">镜头之间的状态怎么接</span></a>
+      <a href="代码画视频三路线.html"><span class="rel-t">代码画视频三路线</span><span class="rel-d">代码做 HUD/字幕/动效的同类思路</span></a>
+      <a href="../01-ai/出稿评审分离法.html"><span class="rel-t">出稿评审分离法</span><span class="rel-d">主创与质检分离的同构做法</span></a>
+      <a href="../01-ai/验证阶梯.html"><span class="rel-t">验证阶梯</span><span class="rel-d">抽帧、Whisper、字幕对齐都是可检查证据</span></a>
+    </div>
+  </section>
+
+  <section id="s12" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>刘老板《一个人指挥一支 AI 剧组：Gemini 4 + Omni 1.2 剧情短片制作保姆级教程》（X @leo_xiaolei，2026-11-11；WaytoAGI 飞书转载；一手做片，未独立复现）</li>
+      <li>文中案例片：《真假美猴王》《西梁国留婚》——古装监控视角西游喜剧</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI短剧制作流水线</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI短剧制作流水线.md（2026-11-13 建条）· 本页生成 2026-11-17</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">剧组分工：四个工具</a></li>
+    <li><a href="#s3">七站总图 ·核心</a></li>
+    <li><a href="#s4">第 1—3 步：纸上填坑</a></li>
+    <li><a href="#s5">第 4 步：自动生成</a></li>
+    <li><a href="#s6">第 5 步：本地重配音</a></li>
+    <li><a href="#s7">第 6—7 步：后期与复核</a></li>
+    <li><a href="#s8">主创 + 独立质检</a></li>
+    <li><a href="#s9">桑老哥适用</a></li>
+    <li><a href="#s10">边界与前提</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

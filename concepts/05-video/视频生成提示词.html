@@ -63,6 +63,13 @@
   padding:0 10px; margin-right:6px;
 }
 
+/* 短剧路线两栏要点 */
+.duo { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0; }
+@media (min-width:720px) { .duo { grid-template-columns:1fr 1fr; } }
+.duo .d-card { background:var(--g0); border:1px solid var(--line); border-radius:var(--r-el); padding:14px 16px; }
+.duo .d-t { font-weight:700; font-size:16px; color:var(--fam-deep); margin:0 0 6px; }
+.duo .d-b { font-size:15px; color:var(--g8); line-height:1.7; margin:0; }
+
 /* 动效兜底：敏感用户全关 */
 @media (prefers-reduced-motion:reduce) {
   .reveal { transition:none; opacity:1; transform:none; }
@@ -91,8 +98,9 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-03</span>
-      <span>下次复核 2026-11-18</span>
+      <span>下次复核 2026-12-14</span>
       <span>2026-09-18 审计并入 CINEDANCE</span>
+      <span>2026-11 并入 H3 与 Seedance 2.5 flash</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/01-微笑.webp" alt="IP形象微笑出镜，示意这是最上手的一篇：填空就能出片"></div>
   </div>
@@ -265,6 +273,119 @@ Camera zoom instead of dolly     <span class="c">— 避免镜头失控</span></
     </ol>
   </section>
 
+  <section id="s8b" class="reveal">
+    <h2>低成本短剧路线：H3 + RunningHub</h2>
+    <p>一条"角色会开口说话"的短剧路线，主打不是画质最强，而是<strong>单价极低</strong>。来源：Miller《用 Claude + H3 一个人拍 AI 短剧》（X @TuyetloanP81840，2026-11-08），一手实战教程。</p>
+
+    <h3>分工：先定演员，再开拍，最后剪</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>环节</th><th>工具</th><th>你</th></tr></thead>
+      <tbody>
+        <tr><td>编剧 / 分镜</td><td>Claude（没有就 DeepSeek）</td><td>制片人：定故事、挑镜头、拍板</td></tr>
+        <tr><td>美术：人物 / 场景 / 道具图</td><td>GPT Image / 即梦 / Nano Banana</td><td>—</td></tr>
+        <tr><td>摄影 + 演员</td><td>MiniMax H3（在 RunningHub 跑）</td><td>—</td></tr>
+        <tr><td>剪辑</td><td>剪映</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <p>前期只花文字和图片的钱，改一个字不要钱；到了视频这步，改一次就是抽一次卡的钱。能在这里解决的问题都在这里解决。</p>
+
+    <h3>成本账（2026-11 价格，平台会调价）</h3>
+    <div class="warn"><b>先看更正：</b>RunningHub 已于 2026-11-05 至 11-11 把 RH 币换成积分（1 元 = 100 积分）。下表 RH 币数字是切换前口径，已作废；实际价格以登录后平台页面为准。</div>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>方案</th><th>单价</th><th>5 分钟一集（50 段 × 抽 3 次 ≈ 900 秒）</th></tr></thead>
+      <tbody>
+        <tr><td>H3 640P（省钱档，约 100 RH 币/段）</td><td>约 0.2 元/段</td><td>约 <span class="num">27</span> 元</td></tr>
+        <tr><td>Seedance 2.5 火山方舟官方示例价</td><td>约 1.51 元/秒</td><td>约 <span class="num">1360</span> 元</td></tr>
+        <tr><td>Seedance 2.5 RunningHub 8 月限时价</td><td>约 0.49 元/秒</td><td>约 <span class="num">440</span> 元</td></tr>
+      </tbody>
+    </table></div>
+    <p>H3 是 MiniMax 2026-07-31 发布、08-03 开源的模型，单段最长 15 秒，<strong>画面、对白、音效一次生成</strong>。RunningHub 是在线跑 ComfyUI 工作流的平台，不用买显卡。</p>
+    <p>三档（同一段 10 秒）：省钱档只做一采 640P；精细档一采 + 超分放大（和原片叠一半）1920 宽；极致档二采 1920 宽。RunningHub 专业版曾限时 99 元/月、送 54000 RH 币（切换前口径，1 RH 币约 0.0018 元），按此算法够做约 18 分钟成片。</p>
+    <p><strong>未核实：</strong>作者文内自标「185 和 795 是不是含一采的总价」未确认，三档配图与正文金额有对调；预算以自己账号实测为准。</p>
+
+    <h3>前期资产：先"选角"，保证同一个人</h3>
+    <div class="duo">
+      <div class="d-card"><p class="d-t">人物图</p><p class="d-b">全身、正面、白底、双手垂下、不拿东西、不做表情；一定写鞋子（不写容易只出半身）；写清身高体型年龄脸型发型服装；成年角色约 8 头身。</p></div>
+      <div class="d-card"><p class="d-t">角色身份板</p><p class="d-b">正面 / 侧面 / 背面全身 + 坐蹲姿 + 3 个表情，同一张脸同一套衣服；H3 一次最多喂 9 张参考图，喂得越干净越像同一个人。</p></div>
+      <div class="d-card"><p class="d-t">场景图</p><p class="d-b">画面里不能有人；对话戏出正打、反打、能看清站位的大全景。</p></div>
+      <div class="d-card"><p class="d-t">道具图</p><p class="d-b">纯白底，写实际尺寸（"茶杯直径约 8 厘米"），不然视频里忽大忽小。</p></div>
+    </div>
+    <p><strong>一段视频只喂一张场景图</strong>——三张都喂，AI 反而不知道用哪张。</p>
+
+    <h3>视频提示词：一段只讲一件事</h3>
+    <p>5—15 秒只处理一个动作、一次情绪转折或一句关键台词。每段固定格式：</p>
+    <pre class="tpl"><code><span class="k">【素材段落 X】（X 秒）</span>
+<span class="k">【参考】</span>@图片1：某某的长相；@图片2：场景；@图片3：道具（@音频1：某某的声音）
+<span class="k">【站位】</span>谁在左、谁在右，门在哪边，摄影机在哪一侧，道具在谁手里
+<span class="k">【画面】</span>0—X 秒：景别、机位、固定还是推拉，人物表情和动作
+<span class="k">【声音】</span>某某说：「……」（语气）；音效：……
+<span class="k">【禁止】</span>不加剧本外的人，不出现现代物品，道具不换手、不消失，人物不瞬移，不改台词，不要字幕和音乐</code></pre>
+    <p>四条硬规则：① 先写站位再写动作（不写下一段人就瞬移）；② 动作接上一段结尾，不重复已完成动作；③ 台词一字不改；④ <strong>台词分三种写——"某某说" / "某某内心独白" / "某某画外音"</strong>，不分开 AI 会让角色张嘴把心里话念出来。</p>
+
+    <h3>声音一致性（三法，从简到繁）</h3>
+    <ol>
+      <li><strong>声音描述写死</strong>：每个角色一句固定描述（年龄 / 音色 / 语速），每段原样复制。</li>
+      <li><strong>剪第一段当参考</strong>：第一段满意后剪出干净人声，之后每段传进去，提示词写"@音频1 是某某的声音"（H3 最多 3 段音频参考）。</li>
+      <li><strong>数字人模式对口型</strong>：先配音，再传该句音频，H3 按声音生成画面和口型。</li>
+    </ol>
+
+    <h3>穿帮处理与 seed 坑</h3>
+    <p>处理顺序：<strong>能剪就剪 → 能补就补 → 最后才重抽</strong>。补：截出问题前一帧、改图后当首帧，让 H3 只补这一小段（首尾帧模式）；重抽前必须先改提示词或参考图，原样再抽大概率还是错。</p>
+    <p><strong>seed 坑：</strong>工作流 seed 固定。想抽卡换一版 → 改 seed 数字；只想微调提示词、别的不动 → 保持 seed。省钱习惯：先跑 5 秒预览满意再出长片；多个角色先逐个单独试。</p>
+
+    <h3>剪辑与光影</h3>
+    <ul>
+      <li><strong>对白戏</strong>：分离音频让声音不断，上层轨道盖 1—2 秒"听的人"反应镜头；反应镜头生成时顺手多跑几段 3—5 秒。</li>
+      <li><strong>声音三层</strong>：对白最大、音效其次、配乐最小；配乐统一在剪映加，不让 AI 每段配。</li>
+      <li><strong>字幕</strong>：AI 画字易乱码，提示词里禁字幕，剪映里识别后用文稿匹配逐句对。</li>
+      <li><strong>光影三条</strong>：光写具体（方向 / 软硬 / 冷暖 / 明暗，别只写"电影感"）；一场戏锁一套光；一个镜头写全六样（运镜 / 景别 / 角度 / 主体 / 运动 / 光影）。</li>
+      <li><strong>合规</strong>：2025-09-01 起《人工智能生成合成内容标识办法》要求发布 AI 生成内容主动声明并标注。</li>
+    </ul>
+
+    <h3>九个高频坑（速查）</h3>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th>坑</th><th>药</th></tr></thead>
+      <tbody>
+        <tr><td>每段角色不一样</td><td>角色身份板每段都喂</td></tr>
+        <tr><td>场景一会儿一个样</td><td>一段只喂一张场景图</td></tr>
+        <tr><td>人物瞬移 / 左右反</td><td>先写站位再写动作</td></tr>
+        <tr><td>角色张嘴念心里话</td><td>台词分说 / 独白 / 画外音</td></tr>
+        <tr><td>声音一会儿一个样</td><td>描述写死或剪音频参考</td></tr>
+        <tr><td>长台词画面发死</td><td>盖听的人反应镜头</td></tr>
+        <tr><td>抽卡都差不多</td><td>seed 固定，改数字</td></tr>
+        <tr><td>道具忽大忽小</td><td>出图和提示词都写尺寸</td></tr>
+        <tr><td>没电影感</td><td>光写具体、一镜写全六样</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s8c" class="reveal">
+    <h2>Seedance 2.5 flash：日更档与 7 类模板</h2>
+    <p>同一代模型分两个梯队：<strong>2.5 摸天花板，flash 跑日更</strong>。来源：冷逸《全球第二的视频模型来了！我一口气实测了 13 条片子》（公众号·沃垠AI 2026-11-13；WaytoAGI 转载，lark-cli 抓取）。价格按火山方舟 API 刊例价；质量对比为主观。</p>
+    <div class="tbl-scroll"><table class="tbl">
+      <thead><tr><th></th><th>Seedance 2.5</th><th>Seedance 2.5 flash</th></tr></thead>
+      <tbody>
+        <tr><td>定位</td><td>摸天花板：高清晰度、多角色、多参考</td><td>日更 / 跟热点 / 投放测试</td></tr>
+        <tr><td>分辨率</td><td>更高</td><td>只到 720P</td></tr>
+        <tr><td>参考素材上限</td><td>30 图 / 10 视频 / 10 音频</td><td>10 图 / 5 视频 / 5 音频</td></tr>
+        <tr><td>15 秒 720P 价格</td><td><span class="num">22.65</span> 元</td><td><span class="num">14.85</span> 元</td></tr>
+        <tr><td>速度</td><td>基准</td><td>快约一倍</td></tr>
+      </tbody>
+    </table></div>
+    <p>13 条、203 秒实测：flash 约 <span class="num">201</span> 元，全走 2.5 约 <span class="num">307</span> 元。真人哭戏两条相似度作者给到约 85%，flash 主要是人声情绪略弱。</p>
+    <h3>7 类可直接复用的模板</h3>
+    <ol>
+      <li><strong>街头纪实</strong>：同一骨架换「人 + 街」两张参考图，就能切上海话 / 粤语 / 英式英语——出海账号可抄</li>
+      <li><strong>30 秒长镜头</strong>：时间冻结 + 360° 环绕 + 世界倒放，考的是液柱与人物不穿帮</li>
+      <li><strong>真人哭戏</strong>：回头笑 → 眼眶红 → 捂脸哭，一层层往上压</li>
+      <li><strong>古装短剧</strong>：角色锁定 + 空间关系 + 分镜时间轴 + 负向约束（猫不离肩 / 脸不互换）</li>
+      <li><strong>沉浸式 ASMR</strong>：画面与声音分轨写，先见闪电后闻雷，远近层次分明</li>
+      <li><strong>萌宠连更</strong>：同一剧本只换风格行，写实 / 水墨 / 皮克斯 3D 三版</li>
+      <li><strong>电商广告</strong>：同一产品跑多场景（露营 / 烧烤摊），产品标签全程不变，用来测投放素材</li>
+    </ol>
+    <blockquote>要清晰度和多角色，上 2.5；要日更和测素材，flash 足够。</blockquote>
+  </section>
+
   <section id="s9" class="reveal">
     <h2>桑老哥适用</h2>
     <ul>
@@ -293,6 +414,9 @@ Camera zoom instead of dolly     <span class="c">— 避免镜头失控</span></
       <a href="../08-ecomm/生图提示词排查表.html"><span class="rel-t">生图提示词排查表</span><span class="rel-d">生图侧的排查镜子：语义溢出在这查</span></a>
       <a href="../05-video/剪辑思维七手法.html"><span class="rel-t">剪辑思维七手法</span><span class="rel-d">生成时留匹配剪辑接口</span></a>
       <a href="../05-video/动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">复杂动作的提示词升级件</span></a>
+      <a href="../05-video/AI视频连贯性手法.html"><span class="rel-t">AI视频连贯性手法</span><span class="rel-d">单段提示词管镜头内，连贯性管镜头之间的状态怎么接</span></a>
+      <a href="../05-video/AI短剧剧本写法.html"><span class="rel-t">AI短剧剧本写法</span><span class="rel-d">上游：剧本阶段先定形态、分集、钩子与台词（2026-11-10 关联）</span></a>
+      <a href="../05-video/AI短剧制作流水线.html"><span class="rel-t">AI短剧制作流水线</span><span class="rel-d">全流程：多机位固定镜头、时间轴提示词、浏览器自动生成、本地重配音（2026-11-13 关联）</span></a>
     </div>
     <p><span style="color:var(--ink-faint)">Seedance（模型使用指南，未单独建条）</span></p>
   </section>
@@ -304,12 +428,14 @@ Camera zoom instead of dolly     <span class="c">— 避免镜头失控</span></
       <li>尹小歪《95分钟AI电影，把每个镜头的提示词都公开了》+ Higgsfield《Hell Grind》官方 CINEDANCE SKILL.md（电影级 11 维骨架，2026-09-18 审计并入）</li>
       <li>阿文 Seedance 实测（四件套与四条反常识）</li>
       <li>@bozhou_ai（Remotion + Claude Design 路线实战经验）</li>
+      <li>Miller《用 Claude + H3 一个人拍 AI 短剧：一手实战教程》（X @TuyetloanP81840，2026-11-08；含 RunningHub H3 工作流、成本核算与全流程提示词）</li>
+      <li>冷逸《全球第二的视频模型来了！我一口气实测了 13 条片子》（公众号·沃垠AI 2026-11-13，WaytoAGI 转载 CeIgwWickirFupkJg1qcBst5nwh；Seedance 2.5 flash 双梯队与 7 类模板，2026-11-16 并入；价格按火山方舟 API 刊例价，质量对比为主观）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI视频家族 · 视频生成提示词</p>
-    <p>词条源：concepts(概念库)/AI视频制作/视频生成提示词.md（2026-08-03 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI视频制作/视频生成提示词.md（2026-08-03 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -325,6 +451,8 @@ Camera zoom instead of dolly     <span class="c">— 避免镜头失控</span></
     <li><a href="#s6">CINEDANCE 11 维</a></li>
     <li><a href="#s7">与生图的区别</a></li>
     <li><a href="#s8">实战经验</a></li>
+    <li><a href="#s8b">低成本短剧路线</a></li>
+    <li><a href="#s8c">Seedance 2.5 flash</a></li>
     <li><a href="#s9">桑老哥适用</a></li>
     <li><a href="#s10">前提与局限</a></li>
     <li><a href="#s11">关联词条</a></li>

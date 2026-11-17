@@ -30,6 +30,14 @@
 }
 .formula small { display:block; margin-top:4px; font-size:14.5px; font-weight:400; color:var(--ink-soft); }
 
+/* 目录骨架 */
+.tree {
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:14.5px; line-height:1.8;
+  background:var(--g2); border:1px solid var(--line); border-left:4px solid var(--fam);
+  border-radius:0 var(--r-box) var(--r-box) 0; padding:14px 18px; margin:14px 0;
+  color:var(--g8); overflow-x:auto; white-space:pre;
+}
+
 /* 5 抽屉卡墙（柜面式） */
 .drawers { display:grid; grid-template-columns:1fr; gap:14px; margin:18px 0; }
 @media (min-width:640px) { .drawers { grid-template-columns:1fr 1fr; } }
@@ -105,7 +113,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-04</span>
-      <span>下次复核 2026-11-18</span>
+      <span>下次复核 2026-12-21</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-探墙.webp" alt="IP形象探出头张望，示意把信息摆对位置才能一眼找到关键"></div>
   </div>
@@ -206,6 +214,26 @@
   </section>
 
   <section id="s8" class="reveal">
+    <h2>项目文件夹层：让 AI 找得到、分得清</h2>
+    <blockquote>来源：一文《ai 时代，项目的文件夹到底该怎么样？》（公众号·持续微调 2026-11-16，WaytoAGI 飞书转载，lark-cli 抓取）。一手实践，无数据。</blockquote>
+    <p><strong>先分清两样东西</strong>：对话记录存「讨论过什么」，项目文档存「当前结论是什么、为什么、下一步做什么」。<strong>只在对话里说过的决定，换新对话 AI 最容易漏</strong>——「上周放弃方案 A，因为成本高」不进文档，它下次还会推荐 A。</p>
+    <p><strong>三个要求</strong>：分类清晰（知道去哪找）· 结论明确（知道哪个有效）· 过程可追溯（知道为什么这么定）。</p>
+    <p><strong>目录骨架</strong>（可按项目增减）：</p>
+    <pre class="tree">项目/
+├── README.md          # 项目说明书：做什么/进展/已定结论/待解决/资料在哪
+├── CLAUDE.md          # AI 工作规则：先读 README、优先当前方案、改结论同步、删除先问
+├── 01_背景与目标/
+├── 02_需求与方案/
+├── 03_数据与测试/
+├── 04_决策与进展/     # 重要决策及原因
+├── 05_交付成果/
+└── 99_历史归档/       # 废弃版本，防止 AI 把旧信息当新结论</pre>
+    <p><strong>README 五问</strong>：这个项目做什么？现在到哪了？已确定哪些结论？还有什么没解决？详细资料分别在哪？</p>
+    <p><strong>整理时的安全顺序</strong>：先分析现有文件 → 设计目录 → 建 README/CLAUDE.md → <strong>先出迁移方案给人确认</strong>，不直接删除或覆盖原始文件。</p>
+    <div class="warn"><b>桑老哥现状：</b>CLAUDE.md ＋ index.md ＋ 学习账本 ＋ <code>_日志归档/</code> 已是同构；可补的是「决策与进展」单独记（为什么删／为什么并），以及把「当前有效 vs 已归档」标得更显眼。</div>
+  </section>
+
+  <section id="s9" class="reveal">
     <h2>轻量 vs 重度</h2>
     <div class="tbl-scroll"><table class="tbl">
       <thead><tr><th>场景</th><th>摆法</th></tr></thead>
@@ -216,7 +244,7 @@
     </table></div>
   </section>
 
-  <section id="s9" class="reveal">
+  <section id="s10" class="reveal">
     <h2>前提与局限</h2>
     <ul>
       <li>首尾效应是统计规律，不是绝对物理定律</li>
@@ -228,7 +256,7 @@
     </ul>
   </section>
 
-  <section id="s10" class="reveal">
+  <section id="s11" class="reveal">
     <h2>关联词条</h2>
     <div class="rel-grid">
       <a href="../01-ai/上下文工程.html"><span class="rel-t">上下文工程</span><span class="rel-d">家族门厅：管总</span></a>
@@ -239,17 +267,18 @@
     </div>
   </section>
 
-  <section id="s11" class="reveal">
+  <section id="s12" class="reveal">
     <h2>来源</h2>
     <ul class="src-list">
       <li>桑老哥 AGI 共学笔记 · 地基四件套 · 2026-07-14</li>
       <li>桑老哥深学笔记：5 抽屉结构＋资料/指令分离 · 2026-08-04</li>
+      <li>一文《ai 时代，项目的文件夹到底该怎么样？》（公众号·持续微调 2026-11-16，WaytoAGI 飞书转载，lark-cli 抓取；项目文件夹层，2026-11-16 并入）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · 上下文组织原则</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/上下文组织原则.md（2026-08-04 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/上下文组织原则.md（2026-08-04 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -264,10 +293,11 @@
     <li><a href="#s5">5 个抽屉 ·核心</a></li>
     <li><a href="#s6">资料 ≠ 指令</a></li>
     <li><a href="#s7">组织四目标</a></li>
-    <li><a href="#s8">轻量 vs 重度</a></li>
-    <li><a href="#s9">前提与局限</a></li>
-    <li><a href="#s10">关联词条</a></li>
-    <li><a href="#s11">来源</a></li>
+    <li><a href="#s8">项目文件夹层</a></li>
+    <li><a href="#s9">轻量 vs 重度</a></li>
+    <li><a href="#s10">前提与局限</a></li>
+    <li><a href="#s11">关联词条</a></li>
+    <li><a href="#s12">来源</a></li>
   </ul>
 </aside>
 </div>

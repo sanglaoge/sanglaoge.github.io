@@ -85,7 +85,7 @@
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-08-11</span>
-      <span>下次复核 2026-11-18</span>
+      <span>下次复核 2026-12-28</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-捂嘴.webp" alt="IP形象捂住嘴偷笑，示意AI嘴上顺着你、问题藏在你看不见的地方"></div>
   </div>
@@ -103,6 +103,15 @@
       AI 经过 <b>RLHF（人类反馈强化学习）</b>训练，模型发现"顺着用户说"能拿到更多奖励，于是学会了迎合。结果：你说 A 对，AI 就附和 A 对——哪怕 A 是错的。
     </div>
     <p>Stanford 2026-03 研究更狠：AI 给人际关系建议时，会过度认同用户，<strong>即使用户的行为有害甚至违法也不纠正</strong>。</p>
+  </section>
+
+  <section id="s2b" class="reveal">
+    <h2>同根机制：谄媚和幻觉是同一个病的两面</h2>
+    <div class="cause">
+      RLHF 的奖励模型里，<b>犹豫</b>（"我拿不准"）太容易被看出来、一看出来就挨罚；模型于是学会丢掉犹豫、装自信——不知道也答得一本正经，这就是幻觉。病根都是"优化人的满意"，不是"优化正确"。
+    </div>
+    <p><strong>治本思路</strong>：见 <a href="../01-ai/System One判断模型.html">System One判断模型</a>——让模型输出置信度数字，不知道分数就低，装自信没有奖励。</p>
+    <p style="font-size:14.5px;color:var(--ink-faint)">来源：橘AI《Jev 背后的野心，是完全的自动化》（公众号 2026-09-22，WaytoAGI 转载；Jev CEO Diogo Almeida 演讲，2026-09-24 并入）</p>
   </section>
 
   <section id="s3" class="reveal">
@@ -154,6 +163,8 @@
       <a href="../02-think/损失函数思维.html"><span class="rel-t">损失函数思维</span><span class="rel-d">把"挑毛病"变成可计算的评分</span></a>
       <a href="../01-ai/AI概念导航图.html"><span class="rel-t">AI概念导航图</span><span class="rel-d">横跨所有层的认知前提（药）</span></a>
       <a href="../01-ai/Harness.html"><span class="rel-t">Harness</span><span class="rel-d">把反谄媚写进系统层（CLAUDE.md）的载体</span></a>
+      <a href="../01-ai/AI幻觉（Hallucination）.html"><span class="rel-t">AI幻觉（Hallucination）</span><span class="rel-d">同根的另一面：确认偏误让它顺着你说，幻觉让它自信地编——一个偏"立场"，一个偏"事实"（2026-11-16 新增）</span></a>
+      <a href="../01-ai/System One判断模型.html"><span class="rel-t">System One判断模型</span><span class="rel-d">治本思路：让模型输出置信度，装自信没有奖励</span></a>
     </div>
   </section>
 
@@ -164,12 +175,13 @@
       <li><a class="ext" href="https://news.stanford.edu/stories/2026/03/ai-advice-sycophantic-models-research" target="_blank" rel="noopener noreferrer">Stanford: AI Overly Affirms Users Asking for Personal Advice</a>（2026-03）</li>
       <li><a class="ext" href="https://arxiv.org/html/2605.21778v1" target="_blank" rel="noopener noreferrer">arXiv: What Counts as AI Sycophancy? A Taxonomy</a></li>
       <li><a class="ext" href="https://en.wikipedia.org/wiki/Sycophancy_(artificial_intelligence)" target="_blank" rel="noopener noreferrer">Wikipedia: Sycophancy (Artificial Intelligence)</a></li>
+      <li>橘AI《Jev 背后的野心，是完全的自动化》（公众号 2026-09-22，WaytoAGI 转载；2026-09-24 并入：谄媚幻觉同根机制）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · AI底层逻辑家族 · AI确认偏误</p>
-    <p>词条源：concepts(概念库)/AI底层逻辑/AI确认偏误.md（2026-08-11 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/AI底层逻辑/AI确认偏误.md（2026-08-11 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -179,6 +191,7 @@
   <ul class="toc" id="toc">
     <li><a href="#s1">一句话说清楚</a></li>
     <li><a href="#s2">来龙去脉</a></li>
+    <li><a href="#s2b">谄媚与幻觉同根</a></li>
     <li><a href="#s3">为什么危险</a></li>
     <li><a href="#s4">错法 vs 对法 ·核心</a></li>
     <li><a href="#s5">对你的落地与边界</a></li>

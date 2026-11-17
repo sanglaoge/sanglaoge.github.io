@@ -128,7 +128,7 @@ details.dr .dr-body p, details.dr .dr-body li { font-size:15px; color:var(--g8);
     <div class="entry-meta">
       <span class="st st-ok">稳定</span>
       <span>建条 2026-09-04</span>
-      <span>下次复核 2026-12-04</span>
+      <span>下次复核 2027-02-28</span>
     </div>
     <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP形象举着牌子，示意任务合同举在手上——给AI看是提示词，给人看是验收表"></div>
   </div>
@@ -286,12 +286,39 @@ details.dr .dr-body p, details.dr .dr-body li { font-size:15px; color:var(--g8);
     </div>
   </section>
 
+  <section id="s7b" class="reveal">
+    <h2>常驻 / 定时 Agent：五组件与「无更新」回执（2026-11-16 并入）</h2>
+    <p><strong>来源：</strong>公众号转载《1个从Claude常驻Agent学到的省token新技巧》（2026-11，无作者署名；方法源自 Anthropic 常驻智能体指南）。效果数字为作者自报：空跑 <span class="num">18→3</span> 次/周、省 <span class="num">45%</span>、Bot 用量 <span class="num">75%→30%</span>、总用量降 <span class="num">55%</span>、<span class="num">$30</span> 档够用、年省 <span class="num">$840</span>；单 Bot 跑 <span class="num">3</span> 天。</p>
+    <p>常驻 Agent 要配齐五个组件。Claude Code 的 Skill 天然有；Routine 没有代码层，就得写进提示词 / 记忆：</p>
+    <div class="dict">
+      <div class="term"><span class="t-name">事件收件箱</span><span class="t-eq">接活 + 去重</span><p class="t-d">同一件事多条消息只处理一次</p></div>
+      <div class="term"><span class="t-name">定时器</span><span class="t-eq">何时醒</span><p class="t-d">10 分钟后回看 / 按定时任务</p></div>
+      <div class="term"><span class="t-name">记忆</span><span class="t-eq">汇报过什么</span><p class="t-d">同一版本不重复推</p></div>
+      <div class="term"><span class="t-name">权限</span><span class="t-eq">醒来能做啥</span><p class="t-d">只读 / 读写</p></div>
+      <div class="term"><span class="t-name">发件箱</span><span class="t-eq">输出节奏</span><p class="t-d">只回一条 / 攒到早上并成一条</p></div>
+    </div>
+    <h3>一段可抄的回执提示词</h3>
+    <blockquote>
+      每次我发来一批任务，按任务 ID 和内容版本去重。仅时间戳变化不算更新。来源打不开标待核实，不反复重试。无实质变化时只回「无更新」三个字，不要生成总结、分析或建议来证明自己在工作。有变化的每条写任务本体、新增事实、对任务的影响。已汇报的同一版本不重复推送。不要自行扩充来源或创建新任务。
+    </blockquote>
+    <h3>两个反模式</h3>
+    <div class="dict">
+      <div class="term"><span class="t-name">空转</span><p class="t-d">没变化也从头跑 <span class="num">30</span> 分钟，再写一份「暂无重大更新」的长报告</p></div>
+      <div class="term"><span class="t-name">加戏</span><p class="t-d">只想给 UI 加滑动特效，Agent 建议再加多语言、定时更新，一次次接受变成屎山——用「不要自行扩充来源或创建新任务」管住</p></div>
+    </div>
+    <blockquote>
+      给定时任务三字回执 + 去重键，空转就停了。
+      <span class="q-src">定时任务烧 token 不是因为任务重，是因为没有「无变化」这个出口。</span>
+    </blockquote>
+  </section>
+
   <section id="s8" class="reveal">
     <h2>桑老哥直用</h2>
     <ul>
       <li><strong>派活模板</strong>：给铁柱/爱马仕派任务时套任务合同三段——尤其「停止条件」和「输出格式」两段</li>
       <li><strong>判断该不该自动化</strong>：四问里第四问（错了能不能拦/撤回）过不了就保持人工</li>
       <li><strong>自主程度分级</strong>直接对齐红黄绿灯：绿 = 自动干、黄 = 干完汇报、红 = 等人点头</li>
+      <li><strong>定时/监控类任务</strong>（闪回、对账、素材监控）：加去重键 + 「无更新」三字回执，别让它没变化也写长报告</li>
     </ul>
   </section>
 
@@ -320,12 +347,13 @@ details.dr .dr-body p, details.dr .dr-body li { font-size:15px; color:var(--g8);
     <h2>来源</h2>
     <ul class="src-list">
       <li>govin.eth（G哥）《Agent 从入门到精通》（X @goan999999，2026-09-03，WaytoAGI 飞书转载 V0PFwTkDSiHEJukIODSc2aM5nPg）</li>
+      <li>《1个从Claude常驻Agent学到的省token新技巧》（公众号转载 2026-11，无作者署名，WaytoAGI 飞书 VAUFw9b7nitOo0khL0ScndPWnwd；方法源自 Anthropic 常驻智能体指南，2026-11-16 并入；效果数字为作者自报）</li>
     </ul>
   </section>
 
   <footer class="page-foot">
     <p><span class="foot-brand">概念馆</span> · Agent自动化家族 · Agent工程规范</p>
-    <p>词条源：concepts(概念库)/Agent与自动化/Agent工程规范.md（2026-09-04 建条）· 本页生成 2026-09-22</p>
+    <p>词条源：concepts(概念库)/Agent与自动化/Agent工程规范.md（2026-09-04 建条）· 本页生成 2026-11-17</p>
   </footer>
 
 </main>
@@ -340,6 +368,7 @@ details.dr .dr-body p, details.dr .dr-body li { font-size:15px; color:var(--g8);
     <li><a href="#s5">三道闸</a></li>
     <li><a href="#s6">任务合同 ·核心</a></li>
     <li><a href="#s7">六大误区</a></li>
+    <li><a href="#s7b">常驻/定时 Agent 五组件</a></li>
     <li><a href="#s8">桑老哥直用</a></li>
     <li><a href="#s9">前提与局限</a></li>
     <li><a href="#s10">关联词条</a></li>

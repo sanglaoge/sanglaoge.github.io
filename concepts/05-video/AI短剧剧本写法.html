@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI短剧剧本写法 · 概念馆</title>
+<link rel="icon" type="image/webp" href="../assets/ip/01-微笑.webp">
+<link rel="stylesheet" href="../assets/base.css">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ---- 家族皮肤：AI视频 · 影像黑（剧本纸与黑场，正文走灰阶墨色） ---- */
+:root {
+  --fam:#27272a; --fam-deep:#18181b; --fam-soft:#f4f4f5; --fam-line:#d4d4d8;
+}
+
+/* ---- 页面专属：对比布局（一个底子，两条线） ---- */
+
+/* 共用底子横带 */
+.base-band {
+  background:var(--g0); border:1px solid var(--fam-line);
+  border-left:4px solid var(--fam); border-radius:0 var(--r-box) var(--r-box) 0;
+  padding:15px 18px; margin:18px 0;
+}
+.base-band .bb-k {
+  font-size:14.5px; font-weight:700; letter-spacing:.08em;
+  color:var(--fam-deep); margin-bottom:4px;
+}
+.base-band .bb-t {
+  font-family:var(--font-head); font-size:19px; line-height:1.6;
+  font-weight:700; color:var(--ink);
+}
+.base-band .bb-t span { white-space:nowrap; }
+
+/* 底子四卡 */
+.base-grid { display:grid; grid-template-columns:1fr; gap:12px; margin:16px 0 22px; }
+@media (min-width:720px) { .base-grid { grid-template-columns:1fr 1fr; } }
+.bc {
+  background:var(--g0); border:1px solid var(--line);
+  border-radius:var(--r-box); padding:15px 17px; box-shadow:var(--sh-1);
+}
+.bc-no {
+  font-size:14.5px; font-weight:700; letter-spacing:.1em;
+  color:var(--ink-faint); font-variant-numeric:tabular-nums;
+}
+.bc-t { font-size:17.5px; font-weight:700; color:var(--ink); margin:2px 0 7px; }
+.bc-b { font-size:15px; line-height:1.75; color:var(--g8); margin:0 0 8px; }
+.bc-x {
+  font-size:14.5px; line-height:1.7; color:var(--ink-faint);
+  border-top:1px dashed var(--line); padding-top:8px; margin:0;
+}
+
+/* 分岔示意图（纯文字 + 细线，不画整页流程） */
+.fork { margin:6px 0 10px; }
+.fork-base {
+  background:var(--fam-soft); border:1px solid var(--fam-line);
+  border-radius:var(--r-box); padding:14px 18px;
+}
+.fork-base .fb-k {
+  font-size:14.5px; font-weight:700; letter-spacing:.06em;
+  color:var(--fam-deep); margin-bottom:4px;
+}
+.fork-base .fb-t {
+  font-family:var(--font-head); font-size:19px; font-weight:700;
+  line-height:1.55; color:var(--ink);
+}
+.fork-base .fb-n { font-size:14.5px; color:var(--ink-soft); margin-top:6px; line-height:1.7; }
+.fork-join {
+  position:relative; text-align:center; padding:8px 0;
+  font-size:14.5px; color:var(--ink-faint); margin:0;
+}
+.fork-join::before, .fork-join::after {
+  content:""; position:absolute; top:50%; width:calc(50% - 130px);
+  height:1px; background:var(--fam-line);
+}
+.fork-join::before { left:0; }
+.fork-join::after { right:0; }
+.fork-pair { display:grid; grid-template-columns:1fr; gap:22px; }
+@media (min-width:760px) { .fork-pair { grid-template-columns:1fr 1fr; gap:28px; } }
+.fork-col { border-top:3px solid var(--fam); padding-top:12px; }
+.fk-k { font-size:14.5px; font-weight:700; letter-spacing:.08em; color:var(--ink-faint); }
+.fk-form {
+  font-family:var(--font-head); font-size:clamp(24px,3.4vw,30px);
+  font-weight:700; line-height:1.3; color:var(--ink);
+}
+.fk-len { font-size:14.5px; color:var(--fam-deep); font-weight:600; margin:2px 0 8px; }
+.fork-col ul { padding-left:1.25em; margin:0; }
+.fork-col li { font-size:15px; line-height:1.75; color:var(--g8); margin-bottom:4px; }
+
+/* 清单面板 */
+.panel {
+  background:var(--g0); border:1px solid var(--line);
+  border-radius:var(--r-box); padding:15px 18px; margin:16px 0;
+}
+.panel-k {
+  font-size:14.5px; font-weight:700; letter-spacing:.06em;
+  color:var(--fam-deep); margin-bottom:8px;
+}
+.chips { display:flex; flex-wrap:wrap; gap:7px 8px; }
+.chips span {
+  font-size:14.5px; line-height:1.5; padding:2px 10px;
+  border:1px solid var(--line); border-radius:999px;
+  background:var(--g1); color:var(--g8);
+}
+
+/* 手机端给点睛位让位，避免压住复核日期 */
+@media (max-width:767px) {
+  .entry-meta { padding-right:86px; }
+}
+
+/* 对比表在手机上直接读，不横滚 */
+@media (max-width:767px) {
+  .tbl.fit { min-width:0; }
+  .tbl.fit th, .tbl.fit td { padding:8px 9px; }
+  .tbl.fit { font-size:15px; }
+  .tbl.cmp th:first-child, .tbl.cmp td:first-child {
+    width:78px; white-space:nowrap; padding-right:4px;
+  }
+  .tbl.two th:first-child, .tbl.two td:first-child {
+    width:84px; white-space:nowrap; padding-right:4px;
+  }
+}
+.nw { white-space:nowrap; }
+
+/* 剧本格式块 */
+.script {
+  font-family:"SF Mono",Menlo,Consolas,monospace;
+  font-size:15px; line-height:1.85; color:var(--g8);
+  background:var(--g2); border:1px solid var(--line);
+  border-left:3px solid var(--fam);
+  border-radius:0 var(--r-el) var(--r-el) 0;
+  padding:12px 16px; margin:14px 0;
+  white-space:pre-wrap; word-break:break-word;
+}
+
+/* 因果链 */
+.chain {
+  background:var(--fam-soft); border-radius:var(--r-el);
+  padding:10px 14px; margin:8px 0 0;
+  font-size:15px; line-height:1.8; color:var(--g8);
+}
+
+/* 节奏三数 */
+.rhythm { display:grid; grid-template-columns:1fr; gap:10px; margin:14px 0; }
+@media (min-width:680px) { .rhythm { grid-template-columns:repeat(3,1fr); } }
+.rhythm div { border-left:2px solid var(--fam-line); padding-left:12px; }
+.rhythm b {
+  display:block; font-family:var(--font-head); font-size:24px;
+  line-height:1.3; color:var(--fam-deep); font-variant-numeric:tabular-nums;
+}
+.rhythm span { font-size:14.5px; color:var(--ink-soft); }
+
+/* 第 1 集五模块 */
+.beats { margin:14px 0; border-bottom:1px solid var(--line); }
+.beat {
+  display:grid; grid-template-columns:1fr; gap:1px;
+  padding:10px 0; border-top:1px solid var(--line);
+}
+@media (min-width:640px) {
+  .beat { grid-template-columns:108px 1fr; gap:14px; align-items:baseline; }
+}
+.bt-time {
+  font-size:14.5px; font-weight:700; color:var(--fam-deep);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.bt-t { font-size:15.5px; font-weight:700; color:var(--ink); }
+.bt-t span { font-weight:400; color:var(--ink-soft); }
+.bt-b { font-size:15px; line-height:1.75; color:var(--g8); margin:1px 0 0; }
+
+/* 硬约束三数 */
+.hard3 {
+  display:grid; grid-template-columns:1fr; gap:12px;
+  margin:14px 0; padding:14px 16px;
+  background:var(--g0); border:1px solid var(--line); border-radius:var(--r-box);
+}
+@media (min-width:680px) { .hard3 { grid-template-columns:repeat(3,1fr); } }
+.h-item { border-left:2px solid var(--fam); padding-left:12px; }
+.h-n {
+  display:block; font-family:var(--font-head); font-size:25px;
+  font-weight:700; line-height:1.25; color:var(--fam-deep);
+}
+.h-l { font-size:14.5px; line-height:1.65; color:var(--ink-soft); }
+
+/* 双栏小面板 */
+.duo { display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0; }
+@media (min-width:760px) { .duo { grid-template-columns:1fr 1fr; } }
+.mini {
+  background:var(--g0); border:1px solid var(--line);
+  border-radius:var(--r-box); padding:16px 18px;
+}
+.mini-t {
+  font-family:var(--font-head); font-size:18px; font-weight:700;
+  color:var(--ink); margin-bottom:8px;
+}
+.mini-note { font-size:14.5px; line-height:1.75; color:var(--ink-faint); margin-top:9px; }
+.mini-note b { color:var(--ink-soft); }
+
+.end6 { display:grid; grid-template-columns:1fr 1fr; gap:5px 12px; }
+.end6 span { font-size:15px; color:var(--g8); }
+.end6 .en {
+  font-size:14.5px; color:var(--ink-faint);
+  font-variant-numeric:tabular-nums; margin-right:5px;
+}
+
+/* 台词四原则 */
+.prin { list-style:none; padding:0; margin:12px 0; }
+.prin li {
+  display:grid; grid-template-columns:28px 1fr; gap:10px;
+  padding:9px 0; border-top:1px solid var(--line);
+  font-size:15px; line-height:1.75; color:var(--g8);
+}
+.prin li:first-child { border-top:2px solid var(--fam); }
+.p-no {
+  font-size:14.5px; font-weight:700; color:var(--ink-faint);
+  font-variant-numeric:tabular-nums; padding-top:1px;
+}
+
+/* 打脸三件套 */
+.tri { display:grid; grid-template-columns:1fr; gap:10px; margin:12px 0; }
+@media (min-width:700px) { .tri { grid-template-columns:repeat(3,1fr); } }
+.tri div { border-top:2px solid var(--fam); padding-top:8px; }
+.tri b { display:block; font-size:15.5px; color:var(--ink); }
+.tri span { font-size:14.5px; line-height:1.65; color:var(--ink-faint); }
+
+/* 主角三层 */
+.layer {
+  display:grid; grid-template-columns:1fr; gap:1px;
+  padding:9px 0; border-top:1px solid var(--line);
+}
+@media (min-width:600px) { .layer { grid-template-columns:104px 1fr; gap:12px; } }
+.layer b { font-size:15.5px; color:var(--fam-deep); }
+.layer span { font-size:15px; line-height:1.7; color:var(--g8); }
+
+/* 七步结构 */
+.seven { list-style:none; padding:0; margin:12px 0; counter-reset:sv; }
+.seven li {
+  position:relative; padding:7px 0 7px 34px;
+  border-top:1px solid var(--line);
+  font-size:15.5px; line-height:1.7; color:var(--g8);
+}
+.seven li::before {
+  counter-increment:sv; content:counter(sv,decimal-leading-zero);
+  position:absolute; left:0; top:8px;
+  font-size:14.5px; font-weight:700; color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;
+}
+.seven b { color:var(--ink); }
+
+/* 视听母题三次 */
+.motif { display:grid; grid-template-columns:1fr; gap:6px; margin-top:6px; }
+.motif div { display:grid; grid-template-columns:64px 1fr; gap:8px; }
+.motif b { font-size:14.5px; color:var(--fam-deep); white-space:nowrap; }
+.motif span { font-size:14.5px; line-height:1.65; color:var(--g8); }
+
+/* 三轮审 */
+.rev3 { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+@media (min-width:760px) { .rev3 { grid-template-columns:repeat(3,1fr); } }
+.rev3 .card { padding:15px 17px; }
+.rev3 h3 { margin:0 0 6px; font-size:16.5px; color:var(--fam-deep); }
+.rev3 ul { padding-left:1.2em; margin:0; }
+.rev3 li { font-size:14.5px; line-height:1.7; color:var(--g8); margin-bottom:4px; }
+
+/* 短片五问 */
+.q5 { padding-left:1.35em; margin:10px 0; }
+.q5 li { font-size:15px; line-height:1.75; color:var(--g8); margin-bottom:5px; }
+
+/* 警示条（只标“坑”，全页两处） */
+.warn {
+  border-left:4px solid #d97706; background:#fffbeb;
+  border-radius:0 var(--r-el) var(--r-el) 0; padding:13px 16px; margin:16px 0;
+  color:#78350f; font-size:15.5px; line-height:1.8;
+}
+.warn b { color:#92400e; }
+
+/* 桑老哥动作清单 */
+.do { padding-left:1.35em; margin:12px 0; }
+.do li { font-size:15.5px; line-height:1.85; color:var(--g8); margin-bottom:14px; }
+.do b { color:var(--ink); }
+
+/* 分叉判断收束 */
+.kicker-quote {
+  font-family:var(--font-head); font-size:clamp(19px,3vw,23px);
+  line-height:1.55; color:var(--ink);
+  border-left:3px solid var(--fam); padding-left:15px;
+  margin:18px 0 6px;
+}
+.kicker-src { font-size:14.5px; color:var(--ink-faint); padding-left:15px; }
+
+/* 动效兜底：敏感用户全关 */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { transition:none; opacity:1; transform:none; }
+  * { scroll-behavior:auto; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+
+<header class="site-head">
+  <nav class="crumbs" aria-label="面包屑">
+    <a href="/">首页</a><span class="sep">›</span>
+    <a href="/concepts/">概念馆</a><span class="sep">›</span>
+    <span class="fam-pill">AI视频</span><span class="sep">›</span>
+    <span class="here">AI短剧剧本写法</span>
+  <span class="gnav-mini"><a href="/videos/">放映厅</a><a href="/html/">文稿室</a><a href="/#about">关于</a></span></nav>
+</header>
+
+<div class="wrap">
+<div class="layout">
+<main class="main-col" id="top">
+
+  <div class="entry-head">
+    <p class="kicker">AI视频 · 把改字成本留在开拍前</p>
+    <h1>AI短剧剧本写法</h1>
+    <div class="entry-meta">
+      <span class="st st-ok">稳定</span>
+      <span>建条 2026-11-11</span>
+      <span>下次复核 2027-05-10</span>
+    </div>
+    <div class="ip-spot"><img src="../assets/ip/姿势-举牌.webp" alt="IP 形象举牌宣告，示意开拍前先把剧本定下来，别把改字的成本留到视频抽卡阶段"></div>
+  </div>
+
+  <section id="s1" class="reveal">
+    <h2>一句话说清楚</h2>
+    <blockquote>
+      剧本阶段改字不要钱，视频阶段改一次就是抽一次卡——所以开拍前把「拍得出来、讲得通、有人看」三件事在纸上解决掉。
+      <span class="q-src">—— Miller《如何写一个 AI 短剧剧本：短剧和电影短片两套写法》</span>
+    </blockquote>
+    <p>真人拍戏，演员会自己补：剧本写「她很委屈」，演员知道眼眶该红到什么程度。<strong>AI 不会补</strong>——少写一句它自己猜，猜错就重跑一段。所以 AI 短剧比真人剧更吃剧本。</p>
+    <div class="warn">
+      <b>两个最常见的坑，都是剧本里改几个字、视频阶段重抽一次卡：</b>人物整场坐着，剧本却写「坐回椅子」，出片可能凭空站起再坐下；一句 18 字台词只留 3 秒，语速被压快、口型对不上。
+    </div>
+    <p>作者 Miller 用这套方法写了一部 <span class="num">69</span> 集短剧和一部 <span class="num">4</span> 分钟短片。本篇是「一个人拍 AI 短剧」系列第 2 篇，讲的是短剧与短片两套写法——底子共用，分岔在形态。</p>
+  </section>
+
+  <section id="s2" class="reveal">
+    <h2>一个底子，两套写法</h2>
+    <p>几十集短剧和单部短片不是两套语言。先把同一个底子做扎实，再判断该往哪条线走——<strong>形态选错，后面全白写</strong>。</p>
+
+    <div class="base-band">
+      <p class="bb-k">两套写法共用</p>
+      <p class="bb-t"><span>一句话立题</span> · <span>人物三样</span> · <span>但是 / 所以</span> · <span>拍得出来的格式</span></p>
+    </div>
+
+    <div class="base-grid">
+      <div class="bc">
+        <p class="bc-no">01</p>
+        <p class="bc-t">先用一句话判断值不值得写</p>
+        <p class="bc-b">套这个句式：一个【弱势身份】的人，因为【意外或金手指】，必须【具体目标】，否则【会失去什么】。压不成一句话，或要先解释三句设定才听懂，就换题——竖屏观众的耐心只有前几秒。</p>
+        <p class="bc-x">压完再答 6 问：适合什么类型 / 观众跟谁代入 / 最强矛盾 / 最大爽点或打动点 / 靠什么秘密或反转让人看下去 / 走哪条路线。最后判断：连续短剧还是单部短片。</p>
+      </div>
+      <div class="bc">
+        <p class="bc-no">02</p>
+        <p class="bc-t">人物：缺陷、视觉标记、别叫苏念念</p>
+        <p class="bc-b">每个主要人物写清三样：人物小传、关系定位、人物弧光。小传最易漏两项——<strong>缺陷</strong>（没有缺陷就不可信，也没有改变空间）、<strong>一到两个视觉标记</strong>（疤、外套、习惯动作；观众靠它记人，AI 出图靠它保持一致）。</p>
+        <p class="bc-x">名字避雷：让 AI 起名，女主常叫苏念念、林晚，男主常叫陆景琛、顾北辰。主要角色避开这些高频名，姓氏互不相同。</p>
+      </div>
+      <div class="bc">
+        <p class="bc-no">03</p>
+        <p class="bc-t">用「但是 / 所以」检查因果</p>
+        <p class="bc-b">相邻两件事只能填「然后」＝流水账；能填「但是」＝有阻力；能填「所以」＝人物被逼着走下一步。</p>
+        <p class="chain">想要 A，但是 B 挡住；所以选 C，但是 C 惹出更大的 D；所以只能 E，但是 E 让秘密 F 暴露；所以最后必须 G。</p>
+      </div>
+      <div class="bc">
+        <p class="bc-no">04</p>
+        <p class="bc-t">写成 AI 拍得出来的格式</p>
+        <p class="bc-b">只写镜头拍得到的：不写「她很难过」，写「她低头，手指攥紧衣角」。</p>
+        <p class="bc-b">台词分三种标：<strong>当面说 / 内心独白 / 画外音</strong>——标错口型就穿帮。</p>
+        <p class="bc-b">道具写清大小，同框的人越少越好。</p>
+      </div>
+    </div>
+
+    <div class="fork">
+      <div class="fork-base">
+        <p class="fb-k">底子做完，才分岔</p>
+        <p class="fb-t">连续追，还是一次收完？</p>
+        <p class="fb-n">形态不是喜好问题：短剧要开头抓人、每集卡住人；短片要完整结局 + 余味。拿短片硬拉成 69 集，或把短剧第 1 集当短片，都会散。</p>
+      </div>
+      <p class="fork-join">两条线，各写各的节奏</p>
+      <div class="fork-pair">
+        <article class="fork-col">
+          <p class="fk-k">连续短剧</p>
+          <p class="fk-form">几十集</p>
+          <p class="fk-len">每集 1—3 分钟 · 作者样本 69 集</p>
+          <ul>
+            <li>开头要抓人，每集要卡住人</li>
+            <li>核心是冲突与爽点兑现</li>
+            <li>结尾停在最高点，不写「第 N 集完」</li>
+          </ul>
+        </article>
+        <article class="fork-col">
+          <p class="fk-k">单部短片</p>
+          <p class="fk-form">一集</p>
+          <p class="fk-len">5—8 分钟（可到 15）· 作者那部 4 分钟</p>
+          <ul>
+            <li>要完整结局 + 余味，不是只开钩子</li>
+            <li>核心是缺席、潜台词与情绪完成</li>
+            <li>结尾必须收，首尾呼应</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3" class="reveal">
+    <h2>短剧线：几十集怎么排</h2>
+    <p>几十集的核心不是「会写剧本」，是「会排」：总盘、分集、第 1 集、钩子与卡点、台词，一层层往下钉。</p>
+
+    <h3>1. 先出故事总盘，停下确认，再分集</h3>
+    <div class="panel">
+      <p class="panel-k">总盘要写清这些，确认完再动第 1 集</p>
+      <div class="chips">
+        <span>一句话卖点</span><span>类型</span><span>核心钩子</span><span>主角</span><span>反派</span>
+        <span>主线冲突</span><span>关系线</span><span>最大秘密或底牌</span><span>核心爽点</span>
+        <span>主要反转路径</span><span>前中后期怎么升级</span><span>结局方向</span><span>为什么适合竖屏</span>
+      </div>
+    </div>
+    <p><strong>总盘确认后再拆分集。</strong>一上来写第 1 集，写到第 10 集发现主线撑不住，就全白写。</p>
+
+    <h3>2. 分集：一集一行</h3>
+    <div class="script">第 N 集：开头接什么｜核心事件｜爽点（已经发生的结果）｜结尾卡点（类型）</div>
+    <p>一眼看不出这集最爽的点和钩子在哪，就是还没想清楚。节奏三条：</p>
+    <div class="rhythm">
+      <div><b>1</b><span>每集只推进一个核心冲突</span></div>
+      <div><b>3—5</b><span>每 3—5 集一次明显升级</span></div>
+      <div><b>8—15</b><span>每 8—15 集一次大反转</span></div>
+    </div>
+    <p><strong>爽点必须是已经发生的结果。</strong>「反派愣住了」「你给我等着」都不算兑现——观众要看到结果落地。</p>
+
+    <h3>3. 第 1 集五模块（90 秒为例，按时长缩放）</h3>
+    <div class="beats">
+      <div class="beat">
+        <p class="bt-time">0—3 秒</p>
+        <div><p class="bt-t">暴击</p><p class="bt-b">最强冲突画面或台词，零铺垫。</p></div>
+      </div>
+      <div class="beat">
+        <p class="bt-time">3—30 秒</p>
+        <div><p class="bt-t">主角是谁、有多惨</p><p class="bt-b">只交代跟眼下有关的背景。</p></div>
+      </div>
+      <div class="beat">
+        <p class="bt-time">30—70 秒</p>
+        <div><p class="bt-t">冲突爆发</p><p class="bt-b">反派当众压迫，冲突公开、具体。</p></div>
+      </div>
+      <div class="beat">
+        <p class="bt-time">70—85 秒</p>
+        <div><p class="bt-t">翻盘信号</p><p class="bt-b">底牌露一角，不揭开。</p></div>
+      </div>
+      <div class="beat">
+        <p class="bt-time">最后 5 秒</p>
+        <div><p class="bt-t">卡点</p><p class="bt-b">停在最高点，配一句钩子台词。</p></div>
+      </div>
+    </div>
+    <div class="hard3">
+      <div class="h-item"><span class="h-n num">≤3</span><span class="h-l">核心人物</span></div>
+      <div class="h-item"><span class="h-n num">≤2</span><span class="h-l">新专有名词</span></div>
+      <div class="h-item"><span class="h-n num">0</span><span class="h-l">世界观、家族恩怨、人物前史，一律不进第 1 集</span></div>
+    </div>
+    <p>模块定了，<strong>先排秒级节拍表再写台词</strong>：5—8 行，每行「几秒到几秒：观众看到什么、情绪往哪走」。台词按<strong>每秒 4—5 字</strong>估，写完掐表读一遍。</p>
+    <div class="chain">一句 18 字台词 ÷ 每秒 4—5 字 ≈ 3.6—4.5 秒。只给 3 秒，语速就会被压快、口型对不上——这正是开头那个坑。</div>
+
+    <h3>4. 五种开头钩子 / 六种结尾卡点</h3>
+    <div class="duo">
+      <div class="mini">
+        <p class="mini-t">五种开头钩子</p>
+        <div class="chips">
+          <span>冲突</span><span>悬念</span><span>危机</span><span>身份</span><span>反差</span>
+        </div>
+        <p class="mini-note">第 2 集起最省力的是<strong>接住上一集卡点</strong>——上集停在门被踹开，这集第一秒就是门后的人。</p>
+      </div>
+      <div class="mini">
+        <p class="mini-t">六种结尾卡点</p>
+        <div class="end6">
+          <span><span class="en">01</span>生死悬念</span>
+          <span><span class="en">02</span>信息揭一半</span>
+          <span><span class="en">03</span>反击第一下</span>
+          <span><span class="en">04</span>更大危机</span>
+          <span><span class="en">05</span>身份逼近</span>
+          <span><span class="en">06</span>选择题</span>
+        </div>
+        <p class="mini-note"><strong>连续三集不用同一种卡点</strong>；结尾不写「第 N 集完」，靠卡点本身停住。</p>
+      </div>
+    </div>
+
+    <h3>5. 台词：直给，每句都有姿态</h3>
+    <p>AI 台词最大的问题不是不通顺，是<strong>换谁说都一样</strong>。四条原则：</p>
+    <ol class="prin">
+      <li><span class="p-no">01</span><span><b>每句要有用</b>：推进、激化，或揭信息。</span></li>
+      <li><span class="p-no">02</span><span><b>每句带姿态</b>：谁在压，谁在忍。</span></li>
+      <li><span class="p-no">03</span><span><b>情绪留梯度</b>：强情绪只给关系翻转的时刻。</span></li>
+      <li><span class="p-no">04</span><span><b>删网文腔</b>：比喻、省略号抒情、旁白提问、一句一顿，都删。</span></li>
+    </ol>
+    <p>打脸戏三件套，少一样爽感减半：</p>
+    <div class="tri">
+      <div><b>反派先占理或占势</b><span>没有压迫，后面的翻转不成立。</span></div>
+      <div><b>主角拿硬证据或硬实力推翻</b><span>靠真东西，不靠嘴。</span></div>
+      <div><b>旁观者态度反转</b><span>从看热闹到不敢看——最容易漏的一件。</span></div>
+    </div>
+  </section>
+
+  <section id="s4" class="reveal">
+    <h2>短片线：一集怎么收</h2>
+    <p>短片不是短剧的第 1 集。它要在一集里把戏演完，所以「收」比「钩」更重要。</p>
+
+    <h3>1. 把短剧的东西转成短片</h3>
+    <div class="tbl-scroll"><table class="tbl fit two">
+      <thead><tr><th>短剧元素</th><th>短片里怎么变</th></tr></thead>
+      <tbody>
+        <tr><td>黄金 3 秒</td><td>开场 30 秒内给强画面、强处境或强反差</td></tr>
+        <tr><td>打脸</td><td>主角公开夺回解释权、尊严或真相</td></tr>
+        <tr><td>连续反转</td><td>只要 2—3 次真正改变意思的反转（事实 / 关系 / 价值）</td></tr>
+        <tr><td>付费钩子</td><td>每场内部留未完成，但<strong>结尾必须收</strong></td></tr>
+        <tr><td>爽点</td><td>也可以是被看见、被原谅、一次荒诞胜利、一个残酷醒悟</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn">
+      <b>最常见错误：把短片写成短剧第 1 集，只开钩子不收。</b>短片观众要的是这一集里的完整情绪，不是下一集的预告。
+    </div>
+
+    <h3>2. 开发句式</h3>
+    <div class="script">一个处在具体困境中的人，想要完成一个看似简单的目标；
+但是这个目标会逼出他最不愿面对的秘密或欲望；
+所以他必须在一个有趣的「戏剧游戏」中做选择；
+最终他赢得或失去了表层目标，却暴露或重建了真正的自己。</div>
+    <p>题材太像「社会观察」会闷——给它加一个任务、一条规则、一个倒计时或一个骗局。</p>
+
+    <h3>3. 主角三层 / 对手不一定是坏人</h3>
+    <div class="layer"><b>表层目标</b><span>今天必须完成什么。</span></div>
+    <div class="layer"><b>隐藏需求</b><span>真正想被谁承认、原谅或看见。</span></div>
+    <div class="layer"><b>错误信念</b><span>用来保护自己的错误逻辑。</span></div>
+    <p style="margin-top:12px;">对手可以是人、制度、关系里谁都不说破的规矩，甚至主角自己的羞耻。让对手至少在一个层面说得通，主角赢了才有分量。配角要少，每个有用处。</p>
+
+    <h3>4. 七步结构</h3>
+    <ol class="seven">
+      <li><b>开场图像</b>：异常画面或尴尬处境。</li>
+      <li><b>目标确立</b>：他今天要什么。</li>
+      <li><b>第一阻碍</b>：暴露弱点。</li>
+      <li><b>中点反转</b>：理解变了。</li>
+      <li><b>逼迫选择</b>：老办法失效。</li>
+      <li><b>高潮行动</b>：回不了头。</li>
+      <li><b>余味图像</b>：用画面回答主题，与开场呼应。</li>
+    </ol>
+    <p>10—15 分钟的短片，在中间加关系拉扯、一段安静的戏和第二次反转。</p>
+
+    <h3>5. 每场一个「戏剧游戏」+ 一个视听母题</h3>
+    <div class="duo">
+      <div class="mini">
+        <p class="mini-t">戏剧游戏：这场戏必须遵守的局面</p>
+        <div class="chips">
+          <span>必须维持体面的饭局</span><span>不能停的直播</span>
+          <span>必须当众签的文件</span><span>不断换手的小物件</span>
+        </div>
+      </div>
+      <div class="mini">
+        <p class="mini-t">视听母题：一样东西 / 一个空间 / 一种声音 / 一个动作</p>
+        <div class="motif">
+          <div><b>第一次</b><span>是生活细节。</span></div>
+          <div><b>第二次</b><span>带出压力。</span></div>
+          <div><b>第三次</b><span>成为结尾的答案。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>6. 台词用潜台词</h3>
+    <p>短剧直给，短片藏一层：<strong>表面聊一件事，底下争的是另一件</strong>。让权力在对话里换手，用停顿、物件、动作代替解释，不让人物把主题说出来。</p>
+  </section>
+
+  <section id="s5" class="reveal">
+    <h2>一眼判断：短剧还是短片</h2>
+    <div class="tbl-scroll"><table class="tbl fit cmp">
+      <thead><tr><th>看什么</th><th>短剧</th><th>短片</th></tr></thead>
+      <tbody>
+        <tr><td>形态</td><td>几十集，每集 <span class="nw">1—3 分钟</span></td><td>一集 <span class="nw">5—8 分钟</span>（可到 15）</td></tr>
+        <tr><td>要什么</td><td>开头抓人、每集卡住人</td><td>完整结局 + 余味</td></tr>
+        <tr><td>核心</td><td>冲突与爽点兑现</td><td>缺席、潜台词与情绪完成</td></tr>
+        <tr><td>结尾</td><td>停在最高点</td><td>必须收，首尾呼应</td></tr>
+        <tr><td>同一故事</td><td>停在门开那一秒</td><td>把这场戏演完</td></tr>
+      </tbody>
+    </table></div>
+    <p class="kicker-quote">同一个故事：短剧停在门开那一秒，短片把门后的戏演完。</p>
+    <p class="kicker-src">判断顺序反过来就会写歪：先定「我要连续追」还是「我要一次收完」，再决定第 1 集怎么开、结尾怎么落。</p>
+  </section>
+
+  <section id="s6" class="reveal">
+    <h2>写完怎么审：三轮 + 两张清单</h2>
+    <div class="rev3">
+      <div class="card">
+        <h3>编剧轮</h3>
+        <ul>
+          <li>人物要什么、用什么办法、付出什么</li>
+          <li>转折有没有依据</li>
+          <li>结尾兑现了什么</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>场记轮</h3>
+        <ul>
+          <li>角色知道的事有没有来源</li>
+          <li>时间、位置、方向接不接得上</li>
+          <li>道具、衣服有没有变</li>
+          <li>台词时间够不够（每秒 4—5 字）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>制作轮</h3>
+        <ul>
+          <li>AI 容易穿帮的东西：多人同时动、手部接触、打斗</li>
+          <li>画面里要看清的字</li>
+          <li>水和火</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>再对照 13 个常见毛病</h3>
+    <div class="panel">
+      <div class="chips">
+        <span>慢热开场</span><span>爽点没落地</span><span>剧情循环</span><span>万能兜底</span>
+        <span>金手指白给</span><span>反派降智</span><span>主角零代价</span><span>单集闭环</span>
+        <span>标签拼接</span><span>网文腔</span><span>水词</span><span>电视剧化</span>
+        <span>卡点一个模板</span>
+      </div>
+    </div>
+
+    <h3>短片另看 5 条</h3>
+    <ol class="q5">
+      <li>第一个画面让人好奇吗？</li>
+      <li>目标拍得出来吗？</li>
+      <li>有没有压力锅（一个必须遵守的局面）？</li>
+      <li>反转是否只有 2—3 次？</li>
+      <li>结尾有没有完成情绪？</li>
+    </ol>
+  </section>
+
+  <section id="s7" class="reveal">
+    <h2>桑老哥适用</h2>
+    <p>你做跨境电商设计、AI 短剧是兴趣内容。这套写法不用等拍短剧才用——口播稿、产品短视频系列、甚至一条种草视频，都能直接拆出动作。</p>
+    <ol class="do">
+      <li><b>先压一句话，再决定做哪种。</b>拿手头一个故事，套「弱势身份 + 意外或金手指 + 具体目标 + 会失去什么」。压不成一句、要解释三句才听懂，就换题；压成了再答 6 问、选短剧或短片。<strong>动作：30 分钟内写完，先不进生成。</strong></li>
+      <li><b>把「可拍性」当发布前检查。</b>口播稿也照做：只写镜头拍得到的、台词标清当面说 / 内心独白 / 画外音、道具写尺寸、每秒 4—5 字掐表读。先改字，省的是后面反复生成的钱。<strong>动作：拿一条旧脚本，用这四项各改一遍。</strong></li>
+      <li><b>用「每集一行」管系列内容。</b>哪怕做的是产品短视频系列，也写「开头接什么｜核心事件｜爽点（已发生的结果）｜结尾卡点」。一眼看不出爽点和钩子，就是还没想清楚。系列节奏可借「每 3—5 集升级、每 8—15 集大反转」的思路——但这是短剧经验值，不是铁律。</li>
+      <li><b>想做兴趣短剧，先只做第 1 集。</b>总盘 13 项写完停下确认；第 1 集按 0—3 / 3—30 / 30—70 / 70—85 / 最后 5 秒排五模块，核心人物 ≤3、新名词 ≤2、前史不进；台词按 4—5 字/秒估时。<strong>动作：先读一遍，不急着生成；过了三轮审再进 H3。</strong></li>
+    </ol>
+    <p>原文还有 7 段可复制提示词和 3 个剧本技能，在原文与 <code>miliagent.com/library</code>；装技能另议。</p>
+  </section>
+
+  <section id="s8" class="reveal">
+    <h2>前提与局限</h2>
+    <ul>
+      <li>转载版，未逐字比对 X 原帖；方法是作者一手实践，但样本只有 1 部短剧 + 1 部短片。</li>
+      <li>平台节奏和观众口味会变，「3 秒暴击 / 每 8—15 集大反转」是短剧经验值，不是铁律。</li>
+      <li>剧本好只解决「讲得通」，不解决「演得好」：动作、镜头、连贯性仍要看动作导演与连贯性手法。</li>
+      <li>RunningHub 已于 2026-11-05—11 把 RH 币换成积分（1 元 = 100 积分），视频生成提示词里旧的 RH 币成本数字作废，以平台为准。</li>
+    </ul>
+  </section>
+
+  <section id="s9" class="reveal">
+    <h2>关联词条</h2>
+    <div class="rel-grid">
+      <a href="视频生成提示词.html"><span class="rel-t">视频生成提示词</span><span class="rel-d">剧本定稿后进 H3 / RunningHub 出片，成本账以那边为准</span></a>
+      <a href="AI视频连贯性手法.html"><span class="rel-t">AI视频连贯性手法</span><span class="rel-d">剧本阶段先解决「拍得出来」，减少镜头间返工</span></a>
+      <a href="动作导演六层法.html"><span class="rel-t">动作导演六层法</span><span class="rel-d">台词与动作拆分，管镜头内的表演</span></a>
+      <a href="剪辑思维七手法.html"><span class="rel-t">剪辑思维七手法</span><span class="rel-d">钩子与卡点落地到剪辑</span></a>
+      <a href="../01-ai/目标契约与五个闸门.html"><span class="rel-t">目标契约与五个闸门</span><span class="rel-d">总盘、分集、节拍表都要停下来确认，别一口气跑完</span></a>
+      <a href="AI短剧制作流水线.html"><span class="rel-t">AI短剧制作流水线</span><span class="rel-d">下游：从剧本到成片的七步流水线、配音与代码后期</span></a>
+    </div>
+  </section>
+
+  <section id="s10" class="reveal">
+    <h2>来源</h2>
+    <ul class="src-list">
+      <li>Miller《如何写一个 AI 短剧剧本：短剧和电影短片两套写法，附我在用的剧本技能》（X @TuyetloanP81840，2026-11-10；WaytoAGI 飞书转载）</li>
+      <li>同作者第 1 篇《用 Claude + H3 一个人拍 AI 短剧》（2026-11-08，工具链与成本已并入「视频生成提示词」）</li>
+    </ul>
+  </section>
+
+  <footer class="page-foot">
+    <p><span class="foot-brand">概念馆</span> · AI视频家族 · AI短剧剧本写法</p>
+    <p>词条源：concepts(概念库)/AI视频制作/AI短剧剧本写法.md（2026-11-11 建条）· 本页生成 2026-11-17</p>
+  </footer>
+
+</main>
+
+<aside class="side" aria-label="章节导航">
+  <p class="toc-t">本页章节</p>
+  <ul class="toc" id="toc">
+    <li><a href="#s1">一句话说清楚</a></li>
+    <li><a href="#s2">一个底子，两套写法</a></li>
+    <li><a href="#s3">短剧线：几十集怎么排</a></li>
+    <li><a href="#s4">短片线：一集怎么收</a></li>
+    <li><a href="#s5">一眼判断</a></li>
+    <li><a href="#s6">写完三轮审</a></li>
+    <li><a href="#s7">桑老哥适用</a></li>
+    <li><a href="#s8">前提与局限</a></li>
+    <li><a href="#s9">关联词条</a></li>
+    <li><a href="#s10">来源</a></li>
+  </ul>
+</aside>
+</div>
+</div>
+
+<script>
+(function(){
+  // 阅读进度条
+  var prog = document.getElementById('prog');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // 渐入（reduced-motion 下 CSS 已直接显示）
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // TOC 当前节高亮
+  var links = document.querySelectorAll('#toc a');
+  var secs = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove('cur'); });
+          var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+          if(a) a.classList.add('cur');
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){ io2.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
